@@ -1,31 +1,31 @@
-import reportApi, { rahatApi } from '@utils/client';
+import client from '@utils/client';
 
 export const DashboardService = {
   getBeneficiarySummary() {
-    return rahatApi.get('/stats/beneficiaries/summary');
+    return client.get('/stats/beneficiaries/summary');
   },
 
   getGeoMapData() {
-    return rahatApi.get('/stats/beneficiaries/geo');
+    return client.get('/stats/beneficiaries/geo');
   },
 
   getGenderDistribution() {
-    return rahatApi.get('/stats/beneficiaries/gender');
+    return client.get('/stats/beneficiaries/gender');
   },
 
   getBankedUnbanked() {
-    return rahatApi.get('/stats/beneficiaries/bank');
+    return client.get('/stats/beneficiaries/bank');
   },
 
   getPhoneOwnership() {
-    return rahatApi.get('/stats/beneficiaries/phone');
+    return client.get('/stats/beneficiaries/phone');
   },
 
   getBeneficiariesByWard() {
-    return rahatApi.get('/stats/beneficiaries/ward');
+    return client.get('/stats/beneficiaries/ward');
   },
 
   getCashTrackerSummary() {
-    return reportApi.get('/misc/cash-tracker-summary');
+    return client.get('/misc/cash-tracker-summary');
   },
 };

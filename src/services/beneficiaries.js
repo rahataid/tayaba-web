@@ -1,4 +1,4 @@
-import clientApi, { rahatApi } from '@utils/client';
+import clientApi from '@utils/client';
 
 export const BeneficiaryService = {
   getBeneficiariesList(params) {
@@ -8,11 +8,11 @@ export const BeneficiaryService = {
   },
 
   getBeneficiaryById(id) {
-    return rahatApi.get(`/beneficiaries/${id}`);
+    return clientApi.get(`/beneficiaries/${id}`);
   },
 
   getAllWards() {
-    return rahatApi.get('/beneficiaries/wards');
+    return clientApi.get('/beneficiaries/wards');
   },
 
   getBeneficiariesByWard(ward) {
