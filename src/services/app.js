@@ -1,4 +1,4 @@
-import { rahatApi } from '@utils/client';
+import { rahatApi,clientApi } from '@utils/client';
 
 export const AppService = {
   getAppSettings() {
