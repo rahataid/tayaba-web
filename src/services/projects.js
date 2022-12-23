@@ -1,21 +1,21 @@
-import clientApi, { rahatApi } from '@utils/client';
+import clientApi from '@utils/client';
 
 export const ProjectService = {
   getProjectsList(params) {
-    return rahatApi.get('/projects', {
+    return clientApi.get('/projects', {
       params,
     });
   },
 
   getProjectById(id) {
-    return rahatApi.get(`/projects/${id}`);
+    return clientApi.get(`/projects/${id}`);
   },
 
   getBeneficiariesByProject(projectId) {
-    return rahatApi.get(`/projects/${projectId}/beneficiaries`);
+    return clientApi.get(`/projects/${projectId}/beneficiaries`);
   },
 
   getVendorsByProject(projectId) {
-    return rahatApi.get(`/projects/${projectId}/vendors`);
+    return clientApi.get(`/projects/${projectId}/vendors`);
   },
 };

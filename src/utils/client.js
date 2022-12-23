@@ -8,7 +8,7 @@ const accessToken = getAccessToken();
 
 const api = axios.create({
   //   baseURL: 'https://minimal-assets-api-dev.vercel.app',
-  baseURL: HOST_API,
+  baseURL: TAYABA_BACKEND,
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
@@ -26,4 +26,4 @@ api.interceptors.response.use(
     )
 );
 
-// export default api;
+export default api;

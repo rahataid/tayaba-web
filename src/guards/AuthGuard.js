@@ -22,25 +22,25 @@ export default function AuthGuard({ children }) {
 
   const [requestedLocation, setRequestedLocation] = useState(null);
 
-  useEffect(() => {
-    if (requestedLocation && pathname !== requestedLocation) {
-      push(requestedLocation);
-    }
-    if (isAuthenticated) {
-      setRequestedLocation(null);
-    }
-  }, [isAuthenticated, pathname, push, requestedLocation]);
+  // useEffect(() => {
+  //   if (requestedLocation && pathname !== requestedLocation) {
+  //     push(requestedLocation);
+  //   }
+  //   if (isAuthenticated) {
+  //     setRequestedLocation(null);
+  //   }
+  // }, [isAuthenticated, pathname, push, requestedLocation]);
 
-  if (!isInitialized && wallet === null) {
-    return <LoadingScreen />;
-  }
-  if (!isAuthenticated) {
-    if (pathname !== requestedLocation) {
-      setRequestedLocation(pathname);
-    }
-    push(PATH_AUTH.login);
-    return <LoadingScreen />;
-  }
+  // if (!isInitialized && wallet === null) {
+  //   return <LoadingScreen />;
+  // }
+  // if (!isAuthenticated) {
+  //   if (pathname !== requestedLocation) {
+  //     setRequestedLocation(pathname);
+  //   }
+  //   push(PATH_AUTH.login);
+  //   return <LoadingScreen />;
+  // }
 
   return <>{children}</>;
 }
