@@ -4,7 +4,8 @@ import { forwardRef } from 'react';
 import NextLink from 'next/link';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Link } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
+import { APP_NAME } from '@config';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,10 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   // );
 
   const logo = (
-    <Box component="img" src="/logo/rahat-logo.png" sx={{ width: 164, height: 68, cursor: 'pointer', ...sx }} />
+    // <Box component="img" src="/logo/rahat-logo.png" sx={{ width: 164, height: 68, cursor: 'pointer', ...sx }} />
+    <Typography variant="h4" sx={{ color: PRIMARY_MAIN, fontWeight: 'bold', cursor: 'pointer', ...sx }}>
+      {APP_NAME}
+    </Typography>
   );
   // const logo = (
   //   <Box
