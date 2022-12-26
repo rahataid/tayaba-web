@@ -29,7 +29,6 @@ import { ThemeSettings, SettingsProvider } from '../components/settings';
 // https://docs.minimals.cc/authentication/js-version
 
 import { AuthProvider } from '../auth/JwtContext';
-import { Web3Provider } from '@web3/context';
 
 // ----------------------------------------------------------------------
 
@@ -51,24 +50,22 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <Web3Provider>
-        <AuthProvider>
-          <SettingsProvider>
-            <MotionLazyContainer>
-              <ThemeProvider>
-                <ThemeSettings>
-                  <ThemeLocalization>
-                    <SnackbarProvider>
-                      <ProgressBar />
-                      {getLayout(<Component {...pageProps} />)}
-                    </SnackbarProvider>
-                  </ThemeLocalization>
-                </ThemeSettings>
-              </ThemeProvider>
-            </MotionLazyContainer>
-          </SettingsProvider>
-        </AuthProvider>
-      </Web3Provider>
+      <AuthProvider>
+        <SettingsProvider>
+          <MotionLazyContainer>
+            <ThemeProvider>
+              <ThemeSettings>
+                <ThemeLocalization>
+                  <SnackbarProvider>
+                    <ProgressBar />
+                    {getLayout(<Component {...pageProps} />)}
+                  </SnackbarProvider>
+                </ThemeLocalization>
+              </ThemeSettings>
+            </ThemeProvider>
+          </MotionLazyContainer>
+        </SettingsProvider>
+      </AuthProvider>
     </CacheProvider>
   );
 }
