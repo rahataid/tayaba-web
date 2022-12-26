@@ -58,8 +58,42 @@ const ProjectView = () => {
       {label:" Not Access To Phone", value:2}
     ]
   };
-  
-
+  const genderWiseDistribution ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"male", value:1},
+      {label:"female", value:4}
+    ]
+  };
+  const phoneOwenerShip ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"Yes", value:1},
+      {label:"No", value:4}
+    ]
+  };
+  const simcardOwenerShip ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"Yes", value:3},
+      {label:"No", value:4}
+    ]
+  };
   return (
     <>
       <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}>
@@ -68,22 +102,18 @@ const ProjectView = () => {
             <BasicInfoCard rahatChainData={rahatChainData} />
             <MoreInfoCard />
           </Grid>
-          <Grid container>
-          {/* <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
-
-          <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
-          <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart> */}
-
-            <Grid  xs={12} md={6} >
-            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+          <Grid container  >
+        
+            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)} xs={12} md={6} >
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  />
             </Grid>
-            <Grid  xs={12} md={6} >
-            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)} xs={12} md={6} >
+            <Piechart title=" Gender Wise Distrubition" chart={genderWiseDistribution}  />
             </Grid>
-            <Grid  xs={12} md={6}>
-            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)}  xs={12} md={6}>
+            <Piechart title=" Simcard Ownership" chart={simcardOwenerShip}  />
             </Grid>
-        </Grid>
+          </Grid>
           <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
             <ViewTabs />
           </Stack>
@@ -99,10 +129,12 @@ const ProjectView = () => {
           )}
           {roles.isAgency && <AgencyCash rahatChainData={rahatChainData} />}
           {roles.isDonor && <DonorCash rahatChainData={rahatChainData} />}
-          <ChartCard rahatChainData={rahatChainData} />
           <Grid>
-            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
-            </Grid>
+          <ChartCard rahatChainData={rahatChainData} />
+          </Grid>
+          <Grid>
+            <Piechart title=" Phone Ownership" chart={phoneOwenerShip}  ></Piechart>
+          </Grid>
           {/* <Grid item xs={12} md={4}> */}
           {/* </Grid> */}
         </Grid>
