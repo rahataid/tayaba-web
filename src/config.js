@@ -88,3 +88,5 @@ export const CONTRACTS = {
   TRIGGER: 'rahat_trigger',
   ERC20: 'rahat_erc20',
 };
+
+export const CHARTDATATYPES= ['hasInternetAccess','hasPhone','gender','bankAccountType','isBanked','phoneOwnedBy','simRegisteredUnder']

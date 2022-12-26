@@ -7,6 +7,7 @@ const initialState = {
   singleProject: {},
   beneficiaries: [],
   vendors: [],
+  chartData:[],
   refresh: false,
   isRahatResponseLive: false,
   error: {},
@@ -16,6 +17,7 @@ const initialState = {
   getVendorsByProject: () => {},
   refreshData: () => {},
   setRahatResponseStatus: () => {},
+  getChartData:()=>{}
 };
 
 const ProjectsContext = createContext(initialState);
@@ -87,6 +89,20 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const getChartData = useCallback(async(params,query)=>{
+    try{
+    const response = await ProjectService.getChartData(params,query);
+    console.log(response);
+    setState((prev) => ({
+      ...prev,
+      chartData: response,
+    }));
+    return response;
+  }catch(err){
+    console.log(err)
+  }
+  })
+
   const contextValue = {
     ...state,
     refreshData,
@@ -95,6 +111,7 @@ export const ProjectProvider = ({ children }) => {
     getProjectById,
     getBeneficiariesByProject,
     getVendorsByProject,
+    getChartData,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

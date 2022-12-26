@@ -20,12 +20,11 @@ const tabs = [
 export default function ViewTabs() {
   const { roles } = useAuthContext();
   const [value, setValue] = useState('beneficiaries');
-
   const {
     query: { projectId },
   } = useRouter();
 
-  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject } = useProjectContext();
+  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject,getChartData ,chartData} = useProjectContext();
 
   useEffect(() => {
     if (!projectId || value !== 'beneficiaries') return;
@@ -36,6 +35,8 @@ export default function ViewTabs() {
     if (!projectId || value !== 'vendors') return;
     getVendorsByProject(projectId);
   }, [projectId, getVendorsByProject, value]);
+
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

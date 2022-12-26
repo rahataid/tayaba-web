@@ -10,15 +10,22 @@ import { useRouter } from 'next/router';
 import { useRahat } from '@services/contracts/useRahat';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useTheme } from '@mui/system';
-import { SPACING } from '@config';
+import { SPACING,CHARTDATATYPES } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import Piechart from './Piechart';
 
 const ProjectView = () => {
   const { roles } = useAuthContext();
-  const { getProjectById, refresh, refreshData } = useProjectContext();
+  const { getProjectById, refresh, refreshData ,getChartData,chartData} = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
+  const [accessToPhoneChartData,setAccessToPhoneChartData] = useState();
+  const [genderWiseDistribution,setGenderWiseDistribution] = useState();
+  const [phoneOwnerShip,setPhoneOwnerShip] = useState();
+  const [simcardOwenerShip,setSimcardOwenerShip] = useState();
+  const [accessToInternet,setAccessToInternet] = useState();
+  const [bankAccountType,setBankAccountType] = useState();
+
 
   const {
     query: { projectId },
@@ -35,6 +42,15 @@ const ProjectView = () => {
     getProjectById(projectId);
   }, [projectId]);
 
+
+  useEffect(()=>{
+    if(!projectId) return;
+    let query = {
+      projectId:1
+    }
+    getChartData(CHARTDATATYPES,query)
+  },[projectId]);
+
   useEffect(() => {
     if (!projectId || !contract) return;
     init(projectId);
@@ -45,55 +61,112 @@ const ProjectView = () => {
     RahatCash?.on('Transfer', refreshData);
     return () => RahatCash?.removeAllListeners();
   }, [RahatCash]);
+
+  const formatData = useCallback(()=>{
+    if(!chartData.length) return;
+    // need to move and  call from utils
+    chartData.forEach((elem)=>{
+      if(elem.chart ==="hasInternetAccess"){
+        let series = []
+        elem.data.forEach((obj)=>{
+          if(obj.hasInternetAccess){
+            series.push({label:"Has Access",value:obj.count})
+          }
+          if(!obj.hasInternetAccess){
+            series.push({label:"Not Access", value:obj.count})
+          }
+          
+        })
+        const data = {
+          title:"Internet",
+          colors: [
+            theme.palette.primary.main,
+            theme.palette.info.main,
+            theme.palette.error.main,
+            theme.palette.warning.main,
+          ],
+          series:series
+        }
+         setAccessToInternet(data);
+
+      }
+       if(elem.chart ==="hasPhone"){
+        let series = []
+        elem.data.forEach((obj)=>{
+          if(obj.hasPhone){
+            series.push({label:"Has Access",value:obj.count})
+          }
+          if(!obj.hasPhone){
+            series.push({label:"Not Access",value:obj.count})
+          }
+          
+        })
+        const data = {
+          title:"Phone",
+          colors: [
+            theme.palette.primary.main,
+            theme.palette.info.main,
+            theme.palette.error.main,
+            theme.palette.warning.main,
+          ],
+          series:series
+        }
+        setAccessToPhoneChartData(data);
+      }
+
+      if(elem.chart ==="gender"){
+        let series = []
+        elem.data.forEach((obj)=>{
+          if(obj.gender ==='M'){
+            series.push({label:"Male",value:obj.count})
+          }
+          if(obj.gender==='F'){
+            series.push({label:"Female",value:obj.count})
+          }
+          if(obj.gender === 'O'){
+            series.push({label:"Others",value:obj.count})
+          }
+        })
+        const data = {
+          title:"Gender",
+          colors: [
+            theme.palette.primary.main,
+            theme.palette.info.main,
+            theme.palette.error.main,
+            theme.palette.warning.main,
+          ],
+          series:series
+        };
+        setGenderWiseDistribution(data);
+
+      }
+      if(elem.chart ==="bankAccountType"){
+        let series = []
+        elem.data.forEach((obj)=>{
+            series.push({label:obj.bankAccountType,value:obj.count})
+        })
+        const data = {
+          title:"Phone",
+          colors: [
+            theme.palette.primary.main,
+            theme.palette.info.main,
+            theme.palette.error.main,
+            theme.palette.warning.main,
+          ],
+          series:series
+        }
+        setBankAccountType(data)
+      }
+    })
+
+  },[chartData]);
+
+  useEffect(()=>{
+ formatData()
+  },[formatData])
   
-  const accessToPhoneChartData ={
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.error.main,
-      theme.palette.warning.main,
-    ],
-    series:  [
-      {label:"Access To Phone", value:2},
-      {label:" Not Access To Phone", value:2}
-    ]
-  };
-  const genderWiseDistribution ={
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.error.main,
-      theme.palette.warning.main,
-    ],
-    series:  [
-      {label:"male", value:1},
-      {label:"female", value:4}
-    ]
-  };
-  const phoneOwenerShip ={
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.error.main,
-      theme.palette.warning.main,
-    ],
-    series:  [
-      {label:"Yes", value:1},
-      {label:"No", value:4}
-    ]
-  };
-  const simcardOwenerShip ={
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.error.main,
-      theme.palette.warning.main,
-    ],
-    series:  [
-      {label:"Yes", value:3},
-      {label:"No", value:4}
-    ]
-  };
+
+
   return (
     <>
       <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}>
@@ -103,16 +176,19 @@ const ProjectView = () => {
             <MoreInfoCard />
           </Grid>
           <Grid container  >
-        
-            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)} xs={12} md={6} >
-            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  />
-            </Grid>
-            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)} xs={12} md={6} >
-            <Piechart title=" Gender Wise Distrubition" chart={genderWiseDistribution}  />
-            </Grid>
-            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)}  xs={12} md={6}>
-            <Piechart title=" Simcard Ownership" chart={simcardOwenerShip}  />
-            </Grid>
+          {accessToPhoneChartData?
+            <Grid  xs={12} md={6} >
+            <Piechart title={accessToPhoneChartData.title}   chart={accessToPhoneChartData}  />
+            </Grid>:<></>}
+            {genderWiseDistribution?
+            <Grid  xs={12} md={6} >
+            <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution}  />
+            </Grid>:<></>
+            }
+
+            {accessToInternet?<Grid   xs={12} md={6}>
+            <Piechart title={accessToInternet.title} chart={accessToInternet}  />
+            </Grid>:<></>}
           </Grid>
           <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
             <ViewTabs />
@@ -132,9 +208,10 @@ const ProjectView = () => {
           <Grid>
           <ChartCard rahatChainData={rahatChainData} />
           </Grid>
+          {bankAccountType?
           <Grid>
-            <Piechart title=" Phone Ownership" chart={phoneOwenerShip}  ></Piechart>
-          </Grid>
+            <Piechart title={bankAccountType.title} chart={bankAccountType}  ></Piechart>
+          </Grid>:<></>}
           {/* <Grid item xs={12} md={4}> */}
           {/* </Grid> */}
         </Grid>
