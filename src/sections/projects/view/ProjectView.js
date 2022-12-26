@@ -12,6 +12,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import { useTheme } from '@mui/system';
 import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
+import Piechart from './Piechart';
 
 const ProjectView = () => {
   const { roles } = useAuthContext();
@@ -44,14 +45,74 @@ const ProjectView = () => {
     RahatCash?.on('Transfer', refreshData);
     return () => RahatCash?.removeAllListeners();
   }, [RahatCash]);
-
+  
+  const accessToPhoneChartData ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"Access To Phone", value:2},
+      {label:" Not Access To Phone", value:2}
+    ]
+  };
+  const genderWiseDistribution ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"male", value:1},
+      {label:"female", value:4}
+    ]
+  };
+  const phoneOwenerShip ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"Yes", value:1},
+      {label:"No", value:4}
+    ]
+  };
+  const simcardOwenerShip ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"Yes", value:3},
+      {label:"No", value:4}
+    ]
+  };
   return (
     <>
       <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}>
         <Grid item xs={12} md={8}>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{height:"494px"}}>
             <BasicInfoCard rahatChainData={rahatChainData} />
             <MoreInfoCard />
+          </Grid>
+          <Grid container  >
+        
+            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)} xs={12} md={6} >
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  />
+            </Grid>
+            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)} xs={12} md={6} >
+            <Piechart title=" Gender Wise Distrubition" chart={genderWiseDistribution}  />
+            </Grid>
+            <Grid spacing={theme.spacing(SPACING.GRID_SPACING)}  xs={12} md={6}>
+            <Piechart title=" Simcard Ownership" chart={simcardOwenerShip}  />
+            </Grid>
           </Grid>
           <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
             <ViewTabs />
@@ -68,7 +129,12 @@ const ProjectView = () => {
           )}
           {roles.isAgency && <AgencyCash rahatChainData={rahatChainData} />}
           {roles.isDonor && <DonorCash rahatChainData={rahatChainData} />}
+          <Grid>
           <ChartCard rahatChainData={rahatChainData} />
+          </Grid>
+          <Grid>
+            <Piechart title=" Phone Ownership" chart={phoneOwenerShip}  ></Piechart>
+          </Grid>
           {/* <Grid item xs={12} md={4}> */}
           {/* </Grid> */}
         </Grid>
