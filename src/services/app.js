@@ -1,15 +1,16 @@
-import { rahatApi,clientApi } from '@utils/client';
+
+import client from '@utils/client';
 
 export const AppService = {
   getAppSettings() {
-    return rahatApi.get('/app/settings');
+    return client.get('/app/settings');
   },
 
   getContract(contractName) {
-    return rahatApi.get(`/app/contracts/${contractName}`);
+    return client.get(`/app/contracts/${contractName}`);
   },
 
   getAdmins() {
-    return rahatApi.get(`/app/admins`);
+    return client.get(`/app/admins`);
   },
 };
