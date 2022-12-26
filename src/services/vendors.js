@@ -1,4 +1,4 @@
-import clientApi, { rahatApi } from '@utils/client';
+import clientApi from '@utils/client';
 
 export const VendorService = {
   getVendorsList(params) {
@@ -8,14 +8,14 @@ export const VendorService = {
   },
 
   getVendorById(id) {
-    return rahatApi.get(`/vendors/${id}`);
+    return clientApi.get(`/vendors/${id}`);
   },
 
   //   getBeneficiariesByProject(projectId) {
-  //     return rahatApi.get(`/projects/${projectId}/vendors`);
+  //     return clientApi.get(`/projects/${projectId}/vendors`);
   //   },
 
   //   getVendorsByProject(projectId) {
-  //     return rahatApi.get(`/projects/${projectId}/vendors`);
+  //     return clientApi.get(`/projects/${projectId}/vendors`);
   //   },
 };

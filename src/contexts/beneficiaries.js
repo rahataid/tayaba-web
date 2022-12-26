@@ -115,8 +115,8 @@ export const BeneficiaryProvider = ({ children }) => {
 
   const getAllWards = useCallback(async () => {
     const response = await BeneficiaryService.getAllWards();
-    const formatted = response.data
-      .sort((a, b) => a - b)
+    const formatted = Array(response?.data.data)
+      ?.sort((a, b) => a - b)
       .map((item) => ({
         label: item,
         value: item,

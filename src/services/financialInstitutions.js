@@ -1,13 +1,13 @@
-import { rahatApi } from '@utils/client';
+import client from '@utils/client';
 
 export const FinancialInstitutionService = {
   getFIList(params) {
-    return rahatApi.get('/institutions', {
+    return client.get('/institutions', {
       params,
     });
   },
 
   getFIById(id) {
-    return rahatApi.get(`/institutions/${id}`);
+    return client.get(`/institutions/${id}`);
   },
 };
