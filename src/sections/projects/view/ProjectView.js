@@ -100,10 +100,12 @@ const ProjectView = () => {
           {roles.isAgency && <AgencyCash rahatChainData={rahatChainData} />}
           {roles.isDonor && <DonorCash rahatChainData={rahatChainData} />}
           <ChartCard rahatChainData={rahatChainData} />
+          <Grid>
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            </Grid>
           {/* <Grid item xs={12} md={4}> */}
           {/* </Grid> */}
         </Grid>
-        
       </Grid>
     </>
   );
