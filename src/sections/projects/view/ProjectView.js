@@ -12,6 +12,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import { useTheme } from '@mui/system';
 import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
+import Piechart from './Piechart';
 
 const ProjectView = () => {
   const { roles } = useAuthContext();
@@ -44,15 +45,45 @@ const ProjectView = () => {
     RahatCash?.on('Transfer', refreshData);
     return () => RahatCash?.removeAllListeners();
   }, [RahatCash]);
+  
+  const accessToPhoneChartData ={
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ],
+    series:  [
+      {label:"Access To Phone", value:2},
+      {label:" Not Access To Phone", value:2}
+    ]
+  };
+  
 
   return (
     <>
       <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}>
         <Grid item xs={12} md={8}>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{height:"494px"}}>
             <BasicInfoCard rahatChainData={rahatChainData} />
             <MoreInfoCard />
           </Grid>
+          <Grid container>
+          {/* <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+
+          <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+          <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart> */}
+
+            <Grid  xs={12} md={6} >
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            </Grid>
+            <Grid  xs={12} md={6} >
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            </Grid>
+            <Grid  xs={12} md={6}>
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            </Grid>
+        </Grid>
           <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
             <ViewTabs />
           </Stack>
@@ -69,6 +100,9 @@ const ProjectView = () => {
           {roles.isAgency && <AgencyCash rahatChainData={rahatChainData} />}
           {roles.isDonor && <DonorCash rahatChainData={rahatChainData} />}
           <ChartCard rahatChainData={rahatChainData} />
+          <Grid>
+            <Piechart title=" Access To Phone" chart={accessToPhoneChartData}  ></Piechart>
+            </Grid>
           {/* <Grid item xs={12} md={4}> */}
           {/* </Grid> */}
         </Grid>
