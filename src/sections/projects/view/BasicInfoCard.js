@@ -14,6 +14,10 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
           <Typography variant="h4">{singleProject?.name}</Typography>
+            <Typography variant="h3" sx={{ fontWeight: 600 }}>
+              {singleProject?.data?.beneficiariesCount }
+            </Typography>
+            <Typography variant="body2">Total No Of Beneficiaries</Typography>
 
           {isRahatResponseLive ? (
             <Chip color="success" label="Response Activated" />

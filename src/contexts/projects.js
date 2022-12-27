@@ -11,13 +11,23 @@ const initialState = {
   refresh: false,
   isRahatResponseLive: false,
   error: {},
+  beneficiariesVillageChartData: {
+    chartData: [
+      {
+        data: [],
+        name: '',
+      },
+    ],
+    chartLabel: [],
+  },
   getProjectsList: () => { },
   getProjectById: () => { },
   getBeneficiariesByProject: () => { },
   getVendorsByProject: () => { },
   refreshData: () => { },
   setRahatResponseStatus: () => { },
-  getChartData: () => { }
+  getChartData: () => { },
+  getBeneficiariesByvillage:()=>{},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -101,6 +111,24 @@ export const ProjectProvider = ({ children }) => {
       console.log(err)
     }
   })
+  const getBeneficiariesByvillage  = useCallback(async (params) => {
+    try {
+      const response = await ProjectService.getBeneficiariesByVillageCount(params);     
+      const chartLabel = response.data.data?.map((d) => d.label);
+      const data = response.data.data?.map((d) => d.count);
+      const chartData = [{
+        data,
+        name:"No of Beneficaries"
+      }]
+      setState((prev) => ({
+        ...prev,
+        beneficiariesVillageChartData: { chartLabel, chartData },
+      }));
+      return response;
+    } catch (err) {
+      console.log(err)
+    }
+  })
 
   const contextValue = {
     ...state,
@@ -111,6 +139,7 @@ export const ProjectProvider = ({ children }) => {
     getBeneficiariesByProject,
     getVendorsByProject,
     getChartData,
+    getBeneficiariesByvillage,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

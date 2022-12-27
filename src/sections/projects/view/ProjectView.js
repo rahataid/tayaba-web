@@ -13,10 +13,11 @@ import { useTheme } from '@mui/system';
 import { SPACING, CHARTDATATYPES } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import Piechart from './Piechart';
+import Barchart from './Barchart';
 
 const ProjectView = () => {
   const { roles } = useAuthContext();
-  const { getProjectById, refresh, refreshData, getChartData, chartData } = useProjectContext();
+  const { getProjectById, refresh, refreshData, getChartData, chartData,getBeneficiariesByvillage ,beneficiariesVillageChartData} = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const [accessToPhoneChartData, setAccessToPhoneChartData] = useState();
@@ -25,7 +26,7 @@ const ProjectView = () => {
   const [simcardOwenerShip, setSimcardOwenerShip] = useState();
   const [accessToInternet, setAccessToInternet] = useState();
   const [bankAccountType, setBankAccountType] = useState();
-
+  const [banked,setBanked]= useState()
 
   const {
     query: { projectId },
@@ -46,9 +47,10 @@ const ProjectView = () => {
   useEffect(() => {
     if (!projectId) return;
     let query = {
-      projectId: 1
+      projectId: projectId
     }
     getChartData(CHARTDATATYPES, query)
+    getBeneficiariesByvillage(projectId)
   }, [projectId]);
 
   useEffect(() => {
@@ -63,11 +65,17 @@ const ProjectView = () => {
   }, [RahatCash]);
 
   const formatData = useCallback(() => {
-    if (!chartData.length) return;
+    if (!chartData) return;
     // need to move and  call from utils
+    const colors= [
+      theme.palette.primary.main,
+      theme.palette.info.main,
+      theme.palette.error.main,
+      theme.palette.warning.main,
+    ];
     chartData.forEach((elem) => {
+      let series = [];
       if (elem.chart === "hasInternetAccess") {
-        let series = []
         elem.data.forEach((obj) => {
           if (obj.hasInternetAccess) {
             series.push({ label: "Has Access", value: obj.count })
@@ -75,23 +83,16 @@ const ProjectView = () => {
           if (!obj.hasInternetAccess) {
             series.push({ label: "Not Access", value: obj.count })
           }
-
-        })
+        });
         const data = {
           title: "Internet",
-          colors: [
-            theme.palette.primary.main,
-            theme.palette.info.main,
-            theme.palette.error.main,
-            theme.palette.warning.main,
-          ],
+          colors:colors,
           series: series
         }
         setAccessToInternet(data);
 
       }
       if (elem.chart === "hasPhone") {
-        let series = []
         elem.data.forEach((obj) => {
           if (obj.hasPhone) {
             series.push({ label: "Has Access", value: obj.count })
@@ -100,22 +101,16 @@ const ProjectView = () => {
             series.push({ label: "Not Access", value: obj.count })
           }
 
-        })
+        });
         const data = {
           title: "Phone",
-          colors: [
-            theme.palette.primary.main,
-            theme.palette.info.main,
-            theme.palette.error.main,
-            theme.palette.warning.main,
-          ],
+          colors:colors,
           series: series
         }
         setAccessToPhoneChartData(data);
       }
 
       if (elem.chart === "gender") {
-        let series = []
         elem.data.forEach((obj) => {
           if (obj.gender === 'M') {
             series.push({ label: "Male", value: obj.count })
@@ -129,42 +124,69 @@ const ProjectView = () => {
         })
         const data = {
           title: "Gender",
-          colors: [
-            theme.palette.primary.main,
-            theme.palette.info.main,
-            theme.palette.error.main,
-            theme.palette.warning.main,
-          ],
+          colors: colors,
           series: series
         };
         setGenderWiseDistribution(data);
 
       }
       if (elem.chart === "bankAccountType") {
-        let series = []
         elem.data.forEach((obj) => {
+          if(!obj.bankAccountType) obj.bankAccountType = "undefined"
           series.push({ label: obj.bankAccountType, value: obj.count })
         })
         const data = {
-          title: "Phone",
-          colors: [
-            theme.palette.primary.main,
-            theme.palette.info.main,
-            theme.palette.error.main,
-            theme.palette.warning.main,
-          ],
+          title: "Bank",
+          colors: colors,
           series: series
         }
         setBankAccountType(data)
       }
+
+      if(elem.chart ==="isBanked"){
+        elem.data.forEach((obj)=>{
+          if(obj.isBanked) series.push({label:"Banked", value:obj.count});
+          if(!obj.isBanked) series.push({label:"UnBanked", value:obj.count});
+        })
+        const data = {
+          title:"Bank",
+          colors: colors,
+          series:series
+        }
+        setBanked(data)
+      }
+
+      if(elem.chart ==="phoneOwnedBy"){
+        elem.data.forEach((obj)=>{
+        series.push({label:obj.phoneOwnedBy, value:obj.count});
+
+        })
+        const data = {
+          title:"Phone Ownership",
+          colors:colors,
+          series:series
+        }
+        setPhoneOwnerShip(data)
+      }
+      if(elem.chart === "simRegisteredUnder"){
+        elem.data.forEach((obj)=>{
+        series.push({label:obj.simRegisteredUnder, value:obj.count});
+
+        })
+        const data = {
+          title:"Sim card Owner",
+          colors:colors,
+          series:series
+        }
+        setSimcardOwenerShip(data)
+      }  
     })
 
   }, [chartData]);
 
   useEffect(() => {
     formatData()
-  }, [formatData])
-
+  }, [formatData]);
 
 
   return (
@@ -176,9 +198,9 @@ const ProjectView = () => {
           <MoreInfoCard />
         </Grid>
         <Grid container  >
-          {accessToPhoneChartData ?
+          {beneficiariesVillageChartData ?
             <Grid xs={12} md={6} >
-              <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
+              <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} />
             </Grid> : <></>}
           {genderWiseDistribution ?
             <Grid xs={12} md={6} >
@@ -186,9 +208,29 @@ const ProjectView = () => {
             </Grid> : <></>
           }
 
-          {accessToInternet ? <Grid xs={12} md={6}>
+          {accessToInternet ? <Grid xs={12} md={4}>
             <Piechart title={accessToInternet.title} chart={accessToInternet} />
           </Grid> : <></>}
+            {phoneOwnerShip ?
+            <Grid xs={12} md={4} >
+              <Piechart title={phoneOwnerShip.title} chart={phoneOwnerShip} />
+            </Grid> : <></>}
+            {accessToPhoneChartData ?
+            <Grid xs={12} md={4} >
+              <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
+            </Grid> : <></>}
+            {simcardOwenerShip ?
+            <Grid xs={12} md={4} >
+              <Piechart title={simcardOwenerShip.title} chart={simcardOwenerShip} />
+            </Grid> : <></>}
+            {bankAccountType ?
+            <Grid xs={12} md={4} >
+              <Piechart title={bankAccountType.title} chart={bankAccountType} />
+            </Grid> : <></>}
+            {banked ?
+            <Grid xs={12} md={4} >
+              <Piechart title={banked.title} chart={banked} />
+            </Grid> : <></>}
         </Grid>
         <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
           <ViewTabs />
