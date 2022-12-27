@@ -7,17 +7,17 @@ const initialState = {
   singleProject: {},
   beneficiaries: [],
   vendors: [],
-  chartData:[],
+  chartData: [],
   refresh: false,
   isRahatResponseLive: false,
   error: {},
-  getProjectsList: () => {},
-  getProjectById: () => {},
-  getBeneficiariesByProject: () => {},
-  getVendorsByProject: () => {},
-  refreshData: () => {},
-  setRahatResponseStatus: () => {},
-  getChartData:()=>{}
+  getProjectsList: () => { },
+  getProjectById: () => { },
+  getBeneficiariesByProject: () => { },
+  getVendorsByProject: () => { },
+  refreshData: () => { },
+  setRahatResponseStatus: () => { },
+  getChartData: () => { }
 };
 
 const ProjectsContext = createContext(initialState);
@@ -49,7 +49,6 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
-
     const formatted = {
       ...response.data,
       projectManagerName: response.data?.project_manager?.name
@@ -89,18 +88,18 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getChartData = useCallback(async(params,query)=>{
-    try{
-    const response = await ProjectService.getChartData(params,query);
-    console.log(response);
-    setState((prev) => ({
-      ...prev,
-      chartData: response,
-    }));
-    return response;
-  }catch(err){
-    console.log(err)
-  }
+  const getChartData = useCallback(async (params, query) => {
+    try {
+      const response = await ProjectService.getChartData(params, query);
+      console.log(response);
+      setState((prev) => ({
+        ...prev,
+        chartData: response,
+      }));
+      return response;
+    } catch (err) {
+      console.log(err)
+    }
   })
 
   const contextValue = {
