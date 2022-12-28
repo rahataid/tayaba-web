@@ -25,8 +25,8 @@ const BEN_TABLE_HEAD = {
     align: 'left',
   },
 
-  cnic: {
-    id: 'cnic number',
+  cnicNumber: {
+    id: 'cnicNumber',
     label: 'CNIC Number',
     align: 'left',
   },
@@ -39,6 +39,11 @@ const BEN_TABLE_HEAD = {
     id: 'hasInternetAccess',
     label: 'Has Internet Issues',
     align: 'left',
+  },
+  actions:{
+    id:"action",
+    label:"Action",
+    align:"left"   
   }
 };
 const vendors = [
