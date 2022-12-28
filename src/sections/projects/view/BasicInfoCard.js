@@ -8,12 +8,14 @@ BasicInfoCard.propTypes = {
 };
 
 export default function BasicInfoCard({ rahatChainData, ...other }) {
-  const { singleProject, isRahatResponseLive } = useProjectContext();
+  const { singleProject, isRahatResponseLive, beneficiaryCount } = useProjectContext();
   return (
+
     <Card sx={{ width: '100%', mb: 1 }} {...other}>
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-          <Typography variant="h4">{singleProject?.name}</Typography>
+          <Typography variant="h4">{singleProject?.data?.name}</Typography>
+
 
           {isRahatResponseLive ? (
             <Chip color="success" label="Response Activated" />
@@ -35,6 +37,12 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
               {rahatChainData.tokenBalance || 0}
             </Typography>
             <Typography variant="body2">Remaining Balance</Typography>
+          </Grid>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+              {beneficiaryCount || 0}
+            </Typography>
+            <Typography variant="body2">Beneficiaries</Typography>
           </Grid>
         </Stack>
       </CardContent>
