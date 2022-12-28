@@ -171,7 +171,7 @@ const ProjectView = () => {
       if (elem.chart === "simRegisteredUnder") {
         console.log(elem.data)
         elem.data.forEach((obj) => {
-          y
+          
           series.push({ label: obj.simRegisteredUnder, value: obj.count });
 
         })
