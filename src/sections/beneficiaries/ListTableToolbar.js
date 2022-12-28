@@ -49,13 +49,13 @@ export default function ListTableToolbar() {
         )}
       </Stack>
       <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 0 }} justifyContent={'flex-end'}>
-        <ListSelectFilter
+        {/* <ListSelectFilter
           label={'Ward'}
           name={'ward'}
           options={wards}
           onSelectChange={onSearch}
           value={filter?.ward || ''}
-        />
+        /> */}
         <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
         <ListSearchField label={'Enter Name'} value={filter?.name || ''} onChange={onSearch} name={'name'} />
       </Stack>
