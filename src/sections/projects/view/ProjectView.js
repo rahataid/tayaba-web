@@ -85,7 +85,7 @@ const ProjectView = () => {
           }
         });
         const data = {
-          title: "Internet",
+          title: " Access To Internet",
           colors: colors,
           series: series
         }
@@ -103,7 +103,7 @@ const ProjectView = () => {
 
         });
         const data = {
-          title: "Phone",
+          title: " Access to Phone",
           colors: colors,
           series: series
         }
@@ -123,7 +123,7 @@ const ProjectView = () => {
           }
         })
         const data = {
-          title: "Gender",
+          title: "Gender-wise Distribution",
           colors: colors,
           series: series
         };
@@ -136,7 +136,7 @@ const ProjectView = () => {
           series.push({ label: obj.bankAccountType, value: obj.count })
         })
         const data = {
-          title: "Bank",
+          title: "Bank Account Type",
           colors: colors,
           series: series
         }
@@ -149,7 +149,7 @@ const ProjectView = () => {
           if (!obj.isBanked) series.push({ label: "UnBanked", value: obj.count });
         })
         const data = {
-          title: "Bank",
+          title: "Banked or Unbanked",
           colors: colors,
           series: series
         }
@@ -169,12 +169,14 @@ const ProjectView = () => {
         setPhoneOwnerShip(data)
       }
       if (elem.chart === "simRegisteredUnder") {
+        console.log(elem.data)
         elem.data.forEach((obj) => {
+          
           series.push({ label: obj.simRegisteredUnder, value: obj.count });
 
         })
         const data = {
-          title: "Sim card Owner",
+          title: "Sim Card Ownership",
           colors: colors,
           series: series
         }

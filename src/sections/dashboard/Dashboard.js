@@ -22,6 +22,7 @@ const DashboardComponent = () => {
 
   const {
     summary,
+    demographicSummary,
     getSummary,
     getGeoMapData,
     getGenderDistribution,
@@ -35,6 +36,7 @@ const DashboardComponent = () => {
     getBeneficiariesByWard,
     getCashTrackerSummary,
     cashTrackerSummary,
+    getDemographicSummary,
   } = useDashboardContext();
 
   const [flickImages, setFlickImages] = useState([]);
@@ -42,6 +44,11 @@ const DashboardComponent = () => {
   useEffect(() => {
     getSummary();
   }, [getSummary]);
+
+  console.log(demographicSummary)
+  useEffect(() => {
+    getDemographicSummary();
+  }, [getDemographicSummary]);
 
   useEffect(() => {
     getCashTrackerSummary();
@@ -98,44 +105,8 @@ const DashboardComponent = () => {
               color="warning"
               icon="material-symbols:person-4"
               title="Beneficiaries"
-              total={summary?.total_beneficiaries}
+              total={demographicSummary?.count}
               subtitle={'households'}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              color="error"
-              icon={'fa6-solid:children'}
-              title="Under 5"
-              total={summary?.total_children}
-              // total={beneficiaryCounts?.impacted}
-              subtitle={'children'}
-            />
-          </Grid>
-
-          {/* <Grid item xs={12} md={4}>
-          <ActivateResponse />
-        </Grid> */}
-
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              color="success"
-              icon={'fa6-solid:users'}
-              title="Total Impact"
-              total={summary?.total_persons}
-              // total={beneficiaryCounts?.impacted?.totalFamilyCount}
-              subtitle={'people'}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              color="secondary"
-              title="Unbanked"
-              icon="mdi:bank-transfer-out"
-              total={summary?.total_unbanked}
-              // total={beneficiaryCounts?.impacted?.totalFamilyCount}
-              subtitle={'persons'}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -159,7 +130,7 @@ const DashboardComponent = () => {
 
 
 
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={4}>
           <Piechart
             title="Gender Distribution"
             chart={{
@@ -201,7 +172,7 @@ const DashboardComponent = () => {
               series: phoneOwnership,
             }}
           />
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={12} md={6}>
           <BarchartSingle
