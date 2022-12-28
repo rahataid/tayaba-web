@@ -6,15 +6,16 @@ import moment from 'moment';
 
 const MoreInfoCard = (props) => {
   const { singleProject } = useProjectContext();
+  console.log({ singleProject })
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              {singleProject?.projectManagerName}
+              {singleProject?.data?.name}
             </Typography>
-            <Typography variant="body2">Project Manager </Typography>
+            <Typography variant="body2">Project Name </Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Grid item xs={12} md={12}>
@@ -30,14 +31,14 @@ const MoreInfoCard = (props) => {
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              {singleProject?.location}
+              {singleProject?.data?.location}
             </Typography>
             <Typography variant="body2">Location</Typography>
           </Grid>
         </Stack>
 
         <Stack sx={{ p: 2 }}>
-          <Typography variant="body1">Cash distribution to five more single women</Typography>
+          <Typography variant="body1">H20 Wheels Distribution</Typography>
         </Stack>
       </CardContent>
     </Card>

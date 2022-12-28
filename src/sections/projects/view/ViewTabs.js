@@ -20,13 +20,12 @@ const tabs = [
 export default function ViewTabs() {
   const { roles } = useAuthContext();
   const [value, setValue] = useState('beneficiaries');
-
   const {
     query: { projectId },
   } = useRouter();
 
-  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject } = useProjectContext();
-
+  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject, getChartData, chartData } = useProjectContext();
+  console.log({ beneficiaries })
   useEffect(() => {
     if (!projectId || value !== 'beneficiaries') return;
     getBeneficiariesByProject(projectId);
@@ -37,6 +36,8 @@ export default function ViewTabs() {
     getVendorsByProject(projectId);
   }, [projectId, getVendorsByProject, value]);
 
+
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -44,7 +45,7 @@ export default function ViewTabs() {
   return (
     <Card>
       <CardContent>
-        <Box sx={{ width: '100%', typography: 'body1'  }}>
+        <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -57,7 +58,6 @@ export default function ViewTabs() {
               <TabsTable
                 rows={beneficiaries.map((d) => {
                   let { name, ...rest } = d;
-                  name = roles.isPalika ? name : name?.substring(0, 1) + 'xxxxxxx Xxxxx';
                   return { name, ...rest };
                 })}
                 tableHead={BEN_TABLE_HEAD}

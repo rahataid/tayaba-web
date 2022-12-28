@@ -5,17 +5,30 @@ import PropTypes from 'prop-types';
 const initialState = {
   projects: [],
   singleProject: {},
+  beneficiaryCount: 0,
   beneficiaries: [],
   vendors: [],
+  chartData: [],
   refresh: false,
   isRahatResponseLive: false,
   error: {},
-  getProjectsList: () => {},
-  getProjectById: () => {},
-  getBeneficiariesByProject: () => {},
-  getVendorsByProject: () => {},
-  refreshData: () => {},
-  setRahatResponseStatus: () => {},
+  beneficiariesVillageChartData: {
+    chartData: [
+      {
+        data: [],
+        name: '',
+      },
+    ],
+    chartLabel: [],
+  },
+  getProjectsList: () => { },
+  getProjectById: () => { },
+  getBeneficiariesByProject: () => { },
+  getVendorsByProject: () => { },
+  refreshData: () => { },
+  setRahatResponseStatus: () => { },
+  getChartData: () => { },
+  getBeneficiariesByvillage: () => { },
 };
 
 const ProjectsContext = createContext(initialState);
@@ -47,7 +60,6 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
-
     const formatted = {
       ...response.data,
       projectManagerName: response.data?.project_manager?.name
@@ -64,15 +76,16 @@ export const ProjectProvider = ({ children }) => {
   }, []);
 
   const getBeneficiariesByProject = useCallback(async (projectId) => {
-    const response = await ProjectService.getBeneficiariesByProject(projectId);
-
-    const formatted = response.data.data;
-
+    let { data: { data } } = await ProjectService.getBeneficiariesByProject(projectId);
+    const formattedData = data.map(el => {
+      if (!el.village) el.village = el?.address?.village || '-'
+      return el;
+    })
     setState((prev) => ({
       ...prev,
-      beneficiaries: formatted,
+      beneficiaries: formattedData || [],
     }));
-    return formatted;
+    return formattedData;
   }, []);
 
   const getVendorsByProject = useCallback(async (projectId) => {
@@ -87,6 +100,40 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const getChartData = useCallback(async (params, query) => {
+    try {
+      const response = await ProjectService.getChartData(params, query);
+      setState((prev) => ({
+        ...prev,
+        chartData: response,
+      }));
+      return response;
+    } catch (err) {
+      console.log(err)
+    }
+  })
+  const getBeneficiariesByvillage = useCallback(async (params) => {
+
+    try {
+      const { data: demographicData } = await ProjectService.getBeneficiaryDemographicData(params);
+      const chartLabel = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.label);
+      const data = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.count);
+      const chartData = [{
+        data,
+        name: "No of Beneficaries"
+      }]
+      setState((prev) => ({
+        ...prev,
+        beneficiariesVillageChartData: { chartLabel, chartData },
+        beneficiaryCount: demographicData?.data?.count || 0
+      }));
+      return demographicData;
+    } catch (err) {
+      console.log(err)
+    }
+
+  })
+
   const contextValue = {
     ...state,
     refreshData,
@@ -95,6 +142,8 @@ export const ProjectProvider = ({ children }) => {
     getProjectById,
     getBeneficiariesByProject,
     getVendorsByProject,
+    getChartData,
+    getBeneficiariesByvillage,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
