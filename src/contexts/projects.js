@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 const initialState = {
   projects: [],
   singleProject: {},
+  beneficiaryCount: 0,
   beneficiaries: [],
   vendors: [],
   chartData: [],
@@ -27,7 +28,7 @@ const initialState = {
   refreshData: () => { },
   setRahatResponseStatus: () => { },
   getChartData: () => { },
-  getBeneficiariesByvillage:()=>{},
+  getBeneficiariesByvillage: () => { },
 };
 
 const ProjectsContext = createContext(initialState);
@@ -75,15 +76,16 @@ export const ProjectProvider = ({ children }) => {
   }, []);
 
   const getBeneficiariesByProject = useCallback(async (projectId) => {
-    const response = await ProjectService.getBeneficiariesByProject(projectId);
-
-    const formatted = response.data.data;
-
+    let { data: { data } } = await ProjectService.getBeneficiariesByProject(projectId);
+    const formattedData = data.map(el => {
+      if (!el.village) el.village = el?.address?.village || '-'
+      return el;
+    })
     setState((prev) => ({
       ...prev,
-      beneficiaries: formatted,
+      beneficiaries: formattedData || [],
     }));
-    return formatted;
+    return formattedData;
   }, []);
 
   const getVendorsByProject = useCallback(async (projectId) => {
@@ -101,7 +103,6 @@ export const ProjectProvider = ({ children }) => {
   const getChartData = useCallback(async (params, query) => {
     try {
       const response = await ProjectService.getChartData(params, query);
-      console.log(response);
       setState((prev) => ({
         ...prev,
         chartData: response,
@@ -111,23 +112,26 @@ export const ProjectProvider = ({ children }) => {
       console.log(err)
     }
   })
-  const getBeneficiariesByvillage  = useCallback(async (params) => {
+  const getBeneficiariesByvillage = useCallback(async (params) => {
+
     try {
-      const response = await ProjectService.getBeneficiariesByVillageCount(params);     
-      const chartLabel = response.data.data?.map((d) => d.label);
-      const data = response.data.data?.map((d) => d.count);
+      const { data: demographicData } = await ProjectService.getBeneficiaryDemographicData(params);
+      const chartLabel = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.label);
+      const data = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.count);
       const chartData = [{
         data,
-        name:"No of Beneficaries"
+        name: "No of Beneficaries"
       }]
       setState((prev) => ({
         ...prev,
         beneficiariesVillageChartData: { chartLabel, chartData },
+        beneficiaryCount: demographicData?.data?.count || 0
       }));
-      return response;
+      return demographicData;
     } catch (err) {
       console.log(err)
     }
+
   })
 
   const contextValue = {

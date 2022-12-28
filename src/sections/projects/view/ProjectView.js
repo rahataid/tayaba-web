@@ -17,7 +17,7 @@ import Barchart from './Barchart';
 
 const ProjectView = () => {
   const { roles } = useAuthContext();
-  const { getProjectById, refresh, refreshData, getChartData, chartData,getBeneficiariesByvillage ,beneficiariesVillageChartData} = useProjectContext();
+  const { getProjectById, refresh, refreshData, getChartData, chartData, getBeneficiariesByvillage, beneficiariesVillageChartData } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const [accessToPhoneChartData, setAccessToPhoneChartData] = useState();
@@ -26,7 +26,7 @@ const ProjectView = () => {
   const [simcardOwenerShip, setSimcardOwenerShip] = useState();
   const [accessToInternet, setAccessToInternet] = useState();
   const [bankAccountType, setBankAccountType] = useState();
-  const [banked,setBanked]= useState()
+  const [banked, setBanked] = useState()
 
   const {
     query: { projectId },
@@ -67,7 +67,7 @@ const ProjectView = () => {
   const formatData = useCallback(() => {
     if (!chartData) return;
     // need to move and  call from utils
-    const colors= [
+    const colors = [
       theme.palette.primary.main,
       theme.palette.info.main,
       theme.palette.error.main,
@@ -86,7 +86,7 @@ const ProjectView = () => {
         });
         const data = {
           title: "Internet",
-          colors:colors,
+          colors: colors,
           series: series
         }
         setAccessToInternet(data);
@@ -104,7 +104,7 @@ const ProjectView = () => {
         });
         const data = {
           title: "Phone",
-          colors:colors,
+          colors: colors,
           series: series
         }
         setAccessToPhoneChartData(data);
@@ -132,7 +132,7 @@ const ProjectView = () => {
       }
       if (elem.chart === "bankAccountType") {
         elem.data.forEach((obj) => {
-          if(!obj.bankAccountType) obj.bankAccountType = "undefined"
+          if (!obj.bankAccountType) obj.bankAccountType = "undefined"
           series.push({ label: obj.bankAccountType, value: obj.count })
         })
         const data = {
@@ -143,43 +143,43 @@ const ProjectView = () => {
         setBankAccountType(data)
       }
 
-      if(elem.chart ==="isBanked"){
-        elem.data.forEach((obj)=>{
-          if(obj.isBanked) series.push({label:"Banked", value:obj.count});
-          if(!obj.isBanked) series.push({label:"UnBanked", value:obj.count});
+      if (elem.chart === "isBanked") {
+        elem.data.forEach((obj) => {
+          if (obj.isBanked) series.push({ label: "Banked", value: obj.count });
+          if (!obj.isBanked) series.push({ label: "UnBanked", value: obj.count });
         })
         const data = {
-          title:"Bank",
+          title: "Bank",
           colors: colors,
-          series:series
+          series: series
         }
         setBanked(data)
       }
 
-      if(elem.chart ==="phoneOwnedBy"){
-        elem.data.forEach((obj)=>{
-        series.push({label:obj.phoneOwnedBy, value:obj.count});
+      if (elem.chart === "phoneOwnedBy") {
+        elem.data.forEach((obj) => {
+          series.push({ label: obj.phoneOwnedBy, value: obj.count });
 
         })
         const data = {
-          title:"Phone Ownership",
-          colors:colors,
-          series:series
+          title: "Phone Ownership",
+          colors: colors,
+          series: series
         }
         setPhoneOwnerShip(data)
       }
-      if(elem.chart === "simRegisteredUnder"){
-        elem.data.forEach((obj)=>{
-        series.push({label:obj.simRegisteredUnder, value:obj.count});
+      if (elem.chart === "simRegisteredUnder") {
+        elem.data.forEach((obj) => {
+          series.push({ label: obj.simRegisteredUnder, value: obj.count });
 
         })
         const data = {
-          title:"Sim card Owner",
-          colors:colors,
-          series:series
+          title: "Sim card Owner",
+          colors: colors,
+          series: series
         }
         setSimcardOwenerShip(data)
-      }  
+      }
     })
 
   }, [chartData]);
@@ -192,46 +192,50 @@ const ProjectView = () => {
   return (
     <>
       {/* <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}> */}
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={8} >
         <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{ height: "494px" }}>
           <BasicInfoCard rahatChainData={rahatChainData} />
           <MoreInfoCard />
         </Grid>
         <Grid container  >
           {beneficiariesVillageChartData ?
-            <Grid xs={12} md={6} >
+            <Grid xs={12} md={8} >
               <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} />
             </Grid> : <></>}
           {genderWiseDistribution ?
-            <Grid xs={12} md={6} >
+            <Grid xs={12} md={4} >
               <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
             </Grid> : <></>
           }
+        </Grid>
 
+        <Grid container>
           {accessToInternet ? <Grid xs={12} md={4}>
             <Piechart title={accessToInternet.title} chart={accessToInternet} />
           </Grid> : <></>}
-            {phoneOwnerShip ?
+          {phoneOwnerShip ?
             <Grid xs={12} md={4} >
               <Piechart title={phoneOwnerShip.title} chart={phoneOwnerShip} />
             </Grid> : <></>}
-            {accessToPhoneChartData ?
+          {accessToPhoneChartData ?
             <Grid xs={12} md={4} >
               <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
             </Grid> : <></>}
-            {simcardOwenerShip ?
+          {simcardOwenerShip ?
             <Grid xs={12} md={4} >
               <Piechart title={simcardOwenerShip.title} chart={simcardOwenerShip} />
             </Grid> : <></>}
-            {bankAccountType ?
+          {bankAccountType ?
             <Grid xs={12} md={4} >
               <Piechart title={bankAccountType.title} chart={bankAccountType} />
             </Grid> : <></>}
-            {banked ?
+          {banked ?
             <Grid xs={12} md={4} >
               <Piechart title={banked.title} chart={banked} />
             </Grid> : <></>}
         </Grid>
+
+
         <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
           <ViewTabs />
         </Stack>

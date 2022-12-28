@@ -14,21 +14,21 @@ const BEN_TABLE_HEAD = {
     label: 'Name',
     align: 'left',
   },
-  address: {
-    id: 'address',
-    label: 'Address',
-    align: 'left',
-  },
   phone: {
     id: 'phone',
     label: 'Phone',
     align: 'left',
   },
-  token: {
-    id: 'token',
-    label: 'Token',
+  village: {
+    id: 'village',
+    label: 'Village',
     align: 'left',
   },
+  walletAddress: {
+    id: 'walletAddress',
+    label: 'Wallet',
+    align: 'left',
+  }
 };
 const vendors = [
   {
