@@ -12,7 +12,7 @@ import FormProvider, { RHFTextField } from '@components/hook-form';
 import { useLoginContext } from '../../../contexts/auth';
 import web3Utils from '@utils/web3Utils';
 import { useRouter } from 'next/router';
-import { PATH_AFTER_LOGIN } from '@config';
+import { APP_NAME, PATH_AFTER_LOGIN } from '@config';
 import { saveKey } from '@utils/sessionManager';
 import Iconify from '@components/iconify';
 import { useAuthContext } from 'src/auth/useAuthContext';
@@ -64,7 +64,8 @@ export default function AuthLoginForm() {
         console.info(`https://www.mailinator.com/v4/public/inboxes.jsp?to=${email}`);
         email = `${email}@mailinator.com`;
       }
-      const otpSent = await handleOtpRequest({ address: email, encryptionKey: tempIdentity.publicKey });
+      const otpSent = await handleOtpRequest(email);
+      // const otpSent = await handleOtpRequest({ address: email, encryptionKey: tempIdentity.publicKey });
       if (!otpSent.status) {
         reset();
         setError('afterSubmit', {
@@ -92,14 +93,20 @@ export default function AuthLoginForm() {
 
   const onOtpSubmit = async ({ otp }) => {
     try {
-      const isOtpValid = await handleOtpVerification({ otp, encryptionKey: tempIdentity.publicKey });
+      // const isOtpValid = await handleOtpVerification({ otp, encryptionKey: tempIdentity.publicKey });
+      const isOtpValid = await handleOtpVerification({ otp });
 
-      if (isOtpValid.key) {
-        const encryptedData = web3Utils.parseFromOtpKey(isOtpValid.key);
-        const decrypted = await web3Utils.decryptedKey(tempIdentity.privateKey, encryptedData);
-        saveKey(decrypted);
+      if (isOtpValid.success) {
+        // saveKey(isOtpValid.key);
         router.reload();
       }
+
+      // if (isOtpValid.key) {
+      //   const encryptedData = web3Utils.parseFromOtpKey(isOtpValid.key);
+      //   const decrypted = await web3Utils.decryptedKey(tempIdentity.privateKey, encryptedData);
+      //   saveKey(decrypted);
+      //   router.reload();
+      // }
     } catch (error) {
       console.error(error);
       reset();
@@ -221,7 +228,7 @@ export default function AuthLoginForm() {
           },
         }}
       >
-        Login into Rahat
+        Login into {APP_NAME}
       </LoadingButton>
     </FormProvider>
   );
