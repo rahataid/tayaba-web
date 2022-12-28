@@ -11,6 +11,7 @@ import {
   PATH_CASH_TRACKER,
   PATH_PHOTO_GALLERY,
   PATH_TRANSACTIONS,
+  PATH_USERS
 } from '@routes/paths';
 // components
 import Iconify from '@components/iconify';
@@ -32,6 +33,7 @@ const ICONS = {
   financialInstitution: icon('material-symbols:finance-chip-outline'),
   reports: icon('iconoir:reports'),
   photoGallery: icon('material-symbols:gallery-thumbnail-outline-rounded'),
+  users : icon('mdi:user-group-outline'),
 };
 
 const navConfig = [
@@ -85,21 +87,17 @@ const navConfig = [
       //   icon: ICONS.photoGallery,
       // },
 
-      // {
-      //   title: 'Administation',
-      //   path: PATH_ADMINISTRATION.root,
-      //   icon: ICONS.admin,
-      //   children: [
-      //     {
-      //       title: 'Campaigns',
-      //       path: PATH_ADMINISTRATION.campaigns,
-      //     },
-      //     {
-      //       title: 'Users',
-      //       path: PATH_ADMINISTRATION.users,
-      //     },
-      //   ],
-      // },
+      {
+        title: 'Administation',
+        path: PATH_ADMINISTRATION.root,
+        icon: ICONS.admin,
+        children: [
+          {
+            title: 'Users',
+            path: PATH_ADMINISTRATION.users,
+          },
+        ],
+      },
       {
         title: 'Reports',
         path: PATH_REPORTS.root,
@@ -115,6 +113,7 @@ const navConfig = [
           },
         ],
       },
+
     ],
   },
 ];

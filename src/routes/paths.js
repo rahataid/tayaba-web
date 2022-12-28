@@ -12,7 +12,7 @@ const ROOTS_BENEFICIARY = '/beneficiaries';
 const ROOTS_VENDORS = '/vendors';
 const ROOTS_MOBILIZERS = '/mobilizers';
 const ROOTS_FINANCIAL_INSTITUTIONS = '/financial-institutions';
-const ROOTS_ADMININSTRATION = '/admin';
+const ROOTS_ADMININSTRATION = '/administration';
 const ROOTS_REPORTS = '/reports';
 
 const ROOTS_AUTH = '/auth';
