@@ -67,6 +67,7 @@ export const PATH_FINANCIAL_INSTITUTIONS = {
 export const PATH_ADMINISTRATION = {
   root: ROOTS_ADMININSTRATION,
   users: path(ROOTS_ADMININSTRATION, '/users'),
+  addUser : path(ROOTS_ADMININSTRATION, '/users/add-user'),
   campaigns: path(ROOTS_ADMININSTRATION, '/campaigns'),
 };
 

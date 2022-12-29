@@ -6,12 +6,21 @@ const initialState = {
   users: [],
   singleUser: {},
   refresh: false,
+  filter: {},
   isRahatResponseLive: false,
   error: {},
+  pagination: {
+    start: 0,
+    limit: 50,
+    count: 0,
+  },
   getUsersList: () => {},
   getUserById: () => {},
   refreshData: () => {},
+  setFilter: () => {},
+  setPagination: () => {},
   setRahatResponseStatus: () => {},
+  addUser : () => {},
 };
 
 const AdministationContext = createContext(initialState);
@@ -22,30 +31,49 @@ export const AdministrationProvider = ({ children }) => {
   const refreshData = () => setState((prev) => ({ ...prev, refresh: !prev.refresh }));
   const setRahatResponseStatus = (isRahatResponseLive) => setState((prev) => ({ ...prev, isRahatResponseLive }));
 
-  const getUsersList = useCallback(async (params) => {
-    const response = await AdministrationService.getUsersList(params);
+  const setFilter = (filter) =>
+  setState((prev) => ({
+    ...prev,
+    pagination: {
+      ...prev.pagination,
+    },
+    filter,
+  }));
+
+  const setPagination = (pagination) => setState((prev) => ({ ...prev, pagination }));
+
+
+  const getUsersList = useCallback(async () => {
+    let filter = {
+      limit: state.pagination?.limit,
+      start: state.pagination?.start,
+      name: state.filter?.name?.length > 3 ? state.filter?.name : undefined,
+    };
+
+    const response = await AdministrationService.getUsersList(filter);
     const formatted = response.data.data.map((item) => ({
       ...item,
       createdAt: item?.created_at,
-    //   id: item?._id || item?.id,
     }));
 
     setState((prevState) => ({
       ...prevState,
-      users: formatted,
+      users: {
+        data: formatted,
+        count: response.data?.data.count,
+        start: response.data?.data.start,
+        limit: response.data?.data.limit,
+        totalPage: response.data?.data.totalPage,
+      },
     }));
     return formatted;
-  }, []);
+  }, [state.filter, state.pagination]);
 
   const getUserById = useCallback(async (id) => {
     const response = await AdministrationService.getUserById(id);
 
     const formatted = {
       ...response.data,
-      projectManagerName: response.data?.project_manager?.name
-        ? `${response.data?.project_manager?.name?.first} ${response.data?.project_manager?.name?.last}`
-        : '-',
-      projectCreatedAt: response.data?.project_manager?.created_at,
     };
 
     setState((prev) => ({
@@ -56,12 +84,15 @@ export const AdministrationProvider = ({ children }) => {
   }, []);
 
 
+
   const contextValue = {
     ...state,
     refreshData,
     setRahatResponseStatus,
     getUsersList,
     getUserById,
+    setFilter,
+    setPagination,
   };
 
   return <AdministationContext.Provider value={contextValue}>{children}</AdministationContext.Provider>;

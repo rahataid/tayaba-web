@@ -7,23 +7,23 @@ import { Button, Container } from '@mui/material';
 import { UserContainer } from '@sections/administration/users';
 import { AdministrationProvider } from '@contexts/administration';
 import { useRouter } from 'next/router';
-import { PATH_ADMINISTRATION } from '@routes/paths';
+import { UserAdd } from '@sections/administration/users/add-user';
 
-const PAGE_TITLE = 'Users';
+const PAGE_TITLE = 'User: Add User';
 
-export default function UsersList() {
+export default function AddUser() {
   const { themeStretch } = useSettingsContext();
   const router = useRouter();
 
   return (
     <AdministrationProvider>
-      <Page title={PAGE_TITLE} nocard breadcrumbAction={<Button variant='contained' onClick={() => router.push(PATH_ADMINISTRATION.addUser)}> Add User</Button>} >
+      <Page title={PAGE_TITLE} nocard >
         <Container maxWidth={themeStretch ? false : 'xl'}>
-          <UserContainer />
+            <UserAdd/>
         </Container>
       </Page>
     </AdministrationProvider>
   );
 }
 
-UsersList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+AddUser.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

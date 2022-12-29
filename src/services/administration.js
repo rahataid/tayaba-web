@@ -10,4 +10,8 @@ export const AdministrationService  = {
       getUserById(id) {
         return clientApi.get(`/users/${id}`);
       },
+
+      addUser(payload) {
+        return clientApi.post(`/users`, payload);
+      }
 };
