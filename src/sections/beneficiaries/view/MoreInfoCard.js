@@ -5,6 +5,7 @@ import moment from 'moment';
 
 const MoreInfoCard = () => {
   const { singleBeneficiary } = useBeneficiaryContext();
+  console.log(singleBeneficiary)
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
@@ -15,12 +16,12 @@ const MoreInfoCard = () => {
           <Grid item xs={12} md={6} lg={6}>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Typography variant="body1">{singleBeneficiary?.address}</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.address?.village},{singleBeneficiary?.data?.address?.district}</Typography>
                 <Typography variant="body2">Address</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{singleBeneficiary?.ward}</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.ward}</Typography>
                 </Grid>
                 <Grid item xs={12} md={12}>
                   <Typography variant="body2">Ward</Typography>
@@ -29,12 +30,12 @@ const MoreInfoCard = () => {
             </Stack>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Typography variant="body1">{singleBeneficiary?.phone}</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.phone}</Typography>
                 <Typography variant="body2">Phone</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{singleBeneficiary?.email}</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.email}</Typography>
                 </Grid>
                 <Grid item xs={12} md={12}>
                   <Typography variant="body2">Email</Typography>
@@ -43,7 +44,7 @@ const MoreInfoCard = () => {
             </Stack>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Typography variant="body1">{moment(singleBeneficiary?.dob).fromNow(true)}</Typography>
+                <Typography variant="body1">{moment(singleBeneficiary?.data?.dob).fromNow(true)}</Typography>
                 <Typography variant="body2">Age</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
