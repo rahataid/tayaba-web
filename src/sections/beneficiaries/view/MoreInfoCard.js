@@ -5,7 +5,6 @@ import moment from 'moment';
 
 const MoreInfoCard = () => {
   const { singleBeneficiary } = useBeneficiaryContext();
-  console.log(singleBeneficiary)
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
