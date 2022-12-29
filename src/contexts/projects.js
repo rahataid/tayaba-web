@@ -6,7 +6,7 @@ const initialState = {
   projects: [],
   singleProject: {},
   beneficiaryCount: 0,
-  beneficiaries: [],
+  beneficiaries: {},
   vendors: [],
   chartData: [],
   refresh: false,
@@ -75,17 +75,25 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getBeneficiariesByProject = useCallback(async (projectId) => {
-    let { data: { data } } = await ProjectService.getBeneficiariesByProject(projectId);
-    const formattedData = data.map(el => {
-      if (!el.village) el.village = el?.address?.village || '-'
-      return el;
-    })
-    setState((prev) => ({
-      ...prev,
-      beneficiaries: formattedData || [],
+  const getBeneficiariesByProject = useCallback(async (query) => {
+    let { data: { data } } = await ProjectService.getBeneficiariesByProject(query);
+   console.log(data)
+    const formatted = data?.data?.map((item) => ({
+      ...item,
+      id: item?.id,
+      registrationDate: item?.created_at,
+      hasInternetAccess: item?.hasInternetAccess ? 'Yes' : 'No',
     }));
-    return formattedData;
+
+    setState((prevState) => ({
+      ...prevState,
+      beneficiaries: {
+        data: formatted,
+        count: data?.count,
+        start: data?.start || 0,
+        limit: data?.limit || 100,
+        totalPage: data?.totalPage,
+      },}));
   }, []);
 
   const getVendorsByProject = useCallback(async (projectId) => {
