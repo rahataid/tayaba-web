@@ -17,7 +17,15 @@ import Barchart from './Barchart';
 
 const ProjectView = () => {
   const { roles } = useAuthContext();
-  const { getProjectById, refresh, refreshData, getChartData, chartData, getBeneficiariesByvillage, beneficiariesVillageChartData } = useProjectContext();
+  const {
+    getProjectById,
+    refresh,
+    refreshData,
+    getChartData,
+    chartData,
+    getBeneficiariesByvillage,
+    beneficiariesVillageChartData,
+  } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const [accessToPhoneChartData, setAccessToPhoneChartData] = useState();
@@ -26,7 +34,7 @@ const ProjectView = () => {
   const [simcardOwenerShip, setSimcardOwenerShip] = useState();
   const [accessToInternet, setAccessToInternet] = useState();
   const [bankAccountType, setBankAccountType] = useState();
-  const [banked, setBanked] = useState()
+  const [banked, setBanked] = useState();
 
   const {
     query: { projectId },
@@ -43,14 +51,13 @@ const ProjectView = () => {
     getProjectById(projectId);
   }, [projectId]);
 
-
   useEffect(() => {
     if (!projectId) return;
     let query = {
-      projectId: projectId
-    }
-    getChartData(CHARTDATATYPES, query)
-    getBeneficiariesByvillage(projectId)
+      projectId: projectId,
+    };
+    getChartData(CHARTDATATYPES, query);
+    getBeneficiariesByvillage(projectId);
   }, [projectId]);
 
   useEffect(() => {
@@ -75,168 +82,183 @@ const ProjectView = () => {
     ];
     chartData.forEach((elem) => {
       let series = [];
-      if (elem.chart === "hasInternetAccess") {
+      if (elem.chart === 'hasInternetAccess') {
         elem.data.forEach((obj) => {
           if (obj.hasInternetAccess) {
-            series.push({ label: "Has Access", value: obj.count })
+            series.push({ label: 'Has Access', value: obj.count });
           }
           if (!obj.hasInternetAccess) {
-            series.push({ label: "Not Access", value: obj.count })
+            series.push({ label: 'Not Access', value: obj.count });
           }
         });
         const data = {
-          title: " Access To Internet",
+          title: ' Access To Internet',
           colors: colors,
-          series: series
-        }
+          series: series,
+        };
         setAccessToInternet(data);
-
       }
-      if (elem.chart === "hasPhone") {
+      if (elem.chart === 'hasPhone') {
         elem.data.forEach((obj) => {
           if (obj.hasPhone) {
-            series.push({ label: "Has Access", value: obj.count })
+            series.push({ label: 'Has Access', value: obj.count });
           }
           if (!obj.hasPhone) {
-            series.push({ label: "Not Access", value: obj.count })
+            series.push({ label: 'Not Access', value: obj.count });
           }
-
         });
         const data = {
-          title: " Access to Phone",
+          title: ' Access to Phone',
           colors: colors,
-          series: series
-        }
+          series: series,
+        };
         setAccessToPhoneChartData(data);
       }
 
-      if (elem.chart === "gender") {
+      if (elem.chart === 'gender') {
         elem.data.forEach((obj) => {
           if (obj.gender === 'M') {
-            series.push({ label: "Male", value: obj.count })
+            series.push({ label: 'Male', value: obj.count });
           }
           if (obj.gender === 'F') {
-            series.push({ label: "Female", value: obj.count })
+            series.push({ label: 'Female', value: obj.count });
           }
           if (obj.gender === 'O') {
-            series.push({ label: "Others", value: obj.count })
+            series.push({ label: 'Others', value: obj.count });
           }
-        })
+        });
         const data = {
-          title: "Gender-wise Distribution",
+          title: 'Gender-wise Distribution',
           colors: colors,
-          series: series
+          series: series,
         };
         setGenderWiseDistribution(data);
-
       }
-      if (elem.chart === "bankAccountType") {
+      if (elem.chart === 'bankAccountType') {
         elem.data.forEach((obj) => {
-          if (!obj.bankAccountType) obj.bankAccountType = "undefined"
-          series.push({ label: obj.bankAccountType, value: obj.count })
-        })
+          if (!obj.bankAccountType) obj.bankAccountType = 'undefined';
+          series.push({ label: obj.bankAccountType, value: obj.count });
+        });
         const data = {
-          title: "Bank Account Type",
+          title: 'Bank Account Type',
           colors: colors,
-          series: series
-        }
-        setBankAccountType(data)
+          series: series,
+        };
+        setBankAccountType(data);
       }
 
-      if (elem.chart === "isBanked") {
+      if (elem.chart === 'isBanked') {
         elem.data.forEach((obj) => {
-          if (obj.isBanked) series.push({ label: "Banked", value: obj.count });
-          if (!obj.isBanked) series.push({ label: "UnBanked", value: obj.count });
-        })
+          if (obj.isBanked) series.push({ label: 'Banked', value: obj.count });
+          if (!obj.isBanked) series.push({ label: 'UnBanked', value: obj.count });
+        });
         const data = {
-          title: "Banked or Unbanked",
+          title: 'Banked or Unbanked',
           colors: colors,
-          series: series
-        }
-        setBanked(data)
+          series: series,
+        };
+        setBanked(data);
       }
 
-      if (elem.chart === "phoneOwnedBy") {
+      if (elem.chart === 'phoneOwnedBy') {
         elem.data.forEach((obj) => {
           series.push({ label: obj.phoneOwnedBy, value: obj.count });
-
-        })
+        });
         const data = {
-          title: "Phone Ownership",
+          title: 'Phone Ownership',
           colors: colors,
-          series: series
-        }
-        setPhoneOwnerShip(data)
+          series: series,
+        };
+        setPhoneOwnerShip(data);
       }
-      if (elem.chart === "simRegisteredUnder") {
-        console.log(elem.data)
+      if (elem.chart === 'simRegisteredUnder') {
+        console.log(elem.data);
         elem.data.forEach((obj) => {
-          
           series.push({ label: obj.simRegisteredUnder, value: obj.count });
-
-        })
+        });
         const data = {
-          title: "Sim Card Ownership",
+          title: 'Sim Card Ownership',
           colors: colors,
-          series: series
-        }
-        setSimcardOwenerShip(data)
+          series: series,
+        };
+        setSimcardOwenerShip(data);
       }
-    })
-
+    });
   }, [chartData]);
 
   useEffect(() => {
-    formatData()
+    formatData();
   }, [formatData]);
-
 
   return (
     <>
       {/* <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}> */}
-      <Grid item xs={12} md={8} >
-        <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{ height: "494px" }}>
+      <Grid item xs={12} md={8}>
+        <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{ height: '494px' }}>
           <BasicInfoCard rahatChainData={rahatChainData} />
           <MoreInfoCard />
         </Grid>
-        <Grid container  >
-          {beneficiariesVillageChartData ?
-            <Grid xs={12} md={8} >
+        <Grid container spacing={SPACING.GRID_SPACING}>
+          {beneficiariesVillageChartData ? (
+            <Grid item xs={12} md={8}>
               <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} />
-            </Grid> : <></>}
-          {genderWiseDistribution ?
-            <Grid xs={12} md={4} >
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {genderWiseDistribution ? (
+            <Grid item xs={12} md={4}>
               <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
-            </Grid> : <></>
-          }
+            </Grid>
+          ) : (
+            <></>
+          )}
         </Grid>
 
-        <Grid container>
-          {accessToInternet ? <Grid xs={12} md={4}>
-            <Piechart title={accessToInternet.title} chart={accessToInternet} />
-          </Grid> : <></>}
-          {phoneOwnerShip ?
-            <Grid xs={12} md={4} >
+        <Grid container spacing={SPACING.GRID_SPACING}>
+          {accessToInternet ? (
+            <Grid item xs={12} md={4}>
+              <Piechart title={accessToInternet.title} chart={accessToInternet} />
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {phoneOwnerShip ? (
+            <Grid item xs={12} md={4}>
               <Piechart title={phoneOwnerShip.title} chart={phoneOwnerShip} />
-            </Grid> : <></>}
-          {accessToPhoneChartData ?
-            <Grid xs={12} md={4} >
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {accessToPhoneChartData ? (
+            <Grid item xs={12} md={4}>
               <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
-            </Grid> : <></>}
-          {simcardOwenerShip ?
-            <Grid xs={12} md={4} >
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {simcardOwenerShip ? (
+            <Grid item xs={12} md={4}>
               <Piechart title={simcardOwenerShip.title} chart={simcardOwenerShip} />
-            </Grid> : <></>}
-          {bankAccountType ?
-            <Grid xs={12} md={4} >
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {bankAccountType ? (
+            <Grid item xs={12} md={4}>
               <Piechart title={bankAccountType.title} chart={bankAccountType} />
-            </Grid> : <></>}
-          {banked ?
-            <Grid xs={12} md={4} >
+            </Grid>
+          ) : (
+            <></>
+          )}
+          {banked ? (
+            <Grid item xs={12} md={4}>
               <Piechart title={banked.title} chart={banked} />
-            </Grid> : <></>}
+            </Grid>
+          ) : (
+            <></>
+          )}
         </Grid>
-
 
         <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
           <ViewTabs />
