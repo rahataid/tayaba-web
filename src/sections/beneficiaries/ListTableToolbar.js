@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Stack, Typography } from '@mui/material';
 // components
 import ListSearchField from './ListSearchField.js';
-import ListSelectFilter from './SelectFilter';
+// import ListSelectFilter from './SelectFilter';
 import { useBeneficiaryContext } from '@contexts/beneficiaries.js';
 
 // ----------------------------------------------------------------------
