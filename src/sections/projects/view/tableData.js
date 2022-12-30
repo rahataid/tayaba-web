@@ -14,20 +14,36 @@ const BEN_TABLE_HEAD = {
     label: 'Name',
     align: 'left',
   },
+  gender: {
+    id: 'gender',
+    label: 'Gender',
+    align: 'left',
+  },
   phone: {
     id: 'phone',
     label: 'Phone',
     align: 'left',
   },
-  village: {
-    id: 'village',
-    label: 'Village',
+
+  cnicNumber: {
+    id: 'cnicNumber',
+    label: 'CNIC Number',
     align: 'left',
   },
-  walletAddress: {
-    id: 'walletAddress',
-    label: 'Wallet',
+  phoneOwnedBy: {
+    id: 'phoneOwnedBy',
+    label: 'Phone Owned By',
     align: 'left',
+  },
+  hasInternetAccess: {
+    id: 'hasInternetAccess',
+    label: 'Has Internet Issues',
+    align: 'left',
+  },
+  actions:{
+    id:"action",
+    label:"Action",
+    align:"left"   
   }
 };
 const vendors = [

@@ -34,39 +34,59 @@ const TableContainer = () => {
       // id: 'timestamp',
       label: 'Name',
       align: 'left',
-      show: roles.isPalika,
+      // show: roles.isPalika,
+    },
+    gender: {
+      id: 'gender',
+      label: 'Gender',
+      align: 'left',
     },
     phone: {
       id: 'phone',
       label: 'Phone',
       align: 'left',
     },
+    cnicNumber: {
+      id: 'cnicNumber',
+      label: 'CNIC Number',
+      align: 'left',
+    },
 
-    registrationDate: {
-      id: 'registrationDate',
-      label: 'Registration Date',
+    // registrationDate: {
+    //   id: 'registrationDate',
+    //   label: 'Registration Date',
+    //   align: 'left',
+    // },
+    phoneOwnedBy: {
+      id: 'phoneOwnedBy',
+      label: 'Phone Owned By',
       align: 'left',
     },
-    registeredBy: {
-      id: 'registeredBy',
-      label: 'Registered By',
+    hasInternetAccess: {
+      id: 'hasInternetAccess',
+      label: 'Has Internet Access',
       align: 'left',
     },
-    cashBalance: {
-      id: 'cashBalance',
-      label: 'Cash Balance',
-      align: 'left',
-    },
-    tokenBalance: {
-      id: 'tokenBalance',
-      label: 'Remaining Token Claims',
-      align: 'left',
-    },
-    totalTokenIssued: {
-      id: 'totalTokenIssued',
-      label: 'Claimed Tokens',
-      align: 'left',
-    },
+    // registeredBy: {
+    //   id: 'registeredBy',
+    //   label: 'Registered By',
+    //   align: 'left',
+    // },
+    // cashBalance: {
+    //   id: 'cashBalance',
+    //   label: 'Cash Balance',
+    //   align: 'left',
+    // },
+    // tokenBalance: {
+    //   id: 'tokenBalance',
+    //   label: 'Remaining Token Claims',
+    //   align: 'left',
+    // },
+    // totalTokenIssued: {
+    //   id: 'totalTokenIssued',
+    //   label: 'Claimed Tokens',
+    //   align: 'left',
+    // },
     action: {
       id: 'action',
       label: 'Action',
@@ -82,17 +102,19 @@ const TableContainer = () => {
         {(rows, tableHeadersList) =>
           rows.map((row) => (
             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              {roles.isPalika && <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>}
+              <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
+              <TableCell align={tableHeadersList['gender'].align}>{row.gender}</TableCell>
+
+              {/* {roles.isPalika && <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>} */}
               <TableCell align={tableHeadersList['phone'].align}>{row.phone}</TableCell>
 
-              <TableCell align={tableHeadersList['registrationDate'].align}>
+              {/* <TableCell align={tableHeadersList['registrationDate'].align}>
                 {moment(row.registrationDate).format('MM/DD/YYYY')}
-              </TableCell>
-              <TableCell align={tableHeadersList['registeredBy'].align}>{row.registeredBy}</TableCell>
+              </TableCell> */}
+              <TableCell align={tableHeadersList['cnicNumber'].align}>{row.cnicNumber}</TableCell>
+              <TableCell align={tableHeadersList['phoneOwnedBy'].align}>{row.phoneOwnedBy}</TableCell>
+              <TableCell align={tableHeadersList['hasInternetAccess'].align}>{row.hasInternetAccess}</TableCell>
 
-              <TableCell align={tableHeadersList['cashBalance'].align}>{row.cashBalance}</TableCell>
-              <TableCell align={tableHeadersList['tokenBalance'].align}>{row.tokenBalance}</TableCell>
-              <TableCell align={tableHeadersList['totalTokenIssued'].align}>{row.totalTokenIssued}</TableCell>
               <TableCell align={tableHeadersList['action'].align}>
                 <Button onClick={handleView(row.id)} variant="text">
                   <Iconify icon="ic:outline-remove-red-eye" />

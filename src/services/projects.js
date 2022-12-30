@@ -11,8 +11,8 @@ export const ProjectService = {
     return clientApi.get(`/projects/${id}`);
   },
 
-  getBeneficiariesByProject(projectId) {
-    return clientApi.get(`/beneficiaries`);
+  getBeneficiariesByProject(query) {
+    return clientApi.get(`/beneficiaries?${qs.stringify(query)}`);
   },
   getBeneficiariesByVillageCount(projectId) {
     return clientApi.get(`/reports/beneficiary/village/${projectId}`);
