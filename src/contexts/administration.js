@@ -20,7 +20,7 @@ const initialState = {
   setFilter: () => {},
   setPagination: () => {},
   setRahatResponseStatus: () => {},
-  addUser : () => {},
+  addUser: () => {},
 };
 
 const AdministationContext = createContext(initialState);
@@ -32,16 +32,15 @@ export const AdministrationProvider = ({ children }) => {
   const setRahatResponseStatus = (isRahatResponseLive) => setState((prev) => ({ ...prev, isRahatResponseLive }));
 
   const setFilter = (filter) =>
-  setState((prev) => ({
-    ...prev,
-    pagination: {
-      ...prev.pagination,
-    },
-    filter,
-  }));
+    setState((prev) => ({
+      ...prev,
+      pagination: {
+        ...prev.pagination,
+      },
+      filter,
+    }));
 
   const setPagination = (pagination) => setState((prev) => ({ ...prev, pagination }));
-
 
   const getUsersList = useCallback(async () => {
     let filter = {
@@ -54,6 +53,7 @@ export const AdministrationProvider = ({ children }) => {
     const formatted = response.data.data.map((item) => ({
       ...item,
       createdAt: item?.created_at,
+      isApproved: item?.isApproved ? 'Yes' : 'No',
     }));
 
     setState((prevState) => ({
@@ -83,12 +83,10 @@ export const AdministrationProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const addUser = useCallback(async(payload) => {
+  const addUser = useCallback(async (payload) => {
     const user = await AdministrationService.addUser(payload);
     return user;
-  }, [])
-
-
+  }, []);
 
   const contextValue = {
     ...state,
@@ -98,7 +96,7 @@ export const AdministrationProvider = ({ children }) => {
     getUserById,
     setFilter,
     setPagination,
-    addUser
+    addUser,
   };
 
   return <AdministationContext.Provider value={contextValue}>{children}</AdministationContext.Provider>;
