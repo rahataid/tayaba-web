@@ -7,4 +7,5 @@ export { AppService } from '@services/app';
 export { DashboardService } from '@services/dashboard';
 export { default as EthExplorerService } from '@services/ethExplorer';
 export { FinancialInstitutionService as FIService } from '@services/financialInstitutions';
+export {AdministrationService} from '@services/administration';
 export * as ReportingService from '@services/reporting';

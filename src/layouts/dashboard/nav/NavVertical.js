@@ -15,7 +15,7 @@ import { NavSectionVertical } from '../../../components/nav-section';
 //
 import navConfig from './config';
 import NavAccount from './NavAccount';
-import NavUnicefLogo from './NavUnicefLogo';
+// import NavUnicefLogo from './NavUnicefLogo';
 
 // ----------------------------------------------------------------------
 

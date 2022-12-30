@@ -12,7 +12,7 @@ const ROOTS_BENEFICIARY = '/beneficiaries';
 const ROOTS_VENDORS = '/vendors';
 const ROOTS_MOBILIZERS = '/mobilizers';
 const ROOTS_FINANCIAL_INSTITUTIONS = '/financial-institutions';
-const ROOTS_ADMININSTRATION = '/admin';
+const ROOTS_ADMININSTRATION = '/administration';
 const ROOTS_REPORTS = '/reports';
 
 const ROOTS_AUTH = '/auth';
@@ -67,6 +67,7 @@ export const PATH_FINANCIAL_INSTITUTIONS = {
 export const PATH_ADMINISTRATION = {
   root: ROOTS_ADMININSTRATION,
   users: path(ROOTS_ADMININSTRATION, '/users'),
+  // addUser : path(ROOTS_ADMININSTRATION, '/users/add-user'),
   campaigns: path(ROOTS_ADMININSTRATION, '/campaigns'),
 };
 
