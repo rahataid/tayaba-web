@@ -12,13 +12,11 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
-    access_token: accessToken,
+    // accessToken,
     // report_token: '6E4(WdnI5ukyHDaqy-AKEZvT$7JDnrQG',
   },
   // paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
 });
-
-// console.log("token", accessToken);
 
 api.interceptors.response.use(
   (response) => response,
