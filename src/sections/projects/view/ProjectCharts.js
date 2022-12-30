@@ -21,8 +21,11 @@ const ProjectChart = ({projectId})=>{
     const [simcardOwenerShip, setSimcardOwenerShip] = useState();
     const [accessToInternet, setAccessToInternet] = useState();
     const [banked, setBanked] = useState();
-    const [selectedVillage,setSelectedVillage] = useState()
-    console.log(selectedVillage)
+    const [selectedVillage,setSelectedVillage] = useState();
+    const handleVillage=(village)=>{
+      if(!village || village==="undefined") return;
+      setSelectedVillage(village)
+    };
     const formatData = useCallback(() => {
         if (!chartData) return;
         // need to move and  call from utils
@@ -32,6 +35,7 @@ const ProjectChart = ({projectId})=>{
           theme.palette.error.main,
           theme.palette.warning.main,
         ];
+    
         chartData.forEach((elem) => {
           let series = [];
           if (elem.chart === 'hasInternetAccess') {
@@ -125,6 +129,8 @@ const ProjectChart = ({projectId})=>{
           }
         });
       }, [chartData]);
+      
+
     
       useEffect(() => {
         formatData();
@@ -133,7 +139,7 @@ const ProjectChart = ({projectId})=>{
       useEffect(() => {
         if (!projectId) return;
         let query = {
-          projectId: projectId,
+           projectId,
           village:selectedVillage
         };
         getChartData(CHARTDATATYPES, query);
@@ -145,7 +151,7 @@ const ProjectChart = ({projectId})=>{
               <Grid container spacing={SPACING.GRID_SPACING}>
           {beneficiariesVillageChartData ? (
             <Grid item xs={12} md={12}>
-              <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} setSelectedVillage = {setSelectedVillage} />
+              <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} handleVillage = {handleVillage} />
             </Grid>
           ) : (
             <></>
