@@ -21,14 +21,14 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
+  getProjectsList: () => {},
+  getProjectById: () => {},
+  getBeneficiariesByProject: () => {},
+  getVendorsByProject: () => {},
+  refreshData: () => {},
+  setRahatResponseStatus: () => {},
+  getChartData: () => {},
+  getBeneficiariesByvillage: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -76,8 +76,10 @@ export const ProjectProvider = ({ children }) => {
   }, []);
 
   const getBeneficiariesByProject = useCallback(async (query) => {
-    let { data: { data } } = await ProjectService.getBeneficiariesByProject(query);
-   console.log(data)
+    let {
+      data: { data },
+    } = await ProjectService.getBeneficiariesByProject(query);
+    console.log(data);
     const formatted = data?.data?.map((item) => ({
       ...item,
       id: item?.id,
@@ -91,9 +93,10 @@ export const ProjectProvider = ({ children }) => {
         data: formatted,
         count: data?.count,
         start: data?.start || 0,
-        limit: data?.limit || 100,
+        limit: data?.limit || 50,
         totalPage: data?.totalPage,
-      },}));
+      },
+    }));
   }, []);
 
   const getVendorsByProject = useCallback(async (projectId) => {
@@ -117,30 +120,30 @@ export const ProjectProvider = ({ children }) => {
       }));
       return response;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  })
+  });
   const getBeneficiariesByvillage = useCallback(async (params) => {
-
     try {
       const { data: demographicData } = await ProjectService.getBeneficiaryDemographicData(params);
       const chartLabel = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.label);
       const data = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.count);
-      const chartData = [{
-        data,
-        name: "No of Beneficaries"
-      }]
+      const chartData = [
+        {
+          data,
+          name: 'No of Beneficaries',
+        },
+      ];
       setState((prev) => ({
         ...prev,
         beneficiariesVillageChartData: { chartLabel, chartData },
-        beneficiaryCount: demographicData?.data?.count || 0
+        beneficiaryCount: demographicData?.data?.count || 0,
       }));
       return demographicData;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-
-  })
+  });
 
   const contextValue = {
     ...state,

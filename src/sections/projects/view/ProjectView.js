@@ -172,7 +172,6 @@ const ProjectView = () => {
         setPhoneOwnerShip(data);
       }
       if (elem.chart === 'simRegisteredUnder') {
-        console.log(elem.data);
         elem.data.forEach((obj) => {
           series.push({ label: obj.simRegisteredUnder, value: obj.count });
         });
