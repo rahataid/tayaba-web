@@ -8,25 +8,25 @@ const TABLE_HEAD = {
   name: {
     id: 'name',
     label: 'Name',
-    align: 'center',
+    align: 'left',
   },
 
   roles: {
     id: 'roles',
     label: 'Roles',
-    align: 'center',
+    align: 'left',
   },
 
   email: {
     id: 'email',
     label: 'Email',
-    align: 'center',
+    align: 'left',
   },
 
   isApproved: {
     id: 'isApproved',
     label: 'Approved',
-    align: 'center',
+    align: 'left',
   },
 };
 
