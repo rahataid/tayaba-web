@@ -6,9 +6,19 @@ const initialState = {
   summary: {},
   mapData: [],
   genderDistribution: [],
+  demographicSummary:{},
   bankedUnbanked: [],
   phoneOwnership: [],
   beneficiariesByWard: {
+    chartData: [
+      {
+        data: [],
+        name: '',
+      },
+    ],
+    chartLabel: [],
+  },
+  beneficiariesVillageChartData: {
     chartData: [
       {
         data: [],
@@ -35,6 +45,7 @@ const initialState = {
   getBeneficiariesByWard: () => {},
   getCashTrackerSummary: () => {},
   getWardGenderChart: () => {},
+  getDemographicSummary:()=>{},
 };
 
 const DashboardContext = createContext(initialState);
@@ -165,6 +176,24 @@ export const DashboardProvider = ({ children }) => {
     }));
   }, []);
 
+  const getDemographicSummary = useCallback(async () => {
+    const response = await DashboardService.getDemographicsBeneficiarySummary();
+    const chartLabel = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.label);
+      const data = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
+      const chartData = [{
+        data,
+        name: "No of Beneficaries"
+      }];
+    setState((prev) => ({
+      ...prev,
+      demographicSummary: response.data.data,
+      beneficiariesVillageChartData:{chartData,chartLabel} 
+    }));
+    return response.data;
+  }, []);
+
+
+
   const contextValue = {
     ...state,
     getSummary,
@@ -175,6 +204,7 @@ export const DashboardProvider = ({ children }) => {
     getBeneficiariesByWard,
     getCashTrackerSummary,
     getWardGenderChart,
+    getDemographicSummary,
   };
 
   return <DashboardContext.Provider value={contextValue}>{children}</DashboardContext.Provider>;

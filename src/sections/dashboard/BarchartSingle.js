@@ -15,7 +15,14 @@ BarchartSingle.propTypes = {
 };
 
 export default function BarchartSingle({ title, subheader, chart, footer, ...other }) {
-  const { colors, chartLabel, chartData, options } = chart;
+  let { colors, chartLabel, chartData, options } = chart;
+if(!options){
+   options={
+    chart: {
+      stacked: true,
+    },
+  };
+}
 
   const chartOptions = useChart({
     colors,

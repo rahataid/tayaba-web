@@ -16,7 +16,7 @@ export default function BasicInfoCard({ chainData }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            {roles.isPalika ? singleBeneficiary?.name : singleBeneficiary?.name?.substring(0, 1) + 'xxxxxxx Xxxxx'}
+            {roles.isPalika ? singleBeneficiary?.data?.name : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           <div>
             {chainData?.totalTokenIssued ? (
@@ -41,11 +41,11 @@ export default function BasicInfoCard({ chainData }) {
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.phone}</Typography>
+            <Typography variant="h4">{singleBeneficiary?.data?.phone}</Typography>
             <Typography variant="body2">Phone</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.gender}</Typography>
+            <Typography variant="h4">{singleBeneficiary?.data?.gender}</Typography>
             <Typography variant="body2">Gender</Typography>
           </Grid>
         </Stack>

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Box, Tab } from '@mui/material';
+import { Box, Tab,Card, CardContent,Pagination } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { Card, CardContent } from '@mui/material';
 import TabsTable from './TabsTable';
 import { BEN_TABLE_HEAD, MOB_TABLE_HEAD, VEN_TABLE_HEAD, mobilizers } from './tableData';
 import { useProjectContext } from '@contexts/projects';
@@ -20,31 +19,36 @@ const tabs = [
 export default function ViewTabs() {
   const { roles } = useAuthContext();
   const [value, setValue] = useState('beneficiaries');
-
+  const [start,setStart] = useState(0)
   const {
     query: { projectId },
   } = useRouter();
 
-  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject } = useProjectContext();
-
+  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject, getChartData, chartData } = useProjectContext();
   useEffect(() => {
     if (!projectId || value !== 'beneficiaries') return;
-    getBeneficiariesByProject(projectId);
-  }, [projectId, getBeneficiariesByProject, value]);
+    getBeneficiariesByProject({projectId,start});
+  }, [projectId, getBeneficiariesByProject, value,start]);
 
   useEffect(() => {
     if (!projectId || value !== 'vendors') return;
     getVendorsByProject(projectId);
   }, [projectId, getVendorsByProject, value]);
 
+
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+  const handlePagination = (event, page) => {
+    let start = (page-1)*beneficiaries.limit
+    setStart(start);
   };
 
   return (
     <Card>
       <CardContent>
-        <Box sx={{ width: '100%', typography: 'body1'  }}>
+        <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -55,13 +59,13 @@ export default function ViewTabs() {
             </Box>
             <TabPanel value="beneficiaries">
               <TabsTable
-                rows={beneficiaries.map((d) => {
+                rows={beneficiaries?.data?.map((d) => {
                   let { name, ...rest } = d;
-                  name = roles.isPalika ? name : name?.substring(0, 1) + 'xxxxxxx Xxxxx';
                   return { name, ...rest };
                 })}
                 tableHead={BEN_TABLE_HEAD}
               />
+               <Pagination count={beneficiaries?.totalPage} onChange={handlePagination}/>
             </TabPanel>
             <TabPanel value="vendors">
               {' '}

@@ -20,9 +20,9 @@ export const getFlickrImages = async (params) => {
     ...response?.data?.photoset,
     photo: response?.data?.photoset?.photo?.map((item) => ({
       title: item?.title,
-      thumbnail: `https://live.staticflickr.com/${item?.server}/${item?.id}_${item?.secret}_m.jpg`,
-      original: `https://live.staticflickr.com/${item?.server}/${item?.id}_${item?.secret}_b.jpg`,
-      image: `https://live.staticflickr.com/${item?.server}/${item?.id}_${item?.secret}_b.jpg`,
+      thumbnail: `https://rahat.io/images/logo.png`,
+      original: `https://rahat.io/images/logo.png`,
+      image: `https://rahat.io/images/logo.png`,
       id: item?.id,
       description: '',
     })),

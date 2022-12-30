@@ -22,10 +22,11 @@ const DashboardComponent = () => {
 
   const {
     summary,
+    demographicSummary,
     getSummary,
     getGeoMapData,
     getGenderDistribution,
-    genderDistribution,
+    beneficiariesVillageChartData,
     bankedUnbanked,
     phoneOwnership,
     genderWardChart,
@@ -35,6 +36,7 @@ const DashboardComponent = () => {
     getBeneficiariesByWard,
     getCashTrackerSummary,
     cashTrackerSummary,
+    getDemographicSummary,
   } = useDashboardContext();
 
   const [flickImages, setFlickImages] = useState([]);
@@ -42,6 +44,10 @@ const DashboardComponent = () => {
   useEffect(() => {
     getSummary();
   }, [getSummary]);
+
+  useEffect(() => {
+    getDemographicSummary();
+  }, [getDemographicSummary]);
 
   useEffect(() => {
     getCashTrackerSummary();
@@ -98,44 +104,8 @@ const DashboardComponent = () => {
               color="warning"
               icon="material-symbols:person-4"
               title="Beneficiaries"
-              total={summary?.total_beneficiaries}
+              total={demographicSummary?.count}
               subtitle={'households'}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              color="error"
-              icon={'fa6-solid:children'}
-              title="Under 5"
-              total={summary?.total_children}
-              // total={beneficiaryCounts?.impacted}
-              subtitle={'children'}
-            />
-          </Grid>
-
-          {/* <Grid item xs={12} md={4}>
-          <ActivateResponse />
-        </Grid> */}
-
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              color="success"
-              icon={'fa6-solid:users'}
-              title="Total Impact"
-              total={summary?.total_persons}
-              // total={beneficiaryCounts?.impacted?.totalFamilyCount}
-              subtitle={'people'}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <SummaryCard
-              color="secondary"
-              title="Unbanked"
-              icon="mdi:bank-transfer-out"
-              total={summary?.total_unbanked}
-              // total={beneficiaryCounts?.impacted?.totalFamilyCount}
-              subtitle={'persons'}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -157,14 +127,9 @@ const DashboardComponent = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title="Cash Tracker" />
-            <SummaryTracker />
-          </Card>
-        </Grid>
 
-        <Grid item xs={12} md={4}>
+
+        {/* <Grid item xs={12} md={4}>
           <Piechart
             title="Gender Distribution"
             chart={{
@@ -206,46 +171,43 @@ const DashboardComponent = () => {
               series: phoneOwnership,
             }}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <BarchartSingle
-            title="Beneficiaries by Ward"
-            chart={{
-              colors: [
-                theme.palette.primary.main,
-                theme.palette.info.main,
-                theme.palette.error.main,
-                theme.palette.warning.main,
-              ],
-              options: {
-                chart: {
-                  stacked: true,
-                },
+            title="Beneficiaries by Village"
+            chart={{colors: [
+              theme.palette.primary.main,
+              theme.palette.info.main,
+              theme.palette.error.main,
+              theme.palette.warning.main,
+            ],
+            options: {
+              chart: {
+                stacked: true,
               },
-              ...genderWardChart,
-            }}
-            footer={
-              <Stack
-                direction="row"
-                justifyContent="flex-end"
-                alignItems="center"
-                spacing={SPACING.GRID_SPACING}
-                sx={{ pr: 2 }}
-              >
-                <Button
-                  onClick={() => router.push(PATH_REPORTS.wardReport)}
-                  endIcon={<Iconify sx={{ ml: -1 }} icon={'material-symbols:chevron-right-rounded'} />}
-                >
-                  More Details
-                </Button>
-              </Stack>
-            }
+            },
+            ...beneficiariesVillageChartData,}}
+            // footer={
+            //   <Stack
+            //     direction="row"
+            //     justifyContent="flex-end"
+            //     alignItems="center"
+            //     spacing={SPACING.GRID_SPACING}
+            //     sx={{ pr: 2 }}
+            //  
+            //  >
+            //     <Button
+            //       onClick={() => router.push(PATH_REPORTS.wardReport)}
+            //       endIcon={<Iconify sx={{ ml: -1 }} icon={'material-symbols:chevron-right-rounded'} />}
+            //     >
+            //       More Details
+            //     </Button>
+            //   </Stack>
+            // }
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <MapView />
-        </Grid>
+       
       </Grid>
     </Box>
   );

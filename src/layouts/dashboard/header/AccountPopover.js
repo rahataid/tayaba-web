@@ -14,7 +14,7 @@ import { useSnackbar } from '../../../components/snackbar';
 import MenuPopover from '../../../components/menu-popover';
 import { IconButtonAnimate } from '../../../components/animate';
 import truncateEthAddress from '@utils/truncateEthAddress';
-import { BLOCKCHAIN_EXPLORER } from '@config';
+import { APP_NAME, BLOCKCHAIN_EXPLORER } from '@config';
 
 // ----------------------------------------------------------------------
 
@@ -89,13 +89,13 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.name?.first} name={user?.name?.first} />
+        <CustomAvatar src={user?.photoURL} alt={user?.name} name={user?.name || APP_NAME} />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.name?.first} {user?.name?.last}
+            {user?.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }} noWrap>
             {user?.email}

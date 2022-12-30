@@ -14,9 +14,9 @@ const BEN_TABLE_HEAD = {
     label: 'Name',
     align: 'left',
   },
-  address: {
-    id: 'address',
-    label: 'Address',
+  gender: {
+    id: 'gender',
+    label: 'Gender',
     align: 'left',
   },
   phone: {
@@ -24,11 +24,27 @@ const BEN_TABLE_HEAD = {
     label: 'Phone',
     align: 'left',
   },
-  token: {
-    id: 'token',
-    label: 'Token',
+
+  cnicNumber: {
+    id: 'cnicNumber',
+    label: 'CNIC Number',
     align: 'left',
   },
+  phoneOwnedBy: {
+    id: 'phoneOwnedBy',
+    label: 'Phone Owned By',
+    align: 'left',
+  },
+  hasInternetAccess: {
+    id: 'hasInternetAccess',
+    label: 'Has Internet Issues',
+    align: 'left',
+  },
+  actions:{
+    id:"action",
+    label:"Action",
+    align:"left"   
+  }
 };
 const vendors = [
   {

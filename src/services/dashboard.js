@@ -5,6 +5,10 @@ export const DashboardService = {
     return client.get('/stats/beneficiaries/summary');
   },
 
+  getDemographicsBeneficiarySummary() {
+    return client.get('reports/demographics/summary');
+  },
+
   getGeoMapData() {
     return client.get('/stats/beneficiaries/geo');
   },
