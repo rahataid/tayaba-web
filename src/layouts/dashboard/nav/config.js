@@ -85,17 +85,21 @@ const navConfig = [
       //   icon: ICONS.photoGallery,
       // },
 
-      {
-        title: 'Administation',
-        path: PATH_ADMINISTRATION.root,
-        icon: ICONS.admin,
-        children: [
-          {
-            title: 'Users',
-            path: PATH_ADMINISTRATION.users,
-          },
-        ],
-      },
+      // {
+      //   title: 'Administation',
+      //   path: PATH_ADMINISTRATION.root,
+      //   icon: ICONS.admin,
+      //   children: [
+      //     {
+      //       title: 'Campaigns',
+      //       path: PATH_ADMINISTRATION.campaigns,
+      //     },
+      //     {
+      //       title: 'Users',
+      //       path: PATH_ADMINISTRATION.users,
+      //     },
+      //   ],
+      // },
       {
         title: 'Reports',
         path: PATH_REPORTS.root,
@@ -111,7 +115,6 @@ const navConfig = [
           },
         ],
       },
-
     ],
   },
 ];
