@@ -83,6 +83,11 @@ export const AdministrationProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const addUser = useCallback(async(payload) => {
+    const user = await AdministrationService.addUser(payload);
+    return user;
+  }, [])
+
 
 
   const contextValue = {
@@ -93,6 +98,7 @@ export const AdministrationProvider = ({ children }) => {
     getUserById,
     setFilter,
     setPagination,
+    addUser
   };
 
   return <AdministationContext.Provider value={contextValue}>{children}</AdministationContext.Provider>;
