@@ -6,7 +6,6 @@ import moment from 'moment';
 
 const MoreInfoCard = (props) => {
   const { singleProject } = useProjectContext();
-  console.log({ singleProject })
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
