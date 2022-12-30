@@ -17,8 +17,11 @@ const ProjectChart = ({ projectId }) => {
   const [accessToInternet, setAccessToInternet] = useState();
   const [banked, setBanked] = useState();
   const [selectedVillage, setSelectedVillage] = useState();
-  console.log(selectedVillage);
 
+  const handleVillage = (village) => {
+    if (!village || village === 'undefined') return;
+    setSelectedVillage(village);
+  };
   const formatData = useCallback(() => {
     if (!chartData) return;
     // need to move and  call from utils
@@ -28,6 +31,7 @@ const ProjectChart = ({ projectId }) => {
       theme.palette.error.main,
       theme.palette.warning.main,
     ];
+
     chartData.forEach((elem) => {
       let series = [];
       if (elem.chart === 'hasInternetAccess') {
@@ -145,6 +149,7 @@ const ProjectChart = ({ projectId }) => {
               title="Beneficaries per village"
               chart={beneficiariesVillageChartData}
               setSelectedVillage={setSelectedVillage}
+              handleVillage={handleVillage}
             />
           </Grid>
         ) : (
