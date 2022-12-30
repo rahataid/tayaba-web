@@ -25,7 +25,6 @@ export default function ViewTabs() {
   } = useRouter();
 
   const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject, getChartData, chartData } = useProjectContext();
-  console.log({ beneficiaries })
   useEffect(() => {
     if (!projectId || value !== 'beneficiaries') return;
     getBeneficiariesByProject({projectId,start});

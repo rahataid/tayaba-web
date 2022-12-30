@@ -18,6 +18,15 @@ const initialState = {
     ],
     chartLabel: [],
   },
+  beneficiariesVillageChartData: {
+    chartData: [
+      {
+        data: [],
+        name: '',
+      },
+    ],
+    chartLabel: [],
+  },
   genderWardChart: {
     chartData: [
       {
@@ -169,10 +178,16 @@ export const DashboardProvider = ({ children }) => {
 
   const getDemographicSummary = useCallback(async () => {
     const response = await DashboardService.getDemographicsBeneficiarySummary();
-    console.log(response)
+    const chartLabel = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.label);
+      const data = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
+      const chartData = [{
+        data,
+        name: "No of Beneficaries"
+      }];
     setState((prev) => ({
       ...prev,
       demographicSummary: response.data.data,
+      beneficiariesVillageChartData:{chartData,chartLabel} 
     }));
     return response.data;
   }, []);

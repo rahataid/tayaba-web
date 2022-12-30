@@ -17,7 +17,7 @@ Barchart.propTypes = {
 
 
 
-export default function Barchart({ title, subheader, footer,chart, ...other }) {
+export default function Barchart({ title, subheader, footer,chart,setSelectedVillage, ...other }) {
     const theme = useTheme();
 
   const { chartLabel,chartData,  } = chart;
@@ -30,7 +30,17 @@ export default function Barchart({ title, subheader, footer,chart, ...other }) {
   const options={
     chart: {
       stacked: true,
+    
+    selection: {
+      enabled: true,
     },
+    events: {
+      click: (event, chartContext, config) => {
+        let villageKey = String(chartLabel[config.dataPointIndex]);
+        setSelectedVillage(villageKey);
+      },
+    },
+  }
   };
   const chartOptions = useChart({
     colors,

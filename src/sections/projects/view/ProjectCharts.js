@@ -14,15 +14,15 @@ const ProjectChart = ({projectId})=>{
     beneficiariesVillageChartData,
   } = useProjectContext();
   const theme = useTheme();
-  console.log({projectId})
 
     const [accessToPhoneChartData, setAccessToPhoneChartData] = useState();
     const [genderWiseDistribution, setGenderWiseDistribution] = useState();
     const [phoneOwnerShip, setPhoneOwnerShip] = useState();
     const [simcardOwenerShip, setSimcardOwenerShip] = useState();
     const [accessToInternet, setAccessToInternet] = useState();
-    const [bankAccountType, setBankAccountType] = useState();
     const [banked, setBanked] = useState();
+    const [selectedVillage,setSelectedVillage] = useState()
+    console.log(selectedVillage)
     const formatData = useCallback(() => {
         if (!chartData) return;
         // need to move and  call from utils
@@ -86,18 +86,6 @@ const ProjectChart = ({projectId})=>{
             };
             setGenderWiseDistribution(data);
           }
-          if (elem.chart === 'bankAccountType') {
-            elem.data.forEach((obj) => {
-              if (!obj.bankAccountType) obj.bankAccountType = 'undefined';
-              series.push({ label: obj.bankAccountType, value: obj.count });
-            });
-            const data = {
-              title: 'Bank Account Type',
-              colors: colors,
-              series: series,
-            };
-            setBankAccountType(data);
-          }
     
           if (elem.chart === 'isBanked') {
             elem.data.forEach((obj) => {
@@ -124,8 +112,8 @@ const ProjectChart = ({projectId})=>{
             setPhoneOwnerShip(data);
           }
           if (elem.chart === 'simRegisteredUnder') {
-            console.log(elem.data);
             elem.data.forEach((obj) => {
+              if(obj.simRegisteredUnder === "N/A") obj.simRegisteredUnder = "Others"
               series.push({ label: obj.simRegisteredUnder, value: obj.count });
             });
             const data = {
@@ -146,31 +134,34 @@ const ProjectChart = ({projectId})=>{
         if (!projectId) return;
         let query = {
           projectId: projectId,
+          village:selectedVillage
         };
         getChartData(CHARTDATATYPES, query);
         getBeneficiariesByvillage(projectId);
-      }, [projectId]);
+      }, [projectId,selectedVillage]);
 
     return (
         <div>
               <Grid container spacing={SPACING.GRID_SPACING}>
           {beneficiariesVillageChartData ? (
-            <Grid item xs={12} md={8}>
-              <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} />
+            <Grid item xs={12} md={12}>
+              <Barchart title="Beneficaries per village" chart={beneficiariesVillageChartData} setSelectedVillage = {setSelectedVillage} />
             </Grid>
           ) : (
             <></>
           )}
-          {genderWiseDistribution ? (
+          
+        </Grid>
+
+        <Grid container spacing={SPACING.GRID_SPACING}>
+        {genderWiseDistribution ? (
             <Grid item xs={12} md={4}>
               <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
             </Grid>
           ) : (
             <></>
           )}
-        </Grid>
 
-        <Grid container spacing={SPACING.GRID_SPACING}>
           {accessToInternet ? (
             <Grid item xs={12} md={4}>
               <Piechart title={accessToInternet.title} chart={accessToInternet} />
@@ -199,13 +190,7 @@ const ProjectChart = ({projectId})=>{
           ) : (
             <></>
           )}
-          {bankAccountType ? (
-            <Grid item xs={12} md={4}>
-              <Piechart title={bankAccountType.title} chart={bankAccountType} />
-            </Grid>
-          ) : (
-            <></>
-          )}
+          
           {banked ? (
             <Grid item xs={12} md={4}>
               <Piechart title={banked.title} chart={banked} />

@@ -26,7 +26,7 @@ const DashboardComponent = () => {
     getSummary,
     getGeoMapData,
     getGenderDistribution,
-    genderDistribution,
+    beneficiariesVillageChartData,
     bankedUnbanked,
     phoneOwnership,
     genderWardChart,
@@ -45,7 +45,6 @@ const DashboardComponent = () => {
     getSummary();
   }, [getSummary]);
 
-  console.log(demographicSummary)
   useEffect(() => {
     getDemographicSummary();
   }, [getDemographicSummary]);
@@ -174,44 +173,41 @@ const DashboardComponent = () => {
           />
         </Grid> */}
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <BarchartSingle
-            title="Beneficiaries by Ward"
-            chart={{
-              colors: [
-                theme.palette.primary.main,
-                theme.palette.info.main,
-                theme.palette.error.main,
-                theme.palette.warning.main,
-              ],
-              options: {
-                chart: {
-                  stacked: true,
-                },
+            title="Beneficiaries by Village"
+            chart={{colors: [
+              theme.palette.primary.main,
+              theme.palette.info.main,
+              theme.palette.error.main,
+              theme.palette.warning.main,
+            ],
+            options: {
+              chart: {
+                stacked: true,
               },
-              ...genderWardChart,
-            }}
-            footer={
-              <Stack
-                direction="row"
-                justifyContent="flex-end"
-                alignItems="center"
-                spacing={SPACING.GRID_SPACING}
-                sx={{ pr: 2 }}
-              >
-                <Button
-                  onClick={() => router.push(PATH_REPORTS.wardReport)}
-                  endIcon={<Iconify sx={{ ml: -1 }} icon={'material-symbols:chevron-right-rounded'} />}
-                >
-                  More Details
-                </Button>
-              </Stack>
-            }
+            },
+            ...beneficiariesVillageChartData,}}
+            // footer={
+            //   <Stack
+            //     direction="row"
+            //     justifyContent="flex-end"
+            //     alignItems="center"
+            //     spacing={SPACING.GRID_SPACING}
+            //     sx={{ pr: 2 }}
+            //  
+            //  >
+            //     <Button
+            //       onClick={() => router.push(PATH_REPORTS.wardReport)}
+            //       endIcon={<Iconify sx={{ ml: -1 }} icon={'material-symbols:chevron-right-rounded'} />}
+            //     >
+            //       More Details
+            //     </Button>
+            //   </Stack>
+            // }
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <MapView />
-        </Grid>
+       
       </Grid>
     </Box>
   );
