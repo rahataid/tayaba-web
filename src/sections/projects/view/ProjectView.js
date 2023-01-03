@@ -1,21 +1,18 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Grid, Stack } from '@mui/material';
+import {Card, Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
-import { PalikaCash, DonorCash, AgencyCash } from '../cash-tracker';
 import MoreInfoCard from './MoreInfoCard';
 import ViewTabs from './ViewTabs';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
 import { useRahat } from '@services/contracts/useRahat';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { useTheme } from '@mui/system';
 import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
 
 const ProjectView = () => {
-  const { roles } = useAuthContext();
-  const { getProjectById, refresh, refreshData } = useProjectContext();
+  const {  refresh, refreshData } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
 
@@ -29,10 +26,7 @@ const ProjectView = () => {
     await projectBalance(projectId);
   }, [projectId, contract, RahatCash, refresh]);
 
-  useEffect(() => {
-    if (!projectId) return;
-    getProjectById(projectId);
-  }, [projectId]);
+
 
   useEffect(() => {
     if (!projectId || !contract) return;
@@ -49,9 +43,11 @@ const ProjectView = () => {
     <>
       {/* <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}> */}
       <Grid item xs={12} md={8}>
-        <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{ height: '494px' }}>
+        <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+        <Card sx={{ width: '100%', mb: 0 }} >
           <BasicInfoCard rahatChainData={rahatChainData} />
           <MoreInfoCard />
+          </Card>
         </Grid>
         <ProjectChart projectId={projectId} />
 

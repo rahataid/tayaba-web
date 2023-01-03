@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useProjectContext } from '@contexts/projects';
-import { Grid, Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 import { SPACING, CHARTDATATYPES } from '@config';
 import Piechart from './Piechart';
 import Barchart from './Barchart';
@@ -44,7 +44,7 @@ const ProjectChart = ({ projectId }) => {
           }
         });
         const data = {
-          title: ' Access To Internet',
+          title: selectedVillage?`Access To Internet (${selectedVillage})`:'Access To Internet',
           colors: colors,
           series: series,
         };
@@ -60,7 +60,7 @@ const ProjectChart = ({ projectId }) => {
           }
         });
         const data = {
-          title: ' Access to Phone',
+          title: selectedVillage?` Access to Phone (${selectedVillage})`:` Access to Phone`,
           colors: colors,
           series: series,
         };
@@ -80,7 +80,7 @@ const ProjectChart = ({ projectId }) => {
           }
         });
         const data = {
-          title: 'Gender-wise Distribution',
+          title:  selectedVillage?`Gender-wise Distribution (${selectedVillage})`:`Gender-wise Distribution`,
           colors: colors,
           series: series,
         };
@@ -93,7 +93,7 @@ const ProjectChart = ({ projectId }) => {
           if (!obj.isBanked) series.push({ label: 'UnBanked', value: obj.count });
         });
         const data = {
-          title: 'Banked or Unbanked',
+          title:  selectedVillage?`Banked or Unbanked (${selectedVillage})`:'Banked or Unbanked',
           colors: colors,
           series: series,
         };
@@ -105,7 +105,7 @@ const ProjectChart = ({ projectId }) => {
           series.push({ label: obj.phoneOwnedBy, value: obj.count });
         });
         const data = {
-          title: 'Phone Ownership',
+          title: selectedVillage?`Phone Ownership (${selectedVillage})`:'Phone Ownership',
           colors: colors,
           series: series,
         };
@@ -117,7 +117,7 @@ const ProjectChart = ({ projectId }) => {
           series.push({ label: obj.simRegisteredUnder, value: obj.count });
         });
         const data = {
-          title: 'Sim Card Ownership',
+          title: selectedVillage?`Sim Card Ownership (${selectedVillage})`:'Sim Card Ownership',
           colors: colors,
           series: series,
         };

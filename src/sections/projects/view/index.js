@@ -4,3 +4,5 @@ export { default as ChartCard } from './ChartCard';
 export { default as MoreInfoCard } from './MoreInfoCard';
 export { default as ViewTabs } from './ViewTabs';
 export { default as ProjectViewComp } from './ProjectView';
+export { default as ProjectMainViewComp } from './ProjectMainView';
+
