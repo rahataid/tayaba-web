@@ -38,7 +38,7 @@ export default function BasicInfoCard({ rahatChainData}) {
             </Typography>
             <Typography variant="body2">Beneficiaries</Typography>
           </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+          {/* <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Grid item xs={12} md={12}>
               <Typography variant="h5" sx={{ fontWeight: 500 }}>
                 {moment(singleProject?.data?.projectCreatedAt).format('DD MMM, YYYY')}
@@ -53,7 +53,7 @@ export default function BasicInfoCard({ rahatChainData}) {
               {singleProject?.data?.location}
             </Typography>
             <Typography variant="body2">Location</Typography>
-          </Grid>
+          </Grid> */}
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           {isRahatResponseLive ? (
             <Chip color="success" label="Response Activated" />

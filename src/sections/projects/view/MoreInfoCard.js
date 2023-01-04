@@ -2,15 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {  CardContent, Grid, Stack, Typography } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
+import moment from 'moment';
 
 const MoreInfoCard = (props) => {
+  const { singleProject} = useProjectContext();
   return (
       <CardContent>
-        {/* <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+        <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Grid item xs={12} md={12}>
               <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                {moment(singleProject?.data?.projectCreatedAt).format('DD MMM, YYYY')}
+                {moment(singleProject?.data?.createdAt).format('DD MMM, YYYY')}
               </Typography>
             </Grid>
             <Grid item xs={12} md={12}>
@@ -23,7 +25,7 @@ const MoreInfoCard = (props) => {
             </Typography>
             <Typography variant="body2">Location</Typography>
           </Grid>
-        </Stack> */}
+        </Stack>
 
         <Stack sx={{ p: 0 }}>
           <Typography variant="body1">H20 Wheels Distribution</Typography>
