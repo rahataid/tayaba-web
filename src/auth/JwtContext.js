@@ -107,7 +107,7 @@ function AuthProvider({ children }) {
             isInitialized: true,
           }));
         } else {
-          setAuthState((prev) => ({ ...prev, isAuthenticated: false }));
+          setAuthState((prev) => ({ ...prev, isAuthenticated: false, isInitialized: true }));
         }
       } catch (err) {
         console.error(err);
