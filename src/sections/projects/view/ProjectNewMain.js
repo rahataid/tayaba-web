@@ -22,12 +22,7 @@ export default function ProjectMainView(props) {
       <Container maxWidth={ false}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <AppWelcome
-              title={`Welcome back! \n Abiskar`}
-              description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
-              img=""
-              action={<Button variant="contained">Go Now</Button>}
-            />
+            <AppWelcome />
           </Grid>
           <ProjectView />
 

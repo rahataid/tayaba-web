@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Stack } from '@mui/material';
+import { Typography, Stack, Grid, Button } from '@mui/material';
 // utils
 import { bgGradient } from '../../../../utils/cssStyles';
-
+import BasicInfoCard from '../BasicInfoCard';
 // ----------------------------------------------------------------------
+import { useProjectContext } from '@contexts/projects';
+import MoreInfoCard from '../MoreInfoCard';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   height: '100%',
@@ -48,14 +50,13 @@ const StyledBg = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 AppWelcome.propTypes = {
-  img: PropTypes.node,
-  action: PropTypes.node,
-  title: PropTypes.string,
-  description: PropTypes.string,
+
+  projectId: PropTypes.string,
 };
 
-export default function AppWelcome({ title, description, action, img, ...other }) {
-  console.log(title)
+export default function AppWelcome({ ...other }) {
+  const { singleProject } = useProjectContext();
+  console.log({ singleProject })
   return (
     <StyledRoot {...other}>
       <Stack
@@ -69,25 +70,24 @@ export default function AppWelcome({ title, description, action, img, ...other }
           textAlign: { xs: 'center', md: 'left' },
         }}
       >
+        <Grid container>
+        <Grid item xs={12} md={6}>
         <Typography paragraph variant="h4" sx={{ whiteSpace: 'pre-line' }}>
-          {title}
+          {singleProject?.data?.name}
         </Typography>
+        </Grid>
+        <Grid item spacing={1}xs={12} md={6}>
+        <Button  variant="text"> Beneficaries</Button>
+        <Button variant="text"> Vendors</Button>
+        <Button variant="text"> Mobilizers</Button>
 
-        <Typography
-          variant="body2"
-          sx={{
-            opacity: 0.8,
-            mb: { xs: 3, xl: 5 },
-          }}
-        >
-          {description}
-        </Typography>
+        </Grid>
 
-        {action && action}
+        </Grid>
+        
+        <BasicInfoCard />
+        <MoreInfoCard />
       </Stack>
-
-      {img && img}
-
       <StyledBg />
     </StyledRoot>
   );

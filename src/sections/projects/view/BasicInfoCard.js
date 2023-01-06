@@ -36,7 +36,7 @@ export default function BasicInfoCard({ rahatChainData}) {
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Grid item xs={12} md={12}>
               <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                {moment(singleProject?.data?.projectCreatedAt).format('DD MMM, YYYY')}
+                {moment(singleProject?.data?.createdAt).format('DD MMM, YYYY')}
               </Typography>
             </Grid>
             <Grid item xs={12} md={12}>

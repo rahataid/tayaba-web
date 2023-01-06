@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {CardContent, Chip, Grid, Stack,Box, Typography } from '@mui/material';
+import {CardContent,Card, Chip, Grid, Stack,Box, Typography } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 import SummaryCard from '@components/SummaryCard';
@@ -16,16 +16,7 @@ export default function InfoCard({ rahatChainData}) {
   const theme = useTheme();
 
   return (
-
-      <CardContent>
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-         
-          {/* <Chip label="DEFAULT PROJECT" /> */}
-      
-          </Stack>
-
-<Stack sx={{ p: 0}} direction="row" justifyContent="space-between" alignItems="center" spacing={6}>
-<Grid container direction="row" justifyContent="center" alignItems="flex-start">
+       <>
         <Grid item xs={12} md={4} style={{padding:'8px'}} >
             <SummaryCard
               color="warning"
@@ -54,10 +45,7 @@ export default function InfoCard({ rahatChainData}) {
 
             />
           </Grid>
-         
-          </Grid>
-          </Stack>
-         
-      </CardContent>
+         </>
+        
   );
 }

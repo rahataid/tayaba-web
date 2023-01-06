@@ -18,7 +18,7 @@ import BasicInfoCard from './BasicInfoCard';
 import { AppWelcome ,AppFeatured} from './minimalpages';
 import PhotoGallery from '@sections/dashboard/PhotoGallery';
 const ProjectView = () => {
-  const {  refresh, refreshData } = useProjectContext();
+  const {  refresh, refreshData,getProjectById } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
 const [flickImages,setFlickImages] = useState([])
@@ -31,7 +31,6 @@ const [flickImages,setFlickImages] = useState([])
     if (!RahatCash) return;
     await projectBalance(projectId);
   }, [projectId, contract, RahatCash, refresh]);
-
 
 
   useEffect(() => {
@@ -60,18 +59,19 @@ const [flickImages,setFlickImages] = useState([])
     };
   }, []);
 
+  useEffect(() => {
+    if (!projectId) return;
+    getProjectById(projectId);
+  }, [projectId]);
+
+
   return (
     <>
       {/* <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}> */}
       <Grid item xs={12} md={8}>
       <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <AppWelcome
-              title={`Welcome back! \n Abiskar`}
-              description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
-              img=""
-              action={<Button variant="contained">Go Now</Button>}
-            />
+            <AppWelcome/>
           </Grid>
           <Grid item xs={12} md={4}>
             <AppFeatured list= {flickImages} />
@@ -80,12 +80,11 @@ const [flickImages,setFlickImages] = useState([])
 
 
         <Grid  container direction="row"  justifyContent="center" alignItems="flex-start">
-        <Card sx={{ width: '65%', mb: 0 }} >
+        
           <InfoCard rahatChainData={rahatChainData} />
-          <BasicInfoCard/>
-          <MoreInfoCard />
-          </Card>
-         <Card sx={{ width: '35%', mb: 0 }}>
+        
+         
+         
           {/* role.tayaba */}
           {true && (
             <PalikaCash
@@ -99,7 +98,7 @@ const [flickImages,setFlickImages] = useState([])
           {/* {true && <AgencyCash rahatChainData={rahatChainData} />} */}
           {/* {role.srsorep} */}
           {/* {true && <DonorCash rahatChainData={rahatChainData} />} */}
-          </Card>
+         
         </Grid>
         
         <ProjectChart projectId={projectId} />
