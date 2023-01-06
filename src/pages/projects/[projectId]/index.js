@@ -2,15 +2,19 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import DashboardLayout from '@layouts/dashboard';
+import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
+import { Container } from '@mui/material';
+import { ActionMenu, ProjectViewComp } from '@sections/projects/view';
 import { useRouter } from 'next/router';
-import { ProjectProvider } from '@contexts/projects';
+import { ProjectProvider, useProjectContext } from '@contexts/projects';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import ProjectMainView from '@sections/projects/view/ProjectMainView';
 
 const PAGE_TITLE = `Project: Detail`;
 
 export default function ProjectView(props) {
+  const { themeStretch } = useSettingsContext();
+  const { roles } = useAuthContext();
   const {
     push: routerPush,
     query: { projectId },
@@ -31,7 +35,9 @@ export default function ProjectView(props) {
 
   return (
     <ProjectProvider>
-      <ProjectMainView projectId={projectId} actionMenuItems={actionMenuItems} />
+        <Container maxWidth={themeStretch ? false : 'xl'}>
+          <ProjectViewComp />
+        </Container>
     </ProjectProvider>
   );
 }

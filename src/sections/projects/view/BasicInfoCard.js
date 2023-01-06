@@ -32,12 +32,7 @@ export default function BasicInfoCard({ rahatChainData}) {
             <Typography variant="body2">Remaining Balance</Typography>
           </Grid> */}
           
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h5" sx={{ fontWeight: 500 }}>
-              {beneficiaryCount || 0}
-            </Typography>
-            <Typography variant="body2">Beneficiaries</Typography>
-          </Grid>
+       
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Grid item xs={12} md={12}>
               <Typography variant="h5" sx={{ fontWeight: 500 }}>

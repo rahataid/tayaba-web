@@ -71,9 +71,9 @@ export default function Palika({ rahatChainData }) {
                 <Typography variant="h4" sx={{ fontWeight: 400 }}>
                   <small>₹</small> {rahatChainData?.cashBalance || '0'}
                 </Typography>
-                <small>Your cash balance</small>
-                <Button sx={{ mt: 2 }} size="small" variant="outlined" onClick={() => routerPush(`/vendors`)}>
-                  Send cash to Wards
+                <small>Your tokens</small>
+                <Button sx={{ mt: 2 }} size="small" variant="outlined">
+                  Create TOken
                 </Button>
               </Grid>
             </Stack>

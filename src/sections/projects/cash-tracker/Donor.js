@@ -62,8 +62,8 @@ export default function Donor() {
         title="Send Cash to UNICEF Nepal"
         description={
           <>
-            Please enter the amount you wish to send to palika. Palika has to accept the cash before it is fully
-            transferred and allowed for disbursement.
+            Please enter the No of tokens you wish to send to srso. srso has to accept the token before it is fully
+            transferred 
           </>
         }
         approveCashTransfer={CashActions.sendCashToAgency}

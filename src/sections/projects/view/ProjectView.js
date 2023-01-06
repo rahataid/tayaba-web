@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import {Card, Grid, Stack } from '@mui/material';
-import BasicInfoCard from './BasicInfoCard';
+import {Card, Grid, Stack,Button } from '@mui/material';
+import InfoCard from './InfoCard';
 import MoreInfoCard from './MoreInfoCard';
 import ViewTabs from './ViewTabs';
 import { PalikaCash, DonorCash, AgencyCash } from '../cash-tracker';
@@ -11,14 +11,17 @@ import { useTheme } from '@mui/system';
 import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
+import { getFlickrImages } from '@services/flickr';
 import { useAuthContext } from 'src/auth/useAuthContext';
-
+import { role } from 'src/_mock/assets';
+import BasicInfoCard from './BasicInfoCard';
+import { AppWelcome ,AppFeatured} from './minimalpages';
+import PhotoGallery from '@sections/dashboard/PhotoGallery';
 const ProjectView = () => {
   const {  refresh, refreshData } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
-  const { roles } = useAuthContext();
-
+const [flickImages,setFlickImages] = useState([])
   const {
     query: { projectId },
   } = useRouter();
@@ -42,16 +45,48 @@ const ProjectView = () => {
     return () => RahatCash?.removeAllListeners();
   }, [RahatCash]);
 
+  useEffect(() => {
+    const getFlickPics = async () => {
+      const params = {
+        per_page: 10,
+      };
+      const res = await getFlickrImages(params);
+      setFlickImages(res.photo);
+    };
+    getFlickPics();
+
+    return () => {
+      setFlickImages([]);
+    };
+  }, []);
+
   return (
     <>
       {/* <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}> */}
       <Grid item xs={12} md={8}>
-        <Grid item  justifyContent="center" alignItems="flex-start">
-        <Card sx={{ width: '60%', mb: 0 }} >
-          <BasicInfoCard rahatChainData={rahatChainData} />
+      <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <AppWelcome
+              title={`Welcome back! \n Abiskar`}
+              description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+              img=""
+              action={<Button variant="contained">Go Now</Button>}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <AppFeatured list= {flickImages} />
+          </Grid>
+          </Grid>
+
+
+        <Grid  container direction="row"  justifyContent="center" alignItems="flex-start">
+        <Card sx={{ width: '65%', mb: 0 }} >
+          <InfoCard rahatChainData={rahatChainData} />
+          <BasicInfoCard/>
           <MoreInfoCard />
           </Card>
-         <Card sx={{ width: '40%', mb: 0 }}>
+         <Card sx={{ width: '35%', mb: 0 }}>
+          {/* role.tayaba */}
           {true && (
             <PalikaCash
               projectId={projectId}
@@ -60,8 +95,10 @@ const ProjectView = () => {
               refreshData={refreshData}
             />
           )}
-          {roles.isAgency && <AgencyCash rahatChainData={rahatChainData} />}
-          {roles.isDonor && <DonorCash rahatChainData={rahatChainData} />}
+          {/* {role.srso} */}
+          {/* {true && <AgencyCash rahatChainData={rahatChainData} />} */}
+          {/* {role.srsorep} */}
+          {/* {true && <DonorCash rahatChainData={rahatChainData} />} */}
           </Card>
         </Grid>
         
