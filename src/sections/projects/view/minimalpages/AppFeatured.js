@@ -8,7 +8,8 @@ import { Stack, Card, Typography, Link } from '@mui/material';
 import Image from '../../../../components/image';
 import { MotionContainer, varFade } from '../../../../components/animate';
 import Carousel, { CarouselDots, CarouselArrows } from '../../../../components/carousel';
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 // ----------------------------------------------------------------------
 
 const StyledOverlay = styled('div')(({ theme }) => ({
@@ -19,6 +20,7 @@ const StyledOverlay = styled('div')(({ theme }) => ({
   zIndex: 8,
   position: 'absolute',
   backgroundColor: alpha(theme.palette.grey[900], 0.64),
+  borderRadius: Number(theme.shape.borderRadius) * 2,
 }));
 
 // ----------------------------------------------------------------------
@@ -48,6 +50,7 @@ export default function AppFeatured({ list, ...other }) {
         top: 20,
         left: 20,
         position: 'absolute',
+
       },
     }),
   };
@@ -61,7 +64,8 @@ export default function AppFeatured({ list, ...other }) {
   };
 
   return (
-    <Card {...other}>
+    <Card {...other} style={{   borderRadius: Number(theme.shape.borderRadius) * 2,
+    }}>
       <Carousel ref={carouselRef} {...carouselSettings}>
         {list.map((app, index) => (
           <CarouselItem key={app.id} item={app} isActive={index === currentIndex} />
@@ -134,7 +138,7 @@ function CarouselItem({ item, isActive }) {
         alt={title}
         src={image}
         sx={{
-          height: { xs: 280, xl: 335 },
+          height: { xs: 280, xl: 320 },
         }}
       />
         </a>

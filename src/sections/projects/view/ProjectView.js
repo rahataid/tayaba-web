@@ -16,7 +16,6 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import { role } from 'src/_mock/assets';
 import BasicInfoCard from './BasicInfoCard';
 import { AppWelcome ,AppFeatured} from './minimalpages';
-import PhotoGallery from '@sections/dashboard/PhotoGallery';
 const ProjectView = () => {
   const {  refresh, refreshData,getProjectById } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
@@ -79,13 +78,13 @@ const [flickImages,setFlickImages] = useState([])
           </Grid>
 
 
-        <Grid  container direction="row"  justifyContent="center" alignItems="flex-start">
-        
+        <Grid  container spacing={3}>
+        <Grid item xs={12} md={8}>
           <InfoCard rahatChainData={rahatChainData} />
-        
-         
-         
+          </Grid>
+          <Grid item xs={12} md={4}>
           {/* role.tayaba */}
+          
           {true && (
             <PalikaCash
               projectId={projectId}
@@ -98,11 +97,10 @@ const [flickImages,setFlickImages] = useState([])
           {/* {true && <AgencyCash rahatChainData={rahatChainData} />} */}
           {/* {role.srsorep} */}
           {/* {true && <DonorCash rahatChainData={rahatChainData} />} */}
-         
+          </Grid>
         </Grid>
         
         <ProjectChart projectId={projectId} />
-
         <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
           <ViewTabs />
         </Stack>

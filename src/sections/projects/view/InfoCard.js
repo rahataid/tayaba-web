@@ -14,16 +14,17 @@ InfoCard.propTypes = {
 export default function InfoCard({ rahatChainData}) {
   const { singleProject, isRahatResponseLive, beneficiaryCount } = useProjectContext();
   const theme = useTheme();
-
+  const sx= { borderRadius: 2,}
   return (
-       <>
-        <Grid item xs={12} md={4} style={{padding:'8px'}} >
+       <Grid container alignItems="flex-start" justifyContent="center">
+        <Grid item xs={12} md={4} style={{padding:'8px',}} >
             <SummaryCard
               color="warning"
               icon="material-symbols:person-4"
               title="Beneficiaries"
               total={beneficiaryCount}
               subtitle={'households'}
+              sx={sx}
             />
           </Grid>
           <Grid item xs={12} md={4} style={{padding:'8px'}}>
@@ -33,6 +34,7 @@ export default function InfoCard({ rahatChainData}) {
               title="Token Issued"
               total={beneficiaryCount}
               subtitle={'tokens'}
+              sx={sx}
             />
           </Grid>
           <Grid item xs={12} md={4} style={{padding:'8px'}}>
@@ -42,10 +44,10 @@ export default function InfoCard({ rahatChainData}) {
               title="Token Redemed"
               total="0"
               subtitle={'tokens'}
-
+              sx={sx}
             />
           </Grid>
-         </>
+         </Grid>
         
   );
 }

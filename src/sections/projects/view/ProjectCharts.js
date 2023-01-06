@@ -144,7 +144,7 @@ const ProjectChart = ({ projectId }) => {
     <div>
       <Grid container spacing={SPACING.GRID_SPACING}>
         {beneficiariesVillageChartData ? (
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12} md={6}>
             <Barchart
               title="Beneficaries per village"
               chart={beneficiariesVillageChartData}
@@ -155,11 +155,8 @@ const ProjectChart = ({ projectId }) => {
         ) : (
           <></>
         )}
-      </Grid>
-
-      <Grid container spacing={SPACING.GRID_SPACING}>
         {genderWiseDistribution ? (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
           </Grid>
         ) : (
@@ -167,28 +164,32 @@ const ProjectChart = ({ projectId }) => {
         )}
 
         {accessToInternet ? (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Piechart title={accessToInternet.title} chart={accessToInternet} />
           </Grid>
         ) : (
           <></>
         )}
+      </Grid>
+
+      <Grid container spacing={SPACING.GRID_SPACING}>
+        
         {phoneOwnerShip ? (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Piechart title={phoneOwnerShip.title} chart={phoneOwnerShip} />
           </Grid>
         ) : (
           <></>
         )}
         {accessToPhoneChartData ? (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
           </Grid>
         ) : (
           <></>
         )}
         {simcardOwenerShip ? (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Piechart title={simcardOwenerShip.title} chart={simcardOwenerShip} />
           </Grid>
         ) : (
@@ -196,7 +197,7 @@ const ProjectChart = ({ projectId }) => {
         )}
 
         {banked ? (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Piechart title={banked.title} chart={banked} />
           </Grid>
         ) : (
