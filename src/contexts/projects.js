@@ -1,6 +1,8 @@
 import { ProjectService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRahat } from '@services/contracts/useRahat';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 
 const initialState = {
   projects: [],
@@ -29,15 +31,28 @@ const initialState = {
   setRahatResponseStatus: () => {},
   getChartData: () => {},
   getBeneficiariesByvillage: () => {},
+  setFilter: () => {},
+  bulkAssignBeneficiaries: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
 
 export const ProjectProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
+  const rahat = useRahat();
+  const { handleError } = useErrorHandler();
 
   const refreshData = () => setState((prev) => ({ ...prev, refresh: !prev.refresh }));
   const setRahatResponseStatus = (isRahatResponseLive) => setState((prev) => ({ ...prev, isRahatResponseLive }));
+
+  const setFilter = (filter) =>
+    setState((prev) => ({
+      ...prev,
+      pagination: {
+        ...prev.pagination,
+      },
+      filter,
+    }));
 
   const getProjectsList = useCallback(async (params) => {
     const response = await ProjectService.getProjectsList(params);
@@ -75,32 +90,43 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getBeneficiariesByProject = useCallback(async (query) => {
-    let {
-      data: { data },
-    } = await ProjectService.getBeneficiariesByProject(query);
-    console.log(data);
-    const formatted = data?.data?.map((item) => ({
-      ...item,
-      id: item?.id,
-      registrationDate: item?.created_at,
-      hasInternetAccess: item?.hasInternetAccess ? 'Yes' : 'No',
-    }));
+  const getBeneficiariesByProject = useCallback(
+    async (query) => {
+      let filterObj = {
+        ...query,
 
-    setState((prevState) => ({
-      ...prevState,
-      beneficiaries: {
-        data: formatted,
-        count: data?.count,
-        start: data?.start || 0,
-        limit: data?.limit || 50,
-        totalPage: data?.totalPage,
-      },
-    }));
-  }, []);
+        // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
+      };
+      for (const key in state.filter) {
+        filterObj[key] = state.filter[key];
+      }
+
+      let {
+        data: { data },
+      } = await ProjectService.getBeneficiariesByProject(filterObj);
+      const formatted = data?.data?.map((item) => ({
+        ...item,
+        id: item?.id,
+        registrationDate: item?.created_at,
+        hasInternetAccess: item?.hasInternetAccess ? 'Yes' : 'No',
+      }));
+
+      setState((prevState) => ({
+        ...prevState,
+        beneficiaries: {
+          data: formatted,
+          count: data?.count,
+          start: data?.start || 0,
+          limit: data?.limit || 50,
+          totalPage: data?.totalPage,
+        },
+      }));
+    },
+    [state.filter]
+  );
 
   const getVendorsByProject = useCallback(async (projectId) => {
-    const response = await ProjectService.getVendorsByProject(projectId);
+    const response = await ProjectService.getVendorsByProject(projectId.toString());
 
     const formatted = response.data.data;
 
@@ -145,6 +171,24 @@ export const ProjectProvider = ({ children }) => {
     }
   });
 
+  const bulkAssignBeneficiaries = useCallback(async (projectId, numberOfTokens) => {
+    try {
+      const beneficiaryPhones = state.beneficiaries.data
+
+        .map((beneficiary) => beneficiary.phone)
+        .filter((phone) => phone !== 'N/A');
+
+      rahat
+        .bulkAssignTokensToBeneficiaries(projectId, beneficiaryPhones, numberOfTokens)
+        .then((res) => {
+          console.log('res', res);
+        })
+        .catch(handleError);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
   const contextValue = {
     ...state,
     refreshData,
@@ -155,6 +199,8 @@ export const ProjectProvider = ({ children }) => {
     getVendorsByProject,
     getChartData,
     getBeneficiariesByvillage,
+    setFilter,
+    bulkAssignBeneficiaries,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
