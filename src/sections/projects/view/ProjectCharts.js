@@ -26,10 +26,10 @@ const ProjectChart = ({ projectId }) => {
     if (!chartData) return;
     // need to move and  call from utils
     const colors = [
-      theme.palette.primary.main,
       theme.palette.info.main,
-      theme.palette.error.main,
+      theme.palette.primary.main,
       theme.palette.warning.main,
+      theme.palette.error.main,
     ];
 
     chartData.forEach((elem) => {
@@ -142,9 +142,13 @@ const ProjectChart = ({ projectId }) => {
 
   return (
     <div>
+      
+        
+     
+
       <Grid container spacing={SPACING.GRID_SPACING}>
-        {beneficiariesVillageChartData ? (
-          <Grid item xs={12} md={6}>
+      {beneficiariesVillageChartData ? (
+          <Grid item xs={12} md={12}>
             <Barchart
               title="Beneficaries per village"
               chart={beneficiariesVillageChartData}
@@ -155,41 +159,36 @@ const ProjectChart = ({ projectId }) => {
         ) : (
           <></>
         )}
-        {genderWiseDistribution ? (
-          <Grid item xs={12} md={3}>
+      {genderWiseDistribution ? (
+          <Grid item xs={12} md={6}>
             <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
           </Grid>
         ) : (
           <></>
         )}
-
         {accessToInternet ? (
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6}>
             <Piechart title={accessToInternet.title} chart={accessToInternet} />
           </Grid>
         ) : (
           <></>
         )}
-      </Grid>
-
-      <Grid container spacing={SPACING.GRID_SPACING}>
-        
         {phoneOwnerShip ? (
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6}>
             <Piechart title={phoneOwnerShip.title} chart={phoneOwnerShip} />
           </Grid>
         ) : (
           <></>
         )}
         {accessToPhoneChartData ? (
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6}>
             <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
           </Grid>
         ) : (
           <></>
         )}
         {simcardOwenerShip ? (
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6}>
             <Piechart title={simcardOwenerShip.title} chart={simcardOwenerShip} />
           </Grid>
         ) : (
@@ -197,7 +196,7 @@ const ProjectChart = ({ projectId }) => {
         )}
 
         {banked ? (
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6}>
             <Piechart title={banked.title} chart={banked} />
           </Grid>
         ) : (

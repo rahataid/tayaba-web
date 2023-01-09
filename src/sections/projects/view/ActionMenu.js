@@ -27,8 +27,8 @@ export default function ActionMenu({ menuItems, actionTitle }) {
 
   return (
     <div>
-      <Stack sx={{ ml: -10 }} direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-        {roles.isAgencyOrPalika && <ActivateResponse />}
+      <Stack sx={{ ml: -10 }} direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
+        {/* {roles.isAgencyOrPalika && <ActivateResponse />} */}
         <Button
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}

@@ -1,101 +1,117 @@
-import React from 'react';
+import React, {  useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Grid, Stack, Typography, useTheme, } from '@mui/material';
+import { Card, Grid, Stack, Typography, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import ActionMenu from './ActionMenu';
-import AmountForm from '../cash-tracker/AmountForm';
+ import AmountForm from '../cash-tracker/AmountForm';
 import { useRahatAdmin } from '@services/contracts/useRahatAdmin';
 import { useRouter } from 'next/router';
-import useDialog from '@hooks/useDialog';
+
+const  TOKEN_ACTIONS ={
+    TRANSFER:"Transfer",
+    CREATE:"Create"
+};
 
 const TitleCard = (props) => {
     const { singleProject } = useProjectContext();
-    const {  agencyChainData } = useRahatAdmin();
-    const theme = useTheme()
-    const {
-        push,
-        query:{
-            projectId
-        }
-    } = useRouter()
- 
-    const actionTitle = "Actions";
+    const { agencyChainData } = useRahatAdmin();
+    
 
-    const  handlecreateToken = ()=>{
-        const { isDialogShow, showDialog, hideDialog } = useDialog;
+    const {push,query: {projectId}} = useRouter();
 
-        const CashActions = {
-            async acceptCash() {
-              showLoading('cashTrack');
-              await claimCash(agencyChainData.cashAllowance);
-              refreshData();
-              hideLoading('cashTrack');
-            },
-        
-            async sendCashToPalika(amount) {
-              if (amount > agencyChainData?.cashBalance) {
-                alert('Not enough balance to send');
-                return;
-              }
-              showLoading('cashTrack');
-              await sendToPalika(projectId, amount);
-              refreshData();
-              hideLoading('cashTrack');
-            },
-          };
-        return(
-            <AmountForm
-            title="Send Cash to Palika"
-            description={
-              <>
-                Please select the amount you wish to send to palika. Palika has to accept the cash before it is fully
+    const [tokenDialog,setTokenDialog] = useState(false)
+    const [modalData,setModalData] = useState({
+        title:'',
+        description:'',
+        action:''
+    })
+    const TOKEN_MODAL_DATA = {
+        Transfer:{
+            title:"Transfer Token",
+            description: <>
+                Please enter No Of token you wish to transfer . Receiver has to accept the token before it is fully
                 transferred and allowed for disbursement. <br />
                 <br />
-                Your currentBalance is {agencyChainData?.cashBalance}
-              </>
-            }
-            cashBalance={agencyChainData?.cashBalance}
-            approveCashTransfer={CashActions.sendCashToPalika}
-            handleClose={hideDialog}
-            open={true}
-          />
-        )
+                Your remaining token are  {agencyChainData?.cashBalance}
+              </>,
+              action:"Transfer"
+        },
+        Create:{
+            title:"Create Token",
+            description: <>
+                Please enter No Of token you wish to Create  <br />
+                <br />
+                Your have total  {agencyChainData?.cashBalance} tokens
+              </>,
+              action:"Create"
+        }
     }
 
-    const handleBeneficiaryRouteAction = ()=>{
+    
+    const handleCreateTokenModal = (action) => {
+        if(!tokenDialog) return
+       setTokenDialog(prev=>!prev)
+       
+
+    };
+
+    
+
+    const handleBeneficiaryRouteAction = () => {
         push(`/projects/${projectId}/beneficiaries`)
     }
 
-
     const menuItems = [{
-        onclick:"/",
-        name:"Send Token"
+        onclick: '/',
+        name: "Transfer Token"
     },
     {
-        onClick:handlecreateToken,
-        name:"Create Token"
+        onClick: handleCreateTokenModal(),
+        name: "Create Token"
     },
-    {
-        onClick:handleBeneficiaryRouteAction,
-        name:"Beneficiaries"
-    },
-   
-]
+    ]
     return (
-        <Card variant='outlined'style={{ border: `1px solid ${theme.palette.primary.light}` }}>
-            <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-                <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                    <Typography variant="h5" >
-                        {singleProject?.data?.name}
-                    </Typography>
-                </Grid>
-                
-                <Grid container direction="column" justifyContent="center" alignItems="flex-endS">
-                       <ActionMenu   menuItems ={menuItems} actionTitle = {actionTitle}/>
-                </Grid>
-            </Stack>
-        </Card>
+        <>
+          <AmountForm
+                title="Transfer Token"
+                description ={<>
+                    Please enter No Of token you wish to transfer . Receiver has to accept the token before it is fully
+                    transferred and allowed for disbursement. <br />
+                    <br />
+                    Your remaining token are  {agencyChainData?.cashBalance}
+                  </>}
+                  action="Transfer"
+               
+                cashBalance={0}
+                approveCashTransfer={(() => { })}
+               
+                open={tokenDialog}
+            />
+            <Grid item xs={12} md={12}>
+                <Card variant='outlined'>
+                    <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+                        <Grid container direction="column" justifyContent="center" alignItems="flex-endS">
+                            <Button variant='outlined' onClick={handleBeneficiaryRouteAction}> Beneficiaries</Button>
+                        </Grid>
+                        <Grid container direction="column" justifyContent="center" alignItems="flex-endS">
+                            <ActionMenu menuItems={menuItems} actionTitle="Actions" />
+                        </Grid>
+                    </Stack>
+                </Card>
+            </Grid>
+            <Grid item xs={12} md={12}>
+                <Card variant='outlined'>
+                    <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+                        <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+                            <Typography variant="h5" >
+                                {singleProject?.data?.name}
+                            </Typography>
+                        </Grid>
 
+                    </Stack>
+                </Card>
+            </Grid>
+        </>
 
     );
 };

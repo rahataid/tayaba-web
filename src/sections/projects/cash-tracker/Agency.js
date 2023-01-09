@@ -78,7 +78,7 @@ export default function Agency({ rahatChainData }) {
         cashBalance={agencyChainData?.cashBalance}
         approveCashTransfer={CashActions.sendCashToPalika}
         handleClose={hideDialog}
-        open={isDialogShow}
+        open={true}
       />
       <LoadingOverlay open={loading.cashTrack}>
         <Card sx={{ width: '100%', mb: 1 }}>

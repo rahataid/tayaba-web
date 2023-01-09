@@ -1,19 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {CardContent,Card, Chip, Grid, Stack,Box, Typography } from '@mui/material';
+import { Grid} from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
-import moment from 'moment';
 import SummaryCard from '@components/SummaryCard';
 import { useTheme } from '@mui/system';
-import { SPACING } from '@config';
 
 InfoCard.propTypes = {
   rahatChainData: PropTypes.object,
 };
 
 export default function InfoCard({ rahatChainData}) {
-  const { singleProject, isRahatResponseLive, beneficiaryCount } = useProjectContext();
-  const theme = useTheme();
+  const { beneficiaryCount } = useProjectContext();
   const sx= { borderRadius: 2,}
   return (
        <Grid container alignItems="flex-start" justifyContent="center">

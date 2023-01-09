@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
+import {  Grid, Stack, Typography } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 
@@ -8,66 +8,40 @@ BasicInfoCard.propTypes = {
   rahatChainData: PropTypes.object,
 };
 
-export default function BasicInfoCard({ rahatChainData}) {
-  const { singleProject, isRahatResponseLive, beneficiaryCount } = useProjectContext();
-  console.log(singleProject)
+export default function BasicInfoCard({ rahatChainData, ...other }) {
+  const { singleProject } = useProjectContext();
   return (
-    <Stack mt={3}>
-      <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-          <Grid item xs={12} md={6}>
-          <Typography variant="h6"  sx={{ fontWeight: 500 }} >Manager : </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="body3">
-              {singleProject?.data?.projectManager}
-            </Typography>
-           </Grid>
-          </Grid>
-          <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-          <Grid item xs={12} md={6}>
-          <Typography variant="h6"  sx={{ fontWeight: 500 }} >Location : </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="body3">
-              {singleProject?.data?.location}
-            </Typography>
-           </Grid>
-          </Grid>
-          <Grid container direction="row"  alignItems="flex-start">
-          <Grid item xs={12} md={6}>
-              <Typography variant="h6" sx={{ fontWeight: 500 }}>Start Date :</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body3" >
-                {moment(singleProject?.data?.startDate).format('DD MMM, YYYY')}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" sx={{ fontWeight: 500 }}>End Date :</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body3" >
-                {moment(singleProject?.data?.endDate).format('DD MMM, YYYY')}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" sx={{ fontWeight: 500 }}>Created At :</Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body3" >
-                {moment(singleProject?.data?.createdAt).format('DD MMM, YYYY')}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" paddingTop={4}>
-          {isRahatResponseLive ? (
-            <Chip color="success" label="Response Activated" />
-          ) : (
-            <Chip variant="outlined" color="error" label="Response Not Triggered" />
-          )}
-          </Grid>
-            
-                    </Stack>
+   <>
+   <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {singleProject?.data?.projectManager}
 
+            </Typography>
+            <Typography variant="body2">Project Manager</Typography>
+          </Grid>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {singleProject?.data?.location}
+            </Typography>
+            <Typography variant="body2">Location</Typography>
+          </Grid>
+        </Stack>
+        <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {moment(singleProject?.data?.startDate).format('DD MMM, YYYY')}
+
+            </Typography>
+            <Typography variant="body2">Start Date</Typography>
+          </Grid>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {moment(singleProject?.data?.endDate).format('DD MMM, YYYY')}
+            </Typography>
+            <Typography variant="body2">End Date</Typography>
+          </Grid>
+        </Stack>
+        </>
   );
 }

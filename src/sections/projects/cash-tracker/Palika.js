@@ -51,7 +51,6 @@ export default function Palika({ rahatChainData }) {
                 Cash Fund Tracker (Palika)
               </Typography>
             </Stack>
-
             {rahatChainData?.cashAllowance > 0 && (
               <Alert
                 sx={{ mt: 2 }}
@@ -65,7 +64,6 @@ export default function Palika({ rahatChainData }) {
                 You have received ₹ {rahatChainData?.cashAllowance}.
               </Alert>
             )}
-
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
               <Grid container direction="column" justifyContent="center" alignItems="center">
                 <Typography variant="h4" sx={{ fontWeight: 400 }}>

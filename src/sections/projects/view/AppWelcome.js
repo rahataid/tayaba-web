@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Typography, Stack, Grid, Button } from '@mui/material';
 // utils
-import { bgGradient } from '../../../../utils/cssStyles';
-import BasicInfoCard from '../BasicInfoCard';
+import { bgGradient } from '../../../utils/cssStyles';
+import BasicInfoCard from './BasicInfoCard';
 // ----------------------------------------------------------------------
 import { useProjectContext } from '@contexts/projects';
-import MoreInfoCard from '../MoreInfoCard';
+import MoreInfoCard from './MoreInfoCard';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   height: '100%',
   display: 'flex',
   overflow: 'hidden',
   position: 'relative',
-  color: theme.palette.primary.darker,
+  // color: theme.palette.primary.darker,
   borderRadius: Number(theme.shape.borderRadius) * 2,
   flexDirection: 'column',
   [theme.breakpoints.up('md')]: {
@@ -29,7 +29,7 @@ const StyledBg = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
   position: 'absolute',
-  backgroundColor: theme.palette.common.white,
+   backgroundColor: theme.palette.common.white,
   '&:before': {
     top: 0,
     left: 0,
@@ -41,8 +41,8 @@ const StyledBg = styled('div')(({ theme }) => ({
     opacity: 0.2,
     ...bgGradient({
       direction: '135deg',
-      startColor: theme.palette.primary.light,
-      endColor: theme.palette.primary.main,
+      // startColor: theme.palette.primary.light,
+      // endColor: theme.palette.primary.main,
     }),
   },
 }));

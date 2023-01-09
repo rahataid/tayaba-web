@@ -7,8 +7,6 @@ import TabsTable from './TabsTable';
 import { BEN_TABLE_HEAD, MOB_TABLE_HEAD, VEN_TABLE_HEAD, mobilizers } from './tableData';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
-import ListTableToolbar from '../ListTableToolbar';
-import { useAuthContext } from 'src/auth/useAuthContext';
 
 const tabs = [
   { value: 'beneficiaries', label: 'Beneficiaries' },
@@ -17,7 +15,6 @@ const tabs = [
 ];
 
 export default function ViewTabs() {
-  const { roles } = useAuthContext();
   const [value, setValue] = useState('beneficiaries');
   const [start,setStart] = useState(0)
   const {
