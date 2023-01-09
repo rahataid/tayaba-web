@@ -55,8 +55,6 @@ AppWelcome.propTypes = {
 };
 
 export default function AppWelcome({ ...other }) {
-  const { singleProject } = useProjectContext();
-  console.log({ singleProject })
   return (
     <StyledRoot {...other}>
       <Stack
@@ -68,25 +66,16 @@ export default function AppWelcome({ ...other }) {
           py: { xs: 5, md: 0 },
           pr: { xs: 5, md: 0 },
           textAlign: { xs: 'center', md: 'left' },
+          paddingTop:"10px"
         }}
       >
-        <Grid container>
-        <Grid item xs={12} md={6}>
-        <Typography paragraph variant="h4" sx={{ whiteSpace: 'pre-line' }}>
-          {singleProject?.data?.name}
-        </Typography>
-        </Grid>
-        <Grid item spacing={1}xs={12} md={6}>
-        <Button  variant="text"> Beneficaries</Button>
-        <Button variant="text"> Vendors</Button>
-        <Button variant="text"> Mobilizers</Button>
-
-        </Grid>
-
-        </Grid>
-        
-        <BasicInfoCard />
+       
+       <Grid>
+         
+       <BasicInfoCard />
         <MoreInfoCard />
+       </Grid>
+       
       </Stack>
       <StyledBg />
     </StyledRoot>

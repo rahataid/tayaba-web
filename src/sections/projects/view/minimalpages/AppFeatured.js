@@ -138,7 +138,7 @@ function CarouselItem({ item, isActive }) {
         alt={title}
         src={image}
         sx={{
-          height: { xs: 280, xl: 320 },
+          height: { xs: 280, xl: 400 },
         }}
       />
         </a>

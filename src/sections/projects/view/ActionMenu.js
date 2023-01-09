@@ -16,6 +16,7 @@ ActionMenu.propTypes = {
 export default function ActionMenu({ menuItems, actionTitle }) {
   const { roles } = useAuthContext();
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
