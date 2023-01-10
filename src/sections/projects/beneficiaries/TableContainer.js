@@ -1,30 +1,35 @@
 import { Box, Button, Pagination, TableCell, TableRow } from '@mui/material';
-import React, { useEffect } from 'react';
-import ListTableToolbar from './ListTableToolbar';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Iconify from '@components/iconify';
+import { useProjectContext } from '@contexts/projects';
 import ListTable from '@components/table/ListTable';
-import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import moment from 'moment';
-import { useAuthContext } from 'src/auth/useAuthContext';
+import Iconify from '@components/iconify';
+import ListTableToolbar from './ListTableToolbar';
 
 const TableContainer = () => {
-  const router = useRouter();
-  const { roles } = useAuthContext();
+  const {
+    query: { projectId },
+    push,
+  } = useRouter();
 
-  const { getBeneficiariesList, beneficiaries, errorMessage, getAllWards, setPagination, pagination } =
-    useBeneficiaryContext();
-
-  useEffect(() => {
-    getBeneficiariesList();
-  }, [getBeneficiariesList]);
+  const { beneficiaries, getBeneficiariesByProject } = useProjectContext();
+  const [start, setStart] = useState(0);
 
   useEffect(() => {
-    getAllWards();
-  }, [getAllWards]);
+    if (!projectId) return;
+    getBeneficiariesByProject({
+      projectId,
+      start,
+    });
+  }, [projectId]);
 
   const handleView = (id) => () => {
-    router.push(`/beneficiaries/${id}`);
+    push(`/beneficiaries/${id}`);
+  };
+
+  const handlePagination = (event, page) => {
+    let start = (page - 1) * beneficiaries.limit;
+    setStart(start);
   };
 
   // #region Table Headers
@@ -72,9 +77,10 @@ const TableContainer = () => {
   // #endregion
 
   return (
-    <Box>
+    <Box sx={{ p: 1 }}>
       <ListTableToolbar />
-      <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD} errorMessage={errorMessage}>
+
+      <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD}>
         {(rows, tableHeadersList) =>
           rows.map((row) => (
             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -100,13 +106,7 @@ const TableContainer = () => {
           ))
         }
       </ListTable>
-      <Pagination
-        count={beneficiaries?.totalPage}
-        page={+pagination.start}
-        onChange={(e, page) => {
-          setPagination({ start: page, limit: pagination.limit });
-        }}
-      />
+      <Pagination count={beneficiaries?.totalPage} onChange={handlePagination} />
     </Box>
   );
 };

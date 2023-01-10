@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Tab,Card, CardContent,Pagination } from '@mui/material';
+import { Box, Tab, Card, CardContent, Pagination } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -16,29 +16,28 @@ const tabs = [
 
 export default function ViewTabs() {
   const [value, setValue] = useState('beneficiaries');
-  const [start,setStart] = useState(0)
+  const [start, setStart] = useState(0);
   const {
     query: { projectId },
   } = useRouter();
 
-  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject, getChartData, chartData } = useProjectContext();
+  const { beneficiaries, getBeneficiariesByProject, vendors, getVendorsByProject, getChartData, chartData } =
+    useProjectContext();
   useEffect(() => {
     if (!projectId || value !== 'beneficiaries') return;
-    getBeneficiariesByProject({projectId,start});
-  }, [projectId, getBeneficiariesByProject, value,start]);
+    getBeneficiariesByProject({ projectId, start });
+  }, [projectId, getBeneficiariesByProject, value, start]);
 
   useEffect(() => {
     if (!projectId || value !== 'vendors') return;
     getVendorsByProject(projectId);
   }, [projectId, getVendorsByProject, value]);
 
-
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const handlePagination = (event, page) => {
-    let start = (page-1)*beneficiaries.limit
+    let start = (page - 1) * beneficiaries.limit;
     setStart(start);
   };
 
@@ -62,7 +61,7 @@ export default function ViewTabs() {
                 })}
                 tableHead={BEN_TABLE_HEAD}
               />
-               <Pagination count={beneficiaries?.totalPage} onChange={handlePagination}/>
+              <Pagination count={beneficiaries?.totalPage} onChange={handlePagination} />
             </TabPanel>
             <TabPanel value="vendors">
               {' '}

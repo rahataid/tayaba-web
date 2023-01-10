@@ -1,16 +1,18 @@
 // import PropTypes from 'prop-types';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 // components
-import ListSearchField from './ListSearchField.js';
+import ListSearchField from '../ListSearchField';
 // import ListSelectFilter from './SelectFilter';
-import { useBeneficiaryContext } from '@contexts/beneficiaries.js';
+import { useProjectContext } from '@contexts/projects';
+import BulkAssign from './BulkAssign';
+import { SPACING } from '@config';
 
 // ----------------------------------------------------------------------
 
 ListTableToolbar.propTypes = {};
 
 export default function ListTableToolbar() {
-  const { filter, setFilter } = useBeneficiaryContext();
+  const { filter, setFilter } = useProjectContext();
 
   const onSearch = (e) => {
     const { name, value } = e.target;
@@ -49,9 +51,21 @@ export default function ListTableToolbar() {
         )}
       </Stack>
 
-      <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 0 }} justifyContent={'flex-end'}>
+      <Stack
+        spacing={SPACING.GRID_SPACING}
+        direction={{ xs: 'column', sm: 'row' }}
+        sx={{ py: 2.5, px: 0 }}
+        justifyContent={'center'}
+      >
         <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
         <ListSearchField label={'Enter Name'} value={filter?.name || ''} onChange={onSearch} name={'name'} />
+        <Box
+          sx={{
+            width: '25%',
+          }}
+        >
+          <BulkAssign />
+        </Box>
       </Stack>
     </>
   );
