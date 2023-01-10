@@ -13,12 +13,12 @@ import { getFlickrImages } from '@services/flickr';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { role } from 'src/_mock/assets';
 
-import AppFeatured  from './AppFeatured';
+import ImageSlider  from './ImageSlider';
 import AppWelcome  from './AppWelcome';
 import TitleCard from './TitleCard';
 import  SummaryTracker  from '@sections/cash-tracker/tracker/SummaryTracker';
 const ProjectView = () => {
-  const { refresh, refreshData, getProjectById } = useProjectContext();
+  const { refresh, refreshData, getProjectById,singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const [flickImages, setFlickImages] = useState([])
@@ -79,7 +79,7 @@ const ProjectView = () => {
     <Grid item xs={12} md={8}>
       <Grid container spacing={SPACING.GRID_SPACING}>
         <Grid item xs={12} md={12}>
-          <AppFeatured list={flickImages} />
+          <ImageSlider list={flickImages} projectName={singleProject?.data?.name}/>
           <Stack mt={5} mb={2}>
           <SummaryTracker/>
           </Stack>

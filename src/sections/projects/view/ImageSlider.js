@@ -19,17 +19,17 @@ const StyledOverlay = styled('div')(({ theme }) => ({
   bottom: 0,
   zIndex: 8,
   position: 'absolute',
-  backgroundColor: alpha(theme.palette.grey[900], 0.64),
+  // backgroundColor: alpha(theme.palette.grey[900], 0.64),
   borderRadius: Number(theme.shape.borderRadius) * 2,
 }));
 
 // ----------------------------------------------------------------------
 
-AppFeatured.propTypes = {
+ImageSlider.propTypes = {
   list: PropTypes.array,
 };
 
-export default function AppFeatured({ list, ...other }) {
+export default function ImageSlider({ list, projectName,...other }) {
   const theme = useTheme();
 
   const carouselRef = useRef(null);
@@ -39,8 +39,8 @@ export default function AppFeatured({ list, ...other }) {
   const carouselSettings = {
     speed: 800,
     dots: false,
-    arrows: true,
-    autoplay: true,
+    arrows: false,
+    autoplay: false,
     slidesToShow: 1,
     slidesToScroll: 1,
     rtl: Boolean(theme.direction === 'rtl'),
@@ -66,17 +66,18 @@ export default function AppFeatured({ list, ...other }) {
   return (
     <Card {...other} style={{   borderRadius: Number(theme.shape.borderRadius) * 2,
     }}>
+     
       <Carousel ref={carouselRef} {...carouselSettings}>
         {list.map((app, index) => (
-          <CarouselItem key={app.id} item={app} isActive={index === currentIndex} />
+          <CarouselItem key={app.id} item={app} isActive={index === currentIndex} projectName={projectName} />
         ))}
       </Carousel>
 
-      <CarouselArrows
+      {/* <CarouselArrows
         onNext={handleNext}
         onPrevious={handlePrev}
-        sx={{ top: 8, right: 8, position: 'absolute', color: 'common.white' }}
-      />
+        sx={{ buttom: 8, right: 0, position: 'absolute', color: 'common.white' }}
+      /> */}
     </Card>
   );
 }
@@ -92,13 +93,36 @@ CarouselItem.propTypes = {
   }),
 };
 
-function CarouselItem({ item, isActive }) {
+function CarouselItem({ item, isActive,projectName }) {
   const { image, title, description } = item;
+  const theme = useTheme();
 
   return (
     <MotionContainer action animate={isActive} sx={{ position: 'relative' }}>
       <Link href="/photo-gallery">
         <a>
+        <Stack
+        spacing={1}
+        sx={{ top: 1, 
+          width: 1,
+          bottom: 0,
+          zIndex: 9,
+          textAlign: 'center',
+          position: 'absolute',
+          color: 'common.white',
+         
+         }}
+          
+      >
+         <m.div variants={varFade().inRight}>
+          <Typography variant="h5" component="div"  sx={{ backgroundColor: alpha(theme.palette.grey[900], 0.64), width: 1,p:2}}>
+           {projectName}
+          </Typography>
+        </m.div>
+
+
+      </Stack>
+
       <Stack
         spacing={1}
         sx={{
@@ -112,25 +136,19 @@ function CarouselItem({ item, isActive }) {
         }}
       >
          <m.div variants={varFade().inRight}>
-          <Typography variant="overline" component="div" sx={{ opacity: 0.48 }}>
+          <Typography variant="overline" component="div" sx={{ opacity: 0.88 }}>
             Featured  Images
           </Typography>
         </m.div>
 
-        {/* <m.div variants={varFade().inRight}>
-          <Link color="inherit" underline="none">
-            <Typography variant="h6" noWrap>
-              {title}
-            </Typography>
-          </Link>
-        </m.div> */}
 
         <m.div variants={varFade().inRight}>
           <Typography variant="body2" noWrap>
             {title}
           </Typography>
         </m.div>
-      </Stack>
+         </Stack> 
+     
 
       <StyledOverlay />
 
