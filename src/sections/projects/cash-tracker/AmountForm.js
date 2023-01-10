@@ -16,14 +16,13 @@ AmountForm.propTypes = {
   title: PropTypes.string,
 };
 
-export default function AmountForm({ approveCashTransfer, title, description, open, handleClose ,action}) {
+export default function AmountForm({ approveCashTransfer, title, description, open, handleClose }) {
   const [amount, setAmount] = useState('');
   const handleSendCash = async (e) => {
     handleClose();
     await approveCashTransfer(amount);
     setAmount('');
   };
-  const labelName = action?`${action} Token`:""
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
@@ -34,7 +33,7 @@ export default function AmountForm({ approveCashTransfer, title, description, op
             autoFocus
             margin="dense"
             id="name"
-            label={labelName}
+            label="Budget to add"
             type="number"
             fullWidth
             variant="outlined"
@@ -45,7 +44,7 @@ export default function AmountForm({ approveCashTransfer, title, description, op
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSendCash} disabled={amount === '' || amount < 1}>
-            {action}
+            Add
           </Button>
         </DialogActions>
       </Dialog>

@@ -49,12 +49,12 @@ const StyledBg = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-AppWelcome.propTypes = {
+ProjectDetail.propTypes = {
 
   projectId: PropTypes.string,
 };
 
-export default function AppWelcome({ ...other }) {
+export default function ProjectDetail({ ...other }) {
   return (
     <StyledRoot {...other}>
       <Stack
@@ -66,16 +66,13 @@ export default function AppWelcome({ ...other }) {
           py: { xs: 5, md: 0 },
           pr: { xs: 5, md: 0 },
           textAlign: { xs: 'center', md: 'left' },
-          paddingTop:"10px"
+          paddingTop: '10px',
         }}
       >
-       
-       <Grid>
-         
-       <BasicInfoCard />
-        <MoreInfoCard />
-       </Grid>
-       
+        <Grid>
+          <BasicInfoCard />
+          <MoreInfoCard />
+        </Grid>
       </Stack>
       <StyledBg />
     </StyledRoot>

@@ -26,10 +26,10 @@ const ProjectChart = ({ projectId }) => {
     if (!chartData) return;
     // need to move and  call from utils
     const colors = [
-      theme.palette.info.main,
-      theme.palette.primary.main,
-      theme.palette.warning.main,
-      theme.palette.error.main,
+      theme.palette.info.light,
+      theme.palette.primary.light,
+      theme.palette.warning.light,
+      theme.palette.error.light,
     ];
 
     chartData.forEach((elem) => {
@@ -44,7 +44,7 @@ const ProjectChart = ({ projectId }) => {
           }
         });
         const data = {
-          title: selectedVillage?`Access To Internet (${selectedVillage})`:'Access To Internet',
+          title: selectedVillage ? `Access To Internet (${selectedVillage})` : 'Access To Internet',
           colors: colors,
           series: series,
         };
@@ -60,7 +60,7 @@ const ProjectChart = ({ projectId }) => {
           }
         });
         const data = {
-          title: selectedVillage?` Access to Phone (${selectedVillage})`:` Access to Phone`,
+          title: selectedVillage ? ` Access to Phone (${selectedVillage})` : ` Access to Phone`,
           colors: colors,
           series: series,
         };
@@ -80,7 +80,7 @@ const ProjectChart = ({ projectId }) => {
           }
         });
         const data = {
-          title:  selectedVillage?`Gender-wise Distribution (${selectedVillage})`:`Gender-wise Distribution`,
+          title: selectedVillage ? `Gender-wise Distribution (${selectedVillage})` : `Gender-wise Distribution`,
           colors: colors,
           series: series,
         };
@@ -93,7 +93,7 @@ const ProjectChart = ({ projectId }) => {
           if (!obj.isBanked) series.push({ label: 'UnBanked', value: obj.count });
         });
         const data = {
-          title:  selectedVillage?`Banked or Unbanked (${selectedVillage})`:'Banked or Unbanked',
+          title: selectedVillage ? `Banked or Unbanked (${selectedVillage})` : 'Banked or Unbanked',
           colors: colors,
           series: series,
         };
@@ -105,7 +105,7 @@ const ProjectChart = ({ projectId }) => {
           series.push({ label: obj.phoneOwnedBy, value: obj.count });
         });
         const data = {
-          title: selectedVillage?`Phone Ownership (${selectedVillage})`:'Phone Ownership',
+          title: selectedVillage ? `Phone Ownership (${selectedVillage})` : 'Phone Ownership',
           colors: colors,
           series: series,
         };
@@ -117,7 +117,7 @@ const ProjectChart = ({ projectId }) => {
           series.push({ label: obj.simRegisteredUnder, value: obj.count });
         });
         const data = {
-          title: selectedVillage?`Sim Card Ownership (${selectedVillage})`:'Sim Card Ownership',
+          title: selectedVillage ? `Sim Card Ownership (${selectedVillage})` : 'Sim Card Ownership',
           colors: colors,
           series: series,
         };
@@ -142,12 +142,8 @@ const ProjectChart = ({ projectId }) => {
 
   return (
     <div>
-      
-        
-     
-
       <Grid container spacing={SPACING.GRID_SPACING}>
-      {beneficiariesVillageChartData ? (
+        {beneficiariesVillageChartData ? (
           <Grid item xs={12} md={12}>
             <Barchart
               title="Beneficaries per village"
@@ -159,7 +155,7 @@ const ProjectChart = ({ projectId }) => {
         ) : (
           <></>
         )}
-      {genderWiseDistribution ? (
+        {genderWiseDistribution ? (
           <Grid item xs={12} md={6}>
             <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
           </Grid>

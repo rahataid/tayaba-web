@@ -16,12 +16,12 @@ CreateTokenDialog.propTypes = {
   title: PropTypes.string,
 };
 
-export default function CreateTokenDialog({ approveCashTransfer, title, description, open, handleClose ,action}) {
-  const [amount, setAmount] = useState('');
-  const handleSendCash = async (e) => {
+export default function CreateTokenDialog({ approveCreateToken, description, open, handleClose }) {
+  const [token, setToken] = useState('');
+  const handleCreateToken = async (e) => {
     handleClose();
-    await approveCashTransfer(amount);
-    setAmount('');
+    await approveCreateToken(token);
+    setToken('');
   };
   return (
     <div>
@@ -37,13 +37,13 @@ export default function CreateTokenDialog({ approveCashTransfer, title, descript
             type="number"
             fullWidth
             variant="outlined"
-            onChange={(e) => setAmount(e.target.value)}
-            value={amount}
+            onChange={(e) => setToken(e.target.value)}
+            value={token}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSendCash} disabled={amount === '' || amount < 1}>
+          <Button onClick={handleCreateToken} disabled={token === '' || token < 1}>
            Create Token
           </Button>
         </DialogActions>
