@@ -71,11 +71,9 @@ export const SPACING = {
 };
 
 export const ROLES = {
-  AGENCY: 'Admin',
-  DONOR: 'Donor',
-  MANAGER: 'Manager',
-  MOBILIZER: 'Mobilizer',
-  PALIKA: 'Palika',
+  TAYABA : 'Tayaba',
+  SRSO : 'SRSO',
+  USER : 'User',
 };
 
 export const CONTRACTS = {
@@ -89,4 +87,14 @@ export const CONTRACTS = {
   ERC20: 'rahat_erc20',
 };
 
-export const CHARTDATATYPES= ['hasInternetAccess','hasPhone','gender','bankAccountType','isBanked','phoneOwnedBy','simRegisteredUnder']
+export const NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY = '1';
+
+export const CHARTDATATYPES = [
+  'hasInternetAccess',
+  'hasPhone',
+  'gender',
+  'bankAccountType',
+  'isBanked',
+  'phoneOwnedBy',
+  'simRegisteredUnder',
+];

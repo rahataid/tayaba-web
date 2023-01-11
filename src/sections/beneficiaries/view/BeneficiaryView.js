@@ -81,12 +81,12 @@ export default function BeneficiaryView() {
             <MoreInfoCard />
           </Grid> */}
       </Grid>
-      {roles.isAgencyOrPalika() && (
+      {roles.isTayaba() && (
         <Stack>
           <MoreInfoCard />
         </Stack>
       )}
-      {roles.isAgencyOrPalika() && (
+      {roles.isTayaba() && (
         <Stack sx={{ mt: 1 }}>
           <ProjectsInvolved />
         </Stack>

@@ -16,7 +16,7 @@ export default function BasicInfoCard({ chainData }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            {roles.isPalika ? singleBeneficiary?.data?.name : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
+            {roles.isTayaba ? singleBeneficiary?.data?.name : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           <div>
             {chainData?.totalTokenIssued ? (
@@ -47,6 +47,25 @@ export default function BasicInfoCard({ chainData }) {
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Typography variant="h4">{singleBeneficiary?.data?.gender}</Typography>
             <Typography variant="body2">Gender</Typography>
+          </Grid>
+           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h4">{singleBeneficiary?.data?.email}</Typography>
+            <Typography variant="body2">Email</Typography>
+          </Grid> 
+        </Stack>
+
+        <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h4">{singleBeneficiary?.data?.address?.district}</Typography>
+            <Typography variant="body2">District</Typography>
+          </Grid>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h4">{singleBeneficiary?.data?.address?.taluka}</Typography>
+            <Typography variant="body2">Taluka</Typography>
+          </Grid>
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+            <Typography variant="h4">{singleBeneficiary?.data?.address?.village}</Typography>
+            <Typography variant="body2">Village</Typography>
           </Grid>
         </Stack>
       </CardContent>

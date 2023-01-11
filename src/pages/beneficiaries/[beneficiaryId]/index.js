@@ -22,7 +22,7 @@ const BeneficiaryView = () => {
 
   return (
     <BeneficiaryProvider>
-      <Page title={PAGE_TITLE} nocard action={roles.isPalika && <ActionMenu actionTitle={'Actions'} />}>
+      <Page title={PAGE_TITLE} nocard action={roles.isTayaba && <ActionMenu actionTitle={'Actions'} />}>
         <Container maxWidth={themeStretch ? false : 'xl'}>
           <BeneficiaryViewComp />
         </Container>

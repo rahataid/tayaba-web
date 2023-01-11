@@ -32,7 +32,7 @@ export default function TokenDetails() {
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="h4">{chainData?.cashBalance || 0}</Typography>
-            <Typography variant="body2">Cash Received</Typography>
+            <Typography variant="body2">Token Received</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="h4">{chainData?.totalTokenIssued || 0}</Typography>

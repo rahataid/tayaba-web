@@ -35,15 +35,9 @@ export default function ProjectView(props) {
 
   return (
     <ProjectProvider>
-      <Page
-        title={PAGE_TITLE}
-        nocard
-        action={roles.isAgencyOrPalika() && <ActionMenu menuItems={actionMenuItems} actionTitle={'Actions'} />}
-      >
         <Container maxWidth={themeStretch ? false : 'xl'}>
           <ProjectViewComp />
         </Container>
-      </Page>
     </ProjectProvider>
   );
 }
