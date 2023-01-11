@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-AmountForm.propTypes = {
+CreateTokenDialog.propTypes = {
   approveCashTransfer: PropTypes.func,
   handleClose: PropTypes.func,
   open: PropTypes.bool,
@@ -16,35 +16,35 @@ AmountForm.propTypes = {
   title: PropTypes.string,
 };
 
-export default function AmountForm({ approveCashTransfer, title, description, open, handleClose }) {
-  const [amount, setAmount] = useState('');
-  const handleSendCash = async (e) => {
+export default function CreateTokenDialog({ approveCreateToken, description, open, handleClose }) {
+  const [token, setToken] = useState('');
+  const handleCreateToken = async (e) => {
     handleClose();
-    await approveCashTransfer(amount);
-    setAmount('');
+    await approveCreateToken(token);
+    setToken('');
   };
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{title}</DialogTitle>
+        <DialogTitle>Create Token</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>{description}</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Budget to add"
+            label="Create Token"
             type="number"
             fullWidth
             variant="outlined"
-            onChange={(e) => setAmount(e.target.value)}
-            value={amount}
+            onChange={(e) => setToken(e.target.value)}
+            value={token}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSendCash} disabled={amount === '' || amount < 1}>
-            Add
+          <Button onClick={handleCreateToken} disabled={token === '' || token < 1}>
+           Create Token
           </Button>
         </DialogActions>
       </Dialog>
