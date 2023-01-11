@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Stack, Grid, Button } from '@mui/material';
+import { Stack, Grid } from '@mui/material';
 // utils
 import { bgGradient } from '../../../utils/cssStyles';
 import BasicInfoCard from './BasicInfoCard';
 // ----------------------------------------------------------------------
-import { useProjectContext } from '@contexts/projects';
 import MoreInfoCard from './MoreInfoCard';
 
 const StyledRoot = styled('div')(({ theme }) => ({
@@ -29,7 +28,7 @@ const StyledBg = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
   position: 'absolute',
-   backgroundColor: theme.palette.common.white,
+  backgroundColor: theme.palette.common.white,
   '&:before': {
     top: 0,
     left: 0,
@@ -50,7 +49,6 @@ const StyledBg = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 ProjectDetail.propTypes = {
-
   projectId: PropTypes.string,
 };
 

@@ -29,7 +29,7 @@ ImageSlider.propTypes = {
   list: PropTypes.array,
 };
 
-export default function ImageSlider({ list, projectName,...other }) {
+export default function ImageSlider({ list, projectName, ...other }) {
   const theme = useTheme();
 
   const carouselRef = useRef(null);
@@ -50,7 +50,6 @@ export default function ImageSlider({ list, projectName,...other }) {
         top: 20,
         left: 20,
         position: 'absolute',
-
       },
     }),
   };
@@ -64,9 +63,7 @@ export default function ImageSlider({ list, projectName,...other }) {
   };
 
   return (
-    <Card {...other} style={{   borderRadius: Number(theme.shape.borderRadius) * 2,
-    }}>
-     
+    <Card {...other} style={{ borderRadius: Number(theme.shape.borderRadius) * 2 }}>
       <Carousel ref={carouselRef} {...carouselSettings}>
         {list.map((app, index) => (
           <CarouselItem key={app.id} item={app} isActive={index === currentIndex} projectName={projectName} />
@@ -93,7 +90,7 @@ CarouselItem.propTypes = {
   }),
 };
 
-function CarouselItem({ item, isActive,projectName }) {
+function CarouselItem({ item, isActive, projectName }) {
   const { image, title, description } = item;
   const theme = useTheme();
 
@@ -101,64 +98,63 @@ function CarouselItem({ item, isActive,projectName }) {
     <MotionContainer action animate={isActive} sx={{ position: 'relative' }}>
       <Link href="/photo-gallery">
         <a>
-        <Stack
-        spacing={1}
-        sx={{ top: 1, 
-          width: 1,
-          bottom: 0,
-          zIndex: 9,
-          textAlign: 'center',
-          position: 'absolute',
-          color: 'common.white',
-         
-         }}
-          
-      >
-         <m.div variants={varFade().inRight}>
-          <Typography variant="h5" component="div"  sx={{ backgroundColor: alpha(theme.palette.grey[900], 0.64), width: 1,p:2}}>
-           {projectName}
-          </Typography>
-        </m.div>
+          <Stack
+            spacing={1}
+            sx={{
+              top: 1,
+              width: 1,
+              bottom: 0,
+              zIndex: 9,
+              textAlign: 'center',
+              position: 'absolute',
+              color: 'common.white',
+            }}
+          >
+            <m.div variants={varFade().inRight}>
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{ backgroundColor: alpha(theme.palette.grey[900], 0.64), width: 1, p: 2 }}
+              >
+                {projectName}
+              </Typography>
+            </m.div>
+          </Stack>
 
+          <Stack
+            spacing={1}
+            sx={{
+              p: 3,
+              width: 1,
+              bottom: 0,
+              zIndex: 9,
+              textAlign: 'left',
+              position: 'absolute',
+              color: 'common.white',
+            }}
+          >
+            <m.div variants={varFade().inRight}>
+              <Typography variant="overline" component="div" sx={{ opacity: 0.88 }}>
+                Featured Images
+              </Typography>
+            </m.div>
 
-      </Stack>
+            <m.div variants={varFade().inRight}>
+              <Typography variant="body2" noWrap>
+                {title}
+              </Typography>
+            </m.div>
+          </Stack>
 
-      <Stack
-        spacing={1}
-        sx={{
-          p: 3,
-          width: 1,
-          bottom: 0,
-          zIndex: 9,
-          textAlign: 'left',
-          position: 'absolute',
-          color: 'common.white',
-        }}
-      >
-         <m.div variants={varFade().inRight}>
-          <Typography variant="overline" component="div" sx={{ opacity: 0.88 }}>
-            Featured  Images
-          </Typography>
-        </m.div>
+          <StyledOverlay />
 
-
-        <m.div variants={varFade().inRight}>
-          <Typography variant="body2" noWrap>
-            {title}
-          </Typography>
-        </m.div>
-         </Stack> 
-     
-
-      <StyledOverlay />
-
-      <Image
-        alt={title}
-        src={image}
-        sx={{
-          height: { xs: 280, xl: 400 },
-        }}
-      />
+          <Image
+            alt={title}
+            src={image}
+            sx={{
+              height: { xs: 280, xl: 400 },
+            }}
+          />
         </a>
       </Link>
     </MotionContainer>
