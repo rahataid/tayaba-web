@@ -20,10 +20,8 @@ const MoreInfoCard = () => {
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{singleBeneficiary?.data?.ward}</Typography>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Typography variant="body2">Ward</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.phoneType}</Typography>
+                  <Typography variant="body2">Phone Type</Typography>
                 </Grid>
               </Grid>
             </Stack>
@@ -43,17 +41,13 @@ const MoreInfoCard = () => {
             </Stack>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Typography variant="body1">{moment(singleBeneficiary?.data?.dob).fromNow(true)}</Typography>
-                <Typography variant="body2">Age</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.bankAccount}</Typography>
+                <Typography variant="body2">Bank Account</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{'40+'}</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.unionCouncil}</Typography>
+                  <Typography variant="body2">Union Council</Typography>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                  <Typography variant="body2">Category</Typography>
-                </Grid>
-              </Grid>
             </Stack>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
@@ -62,24 +56,32 @@ const MoreInfoCard = () => {
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{singleBeneficiary?.govtId}</Typography>
-                </Grid>
-                <Grid item xs={12} md={12}>
+                  <Typography variant="body1">{singleBeneficiary?.data?.cnicNumber}</Typography>
                   <Typography variant="body2">Government ID</Typography>
                 </Grid>
               </Grid>
             </Stack>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Typography variant="body1">{singleBeneficiary?.education}</Typography>
-                <Typography variant="body2">Education</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.phoneOwnedBy}</Typography>
+                <Typography variant="body2">Phone Owner</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{singleBeneficiary?.profession}</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.simRegisteredUnder}</Typography>
+                  <Typography variant="body2">SIM Owner</Typography>
                 </Grid>
+              </Grid>
+            </Stack>
+            <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
+              <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+                <Typography variant="body1">{singleBeneficiary?.data?.dailyWaterConsumption}</Typography>
+                <Typography variant="body2">Daily Water Consumption</Typography>
+              </Grid>
+              <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body2">Profession</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.dailyDistanceCovered}</Typography>
+                  <Typography variant="body2">Daily Distance Covered</Typography>
                 </Grid>
               </Grid>
             </Stack>
@@ -121,7 +123,7 @@ const MoreInfoCard = () => {
                 </Grid>
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                   <Grid item xs={12} md={12}>
-                    <Typography variant="body1">{singleBeneficiary?.bankAccountNumber}</Typography>
+                    <Typography variant="body1">{singleBeneficiary?.data?.bankAccount}</Typography>
                   </Grid>
                   <Grid item xs={12} md={12}>
                     <Typography variant="body2">Bank Account Number</Typography>
