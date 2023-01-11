@@ -7,9 +7,9 @@ import OppositeContentTimeline from '@components/Timeline';
 const MoreInfoCard = () => {
   const { singleBeneficiary } = useBeneficiaryContext();
   const timelineData = [
-    {event : "OTP", date : "Fri Jun 17 2022 10:54:59" },
-    {event : "Beneficiary Claim", date : "Fri Jun 17 2022 10:54:59"},
-    {event : "Token Sent", date : "Fri Jun 17 2022 10:54:59"},
+    {event : "OTP", date : "Fri Jan 06 2023 10:54:59" },
+    {event : "Beneficiary Claim", date : "Fri Jan 06 2023 12:00:00"},
+    {event : "Token Sent", date : "Sun Jun 08 2023 1:25:00"},
   ]
 
   return (
