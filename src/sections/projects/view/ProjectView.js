@@ -1,8 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Card, Grid, Stack, Alert, Typography } from '@mui/material';
+import { Grid, Stack, Alert } from '@mui/material';
 import InfoCard from './InfoCard';
-
-import { PalikaCash, DonorCash, AgencyCash } from '../cash-tracker';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
 import { useRahat } from '@services/contracts/useRahat';
@@ -10,12 +8,11 @@ import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
 import { getFlickrImages } from '@services/flickr';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { role } from 'src/_mock/assets';
 import ImageSlider from './ImageSlider';
 import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
 import SummaryTracker from '@sections/cash-tracker/tracker/SummaryTracker';
+
 const ProjectView = () => {
   const { refresh, refreshData, getProjectById, singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
@@ -64,7 +61,7 @@ const ProjectView = () => {
     if (!projectId) return;
     setAlert({
       type: 'success',
-      message: 'Sucessfully    Transfered Token',
+      message: 'Sucessfully Transfered Token',
     });
     getProjectById(projectId);
   }, [projectId]);
@@ -91,6 +88,7 @@ const ProjectView = () => {
       <Grid item xs={12} md={4}>
         <Grid container spacing={3}>
           <TitleCard rahatChainData={rahatChainData} />
+          {/* TODO: make it dynamic */}
           {false && (
             <Grid item xs={12} md={12}>
               <Alert severity={alert.type}> {alert?.message} </Alert>

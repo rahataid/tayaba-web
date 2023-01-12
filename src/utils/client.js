@@ -4,7 +4,7 @@ import { TAYABA_BACKEND } from '@config';
 
 import { getAccessToken } from './sessionManager';
 
-const accessToken = getAccessToken();
+const access_token = getAccessToken();
 
 const api = axios.create({
   //   baseURL: 'https://minimal-assets-api-dev.vercel.app',
@@ -13,6 +13,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
     access_token : accessToken,
+
     // report_token: '6E4(WdnI5ukyHDaqy-AKEZvT$7JDnrQG',
   },
   // paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),

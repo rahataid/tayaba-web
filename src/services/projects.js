@@ -1,5 +1,6 @@
 import clientApi from '@utils/client';
 import qs from 'query-string';
+
 export const ProjectService = {
   getProjectsList(params) {
     return clientApi.get('/projects', {
@@ -28,22 +29,23 @@ export const ProjectService = {
   },
   getChartData(params, query) {
     return Promise.all(
-      params.map((obj) => {
-        return new Promise((resolve, reject) => {
-          clientApi
-            .get(`/reports/piechart/${obj}?${qs.stringify(query)}`)
-            .then(({ data }) => {
-              let response = {
-                chart: obj,
-                data: data.data,
-              };
-              resolve(response);
-            })
-            .catch((err) => {
-              reject(err);
-            });
-        });
-      })
+      params.map(
+        (obj) =>
+          new Promise((resolve, reject) => {
+            clientApi
+              .get(`/reports/piechart/${obj}?${qs.stringify(query)}`)
+              .then(({ data }) => {
+                let response = {
+                  chart: obj,
+                  data: data.data,
+                };
+                resolve(response);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          })
+      )
     );
   },
 };
