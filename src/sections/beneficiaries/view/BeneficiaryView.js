@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useRahat } from '@services/contracts/useRahat';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import ActionMenu from './ActionMenu';
 
 BeneficiaryView.propTypes = {};
 
@@ -71,26 +72,27 @@ export default function BeneficiaryView() {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={8}>
           <BasicInfoCard chainData={chainData} />
+          {roles.isTayaba() && (
+            <Stack>
+              <MoreInfoCard />
+            </Stack>
+          )}
+          {/* {roles.isTayaba() && (
+            <Stack sx={{ mt: 1 }}>
+              <ProjectsInvolved />
+            </Stack>
+          )} */}
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <TokenDetails />
         </Grid>
         {/* <Grid item xs={12} md={4}>
             <MoreInfoCard />
           </Grid> */}
       </Grid>
-      {roles.isTayaba() && (
-        <Stack>
-          <MoreInfoCard />
-        </Stack>
-      )}
-      {roles.isTayaba() && (
-        <Stack sx={{ mt: 1 }}>
-          <ProjectsInvolved />
-        </Stack>
-      )}
+
       <Stack sx={{ mt: 1 }}>
         <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={claimLogs} />
       </Stack>
