@@ -3,7 +3,6 @@ import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
 import MoreInfoCard from './MoreInfoCard';
-import ProjectsInvolved from './ProjectsInvolved';
 import { HistoryTable } from '@sections/transactionTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
@@ -84,11 +83,6 @@ export default function BeneficiaryView() {
       {roles.isTayaba() && (
         <Stack>
           <MoreInfoCard />
-        </Stack>
-      )}
-      {roles.isTayaba() && (
-        <Stack sx={{ mt: 1 }}>
-          <ProjectsInvolved />
         </Stack>
       )}
       <Stack sx={{ mt: 1 }}>
