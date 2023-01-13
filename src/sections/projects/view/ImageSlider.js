@@ -114,7 +114,13 @@ function CarouselItem({ item, isActive, projectName }) {
               <Typography
                 variant="h5"
                 component="div"
-                sx={{ backgroundColor: alpha(theme.palette.grey[900], 0.64), width: 1, p: 2 }}
+                sx={{
+                  backgroundColor: alpha(theme.palette.grey[900], 0.64),
+                  width: 1,
+                  p: 1,
+                  textAlign: 'left',
+                  position: 'absolute',
+                }}
               >
                 {projectName}
               </Typography>
