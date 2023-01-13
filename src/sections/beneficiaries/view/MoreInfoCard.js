@@ -2,9 +2,16 @@ import React from 'react';
 import { Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import moment from 'moment';
+import OppositeContentTimeline from '@components/Timeline';
 
 const MoreInfoCard = () => {
   const { singleBeneficiary } = useBeneficiaryContext();
+  const timelineData = [
+    {event : "OTP", date : "Fri Jan 06 2023 10:54:59" },
+    {event : "Beneficiary Claim", date : "Fri Jan 06 2023 12:00:00"},
+    {event : "Token Sent", date : "Sun Jun 08 2023 1:25:00"},
+  ]
+
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
@@ -87,13 +94,7 @@ const MoreInfoCard = () => {
             </Stack>
           </Grid>
           <Grid item xs={12} md={6} lg={6} alignContent="flex-end">
-            <Box component="img" alt={'empty'} src={`/assets/illustrations/id-icon.png`} />
-            <Grid container direction="column" justifyContent="flex-start" alignItems="center" sx={{ mt: 1 }}>
-              <Typography variant="body1">
-                {moment(singleBeneficiary?.registrationDate).format('MMMM Do YYYY, h:mm:ss a')}
-              </Typography>
-              <Typography variant="body2">Registration Date</Typography>
-            </Grid>
+          <OppositeContentTimeline timelineData={timelineData}/>
           </Grid>
         </Grid>
         <Box sx={{ mt: 2 }}>

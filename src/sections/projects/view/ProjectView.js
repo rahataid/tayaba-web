@@ -1,8 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Card, Grid, Stack, Alert, Typography, CardHeader } from '@mui/material';
+import { Grid, Stack, Alert } from '@mui/material';
 import InfoCard from './InfoCard';
-
-import { PalikaCash, DonorCash, AgencyCash } from '../cash-tracker';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
 import { useRahat } from '@services/contracts/useRahat';
@@ -10,8 +8,6 @@ import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
 import { getFlickrImages } from '@services/flickr';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { role } from 'src/_mock/assets';
 import ImageSlider from './ImageSlider';
 import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
@@ -64,7 +60,7 @@ const ProjectView = () => {
     if (!projectId) return;
     setAlert({
       type: 'success',
-      message: 'Sucessfully    Transfered Token',
+      message: 'Sucessfully Transfered Token',
     });
     getProjectById(projectId);
   }, [projectId]);

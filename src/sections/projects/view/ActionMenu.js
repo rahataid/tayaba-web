@@ -4,7 +4,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Iconify from '@components/iconify';
-import ActivateResponse from './ActivateResponse';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { Stack } from '@mui/material';
 
@@ -14,7 +13,6 @@ ActionMenu.propTypes = {
 };
 
 export default function ActionMenu({ menuItems, actionTitle }) {
-  const { roles } = useAuthContext();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
