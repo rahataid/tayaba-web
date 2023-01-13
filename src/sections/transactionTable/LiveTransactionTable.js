@@ -90,17 +90,7 @@ const LiveTransactionTable = (props) => {
   return (
     <Card>
       {' '}
-      <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2 }} md={12}>
-        <CardHeader
-          title={
-            <Grid container spacing={0.5}>
-              <Typography variant="h6" sx={{ mt: -1.8 }}>
-                Live Claimed Transactions ( {`${list.length}`} )
-              </Typography>
-            </Grid>
-          }
-        />
-      </Stack>
+      {/* <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2 }} md={12}></Stack> */}
       {error && <Alert severity="error">{error}</Alert>}
       <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list} />
     </Card>

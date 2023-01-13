@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
 import { TransactionView } from '@sections/transactions';
 // import { BeneficiaryProvider } from '@contexts/beneficiaries';
 
-const PAGE_TITLE = 'Live Transactions';
+const PAGE_TITLE = ' Transactions';
 
 export default function BeneficiaryList() {
   const { themeStretch } = useSettingsContext();
