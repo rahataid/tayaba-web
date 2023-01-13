@@ -56,14 +56,14 @@ const TitleCard = (props) => {
   };
 
   const menuItems = [
-    {
-      onClick: handleTransferTokenModal,
-      name: 'Transfer Token',
-    },
-    {
-      onClick: handleCreateTokenModal,
-      name: 'Create Token',
-    },
+    // {
+    //   onClick: handleTransferTokenModal,
+    //   name: 'Transfer Token',
+    // },
+    // {
+    //   onClick: handleCreateTokenModal,
+    //   name: 'Create Token',
+    // },
     {
       onClick: handleAddBudgetModel,
       name: 'Add Budget',
