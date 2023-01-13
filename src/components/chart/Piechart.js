@@ -46,7 +46,7 @@ export default function Piechart({ title, subheader, chart, footer, ...other }) 
 
   const { colors, series, options } = chart;
 
-  const chartSeries = series.map((i) => i.value);
+  const chartSeries = series?.map((i) => i.value);
 
   const chartOptions = useChart({
     chart: {
@@ -55,7 +55,7 @@ export default function Piechart({ title, subheader, chart, footer, ...other }) 
       },
     },
     colors,
-    labels: series.map((i) => i.label),
+    labels: series?.map((i) => i.label),
     stroke: { colors: [theme.palette.background.paper] },
     legend: { enabled: true, floating: true, horizontalAlign: 'center' },
     tooltip: {
