@@ -117,7 +117,7 @@ function CarouselItem({ item, isActive, projectName }) {
                 sx={{
                   backgroundColor: alpha(theme.palette.grey[900], 0.64),
                   width: 1,
-                  p: 1,
+                  p: 2,
                   textAlign: 'left',
                   position: 'absolute',
                 }}
