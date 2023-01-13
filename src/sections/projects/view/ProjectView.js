@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Card, Grid, Stack, Alert, Typography } from '@mui/material';
+import { Card, Grid, Stack, Alert, Typography, CardHeader } from '@mui/material';
 import InfoCard from './InfoCard';
 
 import { PalikaCash, DonorCash, AgencyCash } from '../cash-tracker';
@@ -15,7 +15,7 @@ import { role } from 'src/_mock/assets';
 import ImageSlider from './ImageSlider';
 import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
-import SummaryTracker from '@sections/cash-tracker/tracker/SummaryTracker';
+import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
 const ProjectView = () => {
   const { refresh, refreshData, getProjectById, singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
@@ -70,43 +70,42 @@ const ProjectView = () => {
   }, [projectId]);
 
   return (
-    <Grid container spacing={SPACING.GRID_SPACING}>
-      <Grid item xs={12} md={8}>
-        <Grid container spacing={SPACING.GRID_SPACING}>
-          <Grid item xs={12} md={12}>
-            <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
-            <Stack mt={5} mb={2}>
-              <SummaryTracker />
-            </Stack>
-            <InfoCard rahatChainData={rahatChainData} />
-          </Grid>
-        </Grid>
-
-        <Grid container>
-          <Grid item xs={12} md={12}>
-            <ProjectChart projectId={projectId} />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} md={4}>
-        <Grid container spacing={3}>
-          <TitleCard rahatChainData={rahatChainData} />
-          {false && (
+    <>
+      <Grid container spacing={SPACING.GRID_SPACING}>
+        <Grid item xs={12} md={8}>
+          <Grid container spacing={SPACING.GRID_SPACING}>
             <Grid item xs={12} md={12}>
-              <Alert severity={alert.type}> {alert?.message} </Alert>
+              <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
+              <InfoCard rahatChainData={rahatChainData} />
+              <SummaryTracker />
             </Grid>
-          )}
-          <Grid item xs={12} md={12}>
-            <ProjectDetail />
           </Grid>
         </Grid>
+        <Grid item xs={12} md={4}>
+          <Grid container spacing={3}>
+            <TitleCard rahatChainData={rahatChainData} />
+            {false && (
+              <Grid item xs={12} md={12}>
+                <Alert severity={alert.type}> {alert?.message} </Alert>
+              </Grid>
+            )}
+            <Grid item xs={12} md={12}>
+              <ProjectDetail />
+            </Grid>
+          </Grid>
 
-        {/* {role.srso} */}
-        {/* {role.srso && <AgencyCash rahatChainData={rahatChainData} />} */}
-        {/* {role.srsorep} */}
-        {/* {role.srsorep && <DonorCash rahatChainData={rahatChainData} />} */}
+          {/* {role.srso} */}
+          {/* {role.srso && <AgencyCash rahatChainData={rahatChainData} />} */}
+          {/* {role.srsorep} */}
+          {/* {role.srsorep && <DonorCash rahatChainData={rahatChainData} />} */}
+        </Grid>
       </Grid>
-    </Grid>
+      <Grid container>
+        <Grid item xs={12} md={9}>
+          <ProjectChart projectId={projectId} />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
