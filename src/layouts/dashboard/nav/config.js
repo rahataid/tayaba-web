@@ -55,7 +55,7 @@ const navConfig = [
       //   icon: ICONS.cashTracker,
       // },
       {
-        title: 'Live Transactions',
+        title: 'Transactions',
         path: PATH_TRANSACTIONS.root,
         icon: ICONS.transactions,
       },
