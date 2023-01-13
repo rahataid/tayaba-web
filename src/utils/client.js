@@ -12,7 +12,9 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
-    access_token,
+
+    access_token: access_token,
+
 
     // report_token: '6E4(WdnI5ukyHDaqy-AKEZvT$7JDnrQG',
   },

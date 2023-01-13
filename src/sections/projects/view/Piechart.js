@@ -55,7 +55,7 @@ export default function Piechart({ title, subheader, chart, ...other }) {
     colors,
     labels: series.map((i) => i.label),
     stroke: { colors: [theme.palette.background.paper] },
-    legend: {  show: false },
+    legend: { show: false },
     tooltip: {
       fillSeriesColor: false,
       y: {
@@ -69,6 +69,7 @@ export default function Piechart({ title, subheader, chart, ...other }) {
       pie: {
         donut: {
           size: '90%',
+
           labels: {
             show: false,
             value: {

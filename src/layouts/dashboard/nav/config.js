@@ -54,11 +54,11 @@ const navConfig = [
       //   path: PATH_CASH_TRACKER.root,
       //   icon: ICONS.cashTracker,
       // },
-      // {
-      //   title: 'Live Transactions',
-      //   path: PATH_TRANSACTIONS.root,
-      //   icon: ICONS.transactions,
-      // },
+      {
+        title: 'Transactions',
+        path: PATH_TRANSACTIONS.root,
+        icon: ICONS.transactions,
+      },
       {
         title: 'Beneficiary',
         path: PATH_BENEFICIARY.root,
@@ -111,7 +111,6 @@ const navConfig = [
       //     },
       //   ],
       // },
-
     ],
   },
 ];
