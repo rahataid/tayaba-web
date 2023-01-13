@@ -10,7 +10,7 @@ export const TAYABA_BACKEND = process.env.NEXT_PUBLIC_TAYABA_BACKEND || '';
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Tayaba';
 
-export const WSS_SERVER = HOST_API.replace('http', 'ws');
+export const WSS_SERVER = TAYABA_BACKEND.replace('http', 'ws');
 
 export const BLOCKCHAIN_EXPLORER = process.env.NEXT_PUBLIC_BLOCKCHAIN_EXPLORER || '';
 
@@ -71,9 +71,9 @@ export const SPACING = {
 };
 
 export const ROLES = {
-  TAYABA : 'Tayaba',
-  SRSO : 'SRSO',
-  USER : 'User',
+  TAYABA: 'Tayaba',
+  SRSO: 'SRSO',
+  USER: 'User',
 };
 
 export const CONTRACTS = {

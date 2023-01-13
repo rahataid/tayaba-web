@@ -55,9 +55,9 @@ function MapClusters({ mapData = [], ...other }) {
     <>
       <Map
         initialViewState={{
-          longitude: 85.7935933,
-          latitude: 26.629917,
-          zoom: 11,
+          longitude: 72.93822922273866,
+          latitude: 33.65771360892738 ,
+          zoom: 9,
         }}
         interactiveLayerIds={[clusterLayer.id || '']}
         onClick={onClick}

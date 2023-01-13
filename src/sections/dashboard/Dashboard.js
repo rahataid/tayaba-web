@@ -99,7 +99,7 @@ const DashboardComponent = () => {
             px: theme.spacing(SPACING.GRID_SPACING),
           }}
         >
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <SummaryCard
               color="warning"
               icon="material-symbols:person-4"
@@ -108,16 +108,25 @@ const DashboardComponent = () => {
               subtitle={'households'}
             />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <SummaryCard icon="material-symbols:token" title="Token Issued" total={0} subtitle={'tokens'} />
+          <Grid item xs={12} md={6}>
+            <SummaryCard color='info' icon="ic:outline-water-drop" title="H20 Disbursed" total={0} subtitle={'wheels'} />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <SummaryCard
-              color="info"
-              icon="ph:currency-circle-dollar-light"
-              title="Token Redeemed"
+              color="success"
+              icon="pajamas:project"
+              title="Projects"
+              total={1}
+              subtitle={'involved'}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <SummaryCard
+              color="secondary"
+              icon="maki:village"
+              title="Villages"
               total={0}
-              subtitle={'tokens'}
+              subtitle={'impacted'}
             />
           </Grid>
         </Grid>
@@ -129,7 +138,7 @@ const DashboardComponent = () => {
 
 
 
-        {/* <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Piechart
             title="Gender Distribution"
             chart={{
@@ -139,26 +148,21 @@ const DashboardComponent = () => {
                 theme.palette.warning.light,
                 theme.palette.error.light,
               ],
+              series: [{
+                label:"M",
+                value:10
 
-              series: genderDistribution,
+              },
+              {
+                label:"F",
+                value:12
+
+              }],
             }}
           />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Piechart
-            title="Banked vs Unbanked"
-            chart={{
-              colors: [
-                theme.palette.error.light,
-                theme.palette.success.light,
-                theme.palette.warning.light,
-                theme.palette.primary.light,
-              ],
-              series: bankedUnbanked,
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
+
+        <Grid item xs={12} md={3}>
           <Piechart
             title="Phone Ownership Distribution"
             chart={{
@@ -168,12 +172,69 @@ const DashboardComponent = () => {
                 theme.palette.error.light,
                 theme.palette.warning.light,
               ],
-              series: phoneOwnership,
+              series: [{
+                label:"has phone",
+                value:13
+
+              },
+              {
+                label:"has not phone",
+                value:6
+
+              }],
             }}
           />
-        </Grid> */}
+        </Grid>
 
-        <Grid item xs={12} md={12}>
+        <Grid item xs={12} md={3}>
+          <Piechart
+            title="Access To Internet"
+            chart={{
+              colors: [
+                theme.palette.primary.light,
+                theme.palette.success.light,
+                theme.palette.error.light,
+                theme.palette.warning.light,
+              ],
+              series: [{
+                label:"has Access",
+                value:6
+
+              },
+              {
+                label:"has not access",
+                value:3
+
+              }],
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={3}>
+          <Piechart
+            title="Banked vs Unbanked"
+            chart={{
+              colors: [
+                theme.palette.error.light,
+                theme.palette.success.light,
+                theme.palette.warning.light,
+                theme.palette.primary.light,
+              ],
+              series: [{
+                label:"Banked",
+                value:11
+
+              },
+              {
+                label:"Unbanked",
+                value:6
+
+              }],
+            }}
+          />
+        </Grid>
+      
+        <Grid item xs={12} md={6}>
           <BarchartSingle
             title="Beneficiaries by Village"
             chart={{colors: [
@@ -188,24 +249,11 @@ const DashboardComponent = () => {
               },
             },
             ...beneficiariesVillageChartData,}}
-            // footer={
-            //   <Stack
-            //     direction="row"
-            //     justifyContent="flex-end"
-            //     alignItems="center"
-            //     spacing={SPACING.GRID_SPACING}
-            //     sx={{ pr: 2 }}
-            //  
-            //  >
-            //     <Button
-            //       onClick={() => router.push(PATH_REPORTS.wardReport)}
-            //       endIcon={<Iconify sx={{ ml: -1 }} icon={'material-symbols:chevron-right-rounded'} />}
-            //     >
-            //       More Details
-            //     </Button>
-            //   </Stack>
-            // }
           />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <MapView />
         </Grid>
        
       </Grid>

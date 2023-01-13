@@ -3,7 +3,6 @@ import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
 import MoreInfoCard from './MoreInfoCard';
-import ProjectsInvolved from './ProjectsInvolved';
 import { HistoryTable } from '@sections/transactionTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
@@ -88,11 +87,8 @@ export default function BeneficiaryView() {
         <Grid item xs={12} md={4}>
           <TokenDetails />
         </Grid>
-        {/* <Grid item xs={12} md={4}>
-            <MoreInfoCard />
-          </Grid> */}
+      
       </Grid>
-
       <Stack sx={{ mt: 1 }}>
         <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={claimLogs} />
       </Stack>
