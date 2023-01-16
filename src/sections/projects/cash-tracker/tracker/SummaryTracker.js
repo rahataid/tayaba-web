@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 // components
 import Iconify from '@components/iconify';
-import { DashboardService } from '@services/dashboard';
+import { ProjectService } from '@services/projects';
 import { useCallback, useEffect, useState } from 'react';
 
 const STEPS = [
@@ -75,14 +75,15 @@ export default function SummaryTracker({ sx, ...other }) {
   const [activeStep, setActiveStep] = useState(0);
 
   const getData = useCallback(async () => {
-    const res = await DashboardService.getCashTrackerSummary();
+    const res = await ProjectService.getTrackerData('inventory-tracker');
+    console.log(res);
     let _tData = res.data.data;
 
-    setTrackData([_tData.donor, _tData.agency, _tData.palika, _tData.wards, _tData.beneficiaries]);
-    if (_tData.donor.isActive) setActiveStep(1);
-    if (_tData.agency.isActive) setActiveStep(2);
-    if (_tData.palika.isActive) setActiveStep(3);
-    if (_tData.wards.isActive) setActiveStep(4);
+    setTrackData([_tData.tayaba, _tData.srso, _tData.local_rep, _tData.village_rep, _tData.beneficiaries]);
+    if (_tData.tayaba.isActive) setActiveStep(1);
+    if (_tData.srso.isActive) setActiveStep(2);
+    if (_tData.local_rep.isActive) setActiveStep(3);
+    if (_tData.village_rep.isActive) setActiveStep(4);
     if (_tData.beneficiaries.isActive) setActiveStep(5);
   }, []);
 
@@ -91,21 +92,22 @@ export default function SummaryTracker({ sx, ...other }) {
   }, []);
 
   const renderBalance = (step) => {
-    if (step.label === 'Tayaba')
+    console.log(step);
+    if (step?.label === 'Tayaba')
       return (
         <>
           <Typography variant="caption">Budget: {step.budget} </Typography>
           <Typography variant="caption">Balance: {step.balance} </Typography>
         </>
       );
-    if (step.label === 'SRSO')
+    if (step?.label === 'Village Rep')
       return (
         <>
           <Typography variant="caption">Received: {step.received} </Typography>
           <Typography variant="caption">Disbursed: {step.disbursed} </Typography>
         </>
       );
-    if (step.label === 'Local Rep')
+    if (step?.label === 'Beneficiaries')
       return (
         <>
           <Typography variant="caption">Claims: {step.claims} </Typography>
@@ -114,8 +116,8 @@ export default function SummaryTracker({ sx, ...other }) {
       );
     return (
       <>
-        <Typography variant="caption">Received: {step.received} </Typography>
-        <Typography variant="caption">Balance: {step.balance} </Typography>
+        <Typography variant="caption">Received: {step?.received} </Typography>
+        <Typography variant="caption">Balance: {step?.balance} </Typography>
       </>
     );
   };
@@ -126,8 +128,8 @@ export default function SummaryTracker({ sx, ...other }) {
         <Card>
           <CardHeader title=" Inventionary Tracker"></CardHeader>
           <Stepper alternativeLabel activeStep={activeStep} connector={<StepConnector />} sx={{ m: 2, ...sx }}>
-            {trackData.map((step) => (
-              <Step key={step.label}>
+            {trackData?.map((step) => (
+              <Step key={step?.label}>
                 <StepLabel
                   StepIconComponent={StepIcon}
                   sx={{
