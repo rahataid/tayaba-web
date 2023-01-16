@@ -109,7 +109,7 @@ const DashboardComponent = () => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <SummaryCard color='info' icon="ic:outline-water-drop" title="H20 Disbursed" total={0} subtitle={'wheels'} />
+            <SummaryCard color='info' icon="ic:outline-water-drop" title="H20 Disbursed" total={85} subtitle={'wheels'} />
           </Grid>
           <Grid item xs={12} md={6}>
             <SummaryCard
@@ -125,7 +125,7 @@ const DashboardComponent = () => {
               color="secondary"
               icon="maki:village"
               title="Villages"
-              total={0}
+              total={3}
               subtitle={'impacted'}
             />
           </Grid>
