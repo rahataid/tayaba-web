@@ -32,11 +32,12 @@ export const VendorProvider = ({ children }) => {
     const formatted = response.data?.data?.data?.map((item) => ({
       ...item,
       id: item?.id,
-      registrationDate: item?.created_at,
-      cashBalance: item?.cashBalance || 0,
-      cashAllowance: item?.cashAllowance || 0,
-      tokenBalance: item?.tokenBalance || 0,
-      hasVendorRole: String(item?.hasVendorRole) || 'N/A',
+      name: item?.name || 'N/A',
+      gender: item?.gender || 'N/A',
+      phone: item?.phone || 'N/A',
+      walletAddress: item?.walletAddress || 'N/A',
+      contractAddress: item?.walletAddress || 'N/A',
+      villageId: item?.villageId || 'N/A',
     }));
 
     setState((prevState) => ({
@@ -63,11 +64,12 @@ export const VendorProvider = ({ children }) => {
 
     const formatted = {
       ...response.data,
-      email: response.data?.email || 'N/A',
-      registrationDate: response.data?.created_at || 'N/A',
-      pan: response.data?.pan || 'N/A',
-      shopName: response.data?.shopName || 'N/A',
-      projects: response.data?.projects || [],
+      name: response.data?.name || 'N/A',
+      gender: response.data?.gender  || 'N/A',
+      phone: response.data?.phone || 'N/A',
+      walletAddress: response.data?.walletAddress  || 'N/A',
+      contractAddress: response.data?.contractAddress || 'N/A',
+      villageId: response.data?.villageId || 'N/A',
     };
 
     setState((prev) => ({
