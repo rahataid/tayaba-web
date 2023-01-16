@@ -76,7 +76,6 @@ export default function SummaryTracker({ sx, ...other }) {
 
   const getData = useCallback(async () => {
     const res = await ProjectService.getTrackerData('inventory-tracker');
-    console.log(res);
     let _tData = res.data.data;
 
     setTrackData([_tData.tayaba, _tData.srso, _tData.local_rep, _tData.village_rep, _tData.beneficiaries]);
@@ -92,7 +91,6 @@ export default function SummaryTracker({ sx, ...other }) {
   }, []);
 
   const renderBalance = (step) => {
-    console.log(step);
     if (step?.label === 'Tayaba')
       return (
         <>
