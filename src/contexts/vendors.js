@@ -10,6 +10,7 @@ const initialState = {
   singleVendor: {},
   chainData: {},
   refresh: false,
+
   vendorEthBalance: 0,
   getVendorsList: () => {},
   getVendorById: () => {},
@@ -65,9 +66,9 @@ export const VendorProvider = ({ children }) => {
     const formatted = {
       ...response.data,
       name: response.data?.name || 'N/A',
-      gender: response.data?.gender  || 'N/A',
+      gender: response.data?.gender || 'N/A',
       phone: response.data?.phone || 'N/A',
-      walletAddress: response.data?.walletAddress  || 'N/A',
+      walletAddress: response.data?.walletAddress || 'N/A',
       contractAddress: response.data?.contractAddress || 'N/A',
       villageId: response.data?.villageId || 'N/A',
     };

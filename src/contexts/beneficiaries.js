@@ -12,7 +12,7 @@ const initialState = {
   pagination: {
     start: 0,
     limit: 50,
-    count: 0,
+    page: 1,
   },
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
