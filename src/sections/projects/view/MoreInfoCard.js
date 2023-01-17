@@ -1,7 +1,10 @@
 import React from 'react';
 import { Grid, Stack, Typography } from '@mui/material';
+import { useProjectContext } from '@contexts/projects';
 
 const MoreInfoCard = () => {
+  const { singleProject } = useProjectContext();
+
   return (
     <Grid
       container
@@ -12,8 +15,7 @@ const MoreInfoCard = () => {
       paddingBottom={4}
     >
       <Stack sx={{ p: 0 }}>
-        {/* TODO: fetch it from server */}
-        <Typography variant="body1">{'H20 Wheels Distribution'}</Typography>
+        <Typography variant="body1">{singleProject?.data?.description}</Typography>
       </Stack>
     </Grid>
   );
