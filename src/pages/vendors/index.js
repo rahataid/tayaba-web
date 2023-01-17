@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
 import { TableContainer } from '@sections/vendors';
 import { VendorProvider } from '@contexts/vendors';
 
-const PAGE_TITLE = 'Vendors';
+const PAGE_TITLE = 'Village Representative';
 
 export default function VendorsList() {
   const { themeStretch } = useSettingsContext();

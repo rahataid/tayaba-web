@@ -7,6 +7,7 @@ import { useRahat } from '@services/contracts/useRahat';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import { SPACING } from '@config';
 
+
 TokenDetails.propTypes = {};
 export default function TokenDetails() {
   const { chainData } = useBeneficiaryContext();
