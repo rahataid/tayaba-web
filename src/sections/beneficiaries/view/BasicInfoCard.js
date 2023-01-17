@@ -16,7 +16,9 @@ export default function BasicInfoCard({ chainData }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            {roles.isTayaba ? singleBeneficiary?.data?.name : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
+            {roles.isTayaba
+              ? singleBeneficiary?.data?.name
+              : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           <div>
             {chainData?.totalTokenIssued ? (
@@ -41,31 +43,35 @@ export default function BasicInfoCard({ chainData }) {
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.data?.phone}</Typography>
+            <Typography variant="h6">{singleBeneficiary?.data?.phone}</Typography>
             <Typography variant="body2">Phone</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.data?.gender}</Typography>
+            <Typography variant="h6">{singleBeneficiary?.data?.gender}</Typography>
             <Typography variant="body2">Gender</Typography>
           </Grid>
-           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.data?.email}</Typography>
-            <Typography variant="body2">Email</Typography>
-          </Grid> 
+          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+            <Grid item xs={12} md={12}>
+              <Typography variant="h6">{singleBeneficiary?.data?.cnicNumber}</Typography>
+              <Typography variant="body2">Cnic Number</Typography>
+            </Grid>
+          </Grid>
         </Stack>
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.data?.address?.district}</Typography>
+            <Typography variant="h6">{singleBeneficiary?.data?.address?.district}</Typography>
             <Typography variant="body2">District</Typography>
           </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.data?.address?.taluka}</Typography>
-            <Typography variant="body2">Taluka</Typography>
+          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+            <Typography variant="h6">{singleBeneficiary?.data?.dailyWaterConsumption} Ltrs</Typography>
+            <Typography variant="body2">Daily Water Consumption</Typography>
           </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleBeneficiary?.data?.address?.village}</Typography>
-            <Typography variant="body2">Village</Typography>
+          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+            <Grid item xs={12} md={12}>
+              <Typography variant="h6">{singleBeneficiary?.data?.dailyDistanceCovered} KM</Typography>
+              <Typography variant="body2">Daily Distance Covered</Typography>
+            </Grid>
           </Grid>
         </Stack>
       </CardContent>
