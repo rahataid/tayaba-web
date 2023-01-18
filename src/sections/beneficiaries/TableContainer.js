@@ -14,7 +14,6 @@ const TableContainer = () => {
 
   const { getBeneficiariesList, beneficiaries, errorMessage, getAllWards, setPagination, pagination } =
     useBeneficiaryContext();
-
   useEffect(() => {
     getBeneficiariesList();
   }, [getBeneficiariesList]);
@@ -102,9 +101,9 @@ const TableContainer = () => {
       </ListTable>
       <Pagination
         count={beneficiaries?.totalPage}
-        page={+pagination.start}
+        page={pagination.page}
         onChange={(e, page) => {
-          setPagination({ start: page, limit: pagination.limit });
+          setPagination({ start: (page - 1) * pagination.limit, limit: pagination.limit, page: page });
         }}
       />
     </Box>

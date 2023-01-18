@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Pagination, TableCell, TableRow } from '@mui/material';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListTableToolbar from './ListTableToolbar';
 import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
@@ -33,17 +33,23 @@ const TABLE_HEAD = {
 
 const TableContainer = () => {
   const router = useRouter();
+  const [start, setStart] = useState(0);
   const { getVendorsList, vendors } = useVendorsContext();
 
   useEffect(() => {
-    getVendorsList();
-  }, [getVendorsList]);
+    getVendorsList({ start });
+  }, [getVendorsList, setStart]);
 
   const handleView = (id) => () => {
     router.push(`/vendors/${id}`);
   };
 
-  const paginateFilter = <Pagination count={vendors?.start} />;
+  const handlePagination = (event, page) => {
+    const start = (page - 1) * vendors.limit;
+    setStart(start);
+  };
+
+  const paginateFilter = <Pagination count={vendors?.totalpages} onChange={handlePagination} />;
 
   return (
     <Box>
