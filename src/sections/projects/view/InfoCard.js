@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from '@mui/material';
+import { Grid, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import SummaryCard from '@components/SummaryCard';
 import { useTheme } from '@mui/system';
@@ -29,8 +29,14 @@ export default function InfoCard({ rahatChainData }) {
           color="success"
           icon="material-symbols:token"
           title="Token Issued"
-          total={beneficiaryCount}
-          subtitle={'tokens'}
+          total={
+            rahatChainData?.cashBalance || rahatChainData?.cashBalance >= 0 ? (
+              beneficiaryCount
+            ) : (
+              <Button> Add Budget</Button>
+            )
+          }
+          subtitle={rahatChainData?.cashBalance || rahatChainData?.cashBalance >= 0 ? 'tokens' : '  '}
           sx={sx}
         />
       </Grid>

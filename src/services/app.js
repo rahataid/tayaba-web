@@ -1,4 +1,3 @@
-
 import client from '@utils/client';
 
 export const AppService = {
@@ -7,7 +6,7 @@ export const AppService = {
   },
 
   getContract(contractName) {
-    return client.get(`/app/contracts/${contractName}`);
+    return client.get(`/misc/contracts/${contractName}`);
   },
 
   getAdmins() {
