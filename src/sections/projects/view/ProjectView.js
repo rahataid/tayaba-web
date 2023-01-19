@@ -74,6 +74,7 @@ const ProjectView = () => {
               <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
               <InfoCard rahatChainData={rahatChainData} />
               <SummaryTracker />
+              <ProjectChart projectId={projectId} />
             </Grid>
           </Grid>
         </Grid>
@@ -94,11 +95,6 @@ const ProjectView = () => {
           {/* {role.srso && <AgencyCash rahatChainData={rahatChainData} />} */}
           {/* {role.srsorep} */}
           {/* {role.srsorep && <DonorCash rahatChainData={rahatChainData} />} */}
-        </Grid>
-      </Grid>
-      <Grid container>
-        <Grid item xs={12} md={9}>
-          <ProjectChart projectId={projectId} />
         </Grid>
       </Grid>
     </>

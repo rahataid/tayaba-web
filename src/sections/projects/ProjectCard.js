@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
 // @mui
-import { Box, Card, Link, Stack, Fab, Button, Typography } from '@mui/material';
+import { Box, Card, Link, Stack, Typography } from '@mui/material';
 // routes
 // utils
 // redux

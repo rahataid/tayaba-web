@@ -156,35 +156,35 @@ const ProjectChart = ({ projectId }) => {
           <></>
         )}
         {genderWiseDistribution ? (
-          <Grid item xs={4} md={4}>
+          <Grid item xs={12} md={4}>
             <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
           </Grid>
         ) : (
           <></>
         )}
         {accessToInternet ? (
-          <Grid item xs={4} md={4}>
+          <Grid item xs={12} md={4}>
             <Piechart title={accessToInternet.title} chart={accessToInternet} />
           </Grid>
         ) : (
           <></>
         )}
         {phoneOwnerShip ? (
-          <Grid item xs={4} md={4}>
+          <Grid item xs={12} md={4}>
             <Piechart title={phoneOwnerShip.title} chart={phoneOwnerShip} />
           </Grid>
         ) : (
           <></>
         )}
         {accessToPhoneChartData ? (
-          <Grid item xs={4} md={4}>
+          <Grid item xs={12} md={4}>
             <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
           </Grid>
         ) : (
           <></>
         )}
         {simcardOwenerShip ? (
-          <Grid item xs={4} md={4}>
+          <Grid item xs={12} md={4}>
             <Piechart title={simcardOwenerShip.title} chart={simcardOwenerShip} />
           </Grid>
         ) : (
@@ -192,7 +192,7 @@ const ProjectChart = ({ projectId }) => {
         )}
 
         {banked ? (
-          <Grid item xs={4} md={4}>
+          <Grid item xs={12} md={4}>
             <Piechart title={banked.title} chart={banked} />
           </Grid>
         ) : (

@@ -11,11 +11,14 @@ import { useRouter } from 'next/router';
 import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import useLoading from '@hooks/useLoading';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 const TitleCard = (props) => {
   const { singleProject } = useProjectContext();
   const { agencyChainData } = useRahatAdmin();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
+  const { roles } = useAuthContext();
+
   const {
     push,
     query: { projectId },
@@ -56,17 +59,15 @@ const TitleCard = (props) => {
   };
 
   const menuItems = [
-    // {
-    //   onClick: handleTransferTokenModal,
-    //   name: 'Transfer Token',
-    // },
-    // {
-    //   onClick: handleCreateTokenModal,
-    //   name: 'Create Token',
-    // },
+    {
+      onClick: handleCreateTokenModal,
+      name: 'Assign Token',
+      show: roles?.isTayaba,
+    },
     {
       onClick: handleAddBudgetModel,
       name: 'Add Budget',
+      show: roles?.isDonor,
     },
   ];
   return (
