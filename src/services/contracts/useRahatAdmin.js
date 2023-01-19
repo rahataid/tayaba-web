@@ -8,6 +8,8 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 export const useRahatAdmin = () => {
   let { contracts } = useAuthContext();
   const contract = useContract(CONTRACTS.ADMIN);
+  const rahatContract = useContract(CONTRACTS.RAHAT);
+
   const [agencyChainData, setAgencyChainData] = useState({});
   const { handleContractError } = useErrorHandler();
 
@@ -35,7 +37,8 @@ export const useRahatAdmin = () => {
         .catch(handleContractError),
 
     async claimCash(amount) {
-      await contract?.claimToken(contracts[CONTRACTS.CASH], contracts[CONTRACTS.DONOR], amount);
+      await contract?.acceptToken(contracts[CONTRACTS.RAHAT], contracts[CONTRACTS.DONOR], amount);
+      return await rahatContract.balanceOf(contracts[CONTRACTS.CVAPROJECT]);
     },
   };
 };

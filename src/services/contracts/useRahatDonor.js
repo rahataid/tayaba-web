@@ -6,15 +6,24 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 export const useRahatDonor = () => {
   let { contracts } = useAuthContext();
   const contract = useContract(CONTRACTS.DONOR);
-  const cashContract = useContract(CONTRACTS.CASH);
+  const rahatContract = useContract(CONTRACTS.RAHAT);
   const { handleContractError } = useErrorHandler();
 
   return {
     contract,
     cashContract,
 
-    mintTokenAndApprove: (tokenInfo) =>
-      contract?.createToken(tokenInfo.name, tokenInfo.symbol, tokenInfo.symbol).catch(handleContractError),
+    createToken: async (tokenInfo) => {
+      try {
+        await contract?.createToken(tokenInfo.name, tokenInfo.symbol, tokenInfo.symbol);
+        const tokens = await contract.listTokens();
+        tokenAddress = tokens[0];
+        const TokenContract = await ethers.getContractFactory('RahatToken');
+        return await TokenContract.attach(tokenAddress);
+      } catch (e) {
+        handleContractError(e);
+      }
+    },
     sendCashToAgency: async (amount) => {
       try {
         let agencyAllowance = await cashContract?.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.ADMIN]);
@@ -26,6 +35,14 @@ export const useRahatDonor = () => {
         );
       } catch (e) {
         handleContractError(e);
+      }
+    },
+    sendCashToProject: async ( amount) => {
+      try {
+        contract?.mintTokenAndApprove(contracts[CONTRACTS.RAHAT], contracts[CONTRACTS.CVAPROJECT], amount);
+        return await token.allowance(contract, contracts[CONTRACTS.CVAPROJECT]);
+      } catch (error) {
+        handleContractError(error);
       }
     },
   };

@@ -80,14 +80,18 @@ export const ROLES = {
 
 // TODO: change accordingly
 export const CONTRACTS = {
-  RAHAT: 'rahat',
   CASH: 'rahat_cash',
-  DONOR: 'rahat_donor',
   REGISTRY: 'rahat_registry',
   WALLET: 'rahat_wallet',
   ADMIN: 'rahat_admin',
   TRIGGER: 'rahat_trigger',
   ERC20: 'rahat_erc20',
+  // TAYABA
+  RAHAT: 'rahatToken',
+  CVAPROJECT: 'cvaProject',
+  COMMUNITY: 'rahatCommunity',
+  DONOR: 'rahatDonor',
+  CLAIM: 'rahatClaim',
 };
 
 export const NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY = '1';

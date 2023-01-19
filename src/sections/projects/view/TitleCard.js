@@ -67,7 +67,7 @@ const TitleCard = (props) => {
     {
       onClick: handleAddBudgetModel,
       name: 'Add Budget',
-      show: roles?.isDonor,
+      show: true,
     },
   ];
   return (
