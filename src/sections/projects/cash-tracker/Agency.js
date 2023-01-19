@@ -78,7 +78,7 @@ export default function Agency({ rahatChainData }) {
         cashBalance={agencyChainData?.cashBalance}
         approveCashTransfer={CashActions.sendCashToPalika}
         handleClose={hideDialog}
-        open={isDialogShow}
+        open={true}
       />
       <LoadingOverlay open={loading.cashTrack}>
         <Card sx={{ width: '100%', mb: 1 }}>
@@ -106,15 +106,15 @@ export default function Agency({ rahatChainData }) {
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
               <Grid container direction="column" justifyContent="center" alignItems="center">
                 <Typography variant="h4" sx={{ fontWeight: 400 }}>
-                  <small>रु.</small> {agencyChainData?.cashBalance || '0'}
+                  <small>रु.</small> {agencyChainData?.cashBalance || '100'}
                 </Typography>
-                <small>Your cash balance</small>
+                <small>Your cash tokens</small>
                 <Typography variant="h5" sx={{ fontWeight: 200 }}>
-                  <small>रु.</small> {rahatChainData.cashAllowance || '0'}
+                  <small>रु.</small> {rahatChainData.cashAllowance || '100'}
                 </Typography>
                 <small>Pending Acceptance by Palika</small>
                 <Button sx={{ mt: 2 }} size="small" variant="outlined" onClick={showDialog}>
-                  Send cash to Palika
+                  Send token
                 </Button>
               </Grid>
             </Stack>

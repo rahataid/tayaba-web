@@ -14,7 +14,6 @@ const TableContainer = () => {
 
   const { getBeneficiariesList, beneficiaries, errorMessage, getAllWards, setPagination, pagination } =
     useBeneficiaryContext();
-
   useEffect(() => {
     getBeneficiariesList();
   }, [getBeneficiariesList]);
@@ -52,11 +51,6 @@ const TableContainer = () => {
       align: 'left',
     },
 
-    // registrationDate: {
-    //   id: 'registrationDate',
-    //   label: 'Registration Date',
-    //   align: 'left',
-    // },
     phoneOwnedBy: {
       id: 'phoneOwnedBy',
       label: 'Phone Owned By',
@@ -67,26 +61,7 @@ const TableContainer = () => {
       label: 'Has Internet Access',
       align: 'left',
     },
-    // registeredBy: {
-    //   id: 'registeredBy',
-    //   label: 'Registered By',
-    //   align: 'left',
-    // },
-    // cashBalance: {
-    //   id: 'cashBalance',
-    //   label: 'Cash Balance',
-    //   align: 'left',
-    // },
-    // tokenBalance: {
-    //   id: 'tokenBalance',
-    //   label: 'Remaining Token Claims',
-    //   align: 'left',
-    // },
-    // totalTokenIssued: {
-    //   id: 'totalTokenIssued',
-    //   label: 'Claimed Tokens',
-    //   align: 'left',
-    // },
+
     action: {
       id: 'action',
       label: 'Action',
@@ -126,9 +101,9 @@ const TableContainer = () => {
       </ListTable>
       <Pagination
         count={beneficiaries?.totalPage}
-        page={+pagination.start}
+        page={pagination.page}
         onChange={(e, page) => {
-          setPagination({ start: page, limit: pagination.limit });
+          setPagination({ start: (page - 1) * pagination.limit, limit: pagination.limit, page: page });
         }}
       />
     </Box>

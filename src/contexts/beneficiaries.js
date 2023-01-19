@@ -12,7 +12,7 @@ const initialState = {
   pagination: {
     start: 0,
     limit: 50,
-    count: 0,
+    page: 1,
   },
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
@@ -41,17 +41,19 @@ export const BeneficiaryProvider = ({ children }) => {
   const setPagination = (pagination) => setState((prev) => ({ ...prev, pagination }));
 
   const getBeneficiariesList = useCallback(async () => {
-    let filter = {
+    let filterObj = {
       limit: state.pagination?.limit,
       start: state.pagination?.start,
       // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
-      name: state.filter?.name?.length > 3 ? state.filter?.name : undefined,
-      phone: state.filter?.phone?.length > 3 ? state.filter?.phone : undefined,
-      ward: state.filter?.ward,
     };
+
+    for (const key in state.filter) {
+      filterObj[key] = state.filter[key];
+    }
+
     // let filter = state.filter?.name?.length > 3 || state.filter?.phone?.length > 3 ? state.filter : {};
 
-    const response = await BeneficiaryService.getBeneficiariesList(filter);
+    const response = await BeneficiaryService.getBeneficiariesList(filterObj);
 
     const formatted = response.data.data?.data?.map((item) => ({
       ...item,
