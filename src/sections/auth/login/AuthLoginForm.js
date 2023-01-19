@@ -97,12 +97,12 @@ export default function AuthLoginForm() {
       const isOtpValid = await handleOtpVerification({ otp });
 
       if (isOtpValid.success) {
-        // saveKey(isOtpValid.key);
+        saveKey(isOtpValid.data.privateKey);
         router.reload();
       }
 
-      // if (isOtpValid.key) {
-      //   const encryptedData = web3Utils.parseFromOtpKey(isOtpValid.key);
+      // if (isOtpValid.data.privateKey) {
+      //   const encryptedData = web3Utils.parseFromOtpKey(isOtpValid.privateKey);
       //   const decrypted = await web3Utils.decryptedKey(tempIdentity.privateKey, encryptedData);
       //   saveKey(decrypted);
       //   router.reload();

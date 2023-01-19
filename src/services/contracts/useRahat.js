@@ -159,7 +159,7 @@ export const useRahat = () => {
         const balance = await contract?.callStatic.multicall(callData);
         const decodedData = balance?.map((vendorId) => {
           const { cashAllowance, cashBalance, hasVendorRole, tokenBalance, walletAddress } =
-            contract?.interface.decodeFunctionResult('vendorBalance', vendorId);
+            contract?.interface.decodeFunctionResult('vendorBalance', vendorId) || {};
           return {
             cashAllowance: cashAllowance.toNumber(),
             cashBalance: cashBalance.toNumber(),
@@ -221,8 +221,11 @@ export const useRahat = () => {
         const tx = await contract?.multicall(callData, { gasLimit });
         const receipt = await tx.wait();
         console.log({ receipt });
-        if (receipt.status) console.log('++++Transaction Success++++');
-        else console.log('++++Transaction Failed++++');
+        if (receipt.status) {
+          console.log('++++Transaction Success++++');
+        } else {
+          console.log('++++Transaction Failed++++');
+        }
       },
       async call(callData) {
         console.log('++++Calling Contract++++');

@@ -35,9 +35,9 @@ const initialState = {
   wallet: null,
   startBlockNumber: 0,
   roles: {
-    isTayaba : false,
-    isUser : false,
-    isSRSO : false,
+    isTayaba: false,
+    isUser: false,
+    isSRSO: false,
   },
   addToken: () => {},
   deleteToken: () => {},
