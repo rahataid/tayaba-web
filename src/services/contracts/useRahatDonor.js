@@ -13,10 +13,8 @@ export const useRahatDonor = () => {
     contract,
     cashContract,
 
-    mintTokenAndApprove: (amount) =>
-      contract
-        ?.mintTokenAndApprove(contracts[CONTRACTS.CASH], contracts[CONTRACTS.ADMIN], amount)
-        .catch(handleContractError),
+    mintTokenAndApprove: (tokenInfo) =>
+      contract?.createToken(tokenInfo.name, tokenInfo.symbol, tokenInfo.symbol).catch(handleContractError),
     sendCashToAgency: async (amount) => {
       try {
         let agencyAllowance = await cashContract?.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.ADMIN]);

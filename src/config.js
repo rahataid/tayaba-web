@@ -98,3 +98,8 @@ export const CHARTDATATYPES = [
   'phoneOwnedBy',
   'simRegisteredUnder',
 ];
+export const TayabaToken = {
+  name: 'H20 Wheels',
+  symbol: 'H2W',
+  decimals: 0,
+};
