@@ -95,7 +95,7 @@ function AuthProvider({ children }) {
               address: appSettings?.agency?.contracts?.rahat_erc20,
               agencyId: appSettings?.agency?.id,
             },
-            contracts: appSettings?.agency?.contracts,
+            contracts: appSettings?.contract_address,
             addresses: appSettings?.addresses,
             startBlockNumber: appSettings?.agency?.startBlockNumber,
             wallet,

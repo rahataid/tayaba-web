@@ -78,6 +78,7 @@ export const ROLES = {
   PALIKA: 'Palika',
 };
 
+// TODO: change accordingly
 export const CONTRACTS = {
   RAHAT: 'rahat',
   CASH: 'rahat_cash',
@@ -89,4 +90,12 @@ export const CONTRACTS = {
   ERC20: 'rahat_erc20',
 };
 
-export const CHARTDATATYPES= ['hasInternetAccess','hasPhone','gender','bankAccountType','isBanked','phoneOwnedBy','simRegisteredUnder']
+export const CHARTDATATYPES = [
+  'hasInternetAccess',
+  'hasPhone',
+  'gender',
+  'bankAccountType',
+  'isBanked',
+  'phoneOwnedBy',
+  'simRegisteredUnder',
+];
