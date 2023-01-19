@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Grid, Stack, Alert } from '@mui/material';
+import { Grid, Stack, Alert, Button } from '@mui/material';
 import InfoCard from './InfoCard';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
@@ -12,34 +12,16 @@ import ImageSlider from './ImageSlider';
 import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
 import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
+import CashActionsAlert from './CashActionsAlert';
 const ProjectView = () => {
   const { refresh, refreshData, getProjectById, singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const [flickImages, setFlickImages] = useState([]);
-  const [alert, setAlert] = useState({
-    type: '',
-    message: '',
-  });
+
   const {
     query: { projectId },
   } = useRouter();
-
-  const init = useCallback(async () => {
-    if (!RahatCash) return;
-    await projectBalance(projectId);
-  }, [projectId, contract, RahatCash, refresh]);
-
-  useEffect(() => {
-    if (!projectId || !contract) return;
-    init(projectId);
-  }, [projectId, RahatCash, refresh]);
-
-  useEffect(() => {
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    return () => RahatCash?.removeAllListeners();
-  }, [RahatCash]);
 
   useEffect(() => {
     const getFlickPics = async () => {
@@ -58,12 +40,8 @@ const ProjectView = () => {
 
   useEffect(() => {
     if (!projectId) return;
-    setAlert({
-      type: 'success',
-      message: 'Sucessfully Transfered Token',
-    });
     getProjectById(projectId);
-  }, [projectId]);
+  }, [projectId, alert.show]);
 
   return (
     <>
@@ -80,20 +58,11 @@ const ProjectView = () => {
         <Grid item xs={12} md={4}>
           <Grid container spacing={3}>
             <TitleCard rahatChainData={rahatChainData} />
-            {false && (
-              <Grid item xs={12} md={12}>
-                <Alert severity={alert.type}> {alert?.message} </Alert>
-              </Grid>
-            )}
+            <CashActionsAlert projectId={projectId} />
             <Grid item xs={12} md={12}>
               <ProjectDetail />
             </Grid>
           </Grid>
-
-          {/* {role.srso} */}
-          {/* {role.srso && <AgencyCash rahatChainData={rahatChainData} />} */}
-          {/* {role.srsorep} */}
-          {/* {role.srsorep && <DonorCash rahatChainData={rahatChainData} />} */}
         </Grid>
       </Grid>
       <Grid container>
