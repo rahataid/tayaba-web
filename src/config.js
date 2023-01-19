@@ -71,11 +71,14 @@ export const SPACING = {
 };
 
 export const ROLES = {
-  TAYABA: 'Tayaba',
-  SRSO: 'SRSO',
-  USER: 'User',
+  AGENCY: 'Admin',
+  DONOR: 'Donor',
+  MANAGER: 'Manager',
+  MOBILIZER: 'Mobilizer',
+  PALIKA: 'Palika',
 };
 
+// TODO: change accordingly
 export const CONTRACTS = {
   RAHAT: 'rahat',
   CASH: 'rahat_cash',
