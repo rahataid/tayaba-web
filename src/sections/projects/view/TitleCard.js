@@ -46,7 +46,7 @@ const TitleCard = (props) => {
   };
 
   const CashActions = {
-    async sendCashToAgency(amount) {
+    async sendCashToProject(amount) {
       showLoading('cashTransfer');
       await sendCashToProject(amount);
       refreshData();
@@ -100,7 +100,7 @@ const TitleCard = (props) => {
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
-        approveCashTransfer={CashActions.sendCashToAgency}
+        approveCashTransfer={CashActions.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
       />

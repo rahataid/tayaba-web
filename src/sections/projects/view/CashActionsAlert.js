@@ -1,14 +1,17 @@
 import { useState, useCallback, useEffect } from 'react';
 import useLoading from '@hooks/useLoading';
 import { Alert, Grid, Button } from '@mui/material';
+import { useRahatAdmin } from '@services/contracts/useRahatAdmin';
 import { useRahat } from '@services/contracts/useRahat';
-import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useProjectContext } from '@contexts/projects';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
+import LoadingOverlay from '@components/LoadingOverlay';
+
 export default function CashActionsAlert({ projectId }) {
   const { refresh, refreshData, singleProject } = useProjectContext();
-  const { projectBalance, rahatChainData, contract, claimTokenForProject } = useRahat();
+  const { projectBalance, rahatChainData, contract } = useRahat();
+  const { claimCash, getBalance, rahatTokenContract } = useRahatAdmin();
   const { contractWS: RahatCash } = useRahatCash();
   const { loading, showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
@@ -38,20 +41,17 @@ export default function CashActionsAlert({ projectId }) {
   const CashActions = {
     async acceptCash() {
       showLoading('cashTrack');
-      await claimTokenForProject(projectId, rahatChainData.cashAllowance);
+      console.log('loading');
+      await claimCash(projectId);
       refreshData();
       hideLoading('cashTrack');
     },
-    async sendCashToAgency(amount) {
-      showLoading('cashTransfer');
-      await sendCashToAgency(amount);
-      refreshData();
-      hideLoading('cashTransfer');
-    },
   };
 
-  const acceptCashAction = useCallback(() => {
-    if (rahatChainData?.cashAllowance > 0) {
+  const acceptCashAction = useCallback(async () => {
+    if (!rahatTokenContract) return;
+    const cash = await getBalance();
+    if (cash > 0) {
       setAlert({
         type: 'success',
         message: 'Accept Cash',
@@ -59,7 +59,7 @@ export default function CashActionsAlert({ projectId }) {
       });
       setShowAlert(true);
     }
-  }, [rahatChainData?.cashAllowance]);
+  }, [rahatTokenContract?.allowance]);
 
   useEffect(() => {
     acceptCashAction();
@@ -69,10 +69,12 @@ export default function CashActionsAlert({ projectId }) {
     <>
       {showAlert && (
         <Grid item xs={12} md={12}>
-          <Alert severity={alert.type} action={alert.action}>
-            {' '}
-            {alert?.message}{' '}
-          </Alert>
+          <LoadingOverlay open={loading.cashTrack}>
+            <Alert severity={alert.type} action={alert.action}>
+              {' '}
+              {alert?.message}{' '}
+            </Alert>
+          </LoadingOverlay>
         </Grid>
       )}
     </>
