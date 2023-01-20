@@ -11,8 +11,6 @@ export const useRahatAdmin = () => {
   const rahatTokenContract = useContract(CONTRACTS.RAHATTOKEN);
   const [agencyChainData, setAgencyChainData] = useState({});
   const { handleContractError } = useErrorHandler();
-  console.log({ rahatTokenContract });
-  console.log({ cvaContract });
   return {
     adminContract,
     agencyChainData,

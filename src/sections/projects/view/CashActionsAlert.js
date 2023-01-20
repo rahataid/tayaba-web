@@ -41,7 +41,6 @@ export default function CashActionsAlert({ projectId }) {
   const CashActions = {
     async acceptCash() {
       showLoading('cashTrack');
-      console.log('loading');
       await claimCash(projectId);
       refreshData();
       hideLoading('cashTrack');
