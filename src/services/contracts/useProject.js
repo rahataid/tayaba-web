@@ -11,9 +11,8 @@ export const useProject = () => {
 
   const donorContract = useContract(CONTRACTS.DONOR);
 
-  const contractWS = useContract(CONTRACTS.CVAPROJECT, {
-    isWebsocket: true,
-  });
+  const contractWS = useContract(CONTRACTS.CVAPROJECT);
+
   const { handleContractError } = useErrorHandler();
 
   const isProjectLocked = () => contract?.isLocked();

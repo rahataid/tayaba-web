@@ -25,12 +25,10 @@ const TitleCard = (props) => {
     query: { projectId },
   } = useRouter();
   const [assignTokenDialog, setAssignTokenDialog] = useState(false);
-  const [transferTokenDialog, setTransferTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
 
   const handleClose = () => {
-    setTransferTokenDialog(false);
     setAssignTokenDialog(false);
     hideDialog();
   };
@@ -39,9 +37,6 @@ const TitleCard = (props) => {
     setAssignTokenDialog((prev) => !prev);
   };
 
-  const handleTransferTokenModal = () => {
-    setTransferTokenDialog((prev) => !prev);
-  };
   const handleAddBudgetModel = () => {
     showDialog();
   };
@@ -73,7 +68,7 @@ const TitleCard = (props) => {
   ];
   return (
     <>
-      <TransferTokenDialog
+      {/* <TransferTokenDialog
         description={
           <>
             Please enter No. of token you wish to transfer . Receiver has to accept the token before it is fully
@@ -85,7 +80,7 @@ const TitleCard = (props) => {
         cashBalance={0}
         handleClose={handleClose}
         open={transferTokenDialog}
-      />
+      /> */}
       <CreateTokenDialog
         description={
           <>
