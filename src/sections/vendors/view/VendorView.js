@@ -43,14 +43,15 @@ export default function VendorView() {
   } = useRouter();
   // TODO: make dynamic
   //const { vendorTransactions, transactionLoading } = useVendorClaimLogs();
-  // const { vendorTransactions, transactionLoading } = useExplorer(singleVendor?.wallet_address);
+  // const { vendorTransactions, transactionLoading } = useExplorer(singleVendor?.walletAddress);
 
   const init = useCallback(async () => {
     if (!vendorId) return;
     const _vendorData = await getVendorById(vendorId);
-    if (!_vendorData?.wallet_address) return;
-    const _chainData = await vendorBalance(_vendorData?.wallet_address);
-    await getVendorEthBalance(_vendorData?.wallet_address);
+    if (!_vendorData?.walletAddress) return;
+    const _chainData = await vendorBalance(_vendorData?.walletAddress);
+    console.log('_chainData', _chainData);
+    await getVendorEthBalance(_vendorData?.walletAddress);
 
     setChainData(_chainData);
     await getVendorClaimLogs('0x2e38580a0ea254895b3f28f3aa95221124c102df');

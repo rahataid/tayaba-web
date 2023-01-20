@@ -11,6 +11,12 @@ export const VendorService = {
     return clientApi.get(`/vendors/${id}`);
   },
 
+  updateVendorApprovalStatus(id, status) {
+    return clientApi.put(`/vendors/${id}/approval`, {
+      isApproved: status,
+    });
+  },
+
   //   getBeneficiariesByProject(projectId) {
   //     return clientApi.get(`/projects/${projectId}/vendors`);
   //   },

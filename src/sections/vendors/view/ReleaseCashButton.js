@@ -33,14 +33,14 @@ export default function ReleaseCashButton() {
       });
     },
     async activateVendor() {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have vendor address', 'error');
-      await addVendor(singleVendor.wallet_address);
+      if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
+      await addVendor(singleVendor.walletAddress);
       refreshData();
     },
     async releaseCash(amount) {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have vendor address', 'error');
+      if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
       if (amount > rahatChainData?.cashBalance) return Actions.alert('Not enough balance to send', 'error');
-      await transferCashToVendor(singleVendor.wallet_address, amount);
+      await transferCashToVendor(singleVendor.walletAddress, amount);
       refreshData();
     },
   };

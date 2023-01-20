@@ -14,6 +14,7 @@ import { Stack } from '@mui/system';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useRahatTrigger } from '@services/contracts/useRahatTrigger';
 import { useErrorHandler } from '@hooks/useErrorHandler';
+import { VendorService } from '@services/vendors';
 
 ActionMenu.propTypes = {
   actionTitle: PropTypes.string,
@@ -44,21 +45,26 @@ export default function ActionMenu({ actionTitle }) {
       });
     },
     async ActivateVendor() {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have wallet_address', 'error');
-      await addVendor(singleVendor.wallet_address);
+      console.log('singleVendor', singleVendor);
+      if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
+      await addVendor(singleVendor.walletAddress);
+      await VendorService.updateVendorApprovalStatus(singleVendor.id, true);
+
       setAnchorEl(null);
       refreshData();
     },
     async DeactivateVendor() {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have wallet_address', 'error');
-      await removeVendor(singleVendor.wallet_address);
+      console.log('singleVendor', singleVendor);
+      if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
+      await removeVendor(singleVendor.walletAddress);
+      await VendorService.updateVendorApprovalStatus(singleVendor.id, false);
       setAnchorEl(null);
       refreshData();
     },
 
     async acceptCashForVendor() {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have wallet_address', 'error');
-      await acceptCashForVendor(singleVendor.wallet_address, chainData.cashAllowance);
+      if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
+      await acceptCashForVendor(singleVendor.walletAddress, chainData.cashAllowance);
       setAnchorEl(null);
       refreshData();
     },
