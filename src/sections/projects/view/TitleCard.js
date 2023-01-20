@@ -107,15 +107,11 @@ const TitleCard = (props) => {
       <Grid item xs={12} md={12}>
         <Card variant="outlined">
           <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
-            <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-              <Button variant="text" onClick={handleBeneficiaryRouteAction}>
-                {' '}
-                Beneficiaries
-              </Button>
-            </Grid>
-            <Grid container direction="column" justifyContent="Center" alignItems="flex-end">
-              <ActionMenu menuItems={menuItems} actionTitle="Actions" />
-            </Grid>
+            <Button variant="text" onClick={handleBeneficiaryRouteAction}>
+              {' '}
+              Beneficiaries
+            </Button>
+            <ActionMenu menuItems={menuItems} actionTitle="Actions" />
           </Stack>
         </Card>
       </Grid>
