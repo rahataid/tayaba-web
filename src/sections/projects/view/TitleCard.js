@@ -12,6 +12,7 @@ import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { role } from 'src/_mock/assets';
 
 const TitleCard = (props) => {
   const { singleProject, refreshData } = useProjectContext();
@@ -62,12 +63,12 @@ const TitleCard = (props) => {
     {
       onClick: handleCreateTokenModal,
       name: 'Assign Token',
-      show: roles?.isTayaba,
+      show: roles?.isAdmin,
     },
     {
       onClick: handleAddBudgetModel,
       name: 'Add Budget',
-      show: true,
+      show: roles.isDonor,
     },
   ];
   return (
