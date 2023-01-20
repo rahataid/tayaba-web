@@ -12,6 +12,7 @@ import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { role } from 'src/_mock/assets';
 
 const TitleCard = (props) => {
   const { singleProject, refreshData } = useProjectContext();
@@ -46,7 +47,7 @@ const TitleCard = (props) => {
   };
 
   const CashActions = {
-    async sendCashToAgency(amount) {
+    async sendCashToProject(amount) {
       showLoading('cashTransfer');
       await sendCashToProject(amount);
       refreshData();
@@ -60,14 +61,14 @@ const TitleCard = (props) => {
 
   const menuItems = [
     {
-      onClick: handleCreateTokenModal,
+      onClick: handleAssignTokenModal,
       name: 'Assign Token',
-      show: roles?.isTayaba,
+      show: roles?.isAdmin,
     },
     {
       onClick: handleAddBudgetModel,
       name: 'Add Budget',
-      show: true,
+      show: roles.isDonor,
     },
   ];
   return (
@@ -100,7 +101,7 @@ const TitleCard = (props) => {
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
-        approveCashTransfer={CashActions.sendCashToAgency}
+        approveCashTransfer={CashActions.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
       />
