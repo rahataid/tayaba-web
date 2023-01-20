@@ -30,7 +30,7 @@ export default function AuthGuard({ children }) {
       setRequestedLocation(null);
     }
   }, [isAuthenticated, pathname, push, requestedLocation]);
-  console.log(wallet);
+
   if (!isInitialized && !wallet) {
     return <LoadingScreen />;
   }

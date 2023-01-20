@@ -6,8 +6,7 @@ export const useAbi = (contract) => {
   const [abi, setAbi] = useState(null);
 
   const fetchContract = useCallback(async () => {
-    let data = await tblAbi.get('rahatDonor');
-    console.log(data);
+    let data = await tblAbi.get(contract);
     if (data?.abi) {
       setAbi(data.abi);
     } else {
