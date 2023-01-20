@@ -87,7 +87,7 @@ export const CONTRACTS = {
   TRIGGER: 'rahat_trigger',
   ERC20: 'rahat_erc20',
   // TAYABA
-  RAHAT: 'rahatToken',
+  RAHATTOKEN: 'rahatToken',
   CVAPROJECT: 'cvaProject',
   COMMUNITY: 'rahatCommunity',
   DONOR: 'rahatDonor',

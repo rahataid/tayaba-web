@@ -14,7 +14,7 @@ import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
 const TitleCard = (props) => {
-  const { singleProject } = useProjectContext();
+  const { singleProject, refreshData } = useProjectContext();
   const { agencyChainData } = useRahatAdmin();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles } = useAuthContext();
@@ -25,7 +25,7 @@ const TitleCard = (props) => {
   } = useRouter();
   const [createTokenDialog, setCreateTokenDialog] = useState(false);
   const [transferTokenDialog, setTransferTokenDialog] = useState(false);
-  const { sendCashToAgency } = useRahatDonor();
+  const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
 
   const handleClose = () => {
@@ -48,7 +48,7 @@ const TitleCard = (props) => {
   const CashActions = {
     async sendCashToAgency(amount) {
       showLoading('cashTransfer');
-      await sendCashToAgency(amount);
+      await sendCashToProject(amount);
       refreshData();
       hideLoading('cashTransfer');
     },

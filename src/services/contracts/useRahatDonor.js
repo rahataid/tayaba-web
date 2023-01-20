@@ -5,42 +5,24 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useRahatDonor = () => {
   let { contracts } = useAuthContext();
-  const contract = useContract(CONTRACTS.DONOR);
-  const rahatContract = useContract(CONTRACTS.RAHAT);
+  const donorContract = useContract(CONTRACTS.DONOR);
+  const rahatTokenContract = useContract(CONTRACTS.RAHATTOKEN);
   const { handleContractError } = useErrorHandler();
 
   return {
-    contract,
-    cashContract,
+    donorContract,
+    rahatTokenContract,
 
-    createToken: async (tokenInfo) => {
+    sendCashToProject: async (amount) => {
       try {
-        await contract?.createToken(tokenInfo.name, tokenInfo.symbol, tokenInfo.symbol);
-        const tokens = await contract.listTokens();
-        tokenAddress = tokens[0];
-        const TokenContract = await ethers.getContractFactory('RahatToken');
-        return await TokenContract.attach(tokenAddress);
-      } catch (e) {
-        handleContractError(e);
-      }
-    },
-    sendCashToAgency: async (amount) => {
-      try {
-        let agencyAllowance = await cashContract?.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.ADMIN]);
-        await contract?.mintToken(contracts[CONTRACTS.CASH], amount);
-        await contract?.approveToken(
-          contracts[CONTRACTS.CASH],
-          contracts[CONTRACTS.ADMIN],
-          parseInt(agencyAllowance.toNumber()) + +amount
+        console.log({ donorContract });
+        await donorContract?.mintTokenAndApprove(
+          contracts[CONTRACTS.RAHATTOKEN],
+          contracts[CONTRACTS.CVAPROJECT],
+          amount
         );
-      } catch (e) {
-        handleContractError(e);
-      }
-    },
-    sendCashToProject: async ( amount) => {
-      try {
-        contract?.mintTokenAndApprove(contracts[CONTRACTS.RAHAT], contracts[CONTRACTS.CVAPROJECT], amount);
-        return await token.allowance(contract, contracts[CONTRACTS.CVAPROJECT]);
+
+        return await rahatTokenContract.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.CVAPROJECT]);
       } catch (error) {
         handleContractError(error);
       }
