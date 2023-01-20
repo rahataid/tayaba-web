@@ -17,9 +17,9 @@ export default function InfoCard({}) {
   const sx = { borderRadius: 2 };
   const [balance, setbalance] = useState(0);
   useEffect(async () => {
-    let amt = await getProjectBalance();
-    console.log(amt);
-    // setbalance(amt);
+    // let amt = await getProjectBalance();
+    // console.log(amt);
+    setbalance(100);
   }, [h2oToken]);
   return (
     <Grid container alignItems="flex-start" justifyContent="center" paddingTop={3}>
@@ -38,7 +38,7 @@ export default function InfoCard({}) {
           color="success"
           icon="material-symbols:token"
           title="Token Issued"
-          total={balance > 0 ? balance : <Button> Add Budget</Button>}
+          total={balance > 0 ? balance : <Button > Add Budget</Button>}
           subtitle={balance > 0 ? 'tokens' : '  '}
           sx={sx}
         />

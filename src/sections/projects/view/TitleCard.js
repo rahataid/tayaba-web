@@ -23,19 +23,19 @@ const TitleCard = (props) => {
     push,
     query: { projectId },
   } = useRouter();
-  const [createTokenDialog, setCreateTokenDialog] = useState(false);
+  const [assignTokenDialog, setAssignTokenDialog] = useState(false);
   const [transferTokenDialog, setTransferTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
 
   const handleClose = () => {
     setTransferTokenDialog(false);
-    setCreateTokenDialog(false);
+    setAssignTokenDialog(false);
     hideDialog();
   };
 
-  const handleCreateTokenModal = () => {
-    setCreateTokenDialog((prev) => !prev);
+  const handleAssignTokenModal = () => {
+    setAssignTokenDialog((prev) => !prev);
   };
 
   const handleTransferTokenModal = () => {
@@ -95,7 +95,7 @@ const TitleCard = (props) => {
         }
         cashBalance={0}
         handleClose={handleClose}
-        open={createTokenDialog}
+        open={assignTokenDialog}
       />
       <AmountForm
         title="Add Budget in Project"
