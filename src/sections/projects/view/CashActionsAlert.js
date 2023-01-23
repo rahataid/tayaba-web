@@ -5,9 +5,11 @@ import { useRahat } from '@services/contracts/useRahat';
 import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useProjectContext } from '@contexts/projects';
-import { useRahatDonor } from '@services/contracts/useRahatDonor';
+import { useProject } from '@services/contracts/useProject';
+import { useAuthContext } from 'src/auth/useAuthContext';
 export default function CashActionsAlert({ projectId }) {
-  const { refresh, refreshData, singleProject } = useProjectContext();
+  const { roles } = useAuthContext();
+  const { refresh, refreshData } = useProjectContext();
   const { projectBalance, rahatChainData, contract, claimTokenForProject } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const { loading, showLoading, hideLoading } = useLoading();
@@ -17,7 +19,7 @@ export default function CashActionsAlert({ projectId }) {
     action: '',
   });
   const [showAlert, setShowAlert] = useState(false);
-  const { sendCashToAgency } = useRahatDonor();
+  const { sendH2OWheelsToVendor } = useProject();
 
   const init = useCallback(async () => {
     if (!RahatCash) return;
@@ -40,12 +42,14 @@ export default function CashActionsAlert({ projectId }) {
       showLoading('cashTrack');
       await claimTokenForProject(projectId, rahatChainData.cashAllowance);
       refreshData();
+      setShowAlert(false);
       hideLoading('cashTrack');
     },
-    async sendCashToAgency(amount) {
+    async acceptTokenByVendor(tokenNos) {
       showLoading('cashTransfer');
-      await sendCashToAgency(amount);
+      await acceptH2OByVendors(amount);
       refreshData();
+      setShowAlert(false);
       hideLoading('cashTransfer');
     },
   };
@@ -60,6 +64,21 @@ export default function CashActionsAlert({ projectId }) {
       setShowAlert(true);
     }
   }, [rahatChainData?.cashAllowance]);
+
+  const acceptTokenAction = useCallback(() => {
+    if (rahatChainData?.cashAllowance > 0) {
+      setAlert({
+        type: 'success',
+        message: 'Accept Token',
+        action: <Button onClick={CashActions.acceptTokenByVendor}>Accept</Button>,
+      });
+      setShowAlert(true);
+    }
+  }, [rahatChainData?.cashAllowance]);
+
+  useEffect(() => {
+    acceptCashAction();
+  }, [acceptCashAction]);
 
   useEffect(() => {
     acceptCashAction();
