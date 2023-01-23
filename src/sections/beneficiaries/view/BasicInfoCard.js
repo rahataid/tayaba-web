@@ -60,7 +60,7 @@ export default function BasicInfoCard({ chainData }) {
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h6">{singleBeneficiary?.data?.address?.district}</Typography>
+            <Typography variant="h6">{singleBeneficiary?.data?.village_details?.district}</Typography>
             <Typography variant="body2">District</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">

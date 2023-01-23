@@ -30,14 +30,14 @@ export const VendorProvider = ({ children }) => {
   const getVendorsList = useCallback(async (params) => {
     const response = await VendorService.getVendorsList(params);
 
-    const formatted = response.data?.data?.data?.map((item) => ({
+    const formatted = response.data?.data?.map((item) => ({
       ...item,
       id: item?.id,
       name: item?.name || 'N/A',
       gender: item?.gender || 'N/A',
       phone: item?.phone || 'N/A',
       walletAddress: item?.walletAddress || 'N/A',
-      contractAddress: item?.walletAddress || 'N/A',
+      contractAddress: item?.contractAddress || 'N/A',
       villageId: item?.villageId || 'N/A',
     }));
 
