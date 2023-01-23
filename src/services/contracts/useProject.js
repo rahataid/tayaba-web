@@ -1,8 +1,8 @@
 import { CONTRACTS } from '@config';
 import { useContract } from '@hooks/contracts';
-import Web3Utils from '@utils/web3Utils';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
+import { useState } from 'react';
 
 export const useProject = () => {
   let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();
@@ -11,9 +11,8 @@ export const useProject = () => {
 
   const donorContract = useContract(CONTRACTS.DONOR);
 
-  const contractWS = useContract(CONTRACTS.CVAPROJECT, {
-    isWebsocket: true,
-  });
+  const contractWS = useContract(CONTRACTS.CVAPROJECT);
+
   const { handleContractError } = useErrorHandler();
 
   const isProjectLocked = () => contract?.isLocked();
@@ -21,11 +20,11 @@ export const useProject = () => {
   return {
     // project functions
     isProjectLocked,
+    h2oToken,
     acceptToken: (amount) => contract?.acceptToken(contracts[CONTRACTS.ADMIN], amount).catch(handleContractError),
 
     getProjectBalance: async () => {
-      const balance = await h2oToken?.balanceOf(contract?.address);
-      return Web3Utils.fromWei(balance);
+      return await h2oToken?.balanceOf(contract?.address);
     },
 
     lockProject: (address) => {

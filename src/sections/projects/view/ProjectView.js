@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { Grid, Stack, Alert, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
 import InfoCard from './InfoCard';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import TitleCard from './TitleCard';
 import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 const ProjectView = () => {
-  const { refresh, refreshData, getProjectById, singleProject } = useProjectContext();
+  const { getProjectById, singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
   const [flickImages, setFlickImages] = useState([]);
@@ -50,7 +50,7 @@ const ProjectView = () => {
           <Grid container spacing={SPACING.GRID_SPACING}>
             <Grid item xs={12} md={12}>
               <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
-              <InfoCard rahatChainData={rahatChainData} />
+              <InfoCard />
               <SummaryTracker />
               <ProjectChart projectId={projectId} />
             </Grid>

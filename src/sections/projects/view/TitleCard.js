@@ -12,6 +12,7 @@ import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { role } from 'src/_mock/assets';
 
 const TitleCard = (props) => {
   const { singleProject, refreshData } = useProjectContext();
@@ -23,30 +24,25 @@ const TitleCard = (props) => {
     push,
     query: { projectId },
   } = useRouter();
-  const [createTokenDialog, setCreateTokenDialog] = useState(false);
-  const [transferTokenDialog, setTransferTokenDialog] = useState(false);
+  const [assignTokenDialog, setAssignTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
 
   const handleClose = () => {
-    setTransferTokenDialog(false);
-    setCreateTokenDialog(false);
+    setAssignTokenDialog(false);
     hideDialog();
   };
 
-  const handleCreateTokenModal = () => {
-    setCreateTokenDialog((prev) => !prev);
+  const handleAssignTokenModal = () => {
+    setAssignTokenDialog((prev) => !prev);
   };
 
-  const handleTransferTokenModal = () => {
-    setTransferTokenDialog((prev) => !prev);
-  };
   const handleAddBudgetModel = () => {
     showDialog();
   };
 
   const CashActions = {
-    async sendCashToAgency(amount) {
+    async sendCashToProject(amount) {
       showLoading('cashTransfer');
       await sendCashToProject(amount);
       refreshData();
@@ -60,19 +56,19 @@ const TitleCard = (props) => {
 
   const menuItems = [
     {
-      onClick: handleCreateTokenModal,
+      onClick: handleAssignTokenModal,
       name: 'Assign Token',
-      show: roles?.isTayaba,
+      show: roles?.isAdmin,
     },
     {
       onClick: handleAddBudgetModel,
       name: 'Add Budget',
-      show: true,
+      show: roles.isDonor,
     },
   ];
   return (
     <>
-      <TransferTokenDialog
+      {/* <TransferTokenDialog
         description={
           <>
             Please enter No. of token you wish to transfer . Receiver has to accept the token before it is fully
@@ -84,7 +80,7 @@ const TitleCard = (props) => {
         cashBalance={0}
         handleClose={handleClose}
         open={transferTokenDialog}
-      />
+      /> */}
       <CreateTokenDialog
         description={
           <>
@@ -95,12 +91,12 @@ const TitleCard = (props) => {
         }
         cashBalance={0}
         handleClose={handleClose}
-        open={createTokenDialog}
+        open={assignTokenDialog}
       />
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
-        approveCashTransfer={CashActions.sendCashToAgency}
+        approveCashTransfer={CashActions.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
       />

@@ -16,8 +16,6 @@ export const useRahatDonor = () => {
 
     sendCashToProject: async (amount) => {
       try {
-        console.log({ donorContract });
-        console.log({ amount });
         await donorContract?.mintTokenAndApprove(
           contracts[CONTRACTS.RAHATTOKEN],
           contracts[CONTRACTS.CVAPROJECT],
