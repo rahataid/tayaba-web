@@ -21,6 +21,7 @@ export default function CashActionsAlert({ projectId }) {
     message: '',
     action: '',
   });
+  const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
   const { sendH2OWheelsToVendor } = useProject();
 
@@ -50,7 +51,7 @@ export default function CashActionsAlert({ projectId }) {
     },
     async acceptTokenByVendor(tokenNos) {
       showLoading('cashTransfer');
-      await acceptH2OByVendors(amount);
+      await acceptH2OByVendors(tokenNos);
       refreshData();
       setShowAlert(false);
       hideLoading('cashTransfer');
@@ -82,12 +83,14 @@ export default function CashActionsAlert({ projectId }) {
   }, [rahatChainData?.cashAllowance]);
 
   useEffect(() => {
+    if (!roles.isDonor) return;
     acceptCashAction();
   }, [acceptCashAction]);
 
   useEffect(() => {
-    acceptCashAction();
-  }, [acceptCashAction]);
+    if (!roles.isUser) return;
+    acceptTokenAction();
+  }, [acceptTokenAction]);
 
   return (
     <>
