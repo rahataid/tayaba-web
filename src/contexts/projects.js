@@ -148,9 +148,9 @@ export const ProjectProvider = ({ children }) => {
   });
   const getBeneficiariesByvillage = useCallback(async (params) => {
     try {
-      const { data: demographicData } = await ProjectService.getBeneficiaryDemographicData(params);
-      const chartLabel = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.label);
-      const data = demographicData?.data?.beneficiaryPerVillage?.map((d) => d.count);
+      const demographicData  = await ProjectService.getBeneficiaryDemographicData(params);
+      const chartLabel = demographicData?.data?.data?.beneficiaryPerVillage?.map((d) => d.label);
+      const data = demographicData?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
       const chartData = [
         {
           data,
@@ -160,7 +160,7 @@ export const ProjectProvider = ({ children }) => {
       setState((prev) => ({
         ...prev,
         beneficiariesVillageChartData: { chartLabel, chartData },
-        beneficiaryCount: demographicData?.data?.count || 0,
+        beneficiaryCount: demographicData?.data?.data?.totalBeneficiaries || 0,
       }));
       return demographicData;
     } catch (err) {

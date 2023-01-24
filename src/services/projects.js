@@ -21,7 +21,7 @@ export const ProjectService = {
     return clientApi.get(`/reports/beneficiary/village/${projectId}`);
   },
   getBeneficiaryDemographicData(projectId) {
-    return clientApi.get(`/reports/demographics/summary`);
+    return clientApi.get(`/reports/dashboard/summary`);
   },
 
   getVendorsByProject(projectId) {
