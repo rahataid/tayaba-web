@@ -7,24 +7,12 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 export const useRahatToken = () => {
   let { contracts } = useAuthContext();
   const contract = useContract(CONTRACTS.RAHATTOKEN);
+  const contractWS = useContract(CONTRACTS.RAHATTOKEN, { isWebsocket: true });
+
   const { handleContractError } = useErrorHandler();
   return {
     contract,
-
-    getBudget: async () => {
-      try {
-        return await contract.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.CVAPROJECT]);
-      } catch (error) {
-        handleContractError(error);
-      }
-    },
-
-    claimCash: async (amount) => {
-      try {
-        return await contract.balanceOf(contracts[CONTRACTS.CVAPROJECT]);
-      } catch (error) {
-        handleContractError(error);
-      }
-    },
+    contractWS,
+    getAllowance: async (from, to) => (await contract.allowance(from, to))?.toNumber(),
   };
 };

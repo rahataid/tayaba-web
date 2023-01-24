@@ -15,12 +15,14 @@ export const useProject = () => {
   const isProjectLocked = () => contract?.isLocked();
 
   return {
+    contract,
     // project functions
     isProjectLocked,
     h2oToken,
-    acceptToken: (amount) => contract?.acceptToken(contracts[CONTRACTS.ADMIN], amount).catch(handleContractError),
+    acceptToken: (amount) => contract?.acceptToken(donorContract?.address, amount).catch(handleContractError),
+    getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
-    getProjectBalance: async () => await h2oToken?.balanceOf(contract?.address),
+    getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),
 
     lockProject: (address) => {
       if (!isProjectLocked) {

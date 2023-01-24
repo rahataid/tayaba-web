@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { ethers } from 'ethers';
 import { useWallet } from '@hooks/useWallet';
-import { vendors } from '@sections/projects/view/tableData';
 
 const initialState = {
   vendors: [],

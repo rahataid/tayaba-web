@@ -1,24 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Grid, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import SummaryCard from '@components/SummaryCard';
-import { useProject } from '@services/contracts/useProject';
 import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import { role } from 'src/_mock/assets';
 
-export default function InfoCard({}) {
-  const { getProjectBalance, h2oToken } = useProject();
+export default function InfoCard({ chainData }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { sendCashToProject } = useRahatDonor();
   const { beneficiaryCount } = useProjectContext();
   const { roles } = useAuthContext();
 
   const sx = { borderRadius: 2 };
-  const [balance, setBalance] = useState(0);
 
   const { loading, showLoading, hideLoading } = useLoading();
 
@@ -28,27 +24,12 @@ export default function InfoCard({}) {
 
   const CashActions = {
     async sendCashToProject(amount) {
-      if(!roles.isDonor) return;
+      if (!roles.isDonor) return;
       showLoading('cashTransfer');
       await sendCashToProject(amount);
       hideLoading('cashTransfer');
     },
   };
-
-  //TODO : fix issues on hooks
-  // const getBalance = useCallback(async () => {
-  //   if (!h2oToken) return;
-  //   try {
-  //     let amt = await getProjectBalance();
-  //     setBalance(amt);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [h2oToken]);
-
-  // useEffect(async () => {
-  //   getBalance();
-  // }, [getBalance]);
 
   return (
     <>
@@ -75,19 +56,19 @@ export default function InfoCard({}) {
           <SummaryCard
             color="success"
             icon="material-symbols:token"
-            title="Token Issued"
+            title="Budget"
             total={
-              balance || balance <= 0 ? (
+              chainData.projectBalance <= 0 ? (
                 roles.isDonor ? (
                   <Button onClick={handleAddBudgetModel}> Add Budget</Button>
                 ) : (
-                  balance
+                  chainData.projectBalance
                 )
               ) : (
-                balance
+                chainData.projectBalance
               )
             }
-            subtitle={balance || balance > 0 ? 'tokens' : '  '}
+            subtitle="H20 Wheels"
             sx={sx}
           />
         </Grid>
@@ -95,9 +76,9 @@ export default function InfoCard({}) {
           <SummaryCard
             color="error"
             icon="ph:currency-circle-dollar-light"
-            title="Token Redemed"
+            title="Distributed"
             total="0"
-            subtitle={'tokens'}
+            subtitle={'H20 Wheels'}
             sx={sx}
           />
         </Grid>

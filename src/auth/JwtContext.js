@@ -87,8 +87,8 @@ function AuthProvider({ children }) {
             token: localToken,
             user: localUser,
             keyData: localKey,
-            chainUrl: appSettings?.networkUrl,
-            chainWebSocket: appSettings?.chainWebSocket,
+            chainUrl: appSettings?.BLOCKCHAIN.networkUrl,
+            chainWebSocket: appSettings?.BLOCKCHAIN.chainWebSocket,
             claimToken: {
               ...appSettings?.agency?.token,
               address: appSettings?.agency?.contracts?.rahat_erc20,

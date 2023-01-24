@@ -1,15 +1,14 @@
 import { useState, useCallback, useEffect } from 'react';
 import useLoading from '@hooks/useLoading';
 import { Alert, Grid, Button } from '@mui/material';
-import { useRahatToken } from '@services/contracts/useRahatToken';
 import { useProjectContext } from '@contexts/projects';
 import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import LoadingOverlay from '@components/LoadingOverlay';
 
-export default function CashActionsAlert({ projectId }) {
-  const { refresh, refreshData, singleProject } = useProjectContext();
-  const { claimCash, getBudget, contract } = useRahatToken();
+export default function CashActionsAlert({ projectId, chainData }) {
+  const { refresh, singleProject } = useProjectContext();
+  const { acceptToken, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
     type: '',
@@ -23,53 +22,42 @@ export default function CashActionsAlert({ projectId }) {
   const CashActions = {
     async acceptCash() {
       showLoading('cashTrack');
-      await claimCash(projectId);
-      refreshData();
+      await acceptToken(chainData.tokenAllowance);
       setShowAlert(false);
       hideLoading('cashTrack');
     },
-    async acceptTokenByVendor(tokenNos) {
-      showLoading('cashTransfer');
-      await acceptH2OByVendors(tokenNos);
-      refreshData();
-      setShowAlert(false);
-      hideLoading('cashTransfer');
-    },
   };
 
-  const acceptCashAction = useCallback(async () => {
-    if (!contract) return;
-    const cash = await getBudget();
-    if (cash > 0) {
+  const donorAllowance = useCallback(() => {
+    if (chainData.tokenAllowance > 0) {
+      setAlert({
+        type: 'info',
+        message: `Pending acceptance of ${chainData.tokenAllowance} H2O wheels.`,
+      });
+      setShowAlert(chainData.tokenAllowance > 0);
+    }
+  }, [chainData.tokenAllowance]);
+
+  const acceptCashAction = useCallback(() => {
+    if (chainData.tokenAllowance > 0) {
       setAlert({
         type: 'success',
-        message: `Accept Cash Amount ${cash}`,
+        message: `Confirm recepit of ${chainData.tokenAllowance} H2O wheels`,
         action: <Button onClick={CashActions.acceptCash}>Accept</Button>,
       });
-      setShowAlert(true);
+      setShowAlert(chainData.tokenAllowance > 0);
     }
-  }, [contract]);
+  }, [chainData.tokenAllowance]);
 
-  const acceptTokenAction = useCallback(() => {
-    // if (rahatChainData?.cashAllowance > 0) {
-    //   setAlert({
-    //     type: 'success',
-    //     message: 'Accept Token',
-    //     action: <Button onClick={CashActions.acceptTokenByVendor}>Accept</Button>,
-    //   });
-    //   setShowAlert(true);
-    // }
-  }, []);
+  useEffect(() => {
+    if (!roles.isDonor) return;
+    donorAllowance();
+  }, [donorAllowance]);
 
   useEffect(() => {
     if (!roles.isAdmin) return;
     acceptCashAction();
   }, [acceptCashAction]);
-
-  useEffect(() => {
-    if (!roles.isManager) return;
-    acceptTokenAction();
-  }, [acceptTokenAction]);
 
   return (
     <>

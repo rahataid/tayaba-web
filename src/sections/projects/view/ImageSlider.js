@@ -98,26 +98,34 @@ function CarouselItem({ item, isActive, projectName }) {
     <MotionContainer action animate={isActive} sx={{ position: 'relative' }}>
       <Link href="/photo-gallery">
         <a>
+          <StyledOverlay />
+          <Image
+            alt={title}
+            src={image}
+            sx={{
+              height: { xs: 280, xl: 400 },
+            }}
+          />
           <Stack
             spacing={1}
             sx={{
-              top: 1,
               width: 1,
-              bottom: 0,
+              bottom: 60,
               zIndex: 9,
               textAlign: 'center',
-              position: 'absolute',
+              position: 'relative',
               color: 'common.white',
             }}
           >
             <m.div variants={varFade().inRight}>
               <Typography
-                variant="h5"
+                variant="h4"
                 component="div"
                 sx={{
                   backgroundColor: alpha(theme.palette.grey[900], 0.64),
                   width: 1,
                   p: 2,
+                  fontWeight: 600,
                   textAlign: 'left',
                   position: 'absolute',
                 }}
@@ -126,41 +134,6 @@ function CarouselItem({ item, isActive, projectName }) {
               </Typography>
             </m.div>
           </Stack>
-
-          <Stack
-            spacing={1}
-            sx={{
-              p: 3,
-              width: 1,
-              bottom: 0,
-              zIndex: 9,
-              textAlign: 'left',
-              position: 'absolute',
-              color: 'common.white',
-            }}
-          >
-            <m.div variants={varFade().inRight}>
-              <Typography variant="overline" component="div" sx={{ opacity: 0.88 }}>
-                Featured Images
-              </Typography>
-            </m.div>
-
-            <m.div variants={varFade().inRight}>
-              <Typography variant="body2" noWrap>
-                {title}
-              </Typography>
-            </m.div>
-          </Stack>
-
-          <StyledOverlay />
-
-          <Image
-            alt={title}
-            src={image}
-            sx={{
-              height: { xs: 280, xl: 400 },
-            }}
-          />
         </a>
       </Link>
     </MotionContainer>

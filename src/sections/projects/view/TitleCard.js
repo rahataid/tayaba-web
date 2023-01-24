@@ -14,8 +14,8 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import { useSnackbar } from 'notistack';
 import LoadingOverlay from '@components/LoadingOverlay';
 
-const TitleCard = (props) => {
-  const { singleProject, refreshData } = useProjectContext();
+const TitleCard = ({}) => {
+  const { singleProject } = useProjectContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -44,7 +44,6 @@ const TitleCard = (props) => {
     async sendCashToProject(amount) {
       showLoading('cashTransfer');
       await sendCashToProject(amount);
-      refreshData();
       hideLoading('cashTransfer');
       enqueueSnackbar('Added Budget to Project');
     },
@@ -105,9 +104,9 @@ const TitleCard = (props) => {
         <LoadingOverlay open={loading?.cashTransfer}>
           <Card variant="outlined">
             <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
-              <Button variant="text" onClick={handleBeneficiaryRouteAction}>
+              <Button variant="outlined" onClick={handleBeneficiaryRouteAction}>
                 {' '}
-                Beneficiaries{' '}
+                Beneficiary List{' '}
               </Button>
               <ActionMenu menuItems={menuItems} actionTitle="Actions" />
             </Stack>

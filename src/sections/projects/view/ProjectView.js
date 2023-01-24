@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import InfoCard from './InfoCard';
 import { useProjectContext } from '@contexts/projects';
@@ -11,13 +11,26 @@ import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
 import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
+import { useProject } from '@services/contracts/useProject';
+import { useRahatToken } from '@services/contracts/useRahatToken';
 const ProjectView = () => {
   const { getProjectById, singleProject } = useProjectContext();
+  const { getTokenAllowance, getProjectBalance, h2oToken } = useProject();
+  const { contractWS: RahatTokenWS } = useRahatToken();
+
   const [flickImages, setFlickImages] = useState([]);
+  const [chainData, setChainData] = useState({});
 
   const {
     query: { projectId },
   } = useRouter();
+
+  const updateChainData = (d) => {
+    setChainData((prevState) => ({
+      ...prevState,
+      ...d,
+    }));
+  };
 
   useEffect(() => {
     const getFlickPics = async () => {
@@ -34,10 +47,27 @@ const ProjectView = () => {
     };
   }, []);
 
+  let getDataFromChain = useCallback(async () => {
+    let tokenAllowance = await getTokenAllowance();
+    let projectBalance = await getProjectBalance();
+    //TODO trigger Inventory tracker data;
+    updateChainData({ tokenAllowance, projectBalance });
+  }, [h2oToken]);
+
+  useEffect(() => {
+    getDataFromChain();
+  }, [getDataFromChain]);
+
   useEffect(() => {
     if (!projectId) return;
     getProjectById(projectId);
   }, [projectId, alert.show]);
+
+  useEffect(() => {
+    RahatTokenWS?.on('Approval', getDataFromChain);
+    RahatTokenWS?.on('Transfer', getDataFromChain);
+    return () => RahatTokenWS?.removeAllListeners();
+  }, [RahatTokenWS]);
 
   return (
     <>
@@ -46,7 +76,7 @@ const ProjectView = () => {
           <Grid container spacing={SPACING.GRID_SPACING}>
             <Grid item xs={12} md={12}>
               <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
-              <InfoCard />
+              <InfoCard chainData={chainData} />
               <SummaryTracker />
               <ProjectChart projectId={projectId} />
             </Grid>
@@ -54,8 +84,8 @@ const ProjectView = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Grid container spacing={3}>
-            <TitleCard rahatChainData={{}} />
-            <CashActionsAlert projectId={projectId} />
+            <TitleCard refreshData={getDataFromChain} />
+            <CashActionsAlert projectId={projectId} chainData={chainData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail />
             </Grid>

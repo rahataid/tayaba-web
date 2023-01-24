@@ -124,7 +124,7 @@ export default function SummaryTracker({ sx, ...other }) {
     <Grid container xs={12} md={12} paddingTop={3} paddingBottom={3}>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title=" Inventionary Tracker"></CardHeader>
+          <CardHeader title="Inventory Tracker" />
           <Stepper alternativeLabel activeStep={activeStep} connector={<StepConnector />} sx={{ m: 2, ...sx }}>
             {trackData?.map((step) => (
               <Step key={step?.label}>
