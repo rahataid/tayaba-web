@@ -6,6 +6,7 @@ import Logo from '../../components/logo';
 import Image from '../../components/image';
 //
 import { StyledRoot, StyledSectionBg, StyledSection, StyledContent } from './styles';
+import { APP_NAME } from '@config';
 
 // ----------------------------------------------------------------------
 
@@ -19,13 +20,14 @@ export default function LoginLayout({ children, illustration, title }) {
   return (
     <StyledRoot>
       <StyledSection>
-        <Image
+        <Typography variant="h1">{APP_NAME}</Typography>
+        {/* <Image
           disabledEffect
           visibleByDefault
           alt="auth"
           src={illustration || '/assets/images/rahat-logo.png'}
           sx={{ maxWidth: 240 }}
-        />
+        /> */}
 
         <StyledSectionBg />
         <Stack spacing={3} sx={{ position: 'relative', zIndex: 9 }}>
@@ -34,7 +36,7 @@ export default function LoginLayout({ children, illustration, title }) {
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ position: 'absolute', bottom: 40, textAlign: 'center' }}>
-          © 2022 Rahat. All rights reserved
+          © 2022 {APP_NAME}. All rights reserved
         </Typography>
       </StyledSection>
 

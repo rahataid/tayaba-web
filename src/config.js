@@ -10,7 +10,7 @@ export const TAYABA_BACKEND = process.env.NEXT_PUBLIC_TAYABA_BACKEND || '';
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Tayaba';
 
-export const WSS_SERVER = HOST_API.replace('http', 'ws');
+export const WSS_SERVER = TAYABA_BACKEND.replace('http', 'ws');
 
 export const BLOCKCHAIN_EXPLORER = process.env.NEXT_PUBLIC_BLOCKCHAIN_EXPLORER || '';
 
@@ -78,6 +78,7 @@ export const ROLES = {
   PALIKA: 'Palika',
 };
 
+// TODO: change accordingly
 export const CONTRACTS = {
   RAHAT: 'rahat',
   CASH: 'rahat_cash',
@@ -89,4 +90,14 @@ export const CONTRACTS = {
   ERC20: 'rahat_erc20',
 };
 
-export const CHARTDATATYPES= ['hasInternetAccess','hasPhone','gender','bankAccountType','isBanked','phoneOwnedBy','simRegisteredUnder']
+export const NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY = '1';
+
+export const CHARTDATATYPES = [
+  'hasInternetAccess',
+  'hasPhone',
+  'gender',
+  'bankAccountType',
+  'isBanked',
+  'phoneOwnedBy',
+  'simRegisteredUnder',
+];

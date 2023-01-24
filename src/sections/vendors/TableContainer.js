@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Pagination, TableCell, TableRow } from '@mui/material';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListTableToolbar from './ListTableToolbar';
 import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
@@ -14,36 +14,14 @@ const TABLE_HEAD = {
     label: 'Name',
     align: 'left',
   },
-  cashAllowance: {
-    id: 'cashAllowance',
-    label: 'Cash Allowance',
+  gender: {
+    id: 'gender',
+    label: 'Gender',
     align: 'left',
   },
-  cashBalance: {
-    id: 'cashBalance',
-    label: 'Cash Balance',
-    align: 'left',
-  },
-  tokenBalance: {
-    id: 'tokenBalance',
-    label: 'Token Balance',
-    align: 'left',
-  },
-
   phone: {
     id: 'phone',
     label: 'Phone',
-    align: 'left',
-  },
-  hasVendorRole: {
-    id: 'hasVendorRole',
-    label: 'Has Vendor Role',
-    align: 'left',
-  },
-
-  registrationDate: {
-    id: 'registrationDate',
-    label: 'Registration Date',
     align: 'left',
   },
   action: {
@@ -55,17 +33,23 @@ const TABLE_HEAD = {
 
 const TableContainer = () => {
   const router = useRouter();
+  const [start, setStart] = useState(0);
   const { getVendorsList, vendors } = useVendorsContext();
 
   useEffect(() => {
-    getVendorsList();
-  }, [getVendorsList]);
+    getVendorsList({ start });
+  }, [getVendorsList, setStart]);
 
   const handleView = (id) => () => {
     router.push(`/vendors/${id}`);
   };
 
-  const paginateFilter = <Pagination count={vendors?.start} />;
+  const handlePagination = (event, page) => {
+    const start = (page - 1) * vendors.limit;
+    setStart(start);
+  };
+
+  const paginateFilter = <Pagination count={vendors?.totalpages} onChange={handlePagination} />;
 
   return (
     <Box>
@@ -75,17 +59,8 @@ const TableContainer = () => {
           rows.map((row) => (
             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
-              <TableCell align={tableHeadersList['cashAllowance'].align}>{row.cashAllowance}</TableCell>
-              <TableCell align={tableHeadersList['cashBalance'].align}>{row.cashBalance}</TableCell>
-              <TableCell align={tableHeadersList['tokenBalance'].align}>{row.tokenBalance}</TableCell>
-
+              <TableCell align={tableHeadersList['gender'].align}>{row.gender}</TableCell>
               <TableCell align={tableHeadersList['phone'].align}>{row.phone}</TableCell>
-              <TableCell align={tableHeadersList['hasVendorRole'].align}>{row.hasVendorRole}</TableCell>
-
-              <TableCell align={tableHeadersList['registrationDate'].align}>
-                {' '}
-                {moment(row.registrationDate).format('MM/DD/YYYY')}
-              </TableCell>
               <TableCell align={tableHeadersList['action'].align}>
                 <Button onClick={handleView(row.id)} variant="text">
                   <Iconify icon="ic:outline-remove-red-eye" />

@@ -33,7 +33,7 @@ export default function AmountForm({ approveCashTransfer, title, description, op
             autoFocus
             margin="dense"
             id="name"
-            label="Amount to transfer"
+            label="Budget to add"
             type="number"
             fullWidth
             variant="outlined"
@@ -44,7 +44,7 @@ export default function AmountForm({ approveCashTransfer, title, description, op
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSendCash} disabled={amount === '' || amount < 1}>
-            Approve Transfer
+            Add
           </Button>
         </DialogActions>
       </Dialog>

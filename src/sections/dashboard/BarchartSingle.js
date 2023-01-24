@@ -39,7 +39,7 @@ if(!options){
       {footer}
 
       <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
-        <Chart type={'bar'} series={chartData} options={chartOptions} height={364} />
+        <Chart type={'bar'} series={chartData} options={chartOptions} height={560} />
       </Box>
     </Card>
   );

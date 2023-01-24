@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 // @mui
-import { useTheme, styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { Card, CardHeader,Box  } from '@mui/material';
 // utils
-import { fNumber } from '@utils/formatNumber';
 // components
 import Chart, { useChart } from '@components/chart';
 
@@ -17,7 +16,7 @@ Barchart.propTypes = {
 
 
 
-export default function Barchart({ title, subheader, footer,chart,setSelectedVillage, ...other }) {
+export default function Barchart({ title, subheader, footer,chart,handleVillage, ...other }) {
     const theme = useTheme();
 
   const { chartLabel,chartData,  } = chart;
@@ -37,7 +36,7 @@ export default function Barchart({ title, subheader, footer,chart,setSelectedVil
     events: {
       click: (event, chartContext, config) => {
         let villageKey = String(chartLabel[config.dataPointIndex]);
-        setSelectedVillage(villageKey);
+        handleVillage(villageKey);
       },
     },
   }

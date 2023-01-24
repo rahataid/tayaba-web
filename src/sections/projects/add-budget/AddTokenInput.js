@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, ButtonGroup, Grid, TextField } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 
 const AddTokenInput = (props) => (
   <Box sx={{ m: 2 }}>

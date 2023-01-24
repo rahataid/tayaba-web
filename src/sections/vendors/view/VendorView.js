@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
-import MoreInfoCard from './MoreInfoCard';
-import ProjectsInvolved from './ProjectsInvolved';
 import { HistoryTable } from '@sections/transactionTable';
 import { useVendorsContext } from '@contexts/vendors';
 import { useRouter } from 'next/router';
@@ -75,16 +73,7 @@ export default function VendorView() {
         <Grid item xs={12} md={6}>
           <TokenDetails chainData={chainData} ethBalance={vendorEthBalance} />
         </Grid>
-        {/* <Grid item xs={12} md={4}>
-            <MoreInfoCard />
-          </Grid> */}
       </Grid>
-      <Stack>
-        <MoreInfoCard />
-      </Stack>
-      <Stack sx={{ mt: 1 }}>
-        <ProjectsInvolved />
-      </Stack>
       <Stack sx={{ mt: 1 }}>
         <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={claimLogs} />
       </Stack>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Button, Card, CardHeader, Grid, Stack, Typography } from '@mui/material';
+import { Alert, Button, Card, CardHeader, Grid, Stack, Pagination } from '@mui/material';
 import ListTable from '@components/table/ListTable';
 import useWSTransaction from '@hooks/useWSTransaction';
 import * as TXService from '@services/transactionTable';
@@ -50,13 +50,18 @@ const TABLE_HEAD = {
 };
 
 const LiveTransactionTable = (props) => {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState({});
   const [error, setError] = useState(null);
 
   const router = useRouter();
 
   const [wsTableData, websocket] = useWSTransaction() || [{ data: {} }, { current: null }];
-  //   const [refreshCounter, setRefreshCounter] = useState(0);
+  const [start, setStart] = useState(0);
+
+  const handlePagination = (event, page) => {
+    let start = (page - 1) * list.limit;
+    setStart(start);
+  };
 
   useEffect(() => {
     if (!wsTableData?.data) return;
@@ -65,8 +70,8 @@ const LiveTransactionTable = (props) => {
 
   const fetchTransactionList = async () => {
     try {
-      const response = await TXService.transactionList();
-      setList(response?.data?.data);
+      const { data } = await TXService.transactionList();
+      setList(data.data);
     } catch (error) {
       console.error(error);
       setError(error?.message);
@@ -75,7 +80,7 @@ const LiveTransactionTable = (props) => {
 
   useEffect(() => {
     fetchTransactionList();
-  }, []);
+  }, [start]);
 
   const tableFooter = (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ p: 2 }}>
@@ -91,19 +96,10 @@ const LiveTransactionTable = (props) => {
   return (
     <Card>
       {' '}
-      <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2 }} md={12}>
-        <CardHeader
-          title={
-            <Grid container spacing={0.5}>
-              <Typography variant="h6" sx={{ mt: -1.8 }}>
-                Live Claimed Transactions ( {`${list.length}`} )
-              </Typography>
-            </Grid>
-          }
-        />
-      </Stack>
+      {/* <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2 }} md={12}></Stack> */}
       {error && <Alert severity="error">{error}</Alert>}
-      <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list} />
+      <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list?.data} />
+      <Pagination count={list?.totalPage} onChange={handlePagination} />
     </Card>
   );
 };

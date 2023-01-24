@@ -35,11 +35,9 @@ const initialState = {
   wallet: null,
   startBlockNumber: 0,
   roles: {
-    isDonor: false,
-    isAgency: false,
-    isPalika: false,
-    isManager: false,
-    isAgencyOrPalika: false,
+    isTayaba : false,
+    isUser : false,
+    isSRSO : false,
   },
   addToken: () => {},
   deleteToken: () => {},
@@ -95,7 +93,7 @@ function AuthProvider({ children }) {
               address: appSettings?.agency?.contracts?.rahat_erc20,
               agencyId: appSettings?.agency?.id,
             },
-            contracts: appSettings?.agency?.contracts,
+            contracts: appSettings?.contract_address,
             addresses: appSettings?.addresses,
             startBlockNumber: appSettings?.agency?.startBlockNumber,
             wallet,
@@ -107,7 +105,7 @@ function AuthProvider({ children }) {
             isInitialized: true,
           }));
         } else {
-          setAuthState((prev) => ({ ...prev, isAuthenticated: false }));
+          setAuthState((prev) => ({ ...prev, isAuthenticated: false, isInitialized: true }));
         }
       } catch (err) {
         console.error(err);
@@ -155,12 +153,11 @@ function AuthProvider({ children }) {
 
   const roles = useMemo(
     () => ({
-      isDonor: authState.user?.roles?.includes(ROLES.DONOR) || false,
-      isAgency: authState.user?.roles?.includes(ROLES.AGENCY) || false,
-      isPalika: authState.user?.roles?.includes(ROLES.PALIKA) || false,
-      isManager: authState.user?.roles?.includes(ROLES.MANAGER) || false,
-      isAgencyOrPalika: function () {
-        return this.isAgency || this.isPalika;
+      isTayaba: authState.user?.roles?.includes(ROLES.TAYABA) || false,
+      isSRSO: authState.user?.roles?.includes(ROLES.SRSO) || false,
+      isUser: authState.user?.roles?.includes(ROLES.USER) || false,
+      isTayaba: function () {
+        return this.isTayaba;
       },
     }),
     [authState.user]

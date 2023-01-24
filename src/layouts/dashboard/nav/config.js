@@ -54,18 +54,18 @@ const navConfig = [
       //   path: PATH_CASH_TRACKER.root,
       //   icon: ICONS.cashTracker,
       // },
-      // {
-      //   title: 'Live Transactions',
-      //   path: PATH_TRANSACTIONS.root,
-      //   icon: ICONS.transactions,
-      // },
+      {
+        title: 'Transactions',
+        path: PATH_TRANSACTIONS.root,
+        icon: ICONS.transactions,
+      },
       {
         title: 'Beneficiary',
         path: PATH_BENEFICIARY.root,
         icon: ICONS.beneficiary,
       },
       {
-        title: 'Vendors',
+        title: 'Village',
         path: PATH_VENDORS.root,
         icon: ICONS.vendors,
       },
@@ -85,36 +85,32 @@ const navConfig = [
       //   icon: ICONS.photoGallery,
       // },
 
-      // {
-      //   title: 'Administation',
-      //   path: PATH_ADMINISTRATION.root,
-      //   icon: ICONS.admin,
-      //   children: [
-      //     {
-      //       title: 'Campaigns',
-      //       path: PATH_ADMINISTRATION.campaigns,
-      //     },
-      //     {
-      //       title: 'Users',
-      //       path: PATH_ADMINISTRATION.users,
-      //     },
-      //   ],
-      // },
       {
-        title: 'Reports',
-        path: PATH_REPORTS.root,
-        icon: ICONS.reports,
+        title: 'Administation',
+        path: PATH_ADMINISTRATION.root,
+        icon: ICONS.admin,
         children: [
           {
-            title: 'Demographic',
-            path: PATH_REPORTS.demographic,
-          },
-          {
-            title: 'Ward Report',
-            path: PATH_REPORTS.wardReport,
+            title: 'Users',
+            path: PATH_ADMINISTRATION.users,
           },
         ],
       },
+      // {
+      //   title: 'Reports',
+      //   path: PATH_REPORTS.root,
+      //   icon: ICONS.reports,
+      //   children: [
+      //     {
+      //       title: 'Demographic',
+      //       path: PATH_REPORTS.demographic,
+      //     },
+      //     {
+      //       title: 'Ward Report',
+      //       path: PATH_REPORTS.wardReport,
+      //     },
+      //   ],
+      // },
     ],
   },
 ];

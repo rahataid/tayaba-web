@@ -12,7 +12,7 @@ const Page = forwardRef(
   ({ children, title = '', meta, breadcrumbAction, breadcrumbLinks = [], nocard, ...other }, ref) => (
     <>
       <Head>
-        <title>{`${title ? title + '|' : ''} ${APP_NAME}`}</title>
+        <title>{`${title ? title + ' |' : ''} ${APP_NAME}`}</title>
         {meta}
       </Head>
 

@@ -1,94 +1,75 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Grid, Stack } from '@mui/material';
-import BasicInfoCard from './BasicInfoCard';
-import { PalikaCash, DonorCash, AgencyCash } from '../cash-tracker';
-import MoreInfoCard from './MoreInfoCard';
-import ViewTabs from './ViewTabs';
+import { Grid, Stack, Alert, Button } from '@mui/material';
+import InfoCard from './InfoCard';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
 import { useRahat } from '@services/contracts/useRahat';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { useTheme } from '@mui/system';
-import { SPACING,  } from '@config';
+import { SPACING } from '@config';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
-
-
+import { getFlickrImages } from '@services/flickr';
+import ImageSlider from './ImageSlider';
+import ProjectDetail from './ProjectDetail';
+import TitleCard from './TitleCard';
+import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
+import CashActionsAlert from './CashActionsAlert';
 const ProjectView = () => {
-  const { roles } = useAuthContext();
-  const {
-    getProjectById,
-    refresh,
-    refreshData,
-   
-  } = useProjectContext();
+  const { refresh, refreshData, getProjectById, singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
   const { contractWS: RahatCash } = useRahatCash();
+  const [flickImages, setFlickImages] = useState([]);
 
   const {
     query: { projectId },
   } = useRouter();
-  const theme = useTheme();
 
-  const init = useCallback(async () => {
-    if (!RahatCash) return;
-    await projectBalance(projectId);
-  }, [projectId, contract, RahatCash, refresh]);
+  useEffect(() => {
+    const getFlickPics = async () => {
+      const params = {
+        per_page: 10,
+      };
+      const res = await getFlickrImages(params);
+      setFlickImages(res.photo);
+    };
+    getFlickPics();
+
+    return () => {
+      setFlickImages([]);
+    };
+  }, []);
 
   useEffect(() => {
     if (!projectId) return;
     getProjectById(projectId);
-  }, [projectId]);
-
-  useEffect(() => {
-    if (!projectId || !contract) return;
-    init(projectId);
-  }, [projectId, RahatCash, refresh]);
-
-  useEffect(() => {
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    return () => RahatCash?.removeAllListeners();
-  }, [RahatCash]);
-
-
+  }, [projectId, alert.show]);
 
   return (
     <>
-      {/* <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}> */}
-      <Grid item xs={12} md={8}>
-        <Grid container direction="column" justifyContent="center" alignItems="flex-start" style={{ height: '494px' }}>
-          <BasicInfoCard rahatChainData={rahatChainData} />
-          <MoreInfoCard />
-        </Grid>
-        <ProjectChart projectId={projectId} />
-      
-
-        <Stack sx={{ mt: theme.spacing(SPACING.GRID_SPACING) }}>
-          <ViewTabs />
-        </Stack>
-      </Grid>
-      {/* <Grid item xs={12} md={4}>
-          {roles.isPalika && (
-            <PalikaCash
-              projectId={projectId}
-              rahatChainData={rahatChainData}
-              refresh={refresh}
-              refreshData={refreshData}
-            />
-          )}
-          {roles.isAgency && <AgencyCash rahatChainData={rahatChainData} />}
-          {roles.isDonor && <DonorCash rahatChainData={rahatChainData} />}
-          <Grid>
-            <ChartCard rahatChainData={rahatChainData} />
+      <Grid container spacing={SPACING.GRID_SPACING}>
+        <Grid item xs={12} md={8}>
+          <Grid container spacing={SPACING.GRID_SPACING}>
+            <Grid item xs={12} md={12}>
+              <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
+              <InfoCard rahatChainData={rahatChainData} />
+              <SummaryTracker />
+            </Grid>
           </Grid>
-          {bankAccountType ?
-            <Grid>
-              <Piechart title={bankAccountType.title} chart={bankAccountType}  ></Piechart>
-            </Grid> : <></>}
-
-        </Grid> */}
-      {/* </Grid> */}
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Grid container spacing={3}>
+            <TitleCard rahatChainData={rahatChainData} />
+            <CashActionsAlert projectId={projectId} />
+            <Grid item xs={12} md={12}>
+              <ProjectDetail />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={12} md={9}>
+          <ProjectChart projectId={projectId} />
+        </Grid>
+      </Grid>
     </>
   );
 };

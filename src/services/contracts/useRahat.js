@@ -1,18 +1,21 @@
 import { CONTRACTS } from '@config';
-import { useContract } from '@hooks/contracts';
+import { useAbi, useContract } from '@hooks/contracts';
 import Web3Utils from '@utils/web3Utils';
 import { useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { BrainWallet } from '@ethersproject/experimental';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { EthExplorerService } from '..';
+import splitArrayToChunks from '@utils/splitArrayToChunks';
+import { ethers } from 'ethers';
 
 export const useRahat = () => {
-  let { contracts, startBlockNumber } = useAuthContext();
+  let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();
   const contract = useContract(CONTRACTS.RAHAT);
   const contractWS = useContract(CONTRACTS.RAHAT, { isWebsocket: true });
   const cashContract = useContract(CONTRACTS.CASH);
   const registryContract = useContract(CONTRACTS.REGISTRY);
+  const rahatAbi = useAbi(CONTRACTS.RAHAT);
   const [rahatChainData, setRahatChainData] = useState({});
   const [vendorData, setVendorData] = useState({});
   const [claimLogs, setClaimLogs] = useState([]);
@@ -206,6 +209,71 @@ export const useRahat = () => {
         topic2: contract?.interface._abiCoder.encode(['uint256'], [phone]),
         topic0_2_opr: 'and',
       });
+    },
+
+    // Bulk Assign Tokens to Beneficiaries
+    multicall: {
+      async send(callData) {
+        console.log('++++Sending Transaction++++');
+        let estimatedGas = await contract?.estimateGas.multicall(callData);
+        const gasLimit = estimatedGas.toNumber() + 10000;
+        if (estimatedGas.toNumber() > networkGasLimit) throw new Error('Gas Usage too high! Transaction will fail');
+        const tx = await contract?.multicall(callData, { gasLimit });
+        const receipt = await tx.wait();
+        console.log({ receipt });
+        if (receipt.status) console.log('++++Transaction Success++++');
+        else console.log('++++Transaction Failed++++');
+      },
+      async call(callData) {
+        console.log('++++Calling Contract++++');
+        return contract?.callStatic.multicall(callData);
+      },
+    },
+
+    async bulkBeneficiaryBalance(phones) {
+      const callData = phones.map(async (phone) => contract?.generateMultiCallData('beneficiaryBalance', [phone]));
+      const res = await contract?.multicall.call(callData);
+      const iface = new ethers.utils.Interface(rahatAbi);
+      const decodedData = res.map((el) => iface.decodeFunctionResult('beneficiaryBalance', el));
+      return decodedData;
+    },
+
+    async filterBeneficiaryWithXTokens(phones, hasXAmount = 0) {
+      const data = await this.bulkBeneficiaryBalance(phones);
+      const balances = data.map((el, i) => ({
+        phone: phones[i],
+        walletAddress: el.walletAddress,
+        tokenBalance: el.tokenBalance.toNumber(),
+        hasBankAccount: el.hasBankAccount,
+        totalTokenIssued: el.totalTokenIssued.toNumber(),
+      }));
+      return balances.filter((el) => el.totalTokenIssued === hasXAmount).map((el) => el.phone);
+    },
+
+    async bulkIssue(projectId, phones, tokenAmount = 20) {
+      const callData = phones.map(async (phone) =>
+        contract?.generateMultiCallData('issueERC20ToBeneficiary', [projectId, phone, tokenAmount])
+      );
+      await contract?.multicall.send(callData);
+    },
+
+    async bulkAssignTokensToBeneficiaries(projectId, beneficiaryPhones, tokenAmount) {
+      try {
+        const phoneGroups = splitArrayToChunks(beneficiaryPhones, 100);
+        let i = 0;
+        for (let el of phoneGroups) {
+          console.log('Issuing Tokens to:', el);
+          i++;
+          console.log(`PROGRESS: ${i} out of ${phoneGroups.length}`);
+          const filteredBen = await this.filterBeneficiaryWithXTokens(el);
+          console.log({ filteredBen });
+          if (filteredBen.length) await this.bulkIssue(projectId, filteredBen, tokenAmount);
+        }
+        console.log('Token Issuance Completed');
+      } catch (e) {
+        console.log(e);
+        handleContractError(e);
+      }
     },
   };
 };
