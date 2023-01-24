@@ -9,6 +9,10 @@ import { useRahat } from '@services/contracts/useRahat';
 import { useSnackbar } from 'notistack';
 import AmountForm from '@sections/projects/cash-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
+import { useProject } from '@services/contracts/useProject';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import LoadingOverlay from '@components/LoadingOverlay';
+import useLoading from '@hooks/useLoading';
 
 ReleaseCashButton.propTypes = {};
 
@@ -17,6 +21,11 @@ export default function ReleaseCashButton() {
   const { singleVendor, refreshData, chainData, refresh } = useVendorsContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { projectBalance, addVendor, transferCashToVendor, rahatChainData, contract } = useRahat();
+  const { sendH2OWheelsToVendor, h2oToken, getProjectBalance } = useProject();
+  const [tokenBalance, setTokenBalance] = useState(0);
+  const { roles } = useAuthContext();
+  const { loading, showLoading, hideLoading } = useLoading();
+
   const Actions = {
     alert(message, type) {
       enqueueSnackbar(message, {
@@ -33,15 +42,22 @@ export default function ReleaseCashButton() {
       });
     },
     async activateVendor() {
-      if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
+      if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
       await addVendor(singleVendor.walletAddress);
       refreshData();
     },
-    async releaseCash(amount) {
+    async releaseH2oToken(amount) {
+      if (!roles.isAdmin) return;
       if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
       if (amount > rahatChainData?.cashBalance) return Actions.alert('Not enough balance to send', 'error');
-      await transferCashToVendor(singleVendor.walletAddress, amount);
+      showLoading('transferToken');
+      try {
+        await sendH2OWheelsToVendor(singleVendor.walletAddress, amount);
+      } catch (err) {
+        console.log(err);
+      }
       refreshData();
+      hideLoading('transferToken');
     },
   };
 
@@ -51,6 +67,23 @@ export default function ReleaseCashButton() {
     },
     [contract]
   );
+  const getBalance = useCallback(
+    async () => {
+      if (!h2oToken) return;
+      try {
+        let token = await getProjectBalance();
+        setTokenBalance(100);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    []
+    //[h2oToken]
+  );
+
+  useEffect(async () => {
+    getBalance();
+  }, [getBalance]);
 
   useEffect(() => {
     if (!singleVendor?.projects?.length) return;
@@ -60,23 +93,25 @@ export default function ReleaseCashButton() {
   return (
     <div>
       <AmountForm
-        title="Release Cash to Ward"
+        title="Release token to village"
         description={
           <>
-            Please select the amount are handing over to ward for cash camp. Ward representative has to accept the cash
+            Please select the amount of H2o token are handing over to village .Village Vendors has to accept the cash
             before they are allowed for disburse. <br />
             <br />
-            Your current cash balance is {rahatChainData?.cashBalance}
+            Your current H20 tokens is {tokenBalance}
           </>
         }
-        approveCashTransfer={Actions.releaseCash}
+        approveCashTransfer={Actions.releaseH2oToken}
         handleClose={hideDialog}
         open={isDialogShow}
       />
-      {chainData?.isActive ? (
-        <Button variant="outlined" color="success" onClick={showDialog}>
-          Release Cash
-        </Button>
+      {true ? (
+        <LoadingOverlay open={loading.transferToken}>
+          <Button variant="outlined" color="success" onClick={showDialog}>
+            Release Cash
+          </Button>
+        </LoadingOverlay>
       ) : (
         <Button variant="outlined" color="primary" onClick={Actions.activateVendor}>
           Activate Vendor
