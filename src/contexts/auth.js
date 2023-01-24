@@ -53,18 +53,10 @@ export function LoginProvider({ children }) {
       otp: payload.otp,
     });
     // const response = await AuthService.verifyOtp(payload);
-    console.log('response', response);
     if (!response.data) throw new Error('Invalid OTP');
     addToken(response.data?.data.accessToken);
     addUser(response.data?.data.user);
-    console.log(
-      'permissions',
-      response.data?.data.permissions,
-      'aceessToken',
-      response.data?.data.accessToken,
-      'user',
-      response.data?.data.user
-    );
+
     // addKey(response.data.key);
     return response.data;
   };

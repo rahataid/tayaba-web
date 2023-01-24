@@ -45,7 +45,6 @@ export default function ActionMenu({ actionTitle }) {
       });
     },
     async ActivateVendor() {
-      console.log('singleVendor', singleVendor);
       if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
       await addVendor(singleVendor.walletAddress);
       await VendorService.updateVendorApprovalStatus(singleVendor.id, true);

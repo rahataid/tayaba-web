@@ -16,7 +16,7 @@ export default function BasicInfoCard({ chainData }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            {roles.isTayaba
+            {roles?.isDonor
               ? singleBeneficiary?.data?.name
               : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
