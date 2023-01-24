@@ -11,7 +11,7 @@ export const useAbi = (contract) => {
       setAbi(data.abi);
     } else {
       const response = await AppService.getContract(contract);
-      await tblAbi.put({ name: contract, abi: response.data.abi });
+      await tblAbi.put({ name: contract, abi: response.data.data.abi });
       setAbi(response.data.abi);
     }
   }, [contract]);

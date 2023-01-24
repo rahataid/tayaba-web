@@ -9,6 +9,7 @@ export const useContract = (contractName, options = { isWebsocket: false }) => {
   const [abi] = useAbi(contractName);
   const wallet = useWallet();
   const [contract, setContract] = useState(null);
+
   useEffect(() => {
     if (contracts && abi?.length && contractName) {
       let con = null;
