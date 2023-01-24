@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Iconify from '@components/iconify';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useRahat } from '@services/contracts/useRahat';
+
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import AmountForm from '@sections/projects/cash-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
@@ -18,7 +18,6 @@ ActionMenu.propTypes = {
 export default function ActionMenu({ actionTitle }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { singleBeneficiary, refreshData } = useBeneficiaryContext();
-  const { issueTokenToBeneficiary, setAsBankedBeneficiary } = useRahat();
   const { enqueueSnackbar } = useSnackbar();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const {
@@ -54,13 +53,7 @@ export default function ActionMenu({ actionTitle }) {
     async issueToken(amount) {
       const project = singleBeneficiary?.projects?.[0];
       if (!project) return Actions.alert('Must have project', 'error');
-      await issueTokenToBeneficiary(project.id, singleBeneficiary.phone, amount);
-      refreshData();
-      setAnchorEl(null);
-    },
-
-    async setBankedStatus(status) {
-      await setAsBankedBeneficiary(singleBeneficiary.phone, status);
+      //await issueTokenToBeneficiary(project.id, singleBeneficiary.phone, amount);
       refreshData();
       setAnchorEl(null);
     },
@@ -70,14 +63,6 @@ export default function ActionMenu({ actionTitle }) {
     {
       name: 'Issue Token',
       onClick: showDialog,
-    },
-    {
-      name: 'Set as Banked',
-      onClick: () => Actions.setBankedStatus(true),
-    },
-    {
-      name: 'Set as Un-Banked',
-      onClick: () => Actions.setBankedStatus(false),
     },
     {
       name: 'Edit Beneficairy',

@@ -14,8 +14,6 @@ Barchart.propTypes = {
     subheader: PropTypes.string,
   };
 
-
-
 export default function Barchart({ title, subheader, footer,chart,handleVillage, ...other }) {
     const theme = useTheme();
 

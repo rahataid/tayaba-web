@@ -6,7 +6,6 @@ import { Stack, Grid } from '@mui/material';
 import { bgGradient } from '../../../utils/cssStyles';
 import BasicInfoCard from './BasicInfoCard';
 // ----------------------------------------------------------------------
-import MoreInfoCard from './MoreInfoCard';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   height: '100%',
@@ -69,7 +68,6 @@ export default function ProjectDetail({ ...other }) {
       >
         <Grid>
           <BasicInfoCard />
-          <MoreInfoCard />
         </Grid>
       </Stack>
       <StyledBg />

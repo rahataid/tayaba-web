@@ -3,9 +3,7 @@ import { Grid } from '@mui/material';
 import InfoCard from './InfoCard';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
-import { useRahat } from '@services/contracts/useRahat';
 import { SPACING } from '@config';
-import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
 import { getFlickrImages } from '@services/flickr';
 import ImageSlider from './ImageSlider';
@@ -15,8 +13,6 @@ import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 const ProjectView = () => {
   const { getProjectById, singleProject } = useProjectContext();
-  const { projectBalance, rahatChainData, contract } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
   const [flickImages, setFlickImages] = useState([]);
 
   const {
@@ -58,7 +54,7 @@ const ProjectView = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Grid container spacing={3}>
-            <TitleCard rahatChainData={rahatChainData} />
+            <TitleCard rahatChainData={{}} />
             <CashActionsAlert projectId={projectId} />
             <Grid item xs={12} md={12}>
               <ProjectDetail />

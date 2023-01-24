@@ -6,7 +6,6 @@ import ActionMenu from './ActionMenu';
 import TransferTokenDialog from '../cash-tracker/TransferTokenDialog';
 import CreateTokenDialog from '../cash-tracker/CreateTokenDialog';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
-import { useRahatAdmin } from '@services/contracts/useRahatAdmin';
 import { useRouter } from 'next/router';
 import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
@@ -17,7 +16,6 @@ import LoadingOverlay from '@components/LoadingOverlay';
 
 const TitleCard = (props) => {
   const { singleProject, refreshData } = useProjectContext();
-  const { agencyChainData } = useRahatAdmin();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -88,7 +86,7 @@ const TitleCard = (props) => {
           <>
             Please enter No. of token you wish to Create <br />
             <br />
-            Your have total {agencyChainData?.cashBalance} tokens
+            Your have total #NA tokens
           </>
         }
         cashBalance={0}

@@ -8,10 +8,7 @@ export const useProject = () => {
   let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();
   const contract = useContract(CONTRACTS.CVAPROJECT);
   const h2oToken = useContract(CONTRACTS.RAHATTOKEN);
-
   const donorContract = useContract(CONTRACTS.DONOR);
-
-  const contractWS = useContract(CONTRACTS.CVAPROJECT);
 
   const { handleContractError } = useErrorHandler();
 
@@ -23,9 +20,7 @@ export const useProject = () => {
     h2oToken,
     acceptToken: (amount) => contract?.acceptToken(contracts[CONTRACTS.ADMIN], amount).catch(handleContractError),
 
-    getProjectBalance: async () => {
-      return await h2oToken?.balanceOf(contract?.address);
-    },
+    getProjectBalance: async () => await h2oToken?.balanceOf(contract?.address),
 
     lockProject: (address) => {
       if (!isProjectLocked) {

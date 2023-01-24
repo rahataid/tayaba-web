@@ -6,15 +6,11 @@ import PropTypes from 'prop-types';
 import Iconify from '@components/iconify';
 import { useRouter } from 'next/router';
 import { useVendorsContext } from '@contexts/vendors';
-import { useRahat } from '@services/contracts/useRahat';
 import { useSnackbar } from 'notistack';
 import { Divider, Grid } from '@mui/material';
 import ReleaseCashButton from './ReleaseCashButton';
 import { Stack } from '@mui/system';
-import { useRahatCash } from '@services/contracts/useRahatCash';
-import { useRahatTrigger } from '@services/contracts/useRahatTrigger';
 import { useErrorHandler } from '@hooks/useErrorHandler';
-import { VendorService } from '@services/vendors';
 
 ActionMenu.propTypes = {
   actionTitle: PropTypes.string,
@@ -24,8 +20,6 @@ export default function ActionMenu({ actionTitle }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
   const { singleVendor, refreshData, chainData } = useVendorsContext();
-  const { addVendor, removeVendor, acceptCashForVendor } = useRahat();
-  const { isLive } = useRahatTrigger();
   const { handleError } = useErrorHandler();
   const open = Boolean(anchorEl);
 
@@ -45,34 +39,33 @@ export default function ActionMenu({ actionTitle }) {
       });
     },
     async ActivateVendor() {
-      if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
-      await addVendor(singleVendor.walletAddress);
-      await VendorService.updateVendorApprovalStatus(singleVendor.id, true);
-
-      setAnchorEl(null);
-      refreshData();
+      // if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
+      // await addVendor(singleVendor.walletAddress);
+      // await VendorService.updateVendorApprovalStatus(singleVendor.id, true);
+      // setAnchorEl(null);
+      // refreshData();
     },
     async DeactivateVendor() {
-      console.log('singleVendor', singleVendor);
-      if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
-      await removeVendor(singleVendor.walletAddress);
-      await VendorService.updateVendorApprovalStatus(singleVendor.id, false);
-      setAnchorEl(null);
-      refreshData();
+      // console.log('singleVendor', singleVendor);
+      // if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
+      // await removeVendor(singleVendor.walletAddress);
+      // await VendorService.updateVendorApprovalStatus(singleVendor.id, false);
+      // setAnchorEl(null);
+      // refreshData();
     },
 
     async acceptCashForVendor() {
-      if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
-      await acceptCashForVendor(singleVendor.walletAddress, chainData.cashAllowance);
-      setAnchorEl(null);
-      refreshData();
+      // if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
+      // await acceptCashForVendor(singleVendor.walletAddress, chainData.cashAllowance);
+      // setAnchorEl(null);
+      // refreshData();
     },
   };
 
   const menuItems = [
     {
-      name: `${isLive ? 'Deactivate' : 'Activate'} Vendor`,
-      onClick: isLive ? Actions.DeactivateVendor : Actions.ActivateVendor,
+      name: `Activate Vendor`,
+      onClick: Actions.ActivateVendor,
     },
 
     '-',

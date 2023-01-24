@@ -1,7 +1,6 @@
 import { ProjectService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRahat } from '@services/contracts/useRahat';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 
 const initialState = {
@@ -32,14 +31,12 @@ const initialState = {
   getChartData: () => {},
   getBeneficiariesByvillage: () => {},
   setFilter: () => {},
-  bulkAssignBeneficiaries: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
 
 export const ProjectProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
-  const rahat = useRahat();
   const { handleError } = useErrorHandler();
 
   const refreshData = () => setState((prev) => ({ ...prev, refresh: !prev.refresh }));
@@ -171,24 +168,6 @@ export const ProjectProvider = ({ children }) => {
     }
   });
 
-  const bulkAssignBeneficiaries = useCallback(async (projectId, numberOfTokens) => {
-    try {
-      const beneficiaryPhones = state.beneficiaries.data
-
-        .map((beneficiary) => beneficiary.phone)
-        .filter((phone) => phone !== 'N/A');
-
-      rahat
-        .bulkAssignTokensToBeneficiaries(projectId, beneficiaryPhones, numberOfTokens)
-        .then((res) => {
-          console.log('res', res);
-        })
-        .catch(handleError);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
   const contextValue = {
     ...state,
     refreshData,
@@ -200,7 +179,6 @@ export const ProjectProvider = ({ children }) => {
     getChartData,
     getBeneficiariesByvillage,
     setFilter,
-    bulkAssignBeneficiaries,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

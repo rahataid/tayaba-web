@@ -6,8 +6,6 @@ import MoreInfoCard from './MoreInfoCard';
 import { HistoryTable } from '@sections/transactionTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
-import { useRahat } from '@services/contracts/useRahat';
-import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import ActionMenu from './ActionMenu';
 
@@ -41,8 +39,6 @@ const TABLE_HEAD = {
 export default function BeneficiaryView() {
   const { roles } = useAuthContext();
   const { getBeneficiaryById, setChainData, chainData, refresh, refreshData } = useBeneficiaryContext();
-  const { beneficiaryBalance, contract, contractWS, getBeneficiaryClaimLogs, claimLogs } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
 
   const {
     query: { beneficiaryId },
@@ -51,22 +47,22 @@ export default function BeneficiaryView() {
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
-    getBeneficiaryClaimLogs(_benData?.phone);
+    //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
-    const _chainData = await beneficiaryBalance(_benData?.phone);
-    setChainData(_chainData);
-  }, [beneficiaryId, contract, refresh]);
+    // const _chainData = await beneficiaryBalance(_benData?.phone);
+    // setChainData(_chainData);
+  }, [beneficiaryId, refresh]);
 
   useEffect(() => {
     init();
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    contractWS?.on('IssuedERC20', refreshData);
-    return () => {
-      contractWS?.removeAllListeners();
-      RahatCash?.removeAllListeners();
-    };
-  }, [init, RahatCash, contractWS]);
+    // RahatCash?.on('Approval', refreshData);
+    // RahatCash?.on('Transfer', refreshData);
+    // contractWS?.on('IssuedERC20', refreshData);
+    // return () => {
+    //   contractWS?.removeAllListeners();
+    //   RahatCash?.removeAllListeners();
+    // };
+  }, [init]);
 
   return (
     <>
@@ -84,7 +80,7 @@ export default function BeneficiaryView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={claimLogs} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={[]} />
       </Stack>
     </>
   );

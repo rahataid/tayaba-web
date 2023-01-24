@@ -6,8 +6,6 @@ import TokenDetails from './TokenDetails';
 import { HistoryTable } from '@sections/transactionTable';
 import { useVendorsContext } from '@contexts/vendors';
 import { useRouter } from 'next/router';
-import { useRahat } from '@services/contracts/useRahat';
-import { useRahatCash } from '@services/contracts/useRahatCash';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {
@@ -35,8 +33,6 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 export default function VendorView() {
   const { getVendorById, setChainData, chainData, refreshData, refresh, getVendorEthBalance, vendorEthBalance } =
     useVendorsContext();
-  const { vendorBalance, contract, claimLogs, getVendorClaimLogs } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
 
   const {
     query: { vendorId },
@@ -49,20 +45,12 @@ export default function VendorView() {
     if (!vendorId) return;
     const _vendorData = await getVendorById(vendorId);
     if (!_vendorData?.walletAddress) return;
-    const _chainData = await vendorBalance(_vendorData?.walletAddress);
+    const _chainData = {}; //await vendorBalance(_vendorData?.walletAddress);
     console.log('_chainData', _chainData);
     await getVendorEthBalance(_vendorData?.walletAddress);
 
     setChainData(_chainData);
-    await getVendorClaimLogs('0x2e38580a0ea254895b3f28f3aa95221124c102df');
-  }, [vendorId, contract, refresh]);
-
-  useEffect(() => {
-    init();
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    return () => RahatCash?.removeAllListeners();
-  }, [init, RahatCash]);
+  }, [vendorId, refresh]);
 
   return (
     <>
@@ -76,7 +64,7 @@ export default function VendorView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={claimLogs} />
+        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={[]} />
       </Stack>
     </>
   );

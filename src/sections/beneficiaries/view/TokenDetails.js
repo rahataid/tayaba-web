@@ -18,7 +18,6 @@ export default function TokenDetails() {
   const { loading, showLoading, hideLoading } = useLoading();
   const [balance, setBalance] = useState(0);
   const { roles } = useAuthContext();
-  //const { beneficiaryBalance, beneficiaryData, contract } = useRahat();
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
     await assignClaimsToBeneficiaries(singleBeneficiary.walletAddress, 1);

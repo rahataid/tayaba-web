@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useVendorsContext } from '@contexts/vendors';
-import { useRahat } from '@services/contracts/useRahat';
 import { useSnackbar } from 'notistack';
 import AmountForm from '@sections/projects/cash-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
@@ -20,7 +19,6 @@ export default function ReleaseCashButton() {
   const { enqueueSnackbar } = useSnackbar();
   const { singleVendor, refreshData, chainData, refresh } = useVendorsContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { projectBalance, addVendor, transferCashToVendor, rahatChainData, contract } = useRahat();
   const { sendH2OWheelsToVendor, h2oToken, getProjectBalance } = useProject();
   const [tokenBalance, setTokenBalance] = useState(0);
   const { roles } = useAuthContext();
@@ -43,13 +41,13 @@ export default function ReleaseCashButton() {
     },
     async activateVendor() {
       if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      await addVendor(singleVendor.walletAddress);
+      //await addVendor(singleVendor.walletAddress);
       refreshData();
     },
     async releaseH2oToken(amount) {
       if (!roles.isAdmin) return;
       if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      if (amount > rahatChainData?.cashBalance) return Actions.alert('Not enough balance to send', 'error');
+      //if (amount > rahatChainData?.cashBalance) return Actions.alert('Not enough balance to send', 'error');
       showLoading('transferToken');
       try {
         await sendH2OWheelsToVendor(singleVendor.walletAddress, amount);
@@ -62,10 +60,10 @@ export default function ReleaseCashButton() {
   };
 
   const init = useCallback(
-    async (projectId) => {
-      await projectBalance(projectId);
-    },
-    [contract]
+    // async (projectId) => {
+    //   await projectBalance(projectId);
+    // },
+    []
   );
   const getBalance = useCallback(
     async () => {
