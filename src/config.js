@@ -72,7 +72,6 @@ export const SPACING = {
 
 export const ROLES = {
   ADMIN: 'admin',
-  AGENCY: 'admin',
   DONOR: 'donor',
   MANAGER: 'manager',
 };

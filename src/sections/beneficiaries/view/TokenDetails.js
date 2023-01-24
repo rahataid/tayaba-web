@@ -8,6 +8,7 @@ import useDialog from '@hooks/useDialog';
 import { useProject } from '@services/contracts/useProject';
 import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 TokenDetails.propTypes = {};
 export default function TokenDetails() {
@@ -16,6 +17,7 @@ export default function TokenDetails() {
   const { assignClaimsToBeneficiaries, beneficiaryBalance } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const [balance, setBalance] = useState(0);
+  const { roles } = useAuthContext();
   //const { beneficiaryBalance, beneficiaryData, contract } = useRahat();
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
@@ -33,13 +35,15 @@ export default function TokenDetails() {
   }, []);
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
-      <Dialog open={isDialogShow} onClose={hideDialog}>
-        <DialogTitle> Are you sure to assign claim ?</DialogTitle>
-        <DialogActions>
-          <Button onClick={handleAssignClaim}> YES</Button>
-          <Button onClick={hideDialog}> NO</Button>
-        </DialogActions>
-      </Dialog>
+      {roles.isManager && (
+        <Dialog open={isDialogShow} onClose={hideDialog}>
+          <DialogTitle> Are you sure to assign claim ?</DialogTitle>
+          <DialogActions>
+            <Button onClick={handleAssignClaim}> YES</Button>
+            <Button onClick={hideDialog}> NO</Button>
+          </DialogActions>
+        </Dialog>
+      )}
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
           <Typography variant="h5">Claims Details</Typography>

@@ -19,7 +19,7 @@ export const useRahatAdmin = () => {
     sendToPalika: (projectId, amount) =>
       adminContract?.setProjectBudget_ERC20(contracts[CONTRACTS.RAHAT], projectId, amount).catch(handleContractError),
 
-    getBalance: async () => {
+    getBudget: async () => {
       try {
         return await rahatTokenContract.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.CVAPROJECT]);
       } catch (error) {
