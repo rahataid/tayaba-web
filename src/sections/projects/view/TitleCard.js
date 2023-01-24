@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Grid, Stack, Typography, Button } from '@mui/material';
+import { Card, Grid, Stack, Typography, Button, Alert } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import ActionMenu from './ActionMenu';
 import TransferTokenDialog from '../cash-tracker/TransferTokenDialog';
@@ -12,14 +12,15 @@ import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import { role } from 'src/_mock/assets';
+import { useSnackbar } from 'notistack';
+import LoadingOverlay from '@components/LoadingOverlay';
 
 const TitleCard = (props) => {
   const { singleProject, refreshData } = useProjectContext();
   const { agencyChainData } = useRahatAdmin();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles } = useAuthContext();
-
+  const { enqueueSnackbar } = useSnackbar();
   const {
     push,
     query: { projectId },
@@ -47,6 +48,7 @@ const TitleCard = (props) => {
       await sendCashToProject(amount);
       refreshData();
       hideLoading('cashTransfer');
+      enqueueSnackbar('Added Budget to Project');
     },
   };
 
@@ -96,20 +98,23 @@ const TitleCard = (props) => {
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
-        approveCashTransfer={CashActions.sendCashToProject}
+        approveCashTransfer={CashActions?.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
       />
+
       <Grid item xs={12} md={12}>
-        <Card variant="outlined">
-          <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
-            <Button variant="text" onClick={handleBeneficiaryRouteAction}>
-              {' '}
-              Beneficiaries
-            </Button>
-            <ActionMenu menuItems={menuItems} actionTitle="Actions" />
-          </Stack>
-        </Card>
+        <LoadingOverlay open={loading?.cashTransfer}>
+          <Card variant="outlined">
+            <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
+              <Button variant="text" onClick={handleBeneficiaryRouteAction}>
+                {' '}
+                Beneficiaries{' '}
+              </Button>
+              <ActionMenu menuItems={menuItems} actionTitle="Actions" />
+            </Stack>
+          </Card>
+        </LoadingOverlay>
       </Grid>
     </>
   );

@@ -65,6 +65,11 @@ export default function Piechart({ title, subheader, chart, ...other }) {
         },
       },
     },
+    events: {
+      mounted: (chart) => {
+        chart.windowResizeHandler();
+      },
+    },
     plotOptions: {
       pie: {
         donut: {

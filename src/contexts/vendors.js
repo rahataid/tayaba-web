@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { ethers } from 'ethers';
 import { useWallet } from '@hooks/useWallet';
+import { vendors } from '@sections/projects/view/tableData';
 
 const initialState = {
   vendors: [],
@@ -24,13 +25,11 @@ const VendorsContext = createContext(initialState);
 export const VendorProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
   const wallet = useWallet();
-
   const refreshData = () => setState((prev) => ({ ...prev, refresh: !prev.refresh }));
 
   const getVendorsList = useCallback(async (params) => {
-    const response = await VendorService.getVendorsList(params);
-
-    const formatted = response.data?.data?.map((item) => ({
+    const { data } = await VendorService.getVendorsList(params);
+    const formatted = data.data?.data?.map((item) => ({
       ...item,
       id: item?.id,
       name: item?.name || 'N/A',
@@ -45,9 +44,9 @@ export const VendorProvider = ({ children }) => {
       ...prevState,
       vendors: {
         data: formatted,
-        start: response.data?.data?.start,
-        limit: response.data?.data?.limit,
-        totalPage: response.data?.data?.totalPage,
+        start: data?.data?.start,
+        limit: data?.data?.limit,
+        totalPage: data?.data?.totalPage,
       },
     }));
     return formatted;

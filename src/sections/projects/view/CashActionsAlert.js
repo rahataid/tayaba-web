@@ -13,7 +13,7 @@ import LoadingOverlay from '@components/LoadingOverlay';
 export default function CashActionsAlert({ projectId }) {
   const { refresh, refreshData, singleProject } = useProjectContext();
   const { projectBalance, rahatChainData, contract } = useRahat();
-  const { claimCash, getBalance, rahatTokenContract } = useRahatAdmin();
+  const { claimCash, getBudget, rahatTokenContract } = useRahatAdmin();
   const { contractWS: RahatCash } = useRahatCash();
   const { loading, showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
@@ -60,11 +60,11 @@ export default function CashActionsAlert({ projectId }) {
 
   const acceptCashAction = useCallback(async () => {
     if (!rahatTokenContract) return;
-    const cash = await getBalance();
+    const cash = await getBudget();
     if (cash > 0) {
       setAlert({
         type: 'success',
-        message: 'Accept Cash',
+        message: `Accept Cash Amount ${cash}`,
         action: <Button onClick={CashActions.acceptCash}>Accept</Button>,
       });
       setShowAlert(true);
@@ -83,12 +83,12 @@ export default function CashActionsAlert({ projectId }) {
   }, [rahatChainData?.cashAllowance]);
 
   useEffect(() => {
-    if (!roles.isDonor) return;
+    if (!roles.isAdmin) return;
     acceptCashAction();
   }, [acceptCashAction]);
 
   useEffect(() => {
-    if (!roles.isUser) return;
+    if (!roles.isManager) return;
     acceptTokenAction();
   }, [acceptTokenAction]);
 
