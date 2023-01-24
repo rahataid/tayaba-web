@@ -5,6 +5,8 @@ import { useRahatAdmin } from '@services/contracts/useRahatAdmin';
 import { useRahat } from '@services/contracts/useRahat';
 import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useProjectContext } from '@contexts/projects';
+import { useProject } from '@services/contracts/useProject';
+import { useAuthContext } from 'src/auth/useAuthContext';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import LoadingOverlay from '@components/LoadingOverlay';
 
@@ -19,8 +21,9 @@ export default function CashActionsAlert({ projectId }) {
     message: '',
     action: '',
   });
+  const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
-  const { sendCashToAgency } = useRahatDonor();
+  const { sendH2OWheelsToVendor } = useProject();
 
   const init = useCallback(async () => {
     if (!RahatCash) return;
@@ -43,7 +46,15 @@ export default function CashActionsAlert({ projectId }) {
       showLoading('cashTrack');
       await claimCash(projectId);
       refreshData();
+      setShowAlert(false);
       hideLoading('cashTrack');
+    },
+    async acceptTokenByVendor(tokenNos) {
+      showLoading('cashTransfer');
+      await acceptH2OByVendors(tokenNos);
+      refreshData();
+      setShowAlert(false);
+      hideLoading('cashTransfer');
     },
   };
 
@@ -60,9 +71,26 @@ export default function CashActionsAlert({ projectId }) {
     }
   }, [rahatTokenContract?.allowance]);
 
+  const acceptTokenAction = useCallback(() => {
+    if (rahatChainData?.cashAllowance > 0) {
+      setAlert({
+        type: 'success',
+        message: 'Accept Token',
+        action: <Button onClick={CashActions.acceptTokenByVendor}>Accept</Button>,
+      });
+      setShowAlert(true);
+    }
+  }, [rahatChainData?.cashAllowance]);
+
   useEffect(() => {
+    if (!roles.isDonor) return;
     acceptCashAction();
   }, [acceptCashAction]);
+
+  useEffect(() => {
+    if (!roles.isUser) return;
+    acceptTokenAction();
+  }, [acceptTokenAction]);
 
   return (
     <>
