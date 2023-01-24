@@ -12,14 +12,12 @@ export default function BasicInfoCard({ chainData }) {
   const { singleVendor } = useVendorsContext();
   const { roles } = useAuthContext();
 
-  console.log('chainData', chainData);
-
   return (
     <Card>
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
           <Typography variant="h4">
-            {roles.isTayaba ? singleVendor?.name : singleVendor?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
+            {roles.isDonor ? singleVendor?.name : singleVendor?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           {
             <div>

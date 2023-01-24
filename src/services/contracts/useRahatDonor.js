@@ -22,8 +22,9 @@ export const useRahatDonor = () => {
           amount
         );
 
-        return await rahatTokenContract.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.CVAPROJECT]);
+        return rahatTokenContract?.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.CVAPROJECT]);
       } catch (error) {
+        console.log('error', error);
         handleContractError(error);
       }
     },

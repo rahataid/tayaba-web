@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
 import { SPACING } from '@config';
 
 const InfoCard = ({ info, ...props }) => {
-  console.log('props', info);
   return (
     <Grid container spacing={SPACING.GRID_SPACING}>
       <Grid item xs={12} md={6} lg={4}>

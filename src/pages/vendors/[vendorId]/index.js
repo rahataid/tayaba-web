@@ -16,7 +16,7 @@ const VendorsView = () => {
 
   return (
     <VendorProvider>
-      <Page title={PAGE_TITLE} nocard action={roles.isTayaba && <ActionMenu actionTitle={'Actions'} />}>
+      <Page title={PAGE_TITLE} nocard action={roles.isDonor && <ActionMenu actionTitle={'Actions'} />}>
         <Container maxWidth={themeStretch ? false : 'xl'}>
           <VendorView />
         </Container>

@@ -93,19 +93,6 @@ export const BeneficiaryProvider = ({ children }) => {
 
     const formatted = {
       ...response.data,
-      email: response.data?.email || 'N/A',
-      registrationDate: response.data?.extras?.registration_date || 'N/A',
-      ward: response.data?.extras?.ward || 'N/A',
-      govtId: response.data?.govt_id || 'N/A',
-      govtIdType: response.data?.extras?.govtId_type || 'N/A',
-      id: response.data?._id,
-      education: response.data?.extras?.education || 'N/A',
-      profession: response.data?.extras?.profession || 'N/A',
-      bankName: response.data?.extras?.bank || 'N/A',
-      bankAccountName: response.data?.bank_account?.account_name || 'N/A',
-      bankAccountNumber: response.data?.bank_account?.account_number || 'N/A',
-      bankSwiftCode: response.data?.bank_account?.swift_code || 'N/A',
-      projects: response.data?.projects || [],
     };
 
     setState((prev) => ({
