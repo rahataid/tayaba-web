@@ -71,11 +71,10 @@ export const SPACING = {
 };
 
 export const ROLES = {
-  AGENCY: 'Admin',
-  DONOR: 'Donor',
-  MANAGER: 'Manager',
-  MOBILIZER: 'Mobilizer',
-  PALIKA: 'Palika',
+  ADMIN: 'admin',
+  AGENCY: 'admin',
+  DONOR: 'donor',
+  MANAGER: 'manager',
 };
 
 // TODO: change accordingly

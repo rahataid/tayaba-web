@@ -36,7 +36,7 @@ const initialState = {
   startBlockNumber: 0,
   roles: {
     isAdmin: false,
-    isUser: false,
+    isManager: false,
     isDonor: false,
   },
   addToken: () => {},
@@ -154,9 +154,9 @@ function AuthProvider({ children }) {
 
   const roles = useMemo(
     () => ({
-      isTayaba: authState.user?.roles?.includes(ROLES.TAYABA) || false,
-      isSRSO: authState.user?.roles?.includes(ROLES.SRSO) || false,
-      isUser: authState.user?.roles?.includes(ROLES.USER) || false,
+      isDonor: authState.user?.roles?.includes(ROLES.DONOR) || false,
+      isAdmin: authState.user?.roles?.includes(ROLES.ADMIN) || false,
+      isManager: authState.user?.roles?.includes(ROLES.MANAGER) || false,
     }),
     [authState.user]
   );

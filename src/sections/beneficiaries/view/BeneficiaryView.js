@@ -73,12 +73,12 @@ export default function BeneficiaryView() {
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <BasicInfoCard chainData={chainData} />
-          {roles.isTayaba() && (
+          {roles.isDonor && (
             <Stack>
               <MoreInfoCard />
             </Stack>
           )}
-          {/* {roles.isTayaba() && (
+          {/* {roles.isDonor() && (
             <Stack sx={{ mt: 1 }}>
               <ProjectsInvolved />
             </Stack>
@@ -87,7 +87,6 @@ export default function BeneficiaryView() {
         <Grid item xs={12} md={4}>
           <TokenDetails />
         </Grid>
-      
       </Grid>
       <Stack sx={{ mt: 1 }}>
         <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={claimLogs} />

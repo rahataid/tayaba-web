@@ -15,15 +15,15 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {singleProject?.data?.projectManager}
+            {singleProject?.data?.budget}
           </Typography>
-          <Typography variant="body2">Project Manager</Typography>
+          <Typography variant="body2">Budget</Typography>
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {singleProject?.data?.location}
+            {singleProject?.data?.disbursed}
           </Typography>
-          <Typography variant="body2">Location</Typography>
+          <Typography variant="body2">Disbursed</Typography>
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>

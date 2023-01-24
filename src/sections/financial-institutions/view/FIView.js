@@ -12,7 +12,6 @@ const FIView = () => {
   useEffect(() => {
     getFIById(fiId);
   }, [fiId, getFIById]);
-  console.log('singleFI', singleFI);
 
   return (
     <>

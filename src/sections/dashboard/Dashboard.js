@@ -32,8 +32,6 @@ const DashboardComponent = () => {
     genderWardChart,
     getBankedUnbanked,
     getPhoneOwnership,
-    getWardGenderChart,
-    getBeneficiariesByWard,
     getCashTrackerSummary,
     cashTrackerSummary,
     getDemographicSummary,
@@ -41,37 +39,11 @@ const DashboardComponent = () => {
 
   const [flickImages, setFlickImages] = useState([]);
 
-  useEffect(() => {
-    getSummary();
-  }, [getSummary]);
+  
 
   useEffect(() => {
     getDemographicSummary();
   }, [getDemographicSummary]);
-
-  useEffect(() => {
-    getCashTrackerSummary();
-  }, [getCashTrackerSummary]);
-
-  useEffect(() => {
-    getGenderDistribution();
-  }, [getGenderDistribution]);
-
-  useEffect(() => {
-    getBankedUnbanked();
-  }, [getBankedUnbanked]);
-
-  useEffect(() => {
-    getPhoneOwnership();
-  }, [getPhoneOwnership]);
-
-  useEffect(() => {
-    getWardGenderChart();
-  }, [getWardGenderChart]);
-
-  useEffect(() => {
-    getGeoMapData();
-  }, [getGeoMapData]);
 
   useEffect(() => {
     const getFlickPics = async () => {
@@ -104,19 +76,24 @@ const DashboardComponent = () => {
               color="warning"
               icon="material-symbols:person-4"
               title="Beneficiaries"
-              total={demographicSummary?.count}
+              total={demographicSummary?.totalBeneficiaries}
               subtitle={'households'}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <SummaryCard color='info' icon="ic:outline-water-drop" title="H20 Disbursed" total={85} subtitle={'wheels'} />
+            <SummaryCard 
+            color='info'
+            icon="ic:outline-water-drop" 
+            title="H20 Disbursed" 
+            total={demographicSummary?.totalH20Disbursed} 
+            subtitle={'wheels'} />
           </Grid>
           <Grid item xs={12} md={6}>
             <SummaryCard
               color="success"
               icon="pajamas:project"
               title="Projects"
-              total={1}
+              total={demographicSummary?.totalProjects}
               subtitle={'involved'}
             />
           </Grid>
@@ -125,7 +102,7 @@ const DashboardComponent = () => {
               color="secondary"
               icon="maki:village"
               title="Villages"
-              total={3}
+              total={demographicSummary?.totalVillages}
               subtitle={'impacted'}
             />
           </Grid>

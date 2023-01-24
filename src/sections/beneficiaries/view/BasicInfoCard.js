@@ -16,7 +16,7 @@ export default function BasicInfoCard({ chainData }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            {roles.isTayaba
+            {roles?.isDonor
               ? singleBeneficiary?.data?.name
               : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
@@ -60,7 +60,7 @@ export default function BasicInfoCard({ chainData }) {
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h6">{singleBeneficiary?.data?.address?.district}</Typography>
+            <Typography variant="h6">{singleBeneficiary?.data?.village_details?.district}</Typography>
             <Typography variant="body2">District</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">

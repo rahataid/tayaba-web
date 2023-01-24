@@ -6,7 +6,7 @@ export const DashboardService = {
   },
 
   getDemographicsBeneficiarySummary() {
-    return client.get('reports/demographics/summary');
+    return client.get('reports/dashboard/summary');
   },
 
   getGeoMapData() {
