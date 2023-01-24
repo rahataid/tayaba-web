@@ -1,13 +1,12 @@
-
 import client from '@utils/client';
 
 export const AppService = {
   getAppSettings() {
-    return client.get('/app/settings');
+    return client.get('/settings');
   },
 
   getContract(contractName) {
-    return client.get(`/app/contracts/${contractName}`);
+    return client.get(`/misc/contracts/${contractName}`);
   },
 
   getAdmins() {

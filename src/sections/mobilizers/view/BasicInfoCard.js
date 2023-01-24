@@ -20,7 +20,7 @@ const BasicInfoCard = (props) => {
             <Typography variant="body2">Phone</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="body1">{truncateEthAddress(singleMobilizer?.wallet_address)}</Typography>
+            <Typography variant="body1">{truncateEthAddress(singleMobilizer?.walletAddress)}</Typography>
             <Typography variant="body2">Wallet Address</Typography>
           </Grid>
         </Stack>

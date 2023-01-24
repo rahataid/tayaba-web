@@ -49,9 +49,15 @@ export default function ActionMenu({ menuItems, actionTitle }) {
         }}
       >
         {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={item.onClick}>
-            {item.name}
-          </MenuItem>
+          <>
+            {item?.show ? (
+              <MenuItem key={index} onClick={item.onClick}>
+                {item.name}
+              </MenuItem>
+            ) : (
+              <></>
+            )}
+          </>
         ))}
       </Menu>
     </div>

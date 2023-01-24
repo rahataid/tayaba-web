@@ -31,7 +31,7 @@ export default function AuthGuard({ children }) {
     }
   }, [isAuthenticated, pathname, push, requestedLocation]);
 
-  if (!isInitialized) {
+  if (!isInitialized && !wallet) {
     return <LoadingScreen />;
   }
   if (!isAuthenticated) {

@@ -64,13 +64,13 @@ export const VendorProvider = ({ children }) => {
     const response = await VendorService.getVendorById(id);
 
     const formatted = {
-      ...response.data,
-      name: response.data?.name || 'N/A',
-      gender: response.data?.gender || 'N/A',
-      phone: response.data?.phone || 'N/A',
-      walletAddress: response.data?.walletAddress || 'N/A',
-      contractAddress: response.data?.contractAddress || 'N/A',
-      villageId: response.data?.villageId || 'N/A',
+      ...response.data.data,
+      name: response.data.data?.name || 'N/A',
+      gender: response.data?.data?.gender || 'N/A',
+      phone: response.data?.data?.phone || 'N/A',
+      walletAddress: response.data?.data?.walletAddress || 'N/A',
+      contractAddress: response.data?.data?.contractAddress || 'N/A',
+      villageId: response.data?.data?.villageId || 'N/A',
     };
 
     setState((prev) => ({
@@ -82,15 +82,15 @@ export const VendorProvider = ({ children }) => {
 
   const getVendorEthBalance = useCallback(async () => {
     if (!wallet) return;
-    if (!state?.singleVendor?.wallet_address) throw new Error('Address is required');
+    if (!state?.singleVendor?.walletAddress) throw new Error('Address is required');
     const balance = await ethers?.utils?.formatEther(
-      await wallet?.provider.getBalance(state.singleVendor?.wallet_address)
+      await wallet?.provider.getBalance(state.singleVendor?.walletAddress)
     );
     setState((prev) => ({
       ...prev,
       vendorEthBalance: balance,
     }));
-  }, [state.singleVendor?.wallet_address, wallet]);
+  }, [state.singleVendor?.walletAddress, wallet]);
 
   const contextValue = {
     ...state,
