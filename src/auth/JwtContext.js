@@ -157,9 +157,6 @@ function AuthProvider({ children }) {
       isTayaba: authState.user?.roles?.includes(ROLES.TAYABA) || false,
       isSRSO: authState.user?.roles?.includes(ROLES.SRSO) || false,
       isUser: authState.user?.roles?.includes(ROLES.USER) || false,
-      isTayaba: function () {
-        return this.isTayaba;
-      },
     }),
     [authState.user]
   );
