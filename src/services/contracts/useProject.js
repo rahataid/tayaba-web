@@ -9,7 +9,7 @@ export const useProject = () => {
   const contract = useContract(CONTRACTS.CVAPROJECT);
   const h2oToken = useContract(CONTRACTS.RAHATTOKEN);
   const donorContract = useContract(CONTRACTS.DONOR);
-
+  const communityContract = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
 
   const isProjectLocked = () => contract?.isLocked();
@@ -19,6 +19,8 @@ export const useProject = () => {
     // project functions
     isProjectLocked,
     h2oToken,
+    communityContract,
+    contract,
     acceptToken: (amount) => contract?.acceptToken(donorContract?.address, amount).catch(handleContractError),
     getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
@@ -46,6 +48,10 @@ export const useProject = () => {
     getVendorAllowance: (vendorAddress) => contract?.vendorAllowance(vendorAddress),
 
     //   Beneficiaries
+
+    checkActiveBeneficiary: (address) => communityContract?.isBeneficiary(address),
+
+    activateBeneficiary: (address) => communityContract?.addBeneficiary(address),
 
     assignClaimsToBeneficiaries: (walletAddress, amount) => contract?.assignClaims(walletAddress, amount?.toString()),
 

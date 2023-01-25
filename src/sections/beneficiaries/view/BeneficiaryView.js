@@ -8,6 +8,7 @@ import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import ActionMenu from './ActionMenu';
+import { useProject } from '@services/contracts/useProject';
 
 BeneficiaryView.propTypes = {};
 
@@ -38,8 +39,8 @@ const TABLE_HEAD = {
 
 export default function BeneficiaryView() {
   const { roles } = useAuthContext();
-  const { getBeneficiaryById, setChainData, chainData, refresh, refreshData } = useBeneficiaryContext();
-
+  const { getBeneficiaryById, setChainData, chainData, refresh, singleBeneficiary } = useBeneficiaryContext();
+  const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
   } = useRouter();
@@ -53,15 +54,22 @@ export default function BeneficiaryView() {
     // setChainData(_chainData);
   }, [beneficiaryId, refresh]);
 
+  const fetchChainData = useCallback(async () => {
+    if (!communityContract) return;
+    if (!singleBeneficiary) return;
+    try {
+      const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
+      const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
+      setChainData({ isBenActive, balance });
+    } catch (error) {}
+  }, [communityContract, singleBeneficiary]);
+
+  useEffect(() => {
+    fetchChainData();
+  }, [fetchChainData]);
+
   useEffect(() => {
     init();
-    // RahatCash?.on('Approval', refreshData);
-    // RahatCash?.on('Transfer', refreshData);
-    // contractWS?.on('IssuedERC20', refreshData);
-    // return () => {
-    //   contractWS?.removeAllListeners();
-    //   RahatCash?.removeAllListeners();
-    // };
   }, [init]);
 
   return (

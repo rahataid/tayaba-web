@@ -6,6 +6,7 @@ import Iconify from '@components/iconify';
 import ListTable from '@components/table/ListTable';
 import { useVendorsContext } from '@contexts/vendors';
 import moment from 'moment';
+import Typography from 'src/theme/overrides/Typography';
 
 const TABLE_HEAD = {
   name: {
@@ -38,7 +39,7 @@ const TableContainer = () => {
 
   useEffect(() => {
     getVendorsList({ start });
-  }, [getVendorsList, setStart]);
+  }, [getVendorsList, start]);
 
   const handleView = (id) => () => {
     router.push(`/vendors/${id}`);
@@ -54,22 +55,28 @@ const TableContainer = () => {
   return (
     <Box>
       {/* <ListTableToolbar /> */}
-      <ListTable tableRowsList={vendors?.data} tableHeadersList={TABLE_HEAD} footer={paginateFilter}>
-        {(rows, tableHeadersList) =>
-          rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
-              <TableCell align={tableHeadersList['gender'].align}>{row.gender}</TableCell>
-              <TableCell align={tableHeadersList['phone'].align}>{row.phone}</TableCell>
-              <TableCell align={tableHeadersList['action'].align}>
-                <Button onClick={handleView(row.id)} variant="text">
-                  <Iconify icon="ic:outline-remove-red-eye" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))
-        }
-      </ListTable>
+      {vendors?.data ? (
+        <ListTable tableRowsList={vendors?.data} tableHeadersList={TABLE_HEAD} footer={paginateFilter}>
+          {(rows, tableHeadersList) =>
+            rows.map((row) => (
+              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
+                <TableCell align={tableHeadersList['gender'].align}>{row.gender}</TableCell>
+                <TableCell align={tableHeadersList['phone'].align}>{row.phone}</TableCell>
+                <TableCell align={tableHeadersList['action'].align}>
+                  <Button onClick={handleView(row.id)} variant="text">
+                    <Iconify icon="ic:outline-remove-red-eye" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          }
+        </ListTable>
+      ) : (
+        <>
+          <Typography> Vendors Not Addded</Typography>
+        </>
+      )}
     </Box>
   );
 };
