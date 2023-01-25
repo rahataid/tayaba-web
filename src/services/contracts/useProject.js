@@ -34,6 +34,20 @@ export const useProject = () => {
 
     // should transfer allowances to vendor
     // transferAllowanceToVendor
+
+    async checkActiveVendor(address) {
+      const role = await communityContract?.VENDOR_ROLE();
+      return communityContract?.hasRole(role, address);
+    },
+
+    async activateVendor(address) {
+      console.log({ hello: 'hello' });
+      const role = await communityContract?.VENDOR_ROLE();
+      console.log(communityContract, address);
+      const tx = await communityContract?.grantRole(role, address);
+      console.log(tx);
+    },
+
     sendH2OWheelsToVendor(vendorAddress, amount) {
       return contract?.createAllowanceToVendor(vendorAddress, amount).catch(handleContractError);
     },
