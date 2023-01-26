@@ -41,11 +41,8 @@ export const useProject = () => {
     },
 
     async activateVendor(address) {
-      console.log({ hello: 'hello' });
       const role = await communityContract?.VENDOR_ROLE();
-      console.log(communityContract, address);
       const tx = await communityContract?.grantRole(role, address);
-      console.log(tx);
     },
 
     sendH2OWheelsToVendor(vendorAddress, amount) {
