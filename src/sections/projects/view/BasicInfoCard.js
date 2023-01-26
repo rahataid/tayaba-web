@@ -10,7 +10,6 @@ BasicInfoCard.propTypes = {
 
 export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { singleProject } = useProjectContext();
-  console.log(singleProject);
   return (
     <>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>

@@ -8,10 +8,6 @@ const initialState = {
   groupingData: {
     dailyWage: [],
     landOwner: [],
-    // ageRange: {
-    //   chartData: [],
-    //   chartLabels: [],
-    // },
     disability: [],
     phoneOwnership: [],
     hasBank: [],
