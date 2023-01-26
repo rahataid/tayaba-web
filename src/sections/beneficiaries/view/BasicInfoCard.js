@@ -3,14 +3,25 @@ import PropTypes from 'prop-types';
 import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { useProject } from '@services/contracts/useProject';
 
 BasicInfoCard.propTypes = {
   chainData: PropTypes.object,
 };
 
 export default function BasicInfoCard({ chainData }) {
-  const { singleBeneficiary } = useBeneficiaryContext();
+  const { singleBeneficiary, setChainData, refreshData } = useBeneficiaryContext();
   const { roles } = useAuthContext();
+  const { activateBeneficiary } = useProject();
+
+  const handleActivate = async () => {
+    try {
+      let isActive = await activateBeneficiary(singleBeneficiary?.data?.walletAddress);
+      setChainData({ isBenActive: isActive });
+      refreshData();
+    } catch (error) {}
+  };
+
   return (
     <Card sx={{ width: '100%', mb: 1 }}>
       <CardContent>
@@ -21,22 +32,10 @@ export default function BasicInfoCard({ chainData }) {
               : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           <div>
-            {chainData?.totalTokenIssued ? (
-              <>
-                {chainData?.isBanked ? (
-                  <Chip label="Banked" sx={{ mr: 1 }} variant="outlined" color="primary" />
-                ) : (
-                  <Chip label="Un-banked" sx={{ mr: 1 }} variant="outlined" color="secondary" />
-                )}
-
-                {chainData?.totalTokenIssued > 0 ? (
-                  <Chip label="Active" color="success" />
-                ) : (
-                  <Chip label="Inactive" variant="outlined" color="error" />
-                )}
-              </>
+            {chainData?.isBenActive ? (
+              <Chip label="Active" variant="outlined" color="success" />
             ) : (
-              <Chip label="Inactive" variant="outlined" color="error" />
+              <Chip label="Inactive" onClick={handleActivate} variant="outlined" color="error" />
             )}
           </div>
         </Stack>

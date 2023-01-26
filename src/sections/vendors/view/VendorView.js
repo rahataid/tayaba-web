@@ -6,6 +6,7 @@ import TokenDetails from './TokenDetails';
 import { HistoryTable } from '@sections/transactionTable';
 import { useVendorsContext } from '@contexts/vendors';
 import { useRouter } from 'next/router';
+import { useProject } from '@services/contracts/useProject';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {
@@ -31,26 +32,26 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 };
 
 export default function VendorView() {
-  const { getVendorById, setChainData, chainData, refreshData, refresh, getVendorEthBalance, vendorEthBalance } =
-    useVendorsContext();
-
+  const { getVendorById, setChainData, chainData, refresh } = useVendorsContext();
+  const { getVendorAllowance, checkActiveVendor, communityContract, pendingWheelsToAccept } = useProject();
   const {
     query: { vendorId },
   } = useRouter();
-  // TODO: make dynamic
-  //const { vendorTransactions, transactionLoading } = useVendorClaimLogs();
-  // const { vendorTransactions, transactionLoading } = useExplorer(singleVendor?.walletAddress);
 
   const init = useCallback(async () => {
     if (!vendorId) return;
     const _vendorData = await getVendorById(vendorId);
     if (!_vendorData?.walletAddress) return;
-    const _chainData = {}; //await vendorBalance(_vendorData?.walletAddress);
-    console.log('_chainData', _chainData);
-    await getVendorEthBalance(_vendorData?.walletAddress);
+    if (!communityContract) return;
+    const allowance = await getVendorAllowance(_vendorData?.walletAddress);
+    const isActive = await checkActiveVendor(_vendorData?.walletAddress);
+    const cashAllowance = await pendingWheelsToAccept(_vendorData?.walletAddress);
+    setChainData({ allowance: allowance.toNumber(), isActive, cashAllowance: cashAllowance.toNumber() });
+  }, [vendorId, refresh, communityContract]);
 
-    setChainData(_chainData);
-  }, [vendorId, refresh]);
+  useEffect(() => {
+    init();
+  }, [init]);
 
   return (
     <>
@@ -60,7 +61,7 @@ export default function VendorView() {
           <BasicInfoCard chainData={chainData} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TokenDetails chainData={chainData} ethBalance={vendorEthBalance} />
+          <TokenDetails chainData={chainData} />
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>

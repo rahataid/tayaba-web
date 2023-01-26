@@ -28,7 +28,7 @@ export const VendorProvider = ({ children }) => {
 
   const getVendorsList = useCallback(async (params) => {
     const { data } = await VendorService.getVendorsList(params);
-    const formatted = data.data?.data?.map((item) => ({
+    const formatted = data?.data?.map((item) => ({
       ...item,
       id: item?.id,
       name: item?.name || 'N/A',

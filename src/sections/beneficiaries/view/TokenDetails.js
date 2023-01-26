@@ -14,44 +14,57 @@ TokenDetails.propTypes = {};
 export default function TokenDetails() {
   const { chainData, singleBeneficiary } = useBeneficiaryContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { assignClaimsToBeneficiaries, beneficiaryBalance } = useProject();
+  const { assignClaimsToBeneficiaries, beneficiaryBalance, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
-  const [balance, setBalance] = useState(0);
   const { roles } = useAuthContext();
+  console.log(singleBeneficiary);
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
-    await assignClaimsToBeneficiaries(singleBeneficiary.walletAddress, 1);
-    hideLoading('assignClaim');
-  };
-
-  useEffect(async () => {
     try {
-      let amount = await beneficiaryBalance(singleBeneficiary.walletAddress);
-      setBalance(amount);
+      const res = await assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1);
+      const txn = {
+        txHash: res.hash,
+        contractAddress: contract?.address,
+        timestamp: Date.now(),
+        beneficiaryId: singleBeneficiary?.data?.id,
+        vendorId: singleBeneficiary?.data?.vendor?.id || 1,
+        projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id,
+        amount: 1,
+        isOffline: false,
+        txType: 'wallet',
+      };
     } catch (error) {
       console.log(error);
     }
-  }, []);
+    hideLoading('assignClaim');
+    hideDialog();
+  };
+
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
-      {roles.isManager && (
-        <Dialog open={isDialogShow} onClose={hideDialog}>
+      <Dialog open={isDialogShow} onClose={hideDialog}>
+        <LoadingOverlay open={loading.assignClaim}>
           <DialogTitle> Are you sure to assign claim ?</DialogTitle>
           <DialogActions>
             <Button onClick={handleAssignClaim}> YES</Button>
             <Button onClick={hideDialog}> NO</Button>
           </DialogActions>
-        </Dialog>
-      )}
+        </LoadingOverlay>
+      </Dialog>
+
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
           <Typography variant="h5">Claims Details</Typography>
-          <LoadingOverlay open={loading.assignClaim}>
-            <Button variant="outlined" onClick={showDialog}>
-              {' '}
-              Assign Claim
-            </Button>
-          </LoadingOverlay>
+          {chainData?.isBenActive && (
+            <>
+              {(roles.isManager || roles.isAdmin) && (
+                <Button variant="outlined" onClick={showDialog}>
+                  {' '}
+                  Assign Claim
+                </Button>
+              )}
+            </>
+          )}
         </Stack>
         <Stack
           sx={{ pt: SPACING.GRID_SPACING }}
@@ -66,7 +79,7 @@ export default function TokenDetails() {
             <Typography variant="body1">{moment().format('DD MMM, YYYY')}</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">{balance}</Typography>
+            <Typography variant="body1">{0}</Typography>
           </Grid>
         </Stack>
 
@@ -88,6 +101,23 @@ export default function TokenDetails() {
             <Typography variant="h4">{chainData?.totalTokenIssued || 0}</Typography>
             <Typography variant="body2">Eth Balance</Typography>
           </Grid> */}
+        </Stack>
+        <Stack
+          sx={{ pt: SPACING.GRID_SPACING, overflow: 'elipsis' }}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={SPACING.GRID_SPACING}
+        >
+          <Typography variant="subtitle2"> wallet </Typography>
+
+          <Grid container direction="column" justifyContent="center" alignItems="center">
+            <a href={`https://explorer.rumsan.com/address/${singleBeneficiary?.data?.walletAddress}`}>
+              <Typography sx={{ overflow: 'elipsis' }} variant="body2">
+                {singleBeneficiary?.data?.walletAddress}
+              </Typography>
+            </a>
+          </Grid>
         </Stack>
       </CardContent>
     </Card>

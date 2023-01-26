@@ -2,7 +2,6 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { useVendorsContext } from '@contexts/vendors';
 import { useSnackbar } from 'notistack';
@@ -12,6 +11,7 @@ import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
+import { ROLES } from '@config';
 
 ReleaseCashButton.propTypes = {};
 
@@ -19,11 +19,10 @@ export default function ReleaseCashButton() {
   const { enqueueSnackbar } = useSnackbar();
   const { singleVendor, refreshData, chainData, refresh } = useVendorsContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { sendH2OWheelsToVendor, h2oToken, getProjectBalance } = useProject();
+  const { sendH2OWheelsToVendor, h2oToken, getProjectBalance, activateVendor } = useProject();
   const [tokenBalance, setTokenBalance] = useState(0);
   const { roles } = useAuthContext();
   const { loading, showLoading, hideLoading } = useLoading();
-
   const Actions = {
     alert(message, type) {
       enqueueSnackbar(message, {
@@ -39,15 +38,22 @@ export default function ReleaseCashButton() {
         },
       });
     },
-    async activateVendor() {
-      if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      //await addVendor(singleVendor.walletAddress);
+    async handleActivateVendor() {
+      // if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
+      console.log({ singleVendor });
+      try {
+        showLoading('activateVendor');
+        await activateVendor(singleVendor?.walletAddress);
+      } catch (error) {
+        console.log(error);
+      }
+      hideLoading('activateVendor');
       refreshData();
     },
+
     async releaseH2oToken(amount) {
       if (!roles.isAdmin) return;
       if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      //if (amount > rahatChainData?.cashBalance) return Actions.alert('Not enough balance to send', 'error');
       showLoading('transferToken');
       try {
         await sendH2OWheelsToVendor(singleVendor.walletAddress, amount);
@@ -65,19 +71,15 @@ export default function ReleaseCashButton() {
     // },
     []
   );
-  const getBalance = useCallback(
-    async () => {
-      if (!h2oToken) return;
-      try {
-        let token = await getProjectBalance();
-        setTokenBalance(100);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    []
-    //[h2oToken]
-  );
+  const getBalance = useCallback(async () => {
+    if (!h2oToken) return;
+    try {
+      let token = await getProjectBalance();
+      setTokenBalance(token);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   useEffect(async () => {
     getBalance();
@@ -104,16 +106,18 @@ export default function ReleaseCashButton() {
         handleClose={hideDialog}
         open={isDialogShow}
       />
-      {true ? (
+      {chainData.isActive ? (
         <LoadingOverlay open={loading.transferToken}>
           <Button variant="outlined" color="success" onClick={showDialog}>
-            Release Cash
+            send H2O token
           </Button>
         </LoadingOverlay>
       ) : (
-        <Button variant="outlined" color="primary" onClick={Actions.activateVendor}>
-          Activate Vendor
-        </Button>
+        <LoadingOverlay open={loading.activateVendor}>
+          <Button variant="outlined" color="primary" onClick={Actions.handleActivateVendor}>
+            Activate Vendor
+          </Button>
+        </LoadingOverlay>
       )}
     </div>
   );
