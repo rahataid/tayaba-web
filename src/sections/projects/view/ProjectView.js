@@ -13,9 +13,10 @@ import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
+import LockProject from './LockProject';
 const ProjectView = () => {
-  const { getProjectById, singleProject } = useProjectContext();
-  const { getTokenAllowance, getProjectBalance, h2oToken } = useProject();
+  const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
+  const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
 
   const [flickImages, setFlickImages] = useState([]);
@@ -50,9 +51,10 @@ const ProjectView = () => {
   let getDataFromChain = useCallback(async () => {
     let tokenAllowance = await getTokenAllowance();
     let projectBalance = await getProjectBalance();
-    //TODO trigger Inventory tracker data;
-    updateChainData({ tokenAllowance, projectBalance });
-  }, [h2oToken]);
+    const isLocked = await isProjectLocked();
+    //TODO :trigger Inventory tracker data;
+    updateChainData({ tokenAllowance, projectBalance, isLocked });
+  }, [h2oToken, refresh]);
 
   useEffect(() => {
     getDataFromChain();
@@ -88,6 +90,7 @@ const ProjectView = () => {
             <CashActionsAlert projectId={projectId} chainData={chainData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail />
+              <LockProject chainData={chainData} refreshData={refreshData} />
             </Grid>
           </Grid>
         </Grid>
