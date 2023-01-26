@@ -54,15 +54,6 @@ export const DashboardProvider = ({ children }) => {
     return response.data;
   }, []);
 
-  const getGeoMapData = useCallback(async () => {
-    const response = await DashboardService.getGeoMapData();
-    setState((prev) => ({
-      ...prev,
-      mapData: response.data,
-    }));
-    return response.data;
-  }, []);
-
   const getGenderDistribution = useCallback(async () => {
     const response = await DashboardService.getGenderDistribution();
     const formatted = response.data.map((item) => {
@@ -149,6 +140,15 @@ export const DashboardProvider = ({ children }) => {
       console.log(err);
     }
   });
+
+  const getGeoMapData = useCallback(async () => {
+    const response = await DashboardService.getGeoMapData();
+    setState((prev) => ({
+      ...prev,
+      mapData: response.data.data,
+    }));
+    return response.data;
+  }, []);
 
   const contextValue = {
     ...state,

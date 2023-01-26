@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardContent, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
@@ -38,7 +38,12 @@ const StyledMapContainer = styled('div')(({ theme }) => ({
 
 const MapView = () => {
   const theme = useTheme();
-  const { mapData } = useDashboardContext();
+  const { mapData, getGeoMapData } = useDashboardContext();
+
+  useEffect(() => {
+    getGeoMapData();
+  }, [getGeoMapData]);
+
   return (
     <div>
       {' '}

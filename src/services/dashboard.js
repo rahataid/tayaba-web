@@ -11,7 +11,7 @@ export const DashboardService = {
   },
 
   getGeoMapData() {
-    return client.get('/stats/beneficiaries/geo');
+    return client.get('/reports/beneficiaries/geo');
   },
 
   getGenderDistribution() {

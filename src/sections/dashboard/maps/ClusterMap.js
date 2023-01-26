@@ -12,7 +12,7 @@ function MapClusters({ mapData = [], ...other }) {
     type: 'Feature',
     geometry: {
       type: 'Point',
-      coordinates: [+item?.extras?.geo_longitude, +item?.extras?.geo_latitude],
+      coordinates: [+item?.longitude, +item?.latitude],
     },
     properties: {
       cluster: true,
@@ -55,9 +55,9 @@ function MapClusters({ mapData = [], ...other }) {
     <>
       <Map
         initialViewState={{
-          longitude: 72.93822922273866,
-          latitude: 33.65771360892738 ,
-          zoom: 9,
+          longitude: 68.48329,
+          latitude: 28.31456,
+          zoom: 5,
         }}
         interactiveLayerIds={[clusterLayer.id || '']}
         onClick={onClick}
