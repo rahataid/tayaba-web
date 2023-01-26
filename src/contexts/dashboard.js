@@ -6,9 +6,10 @@ const initialState = {
   summary: {},
   mapData: [],
   genderDistribution: [],
-  demographicSummary:{},
+  demographicSummary: {},
   bankedUnbanked: [],
   phoneOwnership: [],
+  chartData: [],
   beneficiariesByWard: {
     chartData: [
       {
@@ -33,10 +34,11 @@ const initialState = {
   getGenderDistribution: () => {},
   getBankedUnbanked: () => {},
   getPhoneOwnership: () => {},
+  getChartData: () => {},
   // getBeneficiariesByWard: () => {},
   getCashTrackerSummary: () => {},
   getWardGenderChart: () => {},
-  getDemographicSummary:()=>{},
+  getDemographicSummary: () => {},
 };
 
 const DashboardContext = createContext(initialState);
@@ -170,20 +172,33 @@ export const DashboardProvider = ({ children }) => {
   const getDemographicSummary = useCallback(async () => {
     const response = await DashboardService.getDemographicsBeneficiarySummary();
     const chartLabel = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.label);
-      const data = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
-      const chartData = [{
+    const data = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
+    const chartData = [
+      {
         data,
-        name: "No of Beneficaries"
-      }];
+        name: 'No of Beneficaries',
+      },
+    ];
     setState((prev) => ({
       ...prev,
       demographicSummary: response.data.data,
-      beneficiariesVillageChartData:{chartData,chartLabel} 
+      beneficiariesVillageChartData: { chartData, chartLabel },
     }));
     return response.data;
   }, []);
 
-
+  const getChartData = useCallback(async (params, query) => {
+    try {
+      const response = await DashboardService.getChartData(params, query);
+      setState((prev) => ({
+        ...prev,
+        chartData: response,
+      }));
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
   const contextValue = {
     ...state,
@@ -192,6 +207,7 @@ export const DashboardProvider = ({ children }) => {
     getGenderDistribution,
     getBankedUnbanked,
     getPhoneOwnership,
+    getChartData,
     // getBeneficiariesByWard,
     getCashTrackerSummary,
     // getWardGenderChart,

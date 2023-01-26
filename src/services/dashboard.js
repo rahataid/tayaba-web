@@ -1,4 +1,5 @@
 import client from '@utils/client';
+import qs from 'query-string';
 
 export const DashboardService = {
   getBeneficiarySummary() {
@@ -31,5 +32,27 @@ export const DashboardService = {
 
   getCashTrackerSummary() {
     return client.get('/misc/cash-tracker-summary');
+  },
+
+  getChartData(params, query) {
+    return Promise.all(
+      params.map(
+        (obj) =>
+          new Promise((resolve, reject) => {
+            client
+              .get(`/reports/piechart/${obj}?${qs.stringify(query)}`)
+              .then(({ data }) => {
+                let response = {
+                  chart: obj,
+                  data: data.data,
+                };
+                resolve(response);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          })
+      )
+    );
   },
 };
