@@ -1,20 +1,17 @@
 import { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Card, CardHeader, Grid, Stack } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import SummaryCard from '@components/SummaryCard';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import BarchartSingle from './BarchartSingle';
 import Piechart from '@components/chart/Piechart';
 import { useRouter } from 'next/router';
-import { PATH_REPORTS } from '@routes/paths';
-import Iconify from '@components/iconify';
 import { getFlickrImages } from '@services/flickr';
 import PhotoGallery from './PhotoGallery';
 import { SPACING, CHARTDATATYPES } from '@config';
 import { MapView } from './maps';
 import { useDashboardContext } from '@contexts/dashboard';
-import SummaryTracker from '@sections/cash-tracker/tracker/SummaryTracker';
 
 const DashboardComponent = () => {
   const theme = useTheme();

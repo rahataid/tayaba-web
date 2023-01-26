@@ -35,7 +35,6 @@ const initialState = {
   getBankedUnbanked: () => {},
   getPhoneOwnership: () => {},
   getChartData: () => {},
-  // getBeneficiariesByWard: () => {},
   getCashTrackerSummary: () => {},
   getWardGenderChart: () => {},
   getDemographicSummary: () => {},
@@ -111,27 +110,6 @@ export const DashboardProvider = ({ children }) => {
     return response.data;
   }, []);
 
-  // const getBeneficiariesByWard = useCallback(async () => {
-  //   const response = await DashboardService.getBeneficiariesByWard();
-  //   const sorted = response.data.sort((a, b) => a._id - b._id);
-  //   const chartData = sorted.map((item) => item.count);
-  //   const chartLabel = sorted.map((item) => item._id);
-
-  //   setState((prev) => ({
-  //     ...prev,
-  //     beneficiariesByWard: {
-  //       chartLabel,
-  //       chartData: [
-  //         {
-  //           data: chartData,
-  //           name: 'Beneficiaries',
-  //         },
-  //       ],
-  //     },
-  //   }));
-  //   return response.data;
-  // }, []);
-
   const getCashTrackerSummary = useCallback(async () => {
     const response = await ReportingService.cashTrackerSummary();
     setState((prev) => ({
@@ -140,34 +118,6 @@ export const DashboardProvider = ({ children }) => {
     }));
     return response.data;
   }, []);
-
-  // const getWardGenderChart = useCallback(async () => {
-  //   const response = await ReportingService.countGenderByWard();
-  //   const chartLabel = response.data.data?.map((d) => `Ward ${d.ward}`);
-  //   const chartData = [
-  //     {
-  //       name: 'Male',
-  //       data: response.data.data?.map((d) => d.male),
-  //     },
-  //     {
-  //       name: 'Female',
-  //       data: response.data.data?.map((d) => d.female),
-  //     },
-  //     {
-  //       name: 'Other',
-  //       data: response.data.data?.map((d) => d.other),
-  //     },
-  //     {
-  //       name: 'Unknown',
-  //       data: response.data.data?.map((d) => d.unknown),
-  //     },
-  //   ];
-
-  //   setState((prevState) => ({
-  //     ...prevState,
-  //     genderWardChart: { chartLabel, chartData },
-  //   }));
-  // }, []);
 
   const getDemographicSummary = useCallback(async () => {
     const response = await DashboardService.getDemographicsBeneficiarySummary();
@@ -208,9 +158,7 @@ export const DashboardProvider = ({ children }) => {
     getBankedUnbanked,
     getPhoneOwnership,
     getChartData,
-    // getBeneficiariesByWard,
     getCashTrackerSummary,
-    // getWardGenderChart,
     getDemographicSummary,
   };
 
