@@ -44,11 +44,11 @@ export default function TokenDetails({ chainData, ethBalance }) {
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="h4" sx={{ fontWeight: 400 }}>
-              {chainData?.allowance}
+              {chainData?.allowance || 0}
             </Typography>
             <small>Total H20 Wheels Disbursed</small>
             <Typography variant="h5" sx={{ fontWeight: 200 }}>
-              {chainData?.cashAllowance}
+              {chainData?.cashAllowance || 0}
             </Typography>
             <small>Pending Acceptance by Village Representative</small>
           </Grid>
