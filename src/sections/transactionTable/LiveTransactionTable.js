@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Alert, Button, Card, CardHeader, Grid, Stack, Pagination } from '@mui/material';
 import ListTable from '@components/table/ListTable';
 import useWSTransaction from '@hooks/useWSTransaction';
-import * as TXService from '@services/transactionTable';
+import { TransactionService } from '@services/transactionTable';
 import Iconify from '@components/iconify';
 import { useRouter } from 'next/router';
 import { PATH_REPORTS } from '@routes/paths';
 
 const TABLE_HEAD = {
-  createdAt: {
+  timestamp: {
     id: 'timestamp',
     // id: 'timestamp',
     label: 'Timestamp',
@@ -25,6 +25,10 @@ const TABLE_HEAD = {
     label: 'Beneficiary',
     align: 'left',
   },
+  functionType: {
+    id: 'functionType',
+    label: 'Type',
+  },
 
   amount: {
     id: 'amount',
@@ -32,16 +36,12 @@ const TABLE_HEAD = {
     align: 'left',
   },
 
-  ward: {
-    id: 'ward',
-    label: 'Ward',
+  txType: {
+    id: 'txType',
+    label: 'txType',
     align: 'left',
   },
-  method: {
-    id: 'method',
-    label: 'Method',
-    align: 'left',
-  },
+
   mode: {
     id: 'mode',
     label: 'Mode',
@@ -50,7 +50,7 @@ const TABLE_HEAD = {
 };
 
 const LiveTransactionTable = (props) => {
-  const [list, setList] = useState({});
+  const [list, setList] = useState([]);
   const [error, setError] = useState(null);
 
   const router = useRouter();
@@ -70,8 +70,19 @@ const LiveTransactionTable = (props) => {
 
   const fetchTransactionList = async () => {
     try {
-      const { data } = await TXService.transactionList();
-      setList(data.data);
+      const {
+        data: { data },
+      } = await TransactionService.getTransactionList();
+      const formatted = data.data.map((tx) => ({
+        ...tx,
+        name: tx.beneficiary_data.name,
+        village: 'name',
+        mode: tx.isOffline ? 'Offline' : 'Online',
+        functionType: 'Beneficiary Assign',
+        txType: tx.txType,
+        timestamp: tx?.timestamp,
+      }));
+      setList(formatted);
     } catch (error) {
       console.error(error);
       setError(error?.message);
@@ -98,7 +109,7 @@ const LiveTransactionTable = (props) => {
       {' '}
       {/* <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2 }} md={12}></Stack> */}
       {error && <Alert severity="error">{error}</Alert>}
-      <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list?.data} />
+      <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list} />
       <Pagination count={list?.totalPage} onChange={handlePagination} />
     </Card>
   );

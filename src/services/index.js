@@ -8,3 +8,4 @@ export { DashboardService } from '@services/dashboard';
 export { default as EthExplorerService } from '@services/ethExplorer';
 export { FinancialInstitutionService as FIService } from '@services/financialInstitutions';
 export * as ReportingService from '@services/reporting';
+export { TransactionService } from '@services/transactionTable';

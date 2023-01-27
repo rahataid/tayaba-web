@@ -9,6 +9,7 @@ import { useProject } from '@services/contracts/useProject';
 import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { TransactionService } from '@services';
 
 TokenDetails.propTypes = {};
 export default function TokenDetails() {
@@ -27,11 +28,12 @@ export default function TokenDetails() {
         timestamp: Date.now(),
         beneficiaryId: singleBeneficiary?.data?.id,
         vendorId: singleBeneficiary?.data?.vendor?.id || 1,
-        projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id,
+        projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id || 1,
         amount: 1,
         isOffline: false,
         txType: 'wallet',
       };
+      await TransactionService.addTransactionData(txn);
     } catch (error) {
       console.log(error);
     }
