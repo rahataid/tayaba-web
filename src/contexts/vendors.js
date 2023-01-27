@@ -15,6 +15,7 @@ const initialState = {
   getVendorsList: () => {},
   getVendorById: () => {},
   setChainData: () => {},
+  updateApprovalStatus: () => {},
   refreshData: () => {},
   getVendorEthBalance: () => {},
 };
@@ -90,6 +91,10 @@ export const VendorProvider = ({ children }) => {
     }));
   }, [state.singleVendor?.walletAddress, wallet]);
 
+  const updateApprovalStatus = useCallback(async (walletAddress) => {
+    return VendorService.updateVendorApprovalStatus(walletAddress);
+  });
+
   const contextValue = {
     ...state,
     refreshData,
@@ -97,6 +102,7 @@ export const VendorProvider = ({ children }) => {
     getVendorsList,
     getVendorById,
     getVendorEthBalance,
+    updateApprovalStatus,
   };
 
   return <VendorsContext.Provider value={contextValue}>{children}</VendorsContext.Provider>;

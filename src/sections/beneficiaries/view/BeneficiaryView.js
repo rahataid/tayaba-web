@@ -60,7 +60,7 @@ export default function BeneficiaryView() {
     try {
       const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
       const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
-      setChainData({ isBenActive, balance });
+      setChainData({ isBenActive, balance: balance.toNumber() });
     } catch (error) {}
   }, [communityContract, singleBeneficiary]);
 
