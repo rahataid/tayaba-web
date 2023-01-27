@@ -93,7 +93,7 @@ export default function AuthLoginForm() {
   const onOtpSubmit = async ({ otp }) => {
     try {
       // const isOtpValid = await handleOtpVerification({ otp, encryptionKey: tempIdentity.publicKey });
-      const isOtpValid = await handleOtpVerification({ otp });
+      const isOtpValid = await handleOtpVerification({ otp: otp.trim() });
 
       if (isOtpValid.success) {
         saveKey(isOtpValid.data.privateKey);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Container, Grid, Stack } from '@mui/material';
+import { Container } from '@mui/material';
 
 import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
@@ -15,10 +15,6 @@ const PAGE_TITLE = 'Beneficairy: Details';
 const BeneficiaryView = () => {
   const { themeStretch } = useSettingsContext();
   const { roles } = useAuthContext();
-  const {
-    push: routerPush,
-    query: { beneficiaryId },
-  } = useRouter();
 
   return (
     <BeneficiaryProvider>

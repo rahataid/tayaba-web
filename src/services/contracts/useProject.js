@@ -17,11 +17,14 @@ export const useProject = () => {
     // project functions
     h2oToken,
     communityContract,
-    contract,
     isProjectLocked: () => contract?.isLocked(),
-    lockProject: (donorWallet) => donorContract?.lockProject(contract?.address),
-    unLockProject: (donorWallet) => donorContract?.unlockProject(contract?.address),
+
+    lockProject: () => donorContract?.lockProject(contract?.address).catch(handleContractError),
+
+    unLockProject: () => donorContract?.unlockProject(contract?.address).catch(handleContractError),
+
     acceptToken: (amount) => contract?.acceptToken(donorContract?.address, amount).catch(handleContractError),
+
     getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
     getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),

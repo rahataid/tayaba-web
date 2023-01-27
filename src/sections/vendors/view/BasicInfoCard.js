@@ -3,6 +3,7 @@ import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material'
 import { useVendorsContext } from '@contexts/vendors';
 // import truncateEthAddress from '@utils/truncateEthAddress';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
 
 BasicInfoCard.propTypes = {
   chainData: PropTypes.object,
@@ -56,12 +57,14 @@ export default function BasicInfoCard({ chainData }) {
             <Typography variant="h4">{singleVendor?.gender}</Typography>
             <Typography variant="body2">Gender</Typography>
           </Grid>
-          {/* <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              {truncateEthAddress(singleVendor?.walletAddress)}
+              <WalletExplorerButton address={singleVendor?.walletAddress} type="address" />
+
+              {/* </WalletExplorerButton> */}
             </Typography>
             <Typography variant="body2">Wallet Address</Typography>
-          </Grid> */}
+          </Grid>
         </Stack>
       </CardContent>
     </Card>
