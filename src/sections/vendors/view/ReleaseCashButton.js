@@ -17,7 +17,7 @@ ReleaseCashButton.propTypes = {};
 
 export default function ReleaseCashButton() {
   const { enqueueSnackbar } = useSnackbar();
-  const { singleVendor, refreshData, chainData, refresh } = useVendorsContext();
+  const { singleVendor, refreshData, chainData, refresh, updateApprovalStatus } = useVendorsContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { sendH2OWheelsToVendor, h2oToken, getProjectBalance, activateVendor } = useProject();
   const [tokenBalance, setTokenBalance] = useState(0);
@@ -43,6 +43,7 @@ export default function ReleaseCashButton() {
       try {
         showLoading('activateVendor');
         await activateVendor(singleVendor?.walletAddress);
+        await updateApprovalStatus(singleVendor?.walletAddress);
       } catch (error) {
         console.log(error);
       }
@@ -64,17 +65,15 @@ export default function ReleaseCashButton() {
     },
   };
 
-  const init = useCallback(
-    // async (projectId) => {
-    //   await projectBalance(projectId);
-    // },
-    []
-  );
+  // async (projectId) => {
+  //   await projectBalance(projectId);
+  // },
+  //[]
   const getBalance = useCallback(async () => {
     if (!h2oToken) return;
     try {
       let token = await getProjectBalance();
-      setTokenBalance(token);
+      setTokenBalance(token.toNumber());
     } catch (err) {
       console.log(err);
     }
@@ -83,11 +82,6 @@ export default function ReleaseCashButton() {
   useEffect(async () => {
     getBalance();
   }, [getBalance]);
-
-  useEffect(() => {
-    if (!singleVendor?.projects?.length) return;
-    init(singleVendor?.projects[0].id);
-  }, [init, refresh, singleVendor]);
 
   return (
     <div>

@@ -78,7 +78,7 @@ export default function TokenDetails() {
             <Typography variant="body1">{moment().format('DD MMM, YYYY')}</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">{0}</Typography>
+            <Typography variant="body1">{chainData?.balance || 0}</Typography>
           </Grid>
         </Stack>
 
