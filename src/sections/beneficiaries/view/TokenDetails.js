@@ -45,8 +45,10 @@ export default function TokenDetails() {
         <LoadingOverlay open={loading.assignClaim}>
           <DialogTitle> Are you sure to assign claim ?</DialogTitle>
           <DialogActions>
-            <Button onClick={handleAssignClaim}> YES</Button>
-            <Button onClick={hideDialog}> NO</Button>
+            <Button onClick={hideDialog}>Cancel</Button>
+            <Button variant="outlined" onClick={handleAssignClaim}>
+              Assign
+            </Button>
           </DialogActions>
         </LoadingOverlay>
       </Dialog>
