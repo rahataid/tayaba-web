@@ -37,7 +37,7 @@ export default function TokenDetails({ chainData, ethBalance }) {
         {chainData?.cashAllowance > 0 && (
           <Alert sx={{ mt: 2 }} type="info">
             {' '}
-            This vendor have yet to accept ₹ {chainData?.cashAllowance}.
+            This vendor have yet to accept {chainData?.cashAllowance}.
           </Alert>
         )}
 

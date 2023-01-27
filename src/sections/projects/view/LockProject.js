@@ -2,7 +2,7 @@ import LoadingOverlay from '@components/LoadingOverlay';
 import useDialog from '@hooks/useDialog';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import useLoading from '@hooks/useLoading';
-import { Button, Card, Typography, Dialog, DialogActions, DialogTitle, Stack, Grid } from '@mui/material';
+import { Button, Chip, Typography, Dialog, DialogActions, DialogTitle, Stack, Grid } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
 import React, { useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
@@ -31,8 +31,8 @@ export default function LockProject({ chainData, refreshData }) {
     } catch (error) {
       console.log(error);
       hideLoading('projectAction');
-      throwError('cannot lock Project');
       hideDialog();
+      throwError('cannot lock Project');
     }
     hideDialog();
     refreshData();
@@ -45,8 +45,8 @@ export default function LockProject({ chainData, refreshData }) {
       await unLockProject(wallet.address);
     } catch (error) {
       hideLoading('projectAction');
-      throwError('cannot unlock Project');
       hideDialog();
+      throwError('cannot unlock Project');
     }
     hideDialog();
     refreshData();
@@ -69,28 +69,34 @@ export default function LockProject({ chainData, refreshData }) {
       </Dialog>
       {roles?.isDonor && (
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-          {chainData?.isLocked ? (
-            <>
-              <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                <Typography color="warning">Project Is InActive</Typography>
-              </Grid>
-              <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                <Button type="outlined" onClick={handleUnlockModal}>
-                  Unlock Project
-                </Button>
-              </Grid>
-            </>
+          {chainData?.projectBalance > 0 ? (
+            <React.Fragment>
+              {chainData?.isLocked ? (
+                <>
+                  <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+                    <Chip label="Project Is Locked" variant="outlined" color="success" />
+                  </Grid>
+                  <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+                    <Button type="outlined" onClick={handleUnlockModal}>
+                      Unlock
+                    </Button>
+                  </Grid>
+                </>
+              ) : (
+                <>
+                  <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+                    <Chip label="Project Is Unlocked" variant="outlined" color="error" />
+                  </Grid>
+                  <Grid container direction="column" justifyContent="center" alignItems="flex-start">
+                    <Button type="outlined" onClick={handleLockModal}>
+                      Lock
+                    </Button>
+                  </Grid>
+                </>
+              )}
+            </React.Fragment>
           ) : (
-            <>
-              <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                <Typography colour="success">Project Is Active</Typography>
-              </Grid>
-              <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                <Button type="outlined" onClick={handleLockModal}>
-                  Lock Project
-                </Button>
-              </Grid>
-            </>
+            <Chip label="Add Budget To Take Project Actions" variant="outlined" color="info" />
           )}
         </Stack>
       )}
