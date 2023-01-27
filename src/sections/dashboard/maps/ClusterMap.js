@@ -15,8 +15,8 @@ function MapClusters({ mapData = [], ...other }) {
       coordinates: [+item?.longitude, +item?.latitude],
     },
     properties: {
-      cluster: true,
-      id: item.id,
+      // cluster: true,
+      id: item.name,
     },
   }));
 
@@ -57,7 +57,7 @@ function MapClusters({ mapData = [], ...other }) {
         initialViewState={{
           longitude: 68.48329,
           latitude: 28.31456,
-          zoom: 5,
+          zoom: 4,
         }}
         interactiveLayerIds={[clusterLayer.id || '']}
         onClick={onClick}
@@ -69,7 +69,7 @@ function MapClusters({ mapData = [], ...other }) {
           type="geojson"
           data={data}
           // data="https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
-          cluster
+          cluster={true}
           clusterMaxZoom={14}
           clusterRadius={50}
         >
