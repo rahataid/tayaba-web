@@ -12,25 +12,19 @@ export const useProject = () => {
   const communityContract = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
 
-  const isProjectLocked = () => contract?.isLocked();
-
   return {
     contract,
     // project functions
-    isProjectLocked,
     h2oToken,
     communityContract,
     contract,
+    isProjectLocked: () => contract?.isLocked(),
+    lockProject: (donorWallet) => donorContract?.lockProject(contract?.address),
+    unLockProject: (donorWallet) => donorContract?.unlockProject(contract?.address),
     acceptToken: (amount) => contract?.acceptToken(donorContract?.address, amount).catch(handleContractError),
     getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
     getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),
-
-    lockProject: (address) => {
-      if (!isProjectLocked) {
-        return donorContract?.lockProject(address);
-      }
-    },
 
     // should transfer allowances to vendor
     // transferAllowanceToVendor

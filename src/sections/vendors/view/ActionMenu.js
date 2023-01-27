@@ -46,7 +46,6 @@ export default function ActionMenu({ actionTitle }) {
       // refreshData();
     },
     async DeactivateVendor() {
-      // console.log('singleVendor', singleVendor);
       // if (!singleVendor.walletAddress) return Actions.alert('Must have walletAddress', 'error');
       // await removeVendor(singleVendor.walletAddress);
       // await VendorService.updateVendorApprovalStatus(singleVendor.id, false);

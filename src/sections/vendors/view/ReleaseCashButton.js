@@ -40,7 +40,6 @@ export default function ReleaseCashButton() {
     },
     async handleActivateVendor() {
       // if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      console.log({ singleVendor });
       try {
         showLoading('activateVendor');
         await activateVendor(singleVendor?.walletAddress);

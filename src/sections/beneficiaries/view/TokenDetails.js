@@ -17,7 +17,6 @@ export default function TokenDetails() {
   const { assignClaimsToBeneficiaries, beneficiaryBalance, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const { roles } = useAuthContext();
-  console.log(singleBeneficiary);
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
     try {
