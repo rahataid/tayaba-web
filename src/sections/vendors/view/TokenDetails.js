@@ -37,7 +37,7 @@ export default function TokenDetails({ chainData, ethBalance }) {
         {chainData?.cashAllowance > 0 && (
           <Alert sx={{ mt: 2 }} type="info">
             {' '}
-            This vendor have yet to accept {chainData?.cashAllowance}.
+            This vendor has yet to accept {chainData?.cashAllowance}.
           </Alert>
         )}
 
@@ -50,7 +50,7 @@ export default function TokenDetails({ chainData, ethBalance }) {
             <Typography variant="h5" sx={{ fontWeight: 200 }}>
               {chainData?.cashAllowance || 0}
             </Typography>
-            <small>Pending Acceptance by Village Representative</small>
+            <small>Pending Acceptance by distributor</small>
           </Grid>
         </Stack>
       </CardContent>

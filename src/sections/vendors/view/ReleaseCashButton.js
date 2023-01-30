@@ -86,7 +86,7 @@ export default function ReleaseCashButton() {
         handleClose={hideDialog}
         open={isDialogShow}
       />
-      {roles.isDonor && (
+      {roles.isAdmin && (
         <>
           {chainData.isActive ? (
             <LoadingOverlay open={loading.transferToken}>

@@ -60,7 +60,7 @@ export default function VendorView() {
       allowance: allowance.toNumber(),
       isActive,
       cashAllowance: cashAllowance.toNumber(),
-      ProjectBalance: token ? token.toNumber() : null,
+      ProjectBalance: token ? token : null,
     });
   }, [vendorId, refresh, communityContract]);
 
