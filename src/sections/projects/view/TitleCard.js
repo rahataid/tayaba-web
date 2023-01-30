@@ -61,25 +61,22 @@ const TitleCard = ({}) => {
     },
     {
       onClick: handleAddBudgetModel,
-      name: 'Add Budget',
+      name: 'Create H20Wheel Tokens',
+      show: roles.isDonor,
+    },
+    {
+      onClick: handleAddBudgetModel,
+      name: 'Lock Project',
+      show: roles.isDonor,
+    },
+    {
+      onClick: handleAddBudgetModel,
+      name: 'Unlock Project',
       show: roles.isDonor,
     },
   ];
   return (
     <>
-      {/* <TransferTokenDialog
-        description={
-          <>
-            Please enter No. of token you wish to transfer . Receiver has to accept the token before it is fully
-            transferred and allowed for disbursement. <br />
-            <br />
-            Your remaining token are {agencyChainData?.token}
-          </>
-        }
-        cashBalance={0}
-        handleClose={handleClose}
-        open={transferTokenDialog}
-      /> */}
       <CreateTokenDialog
         description={
           <>
@@ -104,7 +101,7 @@ const TitleCard = ({}) => {
         <LoadingOverlay open={loading?.cashTransfer}>
           <Card variant="outlined">
             <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
-              <Button variant="outlined" onClick={handleBeneficiaryRouteAction}>
+              <Button variant="outlined" color="success" onClick={handleBeneficiaryRouteAction}>
                 {' '}
                 Beneficiary List{' '}
               </Button>
