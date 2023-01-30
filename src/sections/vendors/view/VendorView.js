@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
@@ -60,7 +59,7 @@ export default function VendorView() {
       allowance: allowance.toNumber(),
       isActive,
       cashAllowance: cashAllowance.toNumber(),
-      ProjectBalance: token ? token : null,
+      projectBalance: token ? token : null,
     });
   }, [vendorId, refresh, communityContract]);
 

@@ -7,20 +7,15 @@ import {
   Grid,
   Stack,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
+
 } from '@mui/material';
-import useDialog from '@hooks/useDialog';
 import ReleaseCashButton from './ReleaseCashButton';
 
 TokenDetails.propTypes = {
   chainData: PropTypes.object,
 };
 
-export default function TokenDetails({ chainData, ethBalance }) {
-  const { isDialogShow, showDialog, hideDialog } = useDialog();
+export default function TokenDetails({ chainData }) {
 
   return (
     <Card sx={{ width: '100%', mb: 1 }}>
@@ -37,7 +32,7 @@ export default function TokenDetails({ chainData, ethBalance }) {
         {chainData?.cashAllowance > 0 && (
           <Alert sx={{ mt: 2 }} type="info">
             {' '}
-            This vendor has yet to accept {chainData?.cashAllowance}.
+            This distributor has yet to accept {chainData?.cashAllowance}.
           </Alert>
         )}
 

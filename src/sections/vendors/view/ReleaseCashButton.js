@@ -1,8 +1,4 @@
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useCallback, useEffect, useState } from 'react';
-
 import { useVendorsContext } from '@contexts/vendors';
 import { useSnackbar } from 'notistack';
 import AmountForm from '@sections/projects/cash-tracker/AmountForm';
@@ -65,19 +61,14 @@ export default function ReleaseCashButton() {
     },
   };
 
-  // async (projectId) => {
-  //   await projectBalance(projectId);
-  // },
-  //[]
-
   return (
     <div>
       <AmountForm
-        title="Release token to village"
+        title="Release token to Distributor"
         description={
           <>
-            Please select the amount of H2o token are handing over to village .Village Vendors has to accept the cash
-            before they are allowed for disburse. <br />
+            Please select the amount of H2o token are handing over to Distributor .Distributor Vendors has to accept the
+            cash before they are allowed for disburse. <br />
             <br />
             Your current H20 tokens is {chainData?.projectBalance}
           </>
