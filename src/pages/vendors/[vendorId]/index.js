@@ -8,7 +8,7 @@ import { ActionMenu, VendorView } from '@sections/vendors/view';
 import { VendorProvider } from '@contexts/vendors';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
-const PAGE_TITLE = 'Village Representative: Details';
+const PAGE_TITLE = 'Distributor : Details';
 
 const VendorsView = () => {
   const { themeStretch } = useSettingsContext();
@@ -16,7 +16,11 @@ const VendorsView = () => {
 
   return (
     <VendorProvider>
-      <Page title={PAGE_TITLE} nocard action={roles.isDonor && <ActionMenu actionTitle={'Actions'} />}>
+      <Page
+        title={PAGE_TITLE}
+        nocard
+        //  action={roles.isDonor && <ActionMenu actionTitle={'Actions'} >}
+      >
         <Container maxWidth={themeStretch ? false : 'xl'}>
           <VendorView />
         </Container>
