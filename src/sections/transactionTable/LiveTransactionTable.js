@@ -25,8 +25,8 @@ const TABLE_HEAD = {
     label: 'Beneficiary',
     align: 'left',
   },
-  functionType: {
-    id: 'functionType',
+  event: {
+    id: 'event',
     label: 'Type',
   },
 
@@ -78,7 +78,7 @@ const LiveTransactionTable = (props) => {
         name: tx.beneficiary_data.name,
         village: 'name',
         mode: tx.isOffline ? 'Offline' : 'Online',
-        functionType: 'Beneficiary Assign',
+        event: 'Beneficiary Assign',
         txType: tx.txType,
         timestamp: tx?.timestamp,
       }));
