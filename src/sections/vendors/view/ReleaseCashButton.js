@@ -35,7 +35,6 @@ export default function ReleaseCashButton() {
     async handleActivateVendor() {
       // if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
       try {
-        console.group({ Hi: 'hiii' });
         showLoading('activateVendor');
 
         await activateVendor(singleVendor?.walletAddress);
