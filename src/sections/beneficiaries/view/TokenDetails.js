@@ -130,22 +130,14 @@ export default function TokenDetails({ chainData }) {
         <Stack
           sx={{ pt: SPACING.GRID_SPACING, overflow: 'elipsis' }}
           direction="row"
-          justifyContent="space-between"
+          // justifyContent="space-between"
+          justifyContent={'flex-start'}
           alignItems="center"
           spacing={SPACING.GRID_SPACING}
         >
-          <Typography variant="subtitle2"> Wallet </Typography>
+          <Typography variant="subtitle2">Wallet</Typography>
 
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1" sx={{ fontWeight: 600 }}>
-              <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" />
-            </Typography>
-          </Grid>
-
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="h4">{}</Typography>
-            <Typography variant="body2"></Typography>
-          </Grid>
+          <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" />
         </Stack>
       </CardContent>
     </Card>
