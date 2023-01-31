@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
@@ -16,7 +16,7 @@ BeneficiaryView.propTypes = {};
 const TABLE_HEAD = {
   timestamp: {
     id: 'timestamp',
-    label: 'Date',
+    label: 'Timestamp',
     align: 'left',
   },
   txHash: {
@@ -24,9 +24,9 @@ const TABLE_HEAD = {
     label: 'Transaction Hash',
     align: 'left',
   },
-  vendor: {
-    id: 'vendor',
-    label: 'Vendor',
+  event: {
+    id: 'event',
+    label: 'Type',
     align: 'left',
   },
   amount: {
@@ -34,20 +34,36 @@ const TABLE_HEAD = {
     label: 'Amount',
     align: 'left',
   },
+  txType: {
+    id: 'txType',
+    label: 'TxType',
+    align: 'left',
+  },
+  mode: {
+    id: 'mode',
+    label: 'Mode',
+    align: 'left',
+  },
 };
 // #endregion
 
 export default function BeneficiaryView() {
   const { roles } = useAuthContext();
-  const { getBeneficiaryById, setChainData, chainData, refresh, singleBeneficiary } = useBeneficiaryContext();
+  const { getBeneficiaryById, refresh, singleBeneficiary, getTransactionById, transaction } = useBeneficiaryContext();
   const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
   } = useRouter();
 
+  const [chainData, setChainData] = useState({
+    isBenActive: null,
+    balance: null,
+  });
+
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
+    await getTransactionById(beneficiaryId);
     //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
     // const _chainData = await beneficiaryBalance(_benData?.phone);
@@ -57,20 +73,25 @@ export default function BeneficiaryView() {
   const fetchChainData = useCallback(async () => {
     if (!communityContract) return;
     if (!singleBeneficiary) return;
+
     try {
       const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
       const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
-      setChainData({ isBenActive, balance: balance.toNumber() });
+      setChainData((prev) => ({ ...prev, isBenActive, balance }));
     } catch (error) {}
-  }, [communityContract, singleBeneficiary]);
+  }, [communityContract, singleBeneficiary, refresh]);
 
   useEffect(() => {
     fetchChainData();
-  }, [fetchChainData]);
+  }, [fetchChainData, refresh, communityContract]);
 
   useEffect(() => {
     init();
   }, [init]);
+
+  const TokenDetailsProps = {
+    chainData,
+  };
 
   return (
     <>
@@ -84,11 +105,11 @@ export default function BeneficiaryView() {
           )}
         </Grid>
         <Grid item xs={12} md={4}>
-          <TokenDetails />
+          <TokenDetails {...TokenDetailsProps} />
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={[]} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction.data} />
       </Stack>
     </>
   );

@@ -1,8 +1,8 @@
 import client from '@utils/client';
 
 export const TransactionService = {
-  getTransactionList() {
-    return client.get('/transactions');
+  getTransactionList(params) {
+    return client.get('/transactions', { params });
   },
 
   addTransactionData(payload) {

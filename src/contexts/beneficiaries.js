@@ -1,14 +1,15 @@
-import { BeneficiaryService } from '@services';
+import { BeneficiaryService, TransactionService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const initialState = {
   beneficiaries: [],
   singleBeneficiary: {},
+  transaction: {},
   chainData: {},
   refresh: false,
   filter: {},
-  wards: [],
+  village: [],
   pagination: {
     start: 0,
     limit: 50,
@@ -16,11 +17,13 @@ const initialState = {
   },
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
+  getTransactionById: () => {},
   setChainData: () => {},
   refreshData: () => {},
   setFilter: () => {},
   setPagination: () => {},
   getAllWards: () => {},
+  getAllVillages: () => {},
 };
 
 const BeneficiaryContext = createContext(initialState);
@@ -44,6 +47,7 @@ export const BeneficiaryProvider = ({ children }) => {
     let filterObj = {
       limit: state.pagination?.limit,
       start: state.pagination?.start,
+      village: state.filter?.village,
       // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
     };
 
@@ -54,7 +58,6 @@ export const BeneficiaryProvider = ({ children }) => {
     // let filter = state.filter?.name?.length > 3 || state.filter?.phone?.length > 3 ? state.filter : {};
 
     const response = await BeneficiaryService.getBeneficiariesList(filterObj);
-
     const formatted = response.data.data?.data?.map((item) => ({
       ...item,
       id: item?.id,
@@ -79,12 +82,12 @@ export const BeneficiaryProvider = ({ children }) => {
       // },
     }));
     return formatted;
-  }, [state.filter, state.pagination]);
+  }, [state.filter, state.pagination, state.village]);
 
   const setChainData = useCallback((chainData) => {
     setState((prev) => ({
       ...prev,
-      chainData,
+      ...chainData,
     }));
   }, []);
 
@@ -102,17 +105,35 @@ export const BeneficiaryProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getAllWards = useCallback(async () => {
-    const response = await BeneficiaryService.getAllWards();
-    const formatted = Array(response?.data.data)
-      ?.sort((a, b) => a - b)
-      .map((item) => ({
-        label: item,
-        value: item,
-      }));
+  const getAllVillages = useCallback(async () => {
+    const response = await BeneficiaryService.getAllVillages();
+    const formatted = response?.data?.data?.map((item) => ({
+      label: item,
+      value: item,
+    }));
     setState((prev) => ({
       ...prev,
-      wards: formatted,
+      village: formatted,
+    }));
+    return formatted;
+  }, []);
+
+  const getTransactionById = useCallback(async (id) => {
+    const response = await TransactionService.getTransactionList({ beneficiaryId: id });
+    const formatted = response?.data?.data?.data?.map((item) => ({
+      timestamp: item?.timestamp,
+      txHash: item?.txHash,
+      event: 'Beneficiary Claim',
+      amount: item?.amount,
+      txType: item?.txType,
+      mode: item.isOffline ? 'Offline' : 'Online',
+    }));
+
+    setState((prev) => ({
+      ...prev,
+      transaction: {
+        data: formatted,
+      },
     }));
     return formatted;
   }, []);
@@ -125,7 +146,8 @@ export const BeneficiaryProvider = ({ children }) => {
     setChainData,
     getBeneficiariesList,
     getBeneficiaryById,
-    getAllWards,
+    getAllVillages,
+    getTransactionById,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;
