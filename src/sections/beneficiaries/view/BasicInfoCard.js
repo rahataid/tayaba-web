@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import { useProject } from '@services/contracts/useProject';
 
 BasicInfoCard.propTypes = {
   chainData: PropTypes.object,
@@ -12,15 +11,6 @@ BasicInfoCard.propTypes = {
 export default function BasicInfoCard({ chainData }) {
   const { singleBeneficiary, setChainData, refreshData } = useBeneficiaryContext();
   const { roles } = useAuthContext();
-  const { activateBeneficiary } = useProject();
-
-  const handleActivate = async () => {
-    try {
-      let isActive = await activateBeneficiary(singleBeneficiary?.data?.walletAddress);
-      setChainData({ isBenActive: isActive });
-      refreshData();
-    } catch (error) {}
-  };
 
   return (
     <Card sx={{ width: '100%', mb: 1 }}>
@@ -32,17 +22,11 @@ export default function BasicInfoCard({ chainData }) {
               : singleBeneficiary?.data?.name.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           <div>
-            {chainData?.isBenActive ? (
-              <Chip label="Active" variant="outlined" color="success" disabled={roles?.isDonor ? true : false} />
-            ) : (
-              <Chip
-                label="Inactive"
-                onClick={handleActivate}
-                variant="outlined"
-                color="error"
-                disabled={roles?.isDonor ? true : false}
-              />
-            )}
+            <Chip
+              label={chainData?.isBenActive ? 'Active' : 'Inactive'}
+              variant="outlined"
+              color={chainData?.isBenActive ? 'success' : 'error'}
+            />
           </div>
         </Stack>
 

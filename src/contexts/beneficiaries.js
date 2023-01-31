@@ -1,4 +1,4 @@
-import { BeneficiaryService } from '@services';
+import { BeneficiaryService, TransactionService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -87,7 +87,7 @@ export const BeneficiaryProvider = ({ children }) => {
   const setChainData = useCallback((chainData) => {
     setState((prev) => ({
       ...prev,
-      chainData,
+      ...chainData,
     }));
   }, []);
 
@@ -119,15 +119,21 @@ export const BeneficiaryProvider = ({ children }) => {
   }, []);
 
   const getTransactionById = useCallback(async (id) => {
-    const response = await BeneficiaryService.getTransactionById(id);
-
-    const formatted = {
-      ...response.data,
-    };
+    const response = await TransactionService.getTransactionList({ beneficiaryId: id });
+    const formatted = response?.data?.data?.data?.map((item) => ({
+      timestamp: item?.timestamp,
+      txHash: item?.txHash,
+      event: 'Beneficiary Claim',
+      amount: item?.amount,
+      txType: item?.txType,
+      mode: item.isOffline ? 'Offline' : 'Online',
+    }));
 
     setState((prev) => ({
       ...prev,
-      transaction: formatted,
+      transaction: {
+        data: formatted,
+      },
     }));
     return formatted;
   }, []);

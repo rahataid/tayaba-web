@@ -5,20 +5,22 @@ import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { SPACING } from '@config';
 import moment from 'moment';
 import useDialog from '@hooks/useDialog';
-import { useProject } from '@services/contracts/useProject';
 import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { TransactionService } from '@services';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import { useProject } from '@services/contracts/useProject';
 
 TokenDetails.propTypes = {};
-export default function TokenDetails() {
-  const { chainData, singleBeneficiary } = useBeneficiaryContext();
+export default function TokenDetails({ chainData }) {
+  const { singleBeneficiary, refreshData } = useBeneficiaryContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { assignClaimsToBeneficiaries, beneficiaryBalance, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const { roles } = useAuthContext();
+  const { activateBeneficiary } = useProject();
+
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
     try {
@@ -26,7 +28,7 @@ export default function TokenDetails() {
       const txn = {
         txHash: res.hash,
         contractAddress: contract?.address,
-        timestamp: Date.now(),
+        timestamp: Math.floor(Date.now() / 1000),
         beneficiaryId: singleBeneficiary?.data?.id,
         vendorId: singleBeneficiary?.data?.vendor?.id || 1,
         projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id || 1,
@@ -40,6 +42,15 @@ export default function TokenDetails() {
     }
     hideLoading('assignClaim');
     hideDialog();
+  };
+
+  const handleActivate = async () => {
+    try {
+      await activateBeneficiary(singleBeneficiary?.data?.walletAddress);
+      refreshData();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // const fetchBalance = async () => {
@@ -68,12 +79,21 @@ export default function TokenDetails() {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
           <Typography variant="h5">Claims Details</Typography>
-          {chainData?.isBenActive && (
+          {chainData?.isBenActive ? (
             <>
               {(roles.isManager || roles.isAdmin) && (
                 <Button variant="outlined" onClick={showDialog}>
                   {' '}
                   Assign Claim
+                </Button>
+              )}
+            </>
+          ) : (
+            <>
+              {!roles.isDonor && (
+                <Button variant="outlined" onClick={handleActivate} disabled={roles?.isDonor ? true : false}>
+                  {' '}
+                  Activate
                 </Button>
               )}
             </>
