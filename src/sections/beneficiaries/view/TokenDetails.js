@@ -16,7 +16,7 @@ TokenDetails.propTypes = {};
 export default function TokenDetails({ chainData }) {
   const { singleBeneficiary, refreshData } = useBeneficiaryContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { assignClaimsToBeneficiaries, beneficiaryBalance, contract } = useProject();
+  const { assignClaimsToBeneficiaries, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const { roles } = useAuthContext();
   const { activateBeneficiary } = useProject();
@@ -52,15 +52,6 @@ export default function TokenDetails({ chainData }) {
       console.log(error);
     }
   };
-
-  // const fetchBalance = async () => {
-  //   const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
-  //   console.log('balance', balance);
-  // };
-
-  // useEffect(() => {
-  //   fetchBalance();
-  // }, []);
 
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
