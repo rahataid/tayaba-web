@@ -1,11 +1,10 @@
+import React, { useEffect, useState, Typography } from 'react';
 import { Box, Button, Chip, Pagination, TableCell, TableRow } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
-import ListTableToolbar from './ListTableToolbar';
 import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
 import ListTable from '@components/table/ListTable';
 import { useVendorsContext } from '@contexts/vendors';
-import moment from 'moment';
+import { useProject } from '@services/contracts/useProject';
 
 const TABLE_HEAD = {
   name: {
@@ -31,15 +30,12 @@ const TABLE_HEAD = {
   },
 };
 
-const TableContainer = () => {
+export default function TableContainerView() {
   const router = useRouter();
   const [start, setStart] = useState(0);
   const { getVendorsList, vendors } = useVendorsContext();
 
-  useEffect(() => {
-    getVendorsList({ start });
-  }, [getVendorsList, setStart]);
-
+  useProject;
   const handleView = (id) => () => {
     router.push(`/vendors/${id}`);
   };
@@ -51,10 +47,13 @@ const TableContainer = () => {
 
   const paginateFilter = <Pagination count={vendors?.totalpages} onChange={handlePagination} />;
 
+  useEffect(() => {
+    getVendorsList({ start });
+  }, [getVendorsList, start]);
+
   return (
     <Box>
-      {/* <ListTableToolbar /> */}
-      <ListTable tableRowsList={vendors?.data} tableHeadersList={TABLE_HEAD} footer={paginateFilter}>
+      <ListTable tableRowsList={vendors?.data} tableHeadersList={TABLE_HEAD}>
         {(rows, tableHeadersList) =>
           rows.map((row) => (
             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -72,6 +71,4 @@ const TableContainer = () => {
       </ListTable>
     </Box>
   );
-};
-
-export default TableContainer;
+}

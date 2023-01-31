@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
 import { HistoryTable } from '@sections/transactionTable';
 import { useVendorsContext } from '@contexts/vendors';
 import { useRouter } from 'next/router';
-import { useRahat } from '@services/contracts/useRahat';
-import { useRahatCash } from '@services/contracts/useRahatCash';
+import { useProject } from '@services/contracts/useProject';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {
@@ -33,35 +31,41 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 };
 
 export default function VendorView() {
-  const { getVendorById, setChainData, chainData, refreshData, refresh, getVendorEthBalance, vendorEthBalance } =
-    useVendorsContext();
-  const { vendorBalance, contract, claimLogs, getVendorClaimLogs } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
-
+  const { getVendorById, setChainData, chainData, refresh } = useVendorsContext();
+  const {
+    getVendorAllowance,
+    checkActiveVendor,
+    communityContract,
+    pendingWheelsToAccept,
+    getProjectBalance,
+    h2oToken,
+  } = useProject();
   const {
     query: { vendorId },
   } = useRouter();
-  // TODO: make dynamic
-  //const { vendorTransactions, transactionLoading } = useVendorClaimLogs();
-  // const { vendorTransactions, transactionLoading } = useExplorer(singleVendor?.wallet_address);
 
   const init = useCallback(async () => {
     if (!vendorId) return;
     const _vendorData = await getVendorById(vendorId);
-    if (!_vendorData?.wallet_address) return;
-    const _chainData = await vendorBalance(_vendorData?.wallet_address);
-    await getVendorEthBalance(_vendorData?.wallet_address);
+    if (!_vendorData?.walletAddress) return;
+    if (!communityContract) return;
+    let token;
+    const allowance = await getVendorAllowance(_vendorData?.walletAddress);
+    const isActive = await checkActiveVendor(_vendorData?.walletAddress);
+    const cashAllowance = await pendingWheelsToAccept(_vendorData?.walletAddress);
+    if (h2oToken) token = await getProjectBalance();
 
-    setChainData(_chainData);
-    await getVendorClaimLogs('0x2e38580a0ea254895b3f28f3aa95221124c102df');
-  }, [vendorId, contract, refresh]);
+    setChainData({
+      allowance: allowance.toNumber(),
+      isActive,
+      cashAllowance: cashAllowance.toNumber(),
+      projectBalance: token ? token : null,
+    });
+  }, [vendorId, refresh, communityContract]);
 
   useEffect(() => {
     init();
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    return () => RahatCash?.removeAllListeners();
-  }, [init, RahatCash]);
+  }, [init]);
 
   return (
     <>
@@ -71,11 +75,11 @@ export default function VendorView() {
           <BasicInfoCard chainData={chainData} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TokenDetails chainData={chainData} ethBalance={vendorEthBalance} />
+          <TokenDetails chainData={chainData} />
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={claimLogs} />
+        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={[]} />
       </Stack>
     </>
   );

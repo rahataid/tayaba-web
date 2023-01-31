@@ -1,67 +1,61 @@
 import { useState, useCallback, useEffect } from 'react';
 import useLoading from '@hooks/useLoading';
 import { Alert, Grid, Button } from '@mui/material';
-import { useRahat } from '@services/contracts/useRahat';
-import { SPACING } from '@config';
-import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useProjectContext } from '@contexts/projects';
-import { useRahatDonor } from '@services/contracts/useRahatDonor';
-export default function CashActionsAlert({ projectId }) {
-  const { refresh, refreshData, singleProject } = useProjectContext();
-  const { projectBalance, rahatChainData, contract, claimTokenForProject } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
+import { useProject } from '@services/contracts/useProject';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import LoadingOverlay from '@components/LoadingOverlay';
+
+export default function CashActionsAlert({ projectId, chainData }) {
+  const { refresh, singleProject } = useProjectContext();
+  const { acceptToken, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
     type: '',
     message: '',
     action: '',
   });
+  const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
-  const { sendCashToAgency } = useRahatDonor();
-
-  const init = useCallback(async () => {
-    if (!RahatCash) return;
-    await projectBalance(projectId);
-  }, [projectId, contract, RahatCash, refresh]);
-
-  useEffect(() => {
-    if (!projectId || !contract) return;
-    init(projectId);
-  }, [projectId, RahatCash, refresh]);
-
-  useEffect(() => {
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    return () => RahatCash?.removeAllListeners();
-  }, [RahatCash]);
+  const { sendH2OWheelsToVendor } = useProject();
 
   const CashActions = {
     async acceptCash() {
       showLoading('cashTrack');
-      await claimTokenForProject(projectId, rahatChainData.cashAllowance);
-      refreshData();
+      await acceptToken(chainData.tokenAllowance);
+      setShowAlert(false);
       hideLoading('cashTrack');
-    },
-    async sendCashToAgency(amount) {
-      showLoading('cashTransfer');
-      await sendCashToAgency(amount);
-      refreshData();
-      hideLoading('cashTransfer');
     },
   };
 
+  const donorAllowance = useCallback(() => {
+    if (chainData.tokenAllowance > 0) {
+      setAlert({
+        type: 'info',
+        message: `Pending acceptance of ${chainData.tokenAllowance} H2O wheels.`,
+      });
+      setShowAlert(chainData.tokenAllowance > 0);
+    }
+  }, [chainData.tokenAllowance]);
+
   const acceptCashAction = useCallback(() => {
-    if (rahatChainData?.cashAllowance > 0) {
+    if (chainData.tokenAllowance > 0) {
       setAlert({
         type: 'success',
-        message: 'Accept Cash',
+        message: `Confirm receival of ${chainData.tokenAllowance} H2O wheels`,
         action: <Button onClick={CashActions.acceptCash}>Accept</Button>,
       });
-      setShowAlert(true);
+      setShowAlert(chainData.tokenAllowance > 0);
     }
-  }, [rahatChainData?.cashAllowance]);
+  }, [chainData.tokenAllowance]);
 
   useEffect(() => {
+    if (!roles.isDonor) return;
+    donorAllowance();
+  }, [donorAllowance]);
+
+  useEffect(() => {
+    if (!roles.isAdmin) return;
     acceptCashAction();
   }, [acceptCashAction]);
 
@@ -69,10 +63,12 @@ export default function CashActionsAlert({ projectId }) {
     <>
       {showAlert && (
         <Grid item xs={12} md={12}>
-          <Alert severity={alert.type} action={alert.action}>
-            {' '}
-            {alert?.message}{' '}
-          </Alert>
+          <LoadingOverlay open={loading.cashTrack}>
+            <Alert severity={alert.type} action={alert.action}>
+              {' '}
+              {alert?.message}{' '}
+            </Alert>
+          </LoadingOverlay>
         </Grid>
       )}
     </>

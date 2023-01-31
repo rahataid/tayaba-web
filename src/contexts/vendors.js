@@ -15,6 +15,7 @@ const initialState = {
   getVendorsList: () => {},
   getVendorById: () => {},
   setChainData: () => {},
+  updateApprovalStatus: () => {},
   refreshData: () => {},
   getVendorEthBalance: () => {},
 };
@@ -24,20 +25,18 @@ const VendorsContext = createContext(initialState);
 export const VendorProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
   const wallet = useWallet();
-
   const refreshData = () => setState((prev) => ({ ...prev, refresh: !prev.refresh }));
 
   const getVendorsList = useCallback(async (params) => {
-    const response = await VendorService.getVendorsList(params);
-
-    const formatted = response.data?.data?.data?.map((item) => ({
+    const { data } = await VendorService.getVendorsList(params);
+    const formatted = data?.data?.map((item) => ({
       ...item,
       id: item?.id,
       name: item?.name || 'N/A',
       gender: item?.gender || 'N/A',
       phone: item?.phone || 'N/A',
       walletAddress: item?.walletAddress || 'N/A',
-      contractAddress: item?.walletAddress || 'N/A',
+      contractAddress: item?.contractAddress || 'N/A',
       villageId: item?.villageId || 'N/A',
     }));
 
@@ -45,9 +44,9 @@ export const VendorProvider = ({ children }) => {
       ...prevState,
       vendors: {
         data: formatted,
-        start: response.data?.data?.start,
-        limit: response.data?.data?.limit,
-        totalPage: response.data?.data?.totalPage,
+        start: data?.data?.start,
+        limit: data?.data?.limit,
+        totalPage: data?.data?.totalPage,
       },
     }));
     return formatted;
@@ -64,13 +63,13 @@ export const VendorProvider = ({ children }) => {
     const response = await VendorService.getVendorById(id);
 
     const formatted = {
-      ...response.data,
-      name: response.data?.name || 'N/A',
-      gender: response.data?.gender || 'N/A',
-      phone: response.data?.phone || 'N/A',
-      walletAddress: response.data?.walletAddress || 'N/A',
-      contractAddress: response.data?.contractAddress || 'N/A',
-      villageId: response.data?.villageId || 'N/A',
+      ...response.data.data,
+      name: response.data.data?.name || 'N/A',
+      gender: response.data?.data?.gender || 'N/A',
+      phone: response.data?.data?.phone || 'N/A',
+      walletAddress: response.data?.data?.walletAddress || 'N/A',
+      contractAddress: response.data?.data?.contractAddress || 'N/A',
+      villageId: response.data?.data?.villageId || 'N/A',
     };
 
     setState((prev) => ({
@@ -82,15 +81,19 @@ export const VendorProvider = ({ children }) => {
 
   const getVendorEthBalance = useCallback(async () => {
     if (!wallet) return;
-    if (!state?.singleVendor?.wallet_address) throw new Error('Address is required');
+    if (!state?.singleVendor?.walletAddress) throw new Error('Address is required');
     const balance = await ethers?.utils?.formatEther(
-      await wallet?.provider.getBalance(state.singleVendor?.wallet_address)
+      await wallet?.provider.getBalance(state.singleVendor?.walletAddress)
     );
     setState((prev) => ({
       ...prev,
       vendorEthBalance: balance,
     }));
-  }, [state.singleVendor?.wallet_address, wallet]);
+  }, [state.singleVendor?.walletAddress, wallet]);
+
+  const updateApprovalStatus = useCallback(async (walletAddress) => {
+    return VendorService.updateVendorApprovalStatus(walletAddress);
+  });
 
   const contextValue = {
     ...state,
@@ -99,6 +102,7 @@ export const VendorProvider = ({ children }) => {
     getVendorsList,
     getVendorById,
     getVendorEthBalance,
+    updateApprovalStatus,
   };
 
   return <VendorsContext.Provider value={contextValue}>{children}</VendorsContext.Provider>;

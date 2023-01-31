@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
 // @mui
-import { Box, Card, Link, Stack, Fab, Button, Typography } from '@mui/material';
+import { Box, Card, Link, Stack, Typography } from '@mui/material';
 // routes
 // utils
 // redux
@@ -48,7 +48,7 @@ export default function ProjectCard({ project }) {
         <NextLink href={`projects/${id}`} passHref>
           <Image
             alt={name}
-            src={'https://live.staticflickr.com/65535/52356516086_647d7aa97d_b.jpg'}
+            src={'https://live.staticflickr.com/65535/52602020720_1380831249_b.jpg'}
             ratio="1/1"
             sx={{ borderRadius: 1.5 }}
           />

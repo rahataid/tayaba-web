@@ -1,77 +1,126 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Card, CardHeader, Grid, Stack } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import SummaryCard from '@components/SummaryCard';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import BarchartSingle from './BarchartSingle';
 import Piechart from '@components/chart/Piechart';
 import { useRouter } from 'next/router';
-import { PATH_REPORTS } from '@routes/paths';
-import Iconify from '@components/iconify';
 import { getFlickrImages } from '@services/flickr';
 import PhotoGallery from './PhotoGallery';
-import { SPACING } from '@config';
+import { SPACING, CHARTDATATYPES } from '@config';
 import { MapView } from './maps';
 import { useDashboardContext } from '@contexts/dashboard';
-import SummaryTracker from '@sections/cash-tracker/tracker/SummaryTracker';
 
 const DashboardComponent = () => {
   const theme = useTheme();
   const router = useRouter();
 
-  const {
-    summary,
-    demographicSummary,
-    getSummary,
-    getGeoMapData,
-    getGenderDistribution,
-    beneficiariesVillageChartData,
-    bankedUnbanked,
-    phoneOwnership,
-    genderWardChart,
-    getBankedUnbanked,
-    getPhoneOwnership,
-    getWardGenderChart,
-    getBeneficiariesByWard,
-    getCashTrackerSummary,
-    cashTrackerSummary,
-    getDemographicSummary,
-  } = useDashboardContext();
+  const { summary, demographicSummary, beneficiariesVillageChartData, getChartData, chartData, getDemographicSummary } =
+    useDashboardContext();
 
   const [flickImages, setFlickImages] = useState([]);
+  const [accessToPhoneChartData, setAccessToPhoneChartData] = useState();
+  const [genderWiseDistribution, setGenderWiseDistribution] = useState();
+  const [accessToInternet, setAccessToInternet] = useState();
+  const [banked, setBanked] = useState();
+  const [selectedVillage, setSelectedVillage] = useState();
+
+  const formatData = useCallback(() => {
+    if (!chartData) return;
+    // need to move and  call from utils
+    const colors = [
+      theme.palette.info.light,
+      theme.palette.primary.light,
+      theme.palette.warning.light,
+      theme.palette.error.light,
+    ];
+
+    chartData.forEach((elem) => {
+      let series = [];
+      if (elem.chart === 'hasInternetAccess') {
+        elem.data.forEach((obj) => {
+          if (obj.hasInternetAccess) {
+            series.push({ label: 'Has Access', value: obj.count });
+          }
+          if (!obj.hasInternetAccess) {
+            series.push({ label: 'Not Access', value: obj.count });
+          }
+        });
+        const data = {
+          title: selectedVillage ? `Access To Internet (${selectedVillage})` : 'Access To Internet',
+          colors: colors,
+          series: series,
+        };
+        setAccessToInternet(data);
+      }
+      if (elem.chart === 'hasPhone') {
+        elem.data.forEach((obj) => {
+          if (obj.hasPhone) {
+            series.push({ label: 'Has Access', value: obj.count });
+          }
+          if (!obj.hasPhone) {
+            series.push({ label: 'Not Access', value: obj.count });
+          }
+        });
+        const data = {
+          title: selectedVillage ? ` Access to Phone (${selectedVillage})` : ` Access to Phone`,
+          colors: colors,
+          series: series,
+        };
+        setAccessToPhoneChartData(data);
+      }
+
+      if (elem.chart === 'gender') {
+        elem.data.forEach((obj) => {
+          if (obj.gender === 'M') {
+            series.push({ label: 'Male', value: obj.count });
+          }
+          if (obj.gender === 'F') {
+            series.push({ label: 'Female', value: obj.count });
+          }
+          if (obj.gender === 'O') {
+            series.push({ label: 'Others', value: obj.count });
+          }
+        });
+        const data = {
+          title: selectedVillage ? `Gender-wise Distribution (${selectedVillage})` : `Gender-wise Distribution`,
+          colors: colors,
+          series: series,
+        };
+        setGenderWiseDistribution(data);
+      }
+
+      if (elem.chart === 'isBanked') {
+        elem.data.forEach((obj) => {
+          if (obj.isBanked) series.push({ label: 'Banked', value: obj.count });
+          if (!obj.isBanked) series.push({ label: 'UnBanked', value: obj.count });
+        });
+        const data = {
+          title: selectedVillage ? `Banked or Unbanked (${selectedVillage})` : 'Banked or Unbanked',
+          colors: colors,
+          series: series,
+        };
+        setBanked(data);
+      }
+    });
+  }, [chartData]);
 
   useEffect(() => {
-    getSummary();
-  }, [getSummary]);
+    formatData();
+  }, [formatData]);
 
   useEffect(() => {
     getDemographicSummary();
   }, [getDemographicSummary]);
 
   useEffect(() => {
-    getCashTrackerSummary();
-  }, [getCashTrackerSummary]);
-
-  useEffect(() => {
-    getGenderDistribution();
-  }, [getGenderDistribution]);
-
-  useEffect(() => {
-    getBankedUnbanked();
-  }, [getBankedUnbanked]);
-
-  useEffect(() => {
-    getPhoneOwnership();
-  }, [getPhoneOwnership]);
-
-  useEffect(() => {
-    getWardGenderChart();
-  }, [getWardGenderChart]);
-
-  useEffect(() => {
-    getGeoMapData();
-  }, [getGeoMapData]);
+    let query = {
+      village: selectedVillage,
+    };
+    getChartData(CHARTDATATYPES, query);
+  }, []);
 
   useEffect(() => {
     const getFlickPics = async () => {
@@ -104,19 +153,25 @@ const DashboardComponent = () => {
               color="warning"
               icon="material-symbols:person-4"
               title="Beneficiaries"
-              total={demographicSummary?.count}
+              total={demographicSummary?.totalBeneficiaries}
               subtitle={'households'}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <SummaryCard color='info' icon="ic:outline-water-drop" title="H20 Disbursed" total={85} subtitle={'wheels'} />
+            <SummaryCard
+              color="info"
+              icon="ic:outline-water-drop"
+              title="H20 Disbursed"
+              total={demographicSummary?.totalH20Disbursed}
+              subtitle={'wheels'}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <SummaryCard
               color="success"
               icon="pajamas:project"
               title="Projects"
-              total={1}
+              total={demographicSummary?.totalProjects}
               subtitle={'involved'}
             />
           </Grid>
@@ -125,7 +180,7 @@ const DashboardComponent = () => {
               color="secondary"
               icon="maki:village"
               title="Villages"
-              total={3}
+              total={demographicSummary?.totalVillages}
               subtitle={'impacted'}
             />
           </Grid>
@@ -136,126 +191,60 @@ const DashboardComponent = () => {
           </Grid>
         </Grid>
 
+        {genderWiseDistribution ? (
+          <Grid item xs={12} md={3}>
+            <Piechart title={genderWiseDistribution.title} chart={genderWiseDistribution} />
+          </Grid>
+        ) : (
+          <></>
+        )}
+        {accessToInternet ? (
+          <Grid item xs={12} md={3}>
+            <Piechart title={accessToInternet.title} chart={accessToInternet} />
+          </Grid>
+        ) : (
+          <></>
+        )}
 
+        {accessToPhoneChartData ? (
+          <Grid item xs={12} md={3}>
+            <Piechart title={accessToPhoneChartData.title} chart={accessToPhoneChartData} />
+          </Grid>
+        ) : (
+          <></>
+        )}
 
-        <Grid item xs={12} md={3}>
-          <Piechart
-            title="Gender Distribution"
-            chart={{
-              colors: [
-                theme.palette.primary.light,
-                theme.palette.success.light,
-                theme.palette.warning.light,
-                theme.palette.error.light,
-              ],
-              series: [{
-                label:"M",
-                value:10
+        {banked ? (
+          <Grid item xs={12} md={3}>
+            <Piechart title={banked.title} chart={banked} />
+          </Grid>
+        ) : (
+          <></>
+        )}
 
-              },
-              {
-                label:"F",
-                value:12
-
-              }],
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12} md={3}>
-          <Piechart
-            title="Phone Ownership Distribution"
-            chart={{
-              colors: [
-                theme.palette.primary.light,
-                theme.palette.success.light,
-                theme.palette.error.light,
-                theme.palette.warning.light,
-              ],
-              series: [{
-                label:"has phone",
-                value:13
-
-              },
-              {
-                label:"has not phone",
-                value:6
-
-              }],
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12} md={3}>
-          <Piechart
-            title="Access To Internet"
-            chart={{
-              colors: [
-                theme.palette.primary.light,
-                theme.palette.success.light,
-                theme.palette.error.light,
-                theme.palette.warning.light,
-              ],
-              series: [{
-                label:"has Access",
-                value:6
-
-              },
-              {
-                label:"has not access",
-                value:3
-
-              }],
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12} md={3}>
-          <Piechart
-            title="Banked vs Unbanked"
-            chart={{
-              colors: [
-                theme.palette.error.light,
-                theme.palette.success.light,
-                theme.palette.warning.light,
-                theme.palette.primary.light,
-              ],
-              series: [{
-                label:"Banked",
-                value:11
-
-              },
-              {
-                label:"Unbanked",
-                value:6
-
-              }],
-            }}
-          />
-        </Grid>
-      
         <Grid item xs={12} md={6}>
           <BarchartSingle
             title="Beneficiaries by Village"
-            chart={{colors: [
-              theme.palette.primary.main,
-              theme.palette.info.main,
-              theme.palette.error.main,
-              theme.palette.warning.main,
-            ],
-            options: {
-              chart: {
-                stacked: true,
+            chart={{
+              colors: [
+                theme.palette.primary.main,
+                theme.palette.info.main,
+                theme.palette.error.main,
+                theme.palette.warning.main,
+              ],
+              options: {
+                chart: {
+                  stacked: true,
+                },
               },
-            },
-            ...beneficiariesVillageChartData,}}
+              ...beneficiariesVillageChartData,
+            }}
           />
         </Grid>
 
         <Grid item xs={12} md={6}>
           <MapView />
         </Grid>
-       
       </Grid>
     </Box>
   );

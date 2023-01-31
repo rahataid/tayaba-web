@@ -6,9 +6,10 @@ const initialState = {
   summary: {},
   mapData: [],
   genderDistribution: [],
-  demographicSummary:{},
+  demographicSummary: {},
   bankedUnbanked: [],
   phoneOwnership: [],
+  chartData: [],
   beneficiariesByWard: {
     chartData: [
       {
@@ -27,25 +28,16 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  genderWardChart: {
-    chartData: [
-      {
-        data: [],
-        name: '',
-      },
-    ],
-    chartLabel: [],
-  },
   cashTrackerSummary: {},
   getSummary: () => {},
   getGeoMapData: () => {},
   getGenderDistribution: () => {},
   getBankedUnbanked: () => {},
   getPhoneOwnership: () => {},
-  getBeneficiariesByWard: () => {},
+  getChartData: () => {},
   getCashTrackerSummary: () => {},
   getWardGenderChart: () => {},
-  getDemographicSummary:()=>{},
+  getDemographicSummary: () => {},
 };
 
 const DashboardContext = createContext(initialState);
@@ -58,15 +50,6 @@ export const DashboardProvider = ({ children }) => {
     setState((prev) => ({
       ...prev,
       summary: response.data,
-    }));
-    return response.data;
-  }, []);
-
-  const getGeoMapData = useCallback(async () => {
-    const response = await DashboardService.getGeoMapData();
-    setState((prev) => ({
-      ...prev,
-      mapData: response.data,
     }));
     return response.data;
   }, []);
@@ -118,27 +101,6 @@ export const DashboardProvider = ({ children }) => {
     return response.data;
   }, []);
 
-  const getBeneficiariesByWard = useCallback(async () => {
-    const response = await DashboardService.getBeneficiariesByWard();
-    const sorted = response.data.sort((a, b) => a._id - b._id);
-    const chartData = sorted.map((item) => item.count);
-    const chartLabel = sorted.map((item) => item._id);
-
-    setState((prev) => ({
-      ...prev,
-      beneficiariesByWard: {
-        chartLabel,
-        chartData: [
-          {
-            data: chartData,
-            name: 'Beneficiaries',
-          },
-        ],
-      },
-    }));
-    return response.data;
-  }, []);
-
   const getCashTrackerSummary = useCallback(async () => {
     const response = await ReportingService.cashTrackerSummary();
     setState((prev) => ({
@@ -148,51 +110,45 @@ export const DashboardProvider = ({ children }) => {
     return response.data;
   }, []);
 
-  const getWardGenderChart = useCallback(async () => {
-    const response = await ReportingService.countGenderByWard();
-    const chartLabel = response.data.data?.map((d) => `Ward ${d.ward}`);
-    const chartData = [
-      {
-        name: 'Male',
-        data: response.data.data?.map((d) => d.male),
-      },
-      {
-        name: 'Female',
-        data: response.data.data?.map((d) => d.female),
-      },
-      {
-        name: 'Other',
-        data: response.data.data?.map((d) => d.other),
-      },
-      {
-        name: 'Unknown',
-        data: response.data.data?.map((d) => d.unknown),
-      },
-    ];
-
-    setState((prevState) => ({
-      ...prevState,
-      genderWardChart: { chartLabel, chartData },
-    }));
-  }, []);
-
   const getDemographicSummary = useCallback(async () => {
     const response = await DashboardService.getDemographicsBeneficiarySummary();
     const chartLabel = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.label);
-      const data = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
-      const chartData = [{
+    const data = response?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
+    const chartData = [
+      {
         data,
-        name: "No of Beneficaries"
-      }];
+        name: 'No of Beneficaries',
+      },
+    ];
     setState((prev) => ({
       ...prev,
       demographicSummary: response.data.data,
-      beneficiariesVillageChartData:{chartData,chartLabel} 
+      beneficiariesVillageChartData: { chartData, chartLabel },
     }));
     return response.data;
   }, []);
 
+  const getChartData = useCallback(async (params, query) => {
+    try {
+      const response = await DashboardService.getChartData(params, query);
+      setState((prev) => ({
+        ...prev,
+        chartData: response,
+      }));
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
+  const getGeoMapData = useCallback(async () => {
+    const response = await DashboardService.getGeoMapData();
+    setState((prev) => ({
+      ...prev,
+      mapData: response.data.data,
+    }));
+    return response.data;
+  }, []);
 
   const contextValue = {
     ...state,
@@ -201,9 +157,8 @@ export const DashboardProvider = ({ children }) => {
     getGenderDistribution,
     getBankedUnbanked,
     getPhoneOwnership,
-    getBeneficiariesByWard,
+    getChartData,
     getCashTrackerSummary,
-    getWardGenderChart,
     getDemographicSummary,
   };
 

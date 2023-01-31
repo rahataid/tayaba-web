@@ -15,16 +15,16 @@ const MoreInfoCard = () => {
           <Grid item xs={12} md={12} lg={12}>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
               <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                <Typography variant="body1">{singleBeneficiary?.data?.address?.taluka}</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.village_details?.taluka}</Typography>
                 <Typography variant="body2">Taluka</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                <Typography variant="body1">{singleBeneficiary?.data?.address?.village}</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.village_details?.name}</Typography>
                 <Typography variant="body2">Village</Typography>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                <Typography variant="body1">{singleBeneficiary?.govtIdType}</Typography>
-                <Typography variant="body2">Government Id Type</Typography>
+                <Typography variant="body1">{singleBeneficiary?.data?.phoneOwnerRelation}</Typography>
+                <Typography variant="body2">Phone Owner Relation</Typography>
               </Grid>
             </Stack>
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
@@ -49,10 +49,10 @@ const MoreInfoCard = () => {
             <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body1">{singleBeneficiary?.data?.email}</Typography>
+                  <Typography variant="body1">{singleBeneficiary?.data?.bankAccountType}</Typography>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                  <Typography variant="body2">Email</Typography>
+                  <Typography variant="body2">Bank Type</Typography>
                 </Grid>
               </Grid>
               <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">

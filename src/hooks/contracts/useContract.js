@@ -13,13 +13,13 @@ export const useContract = (contractName, options = { isWebsocket: false }) => {
   useEffect(() => {
     if (contracts && abi?.length && contractName) {
       let con = null;
-      if (options?.isWebsocket)
+      if (options?.isWebsocket) {
         con = new Contract(
           options?.contractAddress || contracts[contractName],
           abi,
           new providers.WebSocketProvider(chainWebSocket)
         );
-      else con = new Contract(options?.contractAddress || contracts[contractName], abi, wallet);
+      } else con = new Contract(options?.contractAddress || contracts[contractName], abi, wallet);
       setContract(con);
     }
   }, [abi]);

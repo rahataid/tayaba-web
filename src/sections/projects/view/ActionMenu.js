@@ -4,7 +4,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Iconify from '@components/iconify';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { Stack } from '@mui/material';
 
 ActionMenu.propTypes = {
@@ -26,7 +25,6 @@ export default function ActionMenu({ menuItems, actionTitle }) {
   return (
     <div>
       <Stack sx={{ ml: -10 }} direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
-        {/* {roles.isAgencyOrPalika && <ActivateResponse />} */}
         <Button
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}
@@ -49,9 +47,15 @@ export default function ActionMenu({ menuItems, actionTitle }) {
         }}
       >
         {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={item.onClick}>
-            {item.name}
-          </MenuItem>
+          <>
+            {item?.show ? (
+              <MenuItem key={index} onClick={item.onClick}>
+                {item.name}
+              </MenuItem>
+            ) : (
+              <></>
+            )}
+          </>
         ))}
       </Menu>
     </div>

@@ -71,23 +71,17 @@ export const SPACING = {
 };
 
 export const ROLES = {
-  AGENCY: 'Admin',
-  DONOR: 'Donor',
-  MANAGER: 'Manager',
-  MOBILIZER: 'Mobilizer',
-  PALIKA: 'Palika',
+  ADMIN: 'admin',
+  DONOR: 'donor',
+  MANAGER: 'manager',
 };
 
-// TODO: change accordingly
 export const CONTRACTS = {
-  RAHAT: 'rahat',
-  CASH: 'rahat_cash',
-  DONOR: 'rahat_donor',
-  REGISTRY: 'rahat_registry',
-  WALLET: 'rahat_wallet',
-  ADMIN: 'rahat_admin',
-  TRIGGER: 'rahat_trigger',
-  ERC20: 'rahat_erc20',
+  RAHATTOKEN: 'RahatToken',
+  CVAPROJECT: 'CVAProject',
+  COMMUNITY: 'RahatCommunity',
+  DONOR: 'RahatDonor',
+  CLAIM: 'RahatClaim',
 };
 
 export const NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY = '1';
@@ -101,3 +95,8 @@ export const CHARTDATATYPES = [
   'phoneOwnedBy',
   'simRegisteredUnder',
 ];
+export const TayabaToken = {
+  name: 'H20 Wheels',
+  symbol: 'H2W',
+  decimals: 0,
+};

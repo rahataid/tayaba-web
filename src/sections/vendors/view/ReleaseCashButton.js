@@ -1,22 +1,22 @@
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-
 import { useVendorsContext } from '@contexts/vendors';
-import { useRahat } from '@services/contracts/useRahat';
 import { useSnackbar } from 'notistack';
 import AmountForm from '@sections/projects/cash-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
+import { useProject } from '@services/contracts/useProject';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import LoadingOverlay from '@components/LoadingOverlay';
+import useLoading from '@hooks/useLoading';
 
 ReleaseCashButton.propTypes = {};
 
 export default function ReleaseCashButton() {
   const { enqueueSnackbar } = useSnackbar();
-  const { singleVendor, refreshData, chainData, refresh } = useVendorsContext();
+  const { singleVendor, refreshData, chainData, refresh, updateApprovalStatus } = useVendorsContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { projectBalance, addVendor, transferCashToVendor, rahatChainData, contract } = useRahat();
+  const { sendH2OWheelsToVendor, activateVendor } = useProject();
+  const { roles } = useAuthContext();
+  const { loading, showLoading, hideLoading } = useLoading();
   const Actions = {
     alert(message, type) {
       enqueueSnackbar(message, {
@@ -32,55 +32,66 @@ export default function ReleaseCashButton() {
         },
       });
     },
-    async activateVendor() {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have vendor address', 'error');
-      await addVendor(singleVendor.wallet_address);
+    async handleActivateVendor() {
+      // if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
+      try {
+        showLoading('activateVendor');
+
+        await activateVendor(singleVendor?.walletAddress);
+        await updateApprovalStatus(singleVendor?.walletAddress);
+      } catch (error) {
+        console.log(error);
+      }
+      hideLoading('activateVendor');
       refreshData();
     },
-    async releaseCash(amount) {
-      if (!singleVendor.wallet_address) return Actions.alert('Must have vendor address', 'error');
-      if (amount > rahatChainData?.cashBalance) return Actions.alert('Not enough balance to send', 'error');
-      await transferCashToVendor(singleVendor.wallet_address, amount);
+
+    async releaseH2oToken(amount) {
+      if (!roles.isAdmin) return;
+      if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
+      showLoading('transferToken');
+      try {
+        await sendH2OWheelsToVendor(singleVendor.walletAddress, amount);
+      } catch (err) {
+        console.log(err);
+      }
       refreshData();
+      hideLoading('transferToken');
     },
   };
-
-  const init = useCallback(
-    async (projectId) => {
-      await projectBalance(projectId);
-    },
-    [contract]
-  );
-
-  useEffect(() => {
-    if (!singleVendor?.projects?.length) return;
-    init(singleVendor?.projects[0].id);
-  }, [init, refresh, singleVendor]);
 
   return (
     <div>
       <AmountForm
-        title="Release Cash to Ward"
+        title="Release token to Distributor"
         description={
           <>
-            Please select the amount are handing over to ward for cash camp. Ward representative has to accept the cash
-            before they are allowed for disburse. <br />
+            Please select the amount of H2o token are handing over to Distributor .Distributor Vendors has to accept the
+            cash before they are allowed for disburse. <br />
             <br />
-            Your current cash balance is {rahatChainData?.cashBalance}
+            Your current H20 tokens is {chainData?.projectBalance}
           </>
         }
-        approveCashTransfer={Actions.releaseCash}
+        approveCashTransfer={Actions.releaseH2oToken}
         handleClose={hideDialog}
         open={isDialogShow}
       />
-      {chainData?.isActive ? (
-        <Button variant="outlined" color="success" onClick={showDialog}>
-          Release Cash
-        </Button>
-      ) : (
-        <Button variant="outlined" color="primary" onClick={Actions.activateVendor}>
-          Activate Vendor
-        </Button>
+      {roles.isAdmin && (
+        <>
+          {chainData.isActive ? (
+            <LoadingOverlay open={loading.transferToken}>
+              <Button variant="outlined" color="success" onClick={showDialog}>
+                send H2O token
+              </Button>
+            </LoadingOverlay>
+          ) : (
+            <LoadingOverlay open={loading.activateVendor}>
+              <Button variant="outlined" color="primary" onClick={Actions.handleActivateVendor}>
+                Activate Vendor
+              </Button>
+            </LoadingOverlay>
+          )}
+        </>
       )}
     </div>
   );

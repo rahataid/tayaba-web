@@ -11,11 +11,9 @@ export const VendorService = {
     return clientApi.get(`/vendors/${id}`);
   },
 
-  //   getBeneficiariesByProject(projectId) {
-  //     return clientApi.get(`/projects/${projectId}/vendors`);
-  //   },
-
-  //   getVendorsByProject(projectId) {
-  //     return clientApi.get(`/projects/${projectId}/vendors`);
-  //   },
+  updateVendorApprovalStatus(walletAddress) {
+    return clientApi.put(`/vendors/${walletAddress}/approval`, {
+      isApproved: true,
+    });
+  },
 };

@@ -35,9 +35,9 @@ const initialState = {
   wallet: null,
   startBlockNumber: 0,
   roles: {
-    isTayaba : false,
-    isUser : false,
-    isSRSO : false,
+    isAdmin: false,
+    isManager: false,
+    isDonor: false,
   },
   addToken: () => {},
   deleteToken: () => {},
@@ -68,7 +68,8 @@ function AuthProvider({ children }) {
   const getAppSettings = async () => {
     try {
       const response = await AppService.getAppSettings();
-      return response.data;
+
+      return response.data.data;
     } catch (err) {
       console.error('Unable to Load App Setting from Server', err);
     }
@@ -86,14 +87,14 @@ function AuthProvider({ children }) {
             token: localToken,
             user: localUser,
             keyData: localKey,
-            chainUrl: appSettings?.networkUrl,
-            chainWebSocket: appSettings?.chainWebSocket,
+            chainUrl: appSettings?.BLOCKCHAIN.networkUrl,
+            chainWebSocket: appSettings?.BLOCKCHAIN.chainWebSocket,
             claimToken: {
               ...appSettings?.agency?.token,
               address: appSettings?.agency?.contracts?.rahat_erc20,
               agencyId: appSettings?.agency?.id,
             },
-            contracts: appSettings?.contract_address,
+            contracts: appSettings?.CONTRACT_ADDRESS,
             addresses: appSettings?.addresses,
             startBlockNumber: appSettings?.agency?.startBlockNumber,
             wallet,
@@ -153,12 +154,9 @@ function AuthProvider({ children }) {
 
   const roles = useMemo(
     () => ({
-      isTayaba: authState.user?.roles?.includes(ROLES.TAYABA) || false,
-      isSRSO: authState.user?.roles?.includes(ROLES.SRSO) || false,
-      isUser: authState.user?.roles?.includes(ROLES.USER) || false,
-      isTayaba: function () {
-        return this.isTayaba;
-      },
+      isDonor: authState.user?.roles?.includes(ROLES.DONOR) || false,
+      isAdmin: authState.user?.roles?.includes(ROLES.ADMIN) || false,
+      isManager: authState.user?.roles?.includes(ROLES.MANAGER) || false,
     }),
     [authState.user]
   );

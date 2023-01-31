@@ -61,7 +61,6 @@ export default function AuthLoginForm() {
   const onSubmit = async ({ email }) => {
     try {
       if (isDebug && email.indexOf('@') < 0) {
-        console.info(`https://www.mailinator.com/v4/public/inboxes.jsp?to=${email}`);
         email = `${email}@mailinator.com`;
       }
       const otpSent = await handleOtpRequest(email);
@@ -94,15 +93,15 @@ export default function AuthLoginForm() {
   const onOtpSubmit = async ({ otp }) => {
     try {
       // const isOtpValid = await handleOtpVerification({ otp, encryptionKey: tempIdentity.publicKey });
-      const isOtpValid = await handleOtpVerification({ otp });
+      const isOtpValid = await handleOtpVerification({ otp: otp.trim() });
 
       if (isOtpValid.success) {
-        // saveKey(isOtpValid.key);
+        saveKey(isOtpValid.data.privateKey);
         router.reload();
       }
 
-      // if (isOtpValid.key) {
-      //   const encryptedData = web3Utils.parseFromOtpKey(isOtpValid.key);
+      // if (isOtpValid.data.privateKey) {
+      //   const encryptedData = web3Utils.parseFromOtpKey(isOtpValid.privateKey);
       //   const decrypted = await web3Utils.decryptedKey(tempIdentity.privateKey, encryptedData);
       //   saveKey(decrypted);
       //   router.reload();

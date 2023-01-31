@@ -5,29 +5,24 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useRahatDonor = () => {
   let { contracts } = useAuthContext();
-  const contract = useContract(CONTRACTS.DONOR);
-  const cashContract = useContract(CONTRACTS.CASH);
+  const donorContract = useContract(CONTRACTS.DONOR);
+
+  const rahatTokenContract = useContract(CONTRACTS.RAHATTOKEN);
   const { handleContractError } = useErrorHandler();
 
   return {
-    contract,
-    cashContract,
+    donorContract,
+    rahatTokenContract,
 
-    mintTokenAndApprove: (amount) =>
-      contract
-        ?.mintTokenAndApprove(contracts[CONTRACTS.CASH], contracts[CONTRACTS.ADMIN], amount)
-        .catch(handleContractError),
-    sendCashToAgency: async (amount) => {
+    sendCashToProject: async (amount) => {
       try {
-        let agencyAllowance = await cashContract?.allowance(contracts[CONTRACTS.DONOR], contracts[CONTRACTS.ADMIN]);
-        await contract?.mintToken(contracts[CONTRACTS.CASH], amount);
-        await contract?.approveToken(
-          contracts[CONTRACTS.CASH],
-          contracts[CONTRACTS.ADMIN],
-          parseInt(agencyAllowance.toNumber()) + +amount
+        await donorContract?.mintTokenAndApprove(
+          contracts[CONTRACTS.RAHATTOKEN],
+          contracts[CONTRACTS.CVAPROJECT],
+          amount
         );
-      } catch (e) {
-        handleContractError(e);
+      } catch (error) {
+        handleContractError(error);
       }
     },
   };

@@ -6,10 +6,9 @@ import MoreInfoCard from './MoreInfoCard';
 import { HistoryTable } from '@sections/transactionTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
-import { useRahat } from '@services/contracts/useRahat';
-import { useRahatCash } from '@services/contracts/useRahatCash';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import ActionMenu from './ActionMenu';
+import { useProject } from '@services/contracts/useProject';
 
 BeneficiaryView.propTypes = {};
 
@@ -40,10 +39,8 @@ const TABLE_HEAD = {
 
 export default function BeneficiaryView() {
   const { roles } = useAuthContext();
-  const { getBeneficiaryById, setChainData, chainData, refresh, refreshData } = useBeneficiaryContext();
-  const { beneficiaryBalance, contract, contractWS, getBeneficiaryClaimLogs, claimLogs } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
-
+  const { getBeneficiaryById, setChainData, chainData, refresh, singleBeneficiary } = useBeneficiaryContext();
+  const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
   } = useRouter();
@@ -51,46 +48,47 @@ export default function BeneficiaryView() {
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
-    getBeneficiaryClaimLogs(_benData?.phone);
+    //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
-    const _chainData = await beneficiaryBalance(_benData?.phone);
-    setChainData(_chainData);
-  }, [beneficiaryId, contract, refresh]);
+    // const _chainData = await beneficiaryBalance(_benData?.phone);
+    // setChainData(_chainData);
+  }, [beneficiaryId, refresh]);
+
+  const fetchChainData = useCallback(async () => {
+    if (!communityContract) return;
+    if (!singleBeneficiary) return;
+    try {
+      const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
+      const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
+      setChainData({ isBenActive, balance: balance.toNumber() });
+    } catch (error) {}
+  }, [communityContract, singleBeneficiary]);
+
+  useEffect(() => {
+    fetchChainData();
+  }, [fetchChainData]);
 
   useEffect(() => {
     init();
-    RahatCash?.on('Approval', refreshData);
-    RahatCash?.on('Transfer', refreshData);
-    contractWS?.on('IssuedERC20', refreshData);
-    return () => {
-      contractWS?.removeAllListeners();
-      RahatCash?.removeAllListeners();
-    };
-  }, [init, RahatCash, contractWS]);
+  }, [init]);
 
   return (
     <>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <BasicInfoCard chainData={chainData} />
-          {roles.isTayaba() && (
+          {roles.isManager && (
             <Stack>
               <MoreInfoCard />
             </Stack>
           )}
-          {/* {roles.isTayaba() && (
-            <Stack sx={{ mt: 1 }}>
-              <ProjectsInvolved />
-            </Stack>
-          )} */}
         </Grid>
         <Grid item xs={12} md={4}>
           <TokenDetails />
         </Grid>
-      
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={claimLogs} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={[]} />
       </Stack>
     </>
   );

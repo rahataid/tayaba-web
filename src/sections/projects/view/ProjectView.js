@@ -1,11 +1,9 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { Grid, Stack, Alert, Button } from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
 import InfoCard from './InfoCard';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
-import { useRahat } from '@services/contracts/useRahat';
 import { SPACING } from '@config';
-import { useRahatCash } from '@services/contracts/useRahatCash';
 import ProjectChart from './ProjectCharts';
 import { getFlickrImages } from '@services/flickr';
 import ImageSlider from './ImageSlider';
@@ -13,15 +11,27 @@ import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
 import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
+import { useProject } from '@services/contracts/useProject';
+import { useRahatToken } from '@services/contracts/useRahatToken';
+import LockProject from './LockProject';
 const ProjectView = () => {
-  const { refresh, refreshData, getProjectById, singleProject } = useProjectContext();
-  const { projectBalance, rahatChainData, contract } = useRahat();
-  const { contractWS: RahatCash } = useRahatCash();
+  const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
+  const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
+  const { contractWS: RahatTokenWS } = useRahatToken();
+
   const [flickImages, setFlickImages] = useState([]);
+  const [chainData, setChainData] = useState({});
 
   const {
     query: { projectId },
   } = useRouter();
+
+  const updateChainData = (d) => {
+    setChainData((prevState) => ({
+      ...prevState,
+      ...d,
+    }));
+  };
 
   useEffect(() => {
     const getFlickPics = async () => {
@@ -38,10 +48,28 @@ const ProjectView = () => {
     };
   }, []);
 
+  let getDataFromChain = useCallback(async () => {
+    let tokenAllowance = await getTokenAllowance();
+    let projectBalance = await getProjectBalance();
+    const isLocked = await isProjectLocked();
+    //TODO :trigger Inventory tracker data;
+    updateChainData({ tokenAllowance, projectBalance, isLocked });
+  }, [h2oToken, refresh]);
+
+  useEffect(() => {
+    getDataFromChain();
+  }, [getDataFromChain]);
+
   useEffect(() => {
     if (!projectId) return;
     getProjectById(projectId);
   }, [projectId, alert.show]);
+
+  useEffect(() => {
+    RahatTokenWS?.on('Approval', getDataFromChain);
+    RahatTokenWS?.on('Transfer', getDataFromChain);
+    return () => RahatTokenWS?.removeAllListeners();
+  }, [RahatTokenWS]);
 
   return (
     <>
@@ -50,24 +78,23 @@ const ProjectView = () => {
           <Grid container spacing={SPACING.GRID_SPACING}>
             <Grid item xs={12} md={12}>
               <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
-              <InfoCard rahatChainData={rahatChainData} />
+              <InfoCard chainData={chainData} />
               <SummaryTracker />
+              <ProjectChart projectId={projectId} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <Grid container spacing={3}>
-            <TitleCard rahatChainData={rahatChainData} />
-            <CashActionsAlert projectId={projectId} />
+            <TitleCard refreshData={getDataFromChain} />
+
+            <LockProject chainData={chainData} refreshData={refreshData} />
+
+            <CashActionsAlert projectId={projectId} chainData={chainData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail />
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid container>
-        <Grid item xs={12} md={9}>
-          <ProjectChart projectId={projectId} />
         </Grid>
       </Grid>
     </>

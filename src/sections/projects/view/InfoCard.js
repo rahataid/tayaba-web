@@ -1,55 +1,88 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { Grid, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import SummaryCard from '@components/SummaryCard';
-import { useTheme } from '@mui/system';
+import useDialog from '@hooks/useDialog';
+import AmountForm from '../cash-tracker/AmountForm';
+import { useRahatDonor } from '@services/contracts/useRahatDonor';
+import useLoading from '@hooks/useLoading';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
-InfoCard.propTypes = {
-  rahatChainData: PropTypes.object,
-};
-
-export default function InfoCard({ rahatChainData }) {
+export default function InfoCard({ chainData }) {
+  const { isDialogShow, showDialog, hideDialog } = useDialog();
+  const { sendCashToProject } = useRahatDonor();
   const { beneficiaryCount } = useProjectContext();
+  const { roles } = useAuthContext();
+
   const sx = { borderRadius: 2 };
+
+  const { loading, showLoading, hideLoading } = useLoading();
+
+  const handleAddBudgetModel = () => {
+    showDialog();
+  };
+
+  const CashActions = {
+    async sendCashToProject(amount) {
+      if (!roles.isDonor) return;
+      showLoading('cashTransfer');
+      await sendCashToProject(amount);
+      hideLoading('cashTransfer');
+    },
+  };
+
   return (
-    <Grid container alignItems="flex-start" justifyContent="center" paddingTop={3}>
-      <Grid item xs={12} md={4} style={{ padding: '8px' }}>
-        <SummaryCard
-          color="warning"
-          icon="material-symbols:person-4"
-          title="Beneficiaries"
-          total={beneficiaryCount}
-          subtitle={'households'}
-          sx={sx}
-        />
+    <>
+      <AmountForm
+        title="Add Budget in Project"
+        description={<>Please enter the budget you wish to add to project</>}
+        approveCashTransfer={CashActions.sendCashToProject}
+        handleClose={hideDialog}
+        open={isDialogShow}
+      />
+      <Grid container alignItems="flex-start" justifyContent="center" paddingTop={3}>
+        <Grid item xs={12} md={4} style={{ padding: '8px' }}>
+          <SummaryCard
+            color="warning"
+            icon="material-symbols:person-4"
+            title="Beneficiaries"
+            total={beneficiaryCount}
+            subtitle={'households'}
+            sx={sx}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={4} style={{ padding: '8px' }}>
+          <SummaryCard
+            color="success"
+            icon="material-symbols:token"
+            title="Budget"
+            total={
+              chainData.projectBalance <= 0 ? (
+                roles.isDonor ? (
+                  <Button onClick={handleAddBudgetModel}> Add Budget</Button>
+                ) : (
+                  chainData.projectBalance
+                )
+              ) : (
+                chainData.projectBalance
+              )
+            }
+            subtitle="H20 Wheels"
+            sx={sx}
+          />
+        </Grid>
+        <Grid item xs={12} md={4} style={{ padding: '8px' }}>
+          <SummaryCard
+            color="error"
+            icon="ph:currency-circle-dollar-light"
+            title="Distributed"
+            total="0"
+            subtitle={'H20 Wheels'}
+            sx={sx}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={4} style={{ padding: '8px' }}>
-        <SummaryCard
-          color="success"
-          icon="material-symbols:token"
-          title="Token Issued"
-          total={
-            rahatChainData?.cashBalance || rahatChainData?.cashBalance >= 0 ? (
-              beneficiaryCount
-            ) : (
-              <Button> Add Budget</Button>
-            )
-          }
-          subtitle={rahatChainData?.cashBalance || rahatChainData?.cashBalance >= 0 ? 'tokens' : '  '}
-          sx={sx}
-        />
-      </Grid>
-      <Grid item xs={12} md={4} style={{ padding: '8px' }}>
-        <SummaryCard
-          color="error"
-          icon="ph:currency-circle-dollar-light"
-          title="Token Redemed"
-          total="0"
-          subtitle={'tokens'}
-          sx={sx}
-        />
-      </Grid>
-    </Grid>
+    </>
   );
 }

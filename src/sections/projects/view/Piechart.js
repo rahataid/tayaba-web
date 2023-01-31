@@ -9,7 +9,7 @@ import Chart, { useChart } from '@components/chart';
 
 // ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 400;
+const CHART_HEIGHT = 300;
 
 const LEGEND_HEIGHT = 72;
 
@@ -65,6 +65,11 @@ export default function Piechart({ title, subheader, chart, ...other }) {
         },
       },
     },
+    events: {
+      mounted: (chart) => {
+        chart.windowResizeHandler();
+      },
+    },
     plotOptions: {
       pie: {
         donut: {
@@ -93,7 +98,7 @@ export default function Piechart({ title, subheader, chart, ...other }) {
       <CardHeader title={title} subheader={subheader} />
 
       <StyledChart dir="ltr">
-        <Chart type="pie" series={chartSeries} options={chartOptions} height={280} />
+        <Chart type="pie" series={chartSeries} options={chartOptions} height={240} />
       </StyledChart>
     </Card>
   );
