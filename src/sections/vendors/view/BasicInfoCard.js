@@ -17,7 +17,7 @@ export default function BasicInfoCard({ chainData }) {
     <Card>
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-          <Typography variant="h4">
+          <Typography variant="h6">
             {roles.isDonor ? singleVendor?.name : singleVendor?.name?.substring(0, 1) + 'xxxxxxx Xxxxx'}
           </Typography>
           {
@@ -48,17 +48,17 @@ export default function BasicInfoCard({ chainData }) {
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            <Typography variant="body1" sx={{ fontWeight: 600 }}>
               {singleVendor?.phone}
             </Typography>
             <Typography variant="body2">Phone</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h4">{singleVendor?.gender}</Typography>
+            <Typography variant="body1">{singleVendor?.gender}</Typography>
             <Typography variant="body2">Gender</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            <Typography variant="body1" sx={{ fontWeight: 600 }}>
               <WalletExplorerButton address={singleVendor?.walletAddress} type="address" />
 
               {/* </WalletExplorerButton> */}

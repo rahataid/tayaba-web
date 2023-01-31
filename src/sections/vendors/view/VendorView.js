@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Grid, Stack } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
@@ -33,7 +32,14 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 
 export default function VendorView() {
   const { getVendorById, setChainData, chainData, refresh } = useVendorsContext();
-  const { getVendorAllowance, checkActiveVendor, communityContract, pendingWheelsToAccept } = useProject();
+  const {
+    getVendorAllowance,
+    checkActiveVendor,
+    communityContract,
+    pendingWheelsToAccept,
+    getProjectBalance,
+    h2oToken,
+  } = useProject();
   const {
     query: { vendorId },
   } = useRouter();
@@ -43,10 +49,18 @@ export default function VendorView() {
     const _vendorData = await getVendorById(vendorId);
     if (!_vendorData?.walletAddress) return;
     if (!communityContract) return;
+    let token;
     const allowance = await getVendorAllowance(_vendorData?.walletAddress);
     const isActive = await checkActiveVendor(_vendorData?.walletAddress);
     const cashAllowance = await pendingWheelsToAccept(_vendorData?.walletAddress);
-    setChainData({ allowance: allowance.toNumber(), isActive, cashAllowance: cashAllowance.toNumber() });
+    if (h2oToken) token = await getProjectBalance();
+
+    setChainData({
+      allowance: allowance.toNumber(),
+      isActive,
+      cashAllowance: cashAllowance.toNumber(),
+      projectBalance: token ? token : null,
+    });
   }, [vendorId, refresh, communityContract]);
 
   useEffect(() => {

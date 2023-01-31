@@ -65,7 +65,7 @@ const navConfig = [
         icon: ICONS.beneficiary,
       },
       {
-        title: 'Village',
+        title: 'Distributors',
         path: PATH_VENDORS.root,
         icon: ICONS.vendors,
       },
