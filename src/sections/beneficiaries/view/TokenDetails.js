@@ -37,6 +37,7 @@ export default function TokenDetails({ chainData }) {
         txType: 'wallet',
       };
       await TransactionService.addTransactionData(txn);
+      refreshData();
     } catch (error) {
       console.log(error);
     }
