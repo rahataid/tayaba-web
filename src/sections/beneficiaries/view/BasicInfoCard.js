@@ -33,9 +33,15 @@ export default function BasicInfoCard({ chainData }) {
           </Typography>
           <div>
             {chainData?.isBenActive ? (
-              <Chip label="Active" variant="outlined" color="success" />
+              <Chip label="Active" variant="outlined" color="success" disabled={roles?.isDonor ? true : false} />
             ) : (
-              <Chip label="Inactive" onClick={handleActivate} variant="outlined" color="error" />
+              <Chip
+                label="Inactive"
+                onClick={handleActivate}
+                variant="outlined"
+                color="error"
+                disabled={roles?.isDonor ? true : false}
+              />
             )}
           </div>
         </Stack>

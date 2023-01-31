@@ -12,15 +12,15 @@ const TableContainer = () => {
   const router = useRouter();
   const { roles } = useAuthContext();
 
-  const { getBeneficiariesList, beneficiaries, errorMessage, getAllWards, setPagination, pagination } =
+  const { getBeneficiariesList, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
   useEffect(() => {
     getBeneficiariesList();
   }, [getBeneficiariesList]);
 
   useEffect(() => {
-    getAllWards();
-  }, [getAllWards]);
+    getAllVillages();
+  }, [getAllVillages]);
 
   const handleView = (id) => () => {
     router.push(`/beneficiaries/${id}`);

@@ -15,11 +15,11 @@ export const BeneficiaryService = {
     return clientApi.get('/beneficiaries/wards');
   },
 
-  getBeneficiariesByWard(ward) {
-    return clientApi.get(`/beneficiaries/getBeneficiaryByWard`, {
-      params: {
-        ward,
-      },
-    });
+  getAllVillages() {
+    return clientApi.get(`/beneficiaries/get-villages`);
+  },
+
+  getTransactionById(id) {
+    return clientApi.get(`/beneficiaries/transaction/${id}`);
   },
 };

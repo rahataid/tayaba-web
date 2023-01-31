@@ -10,6 +10,7 @@ import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { TransactionService } from '@services';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
 
 TokenDetails.propTypes = {};
 export default function TokenDetails() {
@@ -40,6 +41,15 @@ export default function TokenDetails() {
     hideLoading('assignClaim');
     hideDialog();
   };
+
+  // const fetchBalance = async () => {
+  //   const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
+  //   console.log('balance', balance);
+  // };
+
+  // useEffect(() => {
+  //   fetchBalance();
+  // }, []);
 
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
@@ -112,14 +122,17 @@ export default function TokenDetails() {
           alignItems="center"
           spacing={SPACING.GRID_SPACING}
         >
-          <Typography variant="subtitle2"> wallet </Typography>
+          <Typography variant="subtitle2"> Wallet </Typography>
 
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <a href={`https://explorer.rumsan.com/address/${singleBeneficiary?.data?.walletAddress}`}>
-              <Typography sx={{ overflow: 'elipsis' }} variant="body2">
-                {singleBeneficiary?.data?.walletAddress}
-              </Typography>
-            </a>
+            <Typography variant="body1" sx={{ fontWeight: 600 }}>
+              <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" />
+            </Typography>
+          </Grid>
+
+          <Grid container direction="column" justifyContent="center" alignItems="center">
+            <Typography variant="h4">{}</Typography>
+            <Typography variant="body2"></Typography>
           </Grid>
         </Stack>
       </CardContent>

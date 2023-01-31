@@ -38,7 +38,7 @@ const TABLE_HEAD = {
 
   txType: {
     id: 'txType',
-    label: 'txType',
+    label: 'TxType',
     align: 'left',
   },
 

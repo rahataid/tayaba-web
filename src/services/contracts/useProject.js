@@ -63,7 +63,7 @@ export const useProject = () => {
 
     assignClaimsToBeneficiaries: (walletAddress, amount) => contract?.assignClaims(walletAddress, amount?.toString()),
 
-    beneficiaryBalance: (walletAddress) => contract?.beneficiaryClaims(walletAddress),
+    beneficiaryBalance: async (walletAddress) => (await contract?.beneficiaryClaims(walletAddress))?.toNumber(),
 
     beneficiaryCounts: () => contract?.beneficiaryCount(),
   };

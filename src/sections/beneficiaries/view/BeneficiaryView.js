@@ -24,9 +24,9 @@ const TABLE_HEAD = {
     label: 'Transaction Hash',
     align: 'left',
   },
-  vendor: {
-    id: 'vendor',
-    label: 'Vendor',
+  event: {
+    id: 'event',
+    label: 'Type',
     align: 'left',
   },
   amount: {
@@ -34,12 +34,23 @@ const TABLE_HEAD = {
     label: 'Amount',
     align: 'left',
   },
+  txType: {
+    id: 'txType',
+    label: 'txType',
+    align: 'left',
+  },
+  mode: {
+    id: 'mode',
+    label: 'Mode',
+    align: 'left',
+  },
 };
 // #endregion
 
 export default function BeneficiaryView() {
   const { roles } = useAuthContext();
-  const { getBeneficiaryById, setChainData, chainData, refresh, singleBeneficiary } = useBeneficiaryContext();
+  const { getBeneficiaryById, setChainData, chainData, refresh, singleBeneficiary, getTransactionById, transaction } =
+    useBeneficiaryContext();
   const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
@@ -48,6 +59,7 @@ export default function BeneficiaryView() {
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
+    await getTransactionById(beneficiaryId);
     //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
     // const _chainData = await beneficiaryBalance(_benData?.phone);
@@ -63,6 +75,16 @@ export default function BeneficiaryView() {
       setChainData({ isBenActive, balance: balance.toNumber() });
     } catch (error) {}
   }, [communityContract, singleBeneficiary]);
+
+  const list = transaction?.data?.beneficiary_transaction_data.map((item) => ({
+    ...item,
+    timestamp: item?.timestamp,
+    txHash: item?.txHash,
+    event: 'Beneficiary Claim',
+    amount: item?.amount,
+    txType: item?.txType,
+    mode: item.isOffline ? 'Offline' : 'Online',
+  }));
 
   useEffect(() => {
     fetchChainData();
@@ -88,7 +110,7 @@ export default function BeneficiaryView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={[]} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={list} />
       </Stack>
     </>
   );
