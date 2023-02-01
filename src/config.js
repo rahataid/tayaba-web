@@ -100,3 +100,5 @@ export const TayabaToken = {
   symbol: 'H2W',
   decimals: 0,
 };
+
+export const NETWORK_GAS_LIMIT = 8000000;
