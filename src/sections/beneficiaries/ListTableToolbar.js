@@ -9,6 +9,39 @@ import { useBeneficiaryContext } from '@contexts/beneficiaries.js';
 
 ListTableToolbar.propTypes = {};
 
+const statusOptions = [
+  {
+    label: 'Activated',
+    value: 'true',
+  },
+  {
+    label: 'Not Activated',
+    value: 'false',
+  },
+];
+
+const tokenAssignOptions = [
+  {
+    label: 'Assigned',
+    value: '1',
+  },
+  {
+    label: 'Not Assigned',
+    value: '0',
+  },
+];
+
+const tokenClaimOptions = [
+  {
+    label: 'Claimed',
+    value: '1',
+  },
+  {
+    label: 'Not Claimed',
+    value: '0',
+  },
+];
+
 export default function ListTableToolbar() {
   const { filter, setFilter, village } = useBeneficiaryContext();
 
@@ -56,6 +89,27 @@ export default function ListTableToolbar() {
           options={village}
           onSelectChange={onSearch}
           value={filter?.village || ''}
+        />
+        <ListSelectFilter
+          label={'Status'}
+          name={'isActivated'}
+          options={statusOptions}
+          onSelectChange={onSearch}
+          value={filter?.isActivated || ''}
+        />
+        <ListSelectFilter
+          label={'Token Assigned Status'}
+          name={'tokensAssigned'}
+          options={tokenAssignOptions}
+          onSelectChange={onSearch}
+          value={filter?.tokensAssigned || ''}
+        />
+        <ListSelectFilter
+          label={'Token Claimed Status'}
+          name={'tokensClaimed'}
+          options={tokenClaimOptions}
+          onSelectChange={onSearch}
+          value={filter?.tokensClaimed || ''}
         />
         <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
         <ListSearchField label={'Enter Name'} value={filter?.name || ''} onChange={onSearch} name={'name'} />
