@@ -23,22 +23,22 @@ const statusOptions = [
 const tokenAssignOptions = [
   {
     label: 'Assigned',
-    value: '1',
+    value: 'true',
   },
   {
     label: 'Not Assigned',
-    value: '0',
+    value: 'false',
   },
 ];
 
 const tokenClaimOptions = [
   {
     label: 'Claimed',
-    value: '1',
+    value: 'true',
   },
   {
     label: 'Not Claimed',
-    value: '0',
+    value: 'false',
   },
 ];
 

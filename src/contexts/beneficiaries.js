@@ -51,12 +51,9 @@ export const BeneficiaryProvider = ({ children }) => {
       limit: state.pagination?.limit,
       start: state.pagination?.start,
       village: state.filter?.village,
-      isActivated:
-        state.filter?.isActivated !== undefined ? (state.filter?.isActivated === 'true' ? true : false) : undefined,
-      tokensAssigned:
-        state.filter?.tokensAssigned !== undefined ? (state.filter?.tokensAssigned === '1' ? 1 : 0) : undefined,
-      tokensClaimed:
-        state.filter?.tokensClaimed !== undefined ? (state.filter?.tokensClaimed === '1' ? 1 : 0) : undefined,
+      isActivated: state.filter?.isActivated === 'true' ? true : false,
+      tokensAssigned: state.filter?.tokensAssigned === 'true' ? true : false,
+      tokensClaimed: state.filter?.tokensClaimed === 'true' ? true : false,
       // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
     };
 
