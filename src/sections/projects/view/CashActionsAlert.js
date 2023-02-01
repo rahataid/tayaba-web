@@ -42,7 +42,7 @@ export default function CashActionsAlert({ projectId, chainData }) {
     if (chainData.tokenAllowance > 0) {
       setAlert({
         type: 'success',
-        message: `Confirm recepit of ${chainData.tokenAllowance} H2O wheels`,
+        message: `Confirm receival of ${chainData.tokenAllowance} H2O wheels`,
         action: <Button onClick={CashActions.acceptCash}>Accept</Button>,
       });
       setShowAlert(chainData.tokenAllowance > 0);

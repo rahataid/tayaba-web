@@ -23,7 +23,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
             {singleProject?.data?.vendor_details.length}
           </Typography>
-          <Typography variant="body2">NO.Of Vendors</Typography>
+          <Typography variant="body2">No. Of Vendors</Typography>
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
