@@ -1,22 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Alert,
-  Card,
-  CardContent,
-  Grid,
-  Stack,
-  Typography,
-
-} from '@mui/material';
-import ReleaseCashButton from './ReleaseCashButton';
+import { Alert, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import SendToken from './SendToken';
 
 TokenDetails.propTypes = {
   chainData: PropTypes.object,
 };
 
 export default function TokenDetails({ chainData }) {
-
   return (
     <Card sx={{ width: '100%', mb: 1 }}>
       <CardContent>
@@ -25,7 +16,7 @@ export default function TokenDetails({ chainData }) {
             <Typography variant="body1">H20 Wheels Details</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <ReleaseCashButton />
+            <SendToken />
           </Grid>
         </Stack>
 

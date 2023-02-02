@@ -8,9 +8,9 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
 
-ReleaseCashButton.propTypes = {};
+SendToken.propTypes = {};
 
-export default function ReleaseCashButton() {
+export default function SendToken() {
   const { enqueueSnackbar } = useSnackbar();
   const { singleVendor, refreshData, chainData, refresh, updateApprovalStatus } = useVendorsContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
@@ -66,8 +66,8 @@ export default function ReleaseCashButton() {
         title="Release token to Distributor"
         description={
           <>
-            Please select the amount of H2o token are handing over to Distributor .Distributor Vendors has to accept the
-            cash before they are allowed for disburse. <br />
+            Please select the amount of H2O token you are handing over to the distributor. Distributor/Vendors have to
+            accept the cash before the tokens are disbursed. <br />
             <br />
             Your current H20 tokens is {chainData?.projectBalance}
           </>
