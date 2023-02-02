@@ -16,7 +16,7 @@ const TableContainer = () => {
     useBeneficiaryContext();
   useEffect(() => {
     getBeneficiariesList();
-  }, [getBeneficiariesList]);
+  }, [getBeneficiariesList, filter]);
 
   useEffect(() => {
     getAllVillages();

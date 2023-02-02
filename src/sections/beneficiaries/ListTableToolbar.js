@@ -1,5 +1,5 @@
 // import PropTypes from 'prop-types';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Button } from '@mui/material';
 // components
 import ListSearchField from './ListSearchField.js';
 import ListSelectFilter from './SelectFilter';
@@ -112,7 +112,6 @@ export default function ListTableToolbar() {
           value={filter?.tokensClaimed || ''}
         />
         <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
-        <ListSearchField label={'Enter Name'} value={filter?.name || ''} onChange={onSearch} name={'name'} />
       </Stack>
     </>
   );
