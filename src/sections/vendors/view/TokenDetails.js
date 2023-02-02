@@ -12,12 +12,8 @@ export default function TokenDetails({ chainData }) {
     <Card sx={{ width: '100%', mb: 1 }}>
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">H20 Wheels Details</Typography>
-          </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <SendToken />
-          </Grid>
+          <Typography variant="h6">H20 Wheels Details</Typography>
+          <SendToken />
         </Stack>
 
         {chainData?.cashAllowance > 0 && (
