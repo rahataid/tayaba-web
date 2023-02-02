@@ -32,6 +32,8 @@ export const useProject = () => {
 
     getVendorBalance: async (walletAddress) => (await h2oToken?.balanceOf(walletAddress))?.toNumber(),
 
+    getVendorAllowance: async (vendorAddress) => (await contract?.vendorAllowance(vendorAddress))?.toNumber(),
+
     // should transfer allowances to vendor
     // transferAllowanceToVendor
 

@@ -28,7 +28,7 @@ export default function TokenDetails({ chainData }) {
         )}
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="body1">{chainData?.projectBalance}</Typography>
+            <Typography variant="body1">{chainData?.allowance}</Typography>
             <Typography variant="body2">Balance</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="flex-start">
