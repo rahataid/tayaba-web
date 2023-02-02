@@ -7,12 +7,14 @@ import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 
 SendToken.propTypes = {};
 
 export default function SendToken() {
   const { enqueueSnackbar } = useSnackbar();
   const { singleVendor, refreshData, chainData, refresh, updateApprovalStatus } = useVendorsContext();
+  const { handleContractError } = useErrorHandler();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { sendH2OWheelsToVendor, activateVendor } = useProject();
   const { roles } = useAuthContext();
@@ -40,7 +42,7 @@ export default function SendToken() {
         await activateVendor(singleVendor?.walletAddress);
         await updateApprovalStatus(singleVendor?.walletAddress);
       } catch (error) {
-        console.log(error);
+        handleContractError(error);
       }
       hideLoading('activateVendor');
       refreshData();
