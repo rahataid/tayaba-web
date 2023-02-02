@@ -50,11 +50,6 @@ export const BeneficiaryProvider = ({ children }) => {
     let filterObj = {
       limit: state.pagination?.limit,
       start: state.pagination?.start,
-      village: state.filter?.village,
-      isActivated: state.filter?.isActivated === 'true' ? true : false,
-      tokensAssigned: state.filter?.tokensAssigned === 'true' ? true : false,
-      tokensClaimed: state.filter?.tokensClaimed === 'true' ? true : false,
-      // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
     };
 
     for (const key in state.filter) {
