@@ -24,5 +24,5 @@ export const useContract = (contractName, options = { isWebsocket: false }) => {
     }
   }, [abi]);
 
-  return contract;
+  return [contract, abi];
 };

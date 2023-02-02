@@ -5,7 +5,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useRahatDonor = () => {
   let { contracts } = useAuthContext();
-  const donorContract = useContract(CONTRACTS.DONOR);
+  const [donorContract] = useContract(CONTRACTS.DONOR);
 
   const rahatTokenContract = useContract(CONTRACTS.RAHATTOKEN);
   const { handleContractError } = useErrorHandler();
