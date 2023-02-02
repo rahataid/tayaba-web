@@ -48,7 +48,7 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  getTransactionsCountByWard: () => {},
+  getTransactionsClaimByVillage: () => {},
 
   getWardGenderChart: (ward) => {},
   getWardDailyWageChart: (ward) => {},
@@ -61,10 +61,11 @@ const Context = createContext(initialState);
 export const ContextProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
 
-  const getTransactionsCountByWard = useCallback(async () => {
-    const response = await ReportingService.getTransactionsClaimCountByWard();
-
-    const chartLabel = response.data.data.map((d) => `Ward ${d.ward}`);
+  const getTransactionsClaimByVillage = useCallback(async () => {
+    console.log('response');
+    const response = await ReportingService.getTransactionsClaimCountByVillage();
+    console.log(response);
+    const chartLabel = response.data.data.map((d) => d.name);
 
     const chartData = [
       {
@@ -73,7 +74,7 @@ export const ContextProvider = ({ children }) => {
       },
       {
         name: 'Not Claimed',
-        data: response.data.data.map((d) => d.notClaimed),
+        data: response.data.data.map((d) => d.assigned),
       },
     ];
 
@@ -120,7 +121,7 @@ export const ContextProvider = ({ children }) => {
   const contextValues = {
     ...state,
     getWardGenderChart,
-    getTransactionsCountByWard,
+    getTransactionsClaimByVillage,
     getWardDailyWageChart,
     getWardLandOwnershipChart,
     getWardDisabilityChart,

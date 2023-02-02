@@ -1,7 +1,6 @@
 import { VendorService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { ethers } from 'ethers';
 import { useWallet } from '@hooks/useWallet';
 

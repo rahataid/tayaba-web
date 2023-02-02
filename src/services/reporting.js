@@ -9,16 +9,18 @@ export const getTransactionsCountByMethod = () => client.get('/reporting/transac
 
 export const getTransactionsCountByMode = () => client.get('/reporting/transactions/count-by-mode');
 
-export const getTransactionsClaimCountByWard = () => client.get('/reporting/beneficiary/claim-distribution-by-ward');
+export const getTransactionsClaimCountByVillage = () =>
+  client.get('/reports/beneficiaries/claim-distribution-by-village');
 
 export const countGenderByWard = () => client.get('/reporting/real-time/beneficiary/count-gender-ward');
 
 export const getBeneficiariesCounts = () => client.get('/reporting/real-time/beneficiary/counts');
 
-export const groupGenderByWard = (ward) =>
-  client.get('/reporting/real-time/beneficiary/group-ward-gender', {
+export const groupTypeByVillage = (villageId, type) =>
+  client.get('reports/beneficiaries/claim-distribution-by-type', {
     params: {
-      ward,
+      villageId,
+      type,
     },
   });
 

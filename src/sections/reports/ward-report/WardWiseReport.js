@@ -10,12 +10,12 @@ import WardDisabilityInfoCard from './WardDisabilityInfoCard';
 function WardWiseReport() {
   const theme = useTheme();
 
-  const { getTransactionsCountByWard, wardChartData } = useModuleContext();
+  const { getTransactionsClaimByVillage, wardChartData } = useModuleContext();
   const [selectedWard, setSelectedWard] = useState('');
 
   useEffect(() => {
-    getTransactionsCountByWard();
-  }, [getTransactionsCountByWard]);
+    getTransactionsClaimByVillage();
+  }, [getTransactionsClaimByVillage]);
 
   return (
     <Grid container spacing={3}>
