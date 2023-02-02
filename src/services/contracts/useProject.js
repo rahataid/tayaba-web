@@ -30,6 +30,8 @@ export const useProject = () => {
 
     getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),
 
+    getVendorBalance: async (walletAddress) => (await h2oToken?.balanceOf(walletAddress))?.toNumber(),
+
     // should transfer allowances to vendor
     // transferAllowanceToVendor
 
