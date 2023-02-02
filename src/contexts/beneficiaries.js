@@ -83,7 +83,13 @@ export const BeneficiaryProvider = ({ children }) => {
       // },
     }));
     return formatted;
-  }, [state.filter, state.pagination, state.village]);
+  }, [
+    state.filter,
+    state.pagination,
+    state?.filter?.village,
+    state?.filter?.isActivated,
+    state?.filter?.tokensClaimed,
+  ]);
 
   const setChainData = useCallback((chainData) => {
     setState((prev) => ({

@@ -12,7 +12,7 @@ const TableContainer = () => {
   const router = useRouter();
   const { roles } = useAuthContext();
 
-  const { getBeneficiariesList, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
+  const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
   useEffect(() => {
     getBeneficiariesList();
