@@ -1,4 +1,4 @@
-import { Box, Button, Pagination, TableCell, TableRow } from '@mui/material';
+import { Box, Button, Pagination, TablePagination, TableCell, TableRow } from '@mui/material';
 import React, { useEffect } from 'react';
 import ListTableToolbar from './ListTableToolbar';
 import { useRouter } from 'next/router';
@@ -13,6 +13,7 @@ const TableContainer = () => {
   const { roles } = useAuthContext();
 
   const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
+
     useBeneficiaryContext();
   useEffect(() => {
     getBeneficiariesList();
@@ -69,6 +70,9 @@ const TableContainer = () => {
     },
   };
   // #endregion
+  const handleRowChange = (e, limit) => {
+    setPagination({ limit: e.target.value, start: 0, page: 0 });
+  };
 
   return (
     <Box>
@@ -99,12 +103,15 @@ const TableContainer = () => {
           ))
         }
       </ListTable>
-      <Pagination
-        count={beneficiaries?.totalPage}
-        page={pagination.page}
-        onChange={(e, page) => {
-          setPagination({ start: (page - 1) * pagination.limit, limit: pagination.limit, page: page });
+      <TablePagination
+        count={beneficiaries?.count}
+        component="div"
+        page={pagination?.page}
+        rowsPerPage={pagination?.limit}
+        onPageChange={(e, page) => {
+          setPagination({ start: page * pagination.limit, limit: pagination.limit, page: page });
         }}
+        onRowsPerPageChange={handleRowChange}
       />
     </Box>
   );

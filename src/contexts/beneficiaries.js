@@ -13,7 +13,7 @@ const initialState = {
   pagination: {
     start: 0,
     limit: 50,
-    page: 1,
+    page: 0,
   },
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
@@ -75,12 +75,6 @@ export const BeneficiaryProvider = ({ children }) => {
         limit: response.data?.data.limit,
         totalPage: response.data?.data.totalPage,
       },
-      // pagination: {
-      //   ...prevState.pagination,
-      //   total: response.data.total,
-      //   start: response.data.start,
-      //   limit: response.data.limit,
-      // },
     }));
     return formatted;
   }, [
