@@ -13,9 +13,10 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
   return (
     <>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+        {rahatChainData?.isLocked && <Chip label=" Locked" variant="outlined" color="error" />}
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {'srso'}
+            {'Srso'}
           </Typography>
           <Typography variant="body2">Project Manager</Typography>
         </Grid>
@@ -42,7 +43,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-        <Typography variant="body1">{singleProject?.data?.description}</Typography>
+        <Typography variant="body1"> {singleProject?.data?.description}</Typography>
       </Stack>
     </>
   );
