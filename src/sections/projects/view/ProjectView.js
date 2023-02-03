@@ -9,11 +9,12 @@ import { getFlickrImages } from '@services/flickr';
 import ImageSlider from './ImageSlider';
 import ProjectDetail from './ProjectDetail';
 import TitleCard from './TitleCard';
-import SummaryTracker from '../cash-tracker/tracker/SummaryTracker';
+import SummaryTracker from './SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
 import LockProject from './LockProject';
+
 const ProjectView = () => {
   const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
@@ -87,10 +88,12 @@ const ProjectView = () => {
         <Grid item xs={12} md={4}>
           <Grid container spacing={3}>
             <TitleCard refreshData={getDataFromChain} />
+
+            <LockProject chainData={chainData} refreshData={refreshData} />
+
             <CashActionsAlert projectId={projectId} chainData={chainData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail />
-              <LockProject chainData={chainData} refreshData={refreshData} />
             </Grid>
           </Grid>
         </Grid>

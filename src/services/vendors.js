@@ -16,4 +16,5 @@ export const VendorService = {
       isApproved: true,
     });
   },
+
 };

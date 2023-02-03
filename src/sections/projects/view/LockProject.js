@@ -53,7 +53,7 @@ export default function LockProject({ chainData, refreshData }) {
     hideLoading('projectAction');
   };
   return (
-    <React.Fragment>
+    <Grid item xs={12} md={12}>
       <Dialog open={isDialogShow} onClose={hideDialog}>
         <LoadingOverlay open={loading.projectAction}>
           <DialogTitle>{modalData.title}</DialogTitle>
@@ -74,10 +74,10 @@ export default function LockProject({ chainData, refreshData }) {
               {chainData?.isLocked ? (
                 <>
                   <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                    <Chip label="Project Is Locked" variant="outlined" color="success" />
+                    <Chip label="Project Is Locked" variant="outlined" color="error" />
                   </Grid>
                   <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                    <Button type="outlined" onClick={handleUnlockModal}>
+                    <Button variant="outlined" onClick={handleUnlockModal}>
                       Unlock
                     </Button>
                   </Grid>
@@ -85,10 +85,10 @@ export default function LockProject({ chainData, refreshData }) {
               ) : (
                 <>
                   <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                    <Chip label="Project Is Unlocked" variant="outlined" color="error" />
+                    <Chip label="Project Is Unlocked" variant="outlined" color="success" />
                   </Grid>
                   <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-                    <Button type="outlined" onClick={handleLockModal}>
+                    <Button variant="outlined" onClick={handleLockModal}>
                       Lock
                     </Button>
                   </Grid>
@@ -100,6 +100,6 @@ export default function LockProject({ chainData, refreshData }) {
           )}
         </Stack>
       )}
-    </React.Fragment>
+    </Grid>
   );
 }

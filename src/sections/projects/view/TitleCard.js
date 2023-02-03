@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Grid, Stack, Typography, Button, Alert } from '@mui/material';
 import ActionMenu from './ActionMenu';
-import TransferTokenDialog from '../cash-tracker/TransferTokenDialog';
 import CreateTokenDialog from '../cash-tracker/CreateTokenDialog';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import { useRouter } from 'next/router';

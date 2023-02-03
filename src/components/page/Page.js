@@ -9,15 +9,20 @@ import Container from './Container';
 // ----------------------------------------------------------------------
 
 const Page = forwardRef(
-  ({ children, title = '', meta, breadcrumbAction, breadcrumbLinks = [], nocard, ...other }, ref) => (
+  ({ children, title = '', meta, breadcrumbAction, breadcrumbLinks = [], nocard, showTitle = true, ...other }, ref) => (
     <>
       <Head>
         <title>{`${title ? title + ' |' : ''} ${APP_NAME}`}</title>
         {meta}
       </Head>
-
       <Box ref={ref} {...other}>
-        <Container title={title} action={breadcrumbAction} breadcrumbLinks={breadcrumbLinks} nocard={nocard} {...other}>
+        <Container
+          title={showTitle ? title : null}
+          action={breadcrumbAction}
+          breadcrumbLinks={breadcrumbLinks}
+          nocard={nocard}
+          {...other}
+        >
           {children}
         </Container>
       </Box>
@@ -27,6 +32,7 @@ const Page = forwardRef(
 
 Page.propTypes = {
   children: PropTypes.node.isRequired,
+  showTitle: PropTypes.bool,
   title: PropTypes.string,
   meta: PropTypes.node,
   breadcrumbAction: PropTypes.node,

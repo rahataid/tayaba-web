@@ -31,7 +31,7 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 };
 
 export default function VendorView() {
-  const { getVendorById, setChainData, chainData, refresh } = useVendorsContext();
+  const { getVendorById, setChainData, chainData, refresh, transaction } = useVendorsContext();
   const {
     getVendorAllowance,
     checkActiveVendor,
@@ -82,7 +82,7 @@ export default function VendorView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={[]} />
+        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={transaction?.data} />
       </Stack>
     </>
   );
