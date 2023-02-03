@@ -1,4 +1,4 @@
-import { Box, Button, Pagination, TableCell, TableRow } from '@mui/material';
+import { Box, Button, Pagination, TableCell, TableRow, Chip } from '@mui/material';
 import React, { useEffect } from 'react';
 import ListTableToolbar from './ListTableToolbar';
 import { useRouter } from 'next/router';
@@ -10,8 +10,6 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 
 const TableContainer = () => {
   const router = useRouter();
-  const { roles } = useAuthContext();
-
   const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
   useEffect(() => {
@@ -30,19 +28,7 @@ const TableContainer = () => {
   const TABLE_HEAD = {
     name: {
       id: 'name',
-      // id: 'timestamp',
       label: 'Name',
-      align: 'left',
-      // show: roles.isPalika,
-    },
-    gender: {
-      id: 'gender',
-      label: 'Gender',
-      align: 'left',
-    },
-    phone: {
-      id: 'phone',
-      label: 'Phone',
       align: 'left',
     },
     cnicNumber: {
@@ -50,18 +36,26 @@ const TableContainer = () => {
       label: 'CNIC Number',
       align: 'left',
     },
-
-    phoneOwnedBy: {
-      id: 'phoneOwnedBy',
-      label: 'Phone Owned By',
-      align: 'left',
-    },
     hasInternetAccess: {
       id: 'hasInternetAccess',
       label: 'Has Internet Access',
       align: 'left',
     },
-
+    status: {
+      id: 'status',
+      label: 'Status',
+      align: 'left',
+    },
+    tokensAssigned: {
+      id: 'tokensAssigned',
+      label: 'Tokens Assigned',
+      align: 'left',
+    },
+    tokensClaimed: {
+      id: 'tokensClaimed',
+      label: 'Tokens Claimed',
+      align: 'left',
+    },
     action: {
       id: 'action',
       label: 'Action',
@@ -78,17 +72,17 @@ const TableContainer = () => {
           rows.map((row) => (
             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
-              <TableCell align={tableHeadersList['gender'].align}>{row.gender}</TableCell>
 
-              {/* {roles.isPalika && <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>} */}
-              <TableCell align={tableHeadersList['phone'].align}>{row.phone}</TableCell>
-
-              {/* <TableCell align={tableHeadersList['registrationDate'].align}>
-                {moment(row.registrationDate).format('MM/DD/YYYY')}
-              </TableCell> */}
               <TableCell align={tableHeadersList['cnicNumber'].align}>{row.cnicNumber}</TableCell>
-              <TableCell align={tableHeadersList['phoneOwnedBy'].align}>{row.phoneOwnedBy}</TableCell>
+
               <TableCell align={tableHeadersList['hasInternetAccess'].align}>{row.hasInternetAccess}</TableCell>
+
+              <TableCell align={tableHeadersList['status'].align}>
+                <Chip label={row.status} color={row.isActivated ? 'success' : 'error'} />
+              </TableCell>
+              <TableCell align={tableHeadersList['tokensAssigned'].align}>{row.tokensAssigned}</TableCell>
+
+              <TableCell align={tableHeadersList['tokensClaimed'].align}>{row.tokensClaimed}</TableCell>
 
               <TableCell align={tableHeadersList['action'].align}>
                 <Button onClick={handleView(row.id)} variant="text">
