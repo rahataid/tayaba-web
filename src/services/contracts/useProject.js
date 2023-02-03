@@ -3,13 +3,14 @@ import { useContract } from '@hooks/contracts';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { useState } from 'react';
+import Web3Utils from '@utils/web3Utils';
 
 export const useProject = () => {
   let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();
-  const contract = useContract(CONTRACTS.CVAPROJECT);
-  const h2oToken = useContract(CONTRACTS.RAHATTOKEN);
-  const donorContract = useContract(CONTRACTS.DONOR);
-  const communityContract = useContract(CONTRACTS.COMMUNITY);
+  const [contract, abi] = useContract(CONTRACTS.CVAPROJECT);
+  const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
+  const [donorContract] = useContract(CONTRACTS.DONOR);
+  const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
 
   return {
@@ -29,6 +30,10 @@ export const useProject = () => {
 
     getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),
 
+    getVendorBalance: async (walletAddress) => (await h2oToken?.balanceOf(walletAddress))?.toNumber(),
+
+    getVendorAllowance: async (vendorAddress) => (await contract?.vendorAllowance(vendorAddress))?.toNumber(),
+
     // should transfer allowances to vendor
     // transferAllowanceToVendor
 
@@ -39,7 +44,7 @@ export const useProject = () => {
 
     async activateVendor(address) {
       const role = await communityContract?.VENDOR_ROLE();
-      const tx = await communityContract?.grantRole(role, address);
+      const tx = await communityContract?.grantRoleWithEth(role, address);
     },
 
     sendH2OWheelsToVendor(vendorAddress, amount) {
@@ -66,5 +71,55 @@ export const useProject = () => {
     beneficiaryBalance: async (walletAddress) => (await contract?.beneficiaryClaims(walletAddress))?.toNumber(),
 
     beneficiaryCounts: () => contract?.beneficiaryCount(),
+
+    bulkActivateBeneficiaries: async (addresses) => {
+      let callData = [];
+      try {
+        for (const address of addresses) {
+          const data = Web3Utils.generateMultiCallData(communityAbi, 'addBeneficiary', [address]);
+          callData.push(data);
+        }
+        const receipt = await Web3Utils.multicall.send(callData, communityContract);
+
+        return receipt;
+      } catch (e) {
+        handleContractError(e);
+      }
+    },
+
+    bulkAssignBeneficiaries: async (addresses, amount) => {
+      let callData = [];
+
+      try {
+        for (const address of addresses) {
+          const data = Web3Utils.generateMultiCallData(abi, 'assignClaims', [address, amount]);
+          callData.push(data);
+        }
+        const multicall = await Web3Utils.multicall.send(callData, contract);
+        console.log('multicall', multicall);
+        return multicall;
+      } catch (e) {
+        handleContractError(e);
+      }
+    },
+
+    bulkGetBeneficiaryClaims: async (addresses) => {
+      let callData = [];
+
+      for (const address of addresses) {
+        const data = Web3Utils.generateMultiCallData(abi, 'beneficiaryClaims', [address]);
+        callData.push(data);
+      }
+      const multicall = await Web3Utils.multicall.call(callData, contract);
+
+      const decodedData = Web3Utils.decodeMultiCallData(abi, multicall, 'beneficiaryClaims');
+
+      let mapped = addresses.map((address, index) => ({
+        address,
+        claims: decodedData[index] ? decodedData[index]?.toNumber() : 0,
+      }));
+
+      return mapped;
+    },
   };
 };

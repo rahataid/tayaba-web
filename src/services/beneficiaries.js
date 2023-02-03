@@ -22,4 +22,8 @@ export const BeneficiaryService = {
   getTransactionById(id) {
     return clientApi.get(`/beneficiaries/transaction/${id}`);
   },
+
+  updateUsingWalletAddress(walletAddress, data) {
+    return clientApi.patch(`/beneficiaries/wallet-address/${walletAddress}`, data);
+  },
 };

@@ -11,9 +11,9 @@ import { Contract, ethers } from 'ethers';
 
 export const useRahatCommunity = () => {
   let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();
-  const contract = useContract(CONTRACTS.COMMUNITY);
+  const [contract] = useContract(CONTRACTS.COMMUNITY);
   // const cvaProjectContract = useContract(CONTRACTS.CVAPROJECT);
-  const contractWS = useContract(CONTRACTS.CVAPROJECT, {
+  const [contractWS] = useContract(CONTRACTS.CVAPROJECT, {
     isWebsocket: true,
   });
   const { handleError, handleContractError } = useErrorHandler();

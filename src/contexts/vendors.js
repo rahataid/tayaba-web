@@ -1,4 +1,4 @@
-import { VendorService } from '@services';
+import { TransactionService, VendorService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/auth/useAuthContext';
@@ -10,7 +10,7 @@ const initialState = {
   singleVendor: {},
   chainData: {},
   refresh: false,
-
+  transaction: {},
   vendorEthBalance: 0,
   getVendorsList: () => {},
   getVendorById: () => {},
@@ -18,6 +18,7 @@ const initialState = {
   updateApprovalStatus: () => {},
   refreshData: () => {},
   getVendorEthBalance: () => {},
+  getTransactions: () => {},
 };
 
 const VendorsContext = createContext(initialState);
@@ -95,6 +96,26 @@ export const VendorProvider = ({ children }) => {
     return VendorService.updateVendorApprovalStatus(walletAddress);
   });
 
+  const getTransactions = useCallback(async (id) => {
+    const response = await TransactionService.getTransactionList({ vendorId: id });
+    const formatted = response?.data?.data?.data?.map((item) => ({
+      timestamp: item?.timestamp,
+      txHash: item?.txHash,
+      event: 'Beneficiary Claim',
+      amount: item?.amount,
+      txType: item?.txType,
+      mode: item.isOffline ? 'Offline' : 'Online',
+    }));
+
+    setState((prev) => ({
+      ...prev,
+      transaction: {
+        data: formatted,
+      },
+    }));
+    return formatted;
+  });
+
   const contextValue = {
     ...state,
     refreshData,
@@ -103,6 +124,7 @@ export const VendorProvider = ({ children }) => {
     getVendorById,
     getVendorEthBalance,
     updateApprovalStatus,
+    getTransactions,
   };
 
   return <VendorsContext.Provider value={contextValue}>{children}</VendorsContext.Provider>;

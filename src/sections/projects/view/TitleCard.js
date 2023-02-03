@@ -1,30 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Grid, Stack, Typography, Button, Alert } from '@mui/material';
-import { useProjectContext } from '@contexts/projects';
 import ActionMenu from './ActionMenu';
 import CreateTokenDialog from '../cash-tracker/CreateTokenDialog';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import { useRouter } from 'next/router';
 import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
-import useLoading from '@hooks/useLoading';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useSnackbar } from 'notistack';
-import LoadingOverlay from '@components/LoadingOverlay';
 
 const TitleCard = ({}) => {
-  const { singleProject } = useProjectContext();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
+  const [loadingKey, setLoadingKey] = useState(null);
   const {
     push,
     query: { projectId },
   } = useRouter();
   const [assignTokenDialog, setAssignTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
-  const { loading, showLoading, hideLoading } = useLoading();
 
   const handleClose = () => {
     setAssignTokenDialog(false);
@@ -41,9 +37,8 @@ const TitleCard = ({}) => {
 
   const CashActions = {
     async sendCashToProject(amount) {
-      showLoading('cashTransfer');
       await sendCashToProject(amount);
-      hideLoading('cashTransfer');
+      setLoadingKey('cashTransfer');
       enqueueSnackbar('Added Budget to Project');
     },
   };
@@ -74,6 +69,7 @@ const TitleCard = ({}) => {
       show: roles.isDonor,
     },
   ];
+
   return (
     <>
       <CreateTokenDialog
@@ -88,26 +84,26 @@ const TitleCard = ({}) => {
         handleClose={handleClose}
         open={assignTokenDialog}
       />
+
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
         approveCashTransfer={CashActions?.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
+        loadingKey={loadingKey}
       />
 
       <Grid item xs={12} md={12}>
-        <LoadingOverlay open={loading?.cashTransfer}>
-          <Card variant="outlined">
-            <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
-              <Button variant="outlined" color="success" onClick={handleBeneficiaryRouteAction}>
-                {' '}
-                Beneficiary List{' '}
-              </Button>
-              <ActionMenu menuItems={menuItems} actionTitle="Actions" />
-            </Stack>
-          </Card>
-        </LoadingOverlay>
+        <Card variant="outlined">
+          <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
+            <Button variant="outlined" color="success" onClick={handleBeneficiaryRouteAction}>
+              {' '}
+              Beneficiary List{' '}
+            </Button>
+            <ActionMenu menuItems={menuItems} actionTitle="Actions" />
+          </Stack>
+        </Card>
       </Grid>
     </>
   );

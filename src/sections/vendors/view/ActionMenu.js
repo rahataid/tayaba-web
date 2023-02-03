@@ -1,14 +1,13 @@
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Iconify from '@components/iconify';
-import { useRouter } from 'next/router';
 import { useVendorsContext } from '@contexts/vendors';
 import { useSnackbar } from 'notistack';
-import { Divider, Grid } from '@mui/material';
-import ReleaseCashButton from './ReleaseCashButton';
+import { Divider } from '@mui/material';
+import SendToken from './SendToken';
 import { Stack } from '@mui/system';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 
@@ -19,8 +18,7 @@ ActionMenu.propTypes = {
 export default function ActionMenu({ actionTitle }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
-  const { singleVendor, refreshData, chainData } = useVendorsContext();
-  const { handleError } = useErrorHandler();
+ 
   const open = Boolean(anchorEl);
 
   const Actions = {
@@ -77,7 +75,7 @@ export default function ActionMenu({ actionTitle }) {
   return (
     <div>
       <Stack sx={{ ml: -10 }} direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-        <ReleaseCashButton />
+        <SendToken />
         <Button
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}

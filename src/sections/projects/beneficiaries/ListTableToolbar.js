@@ -6,13 +6,15 @@ import ListSearchField from '../ListSearchField';
 import { useProjectContext } from '@contexts/projects';
 import BulkAssign from './BulkAssign';
 import { SPACING } from '@config';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 // ----------------------------------------------------------------------
 
 ListTableToolbar.propTypes = {};
 
-export default function ListTableToolbar() {
+export default function ListTableToolbar({ selectedBeneficiaries }) {
   const { filter, setFilter } = useProjectContext();
+  const { roles } = useAuthContext();
 
   const onSearch = (e) => {
     const { name, value } = e.target;
@@ -59,13 +61,15 @@ export default function ListTableToolbar() {
       >
         <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
         <ListSearchField label={'Enter Name'} value={filter?.name || ''} onChange={onSearch} name={'name'} />
-        <Box
-          sx={{
-            width: '25%',
-          }}
-        >
-          <BulkAssign />
-        </Box>
+        {roles.isAdmin && (
+          <Box
+            sx={{
+              width: '25%',
+            }}
+          >
+            <BulkAssign selectedBeneficiaries={selectedBeneficiaries} />
+          </Box>
+        )}
       </Stack>
     </>
   );

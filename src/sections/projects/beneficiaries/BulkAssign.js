@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -11,22 +11,52 @@ import {
   TextField,
   Typography,
   Stack,
+  Alert,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { useProjectContext } from '@contexts/projects';
 import { useRouter } from 'next/router';
 import { NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY } from '@config';
+import { useProject } from '@services/contracts/useProject';
+import Iconify from '@components/iconify';
+import { useErrorHandler } from '@hooks/useErrorHandler';
+import { BeneficiaryService } from '@services/beneficiaries';
 
-const BulkAssign = () => {
-  const { bulkAssignBeneficiaries } = useProjectContext();
+const activationCode = {
+  activating: 'Activating',
+  activated: 'Activated',
+  assigning: 'Assigning',
+  assigned: 'Assigned',
+};
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [numberOfTokens, setNumberOfTokens] = useState(NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY);
+const BulkAssign = ({ selectedBeneficiaries }) => {
+  const { bulkActivateBeneficiaries, bulkAssignBeneficiaries, bulkGetBeneficiaryClaims } = useProject();
+  const { handleError } = useErrorHandler();
+  const { getBeneficiariesByProject } = useProjectContext();
 
   const {
     query: { projectId },
   } = useRouter();
 
+  const [activationStatus, setActivationStatus] = useState('');
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [numberOfTokens, setNumberOfTokens] = useState(NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY);
+
+  useEffect(() => {
+    if (!selectedBeneficiaries.length) return;
+    getBeneficiariesByProject({
+      projectId,
+    });
+  }, [selectedBeneficiaries, projectId, openDialog]);
+
   const handleDialog = () => {
+    if (!selectedBeneficiaries.length) {
+      alert('Please select beneficiaries to assign tokens to.');
+      return;
+    }
+
+    setActivationStatus('');
     setOpenDialog((prev) => !prev);
   };
 
@@ -36,10 +66,57 @@ const BulkAssign = () => {
   };
 
   const handleBulkAssign = async () => {
-    await bulkAssignBeneficiaries(projectId, numberOfTokens);
+    try {
+      setActivationStatus(activationCode.activating);
+
+      if (!selectedBeneficiaries.length) {
+        alert('Please select beneficiaries to assign tokens to.');
+        return;
+      }
+
+      const activated = await bulkActivateBeneficiaries(selectedBeneficiaries);
+
+      if (activated.status) {
+        // const activatedAddresses = activated.logs.map((log) => log.address);
+        // const updateActiveStatus = selectedBeneficiaries.map(async (address) => {
+        //   const update = await BeneficiaryService.updateUsingWalletAddress(address, { isActivated: true });
+        //   return update;
+        // });
+
+        // await Promise.all(updateActiveStatus);
+
+        setActivationStatus(activationCode.assigning);
+
+        const assigned = await bulkAssignBeneficiaries(selectedBeneficiaries, numberOfTokens);
+        if (assigned.status) {
+          // const updateAssignedStatus = selectedBeneficiaries.map(async (address) => {
+          //   const update = await BeneficiaryService.updateUsingWalletAddress(address, {
+          //     tokensAssigned: numberOfTokens,
+          //   });
+          //   return update;
+          // });
+
+          // await Promise.all(updateAssignedStatus);
+
+          setActivationStatus(activationCode.assigned);
+          setOpenDialog(false);
+        } else {
+          setActivationStatus(activationCode.activated);
+        }
+      } else {
+        setActivationStatus('');
+      }
+    } catch (error) {
+      handleError(error);
+      setActivationStatus('');
+
+      console.log('error', error);
+    }
 
     // setOpenDialog(false);
   };
+
+  let buttonLoading = activationStatus === activationCode.activating || activationStatus === activationCode.assigning;
 
   return (
     <Box>
@@ -55,20 +132,43 @@ const BulkAssign = () => {
             </Typography>
 
             <Stack p={2}>
+              <Alert severity="warning">
+                <Typography>
+                  Please make sure you have enough tokens in your wallet to assign to beneficiaries.
+                </Typography>
+              </Alert>
+              {/* <Alert severity="info"> */}
+
+              {/* </Alert> */}
+            </Stack>
+
+            <Stack p={2}>
               <TextField
                 onChange={handleInputChange}
+                disabled
                 fullWidth
                 label={'Number of tokens to assign each beneficiaries.'}
                 value={numberOfTokens}
               />
+              <Typography variant="caption" mt={2}>
+                Selected beneficiaries: {selectedBeneficiaries.length} | Total tokens to assign:{' '}
+                {selectedBeneficiaries.length * numberOfTokens}
+              </Typography>
             </Stack>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialog}>Cancel</Button>
-          <Button variant="outlined" onClick={handleBulkAssign}>
-            Bulk Assign
-          </Button>
+          <LoadingButton
+            loading={buttonLoading}
+            loadingPosition="start"
+            startIcon={buttonLoading && <Iconify icon="eos-icons:loading" />}
+            disabled={buttonLoading || activationStatus === activationCode.assigned}
+            variant="outlined"
+            onClick={handleBulkAssign}
+          >
+            {!activationStatus ? 'Assign' : activationStatus}
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </Box>

@@ -38,7 +38,10 @@ export const BeneficiaryProvider = ({ children }) => {
       pagination: {
         ...prev.pagination,
       },
-      filter,
+      filter: {
+        ...prev.filter,
+        ...filter,
+      },
     }));
 
   const setPagination = (pagination) => setState((prev) => ({ ...prev, pagination }));
@@ -47,8 +50,6 @@ export const BeneficiaryProvider = ({ children }) => {
     let filterObj = {
       limit: state.pagination?.limit,
       start: state.pagination?.start,
-      village: state.filter?.village,
-      // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
     };
 
     for (const key in state.filter) {
@@ -76,7 +77,13 @@ export const BeneficiaryProvider = ({ children }) => {
       },
     }));
     return formatted;
-  }, [state.filter, state.pagination, state.village]);
+  }, [
+    state.filter,
+    state.pagination,
+    state?.filter?.village,
+    state?.filter?.isActivated,
+    state?.filter?.tokensClaimed,
+  ]);
 
   const setChainData = useCallback((chainData) => {
     setState((prev) => ({

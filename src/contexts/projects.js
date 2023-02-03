@@ -37,7 +37,6 @@ const ProjectsContext = createContext(initialState);
 
 export const ProjectProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
-  const { handleError } = useErrorHandler();
 
   const refreshData = () => setState((prev) => ({ ...prev, refresh: !prev.refresh }));
   const setRahatResponseStatus = (isRahatResponseLive) => setState((prev) => ({ ...prev, isRahatResponseLive }));
@@ -91,8 +90,6 @@ export const ProjectProvider = ({ children }) => {
     async (query) => {
       let filterObj = {
         ...query,
-
-        // page: state.pagination?.page <= 0 ? 1 : state.pagination?.page,
       };
       for (const key in state.filter) {
         filterObj[key] = state.filter[key];
@@ -106,6 +103,7 @@ export const ProjectProvider = ({ children }) => {
         id: item?.id,
         registrationDate: item?.created_at,
         hasInternetAccess: item?.hasInternetAccess ? 'Yes' : 'No',
+        status: item?.isActivated ? 'Active' : 'Inactive',
       }));
 
       setState((prevState) => ({
@@ -148,7 +146,7 @@ export const ProjectProvider = ({ children }) => {
   });
   const getBeneficiariesByvillage = useCallback(async (params) => {
     try {
-      const demographicData  = await ProjectService.getBeneficiaryDemographicData(params);
+      const demographicData = await ProjectService.getBeneficiaryDemographicData(params);
       const chartLabel = demographicData?.data?.data?.beneficiaryPerVillage?.map((d) => d.label);
       const data = demographicData?.data?.data?.beneficiaryPerVillage?.map((d) => d.count);
       const chartData = [

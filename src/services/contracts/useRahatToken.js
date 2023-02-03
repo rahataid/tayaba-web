@@ -6,8 +6,8 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useRahatToken = () => {
   let { contracts } = useAuthContext();
-  const contract = useContract(CONTRACTS.RAHATTOKEN);
-  const contractWS = useContract(CONTRACTS.RAHATTOKEN, { isWebsocket: true });
+  const [contract] = useContract(CONTRACTS.RAHATTOKEN);
+  const [contractWS] = useContract(CONTRACTS.RAHATTOKEN, { isWebsocket: true });
 
   const { handleContractError } = useErrorHandler();
   return {
