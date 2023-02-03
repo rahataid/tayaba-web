@@ -16,10 +16,10 @@ export const countGenderByWard = () => client.get('/reporting/real-time/benefici
 
 export const getBeneficiariesCounts = () => client.get('/reporting/real-time/beneficiary/counts');
 
-export const groupTypeByVillage = (villageId, type) =>
+export const groupTypeByVillage = (village, type) =>
   client.get('reports/beneficiaries/claim-distribution-by-type', {
     params: {
-      villageId,
+      village,
       type,
     },
   });

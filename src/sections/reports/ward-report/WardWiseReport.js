@@ -46,7 +46,7 @@ function WardWiseReport() {
                 stacked: true,
                 events: {
                   click: (event, chartContext, config) => {
-                    let VillageId = String(wardChartData.chartLabel[config.dataPointIndex]?.slice(5));
+                    let VillageId = String(wardChartData.chartLabel[config.dataPointIndex]);
 
                     setSelectedVillage(VillageId);
                   },

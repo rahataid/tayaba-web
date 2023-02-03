@@ -64,16 +64,14 @@ export const ContextProvider = ({ children }) => {
   const getTransactionsClaimByVillage = useCallback(async () => {
     console.log('response');
     const response = await ReportingService.getTransactionsClaimCountByVillage();
-    console.log(response);
     const chartLabel = response.data.data.map((d) => d.name);
-
     const chartData = [
       {
         name: 'Claimed',
         data: response.data.data.map((d) => d.claimed),
       },
       {
-        name: 'Not Claimed',
+        name: 'Assigned',
         data: response.data.data.map((d) => d.assigned),
       },
     ];

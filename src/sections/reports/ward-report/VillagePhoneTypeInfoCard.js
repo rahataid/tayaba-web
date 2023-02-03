@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardDailyWage = ({ selectedVillage }) => {
+const VillagePhoneTypeInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
   const { villageByPhoneType, getVillageByPhoneType } = useModuleContext();
 
@@ -18,10 +18,10 @@ const WardDailyWage = ({ selectedVillage }) => {
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Ward Selected
+            No Village Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a ward to view details
+            Select a village to view details
           </Typography>
         </CardContent>
       </Card>
@@ -50,8 +50,8 @@ const WardDailyWage = ({ selectedVillage }) => {
   );
 };
 
-WardDailyWage.propTypes = {
+VillagePhoneTypeInfoCard.propTypes = {
   selectedVillage: PropTypes.string.required,
 };
 
-export default WardDailyWage;
+export default VillagePhoneTypeInfoCard;

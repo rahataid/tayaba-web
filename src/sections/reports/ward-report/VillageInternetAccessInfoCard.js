@@ -18,10 +18,10 @@ const VillageInternetAccessInfoCard = ({ selectedVillage }) => {
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Ward Selected
+            No Village Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a ward to view details
+            Select a village to view details
           </Typography>
         </CardContent>
       </Card>

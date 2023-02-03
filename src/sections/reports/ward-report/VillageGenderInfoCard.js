@@ -5,24 +5,24 @@ import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardGenderInfoCard = ({ selectedVillage }) => {
+const VillageGenderInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
-  const { wardByGenderChart, getWardGenderChart } = useModuleContext();
+  const { villageByGenderChart, getVillageGenderChart } = useModuleContext();
 
   useEffect(() => {
     if (!selectedVillage) return;
-    getWardGenderChart(selectedVillage);
-  }, [getWardGenderChart, selectedVillage]);
+    getVillageGenderChart(selectedVillage);
+  }, [getVillageGenderChart, selectedVillage]);
 
   if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Ward Selected
+            No Village Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a ward to view details
+            Select a village to view details
           </Typography>
         </CardContent>
       </Card>
@@ -44,15 +44,15 @@ const WardGenderInfoCard = ({ selectedVillage }) => {
               stacked: true,
             },
           },
-          ...wardByGenderChart,
+          ...villageByGenderChart,
         }}
       />
     </Box>
   );
 };
 
-WardGenderInfoCard.propTypes = {
+VillageGenderInfoCard.propTypes = {
   selectedVillage: PropTypes.string.required,
 };
 
-export default WardGenderInfoCard;
+export default VillageGenderInfoCard;
