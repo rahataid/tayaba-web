@@ -1,5 +1,4 @@
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import { Stack } from '@mui/system';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
@@ -31,7 +30,7 @@ const WardLandOwnershipInfoCard = ({ selectedVillage }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`By Land Ownership (Ward ${selectedVillage})`}
+        title={`By phone Ownership ( ${selectedVillage})`}
         chart={{
           colors: [
             theme.palette.primary.main,

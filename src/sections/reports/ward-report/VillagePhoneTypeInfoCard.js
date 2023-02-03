@@ -30,7 +30,7 @@ const WardDailyWage = ({ selectedVillage }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`Daily Wage Workers (Ward ${selectedVillage})`}
+        title={`By Phone Type ( ${selectedVillage})`}
         chart={{
           colors: [
             theme.palette.warning.main,

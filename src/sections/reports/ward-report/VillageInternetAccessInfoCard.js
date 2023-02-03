@@ -11,7 +11,7 @@ const VillageInternetAccessInfoCard = ({ selectedVillage }) => {
   useEffect(() => {
     if (!selectedVillage) return;
     getVillageByInternetAccess(selectedVillage);
-  }, [getWardDisabilityChart, selectedVillage]);
+  }, [getVillageByInternetAccess, selectedVillage]);
 
   if (!selectedVillage || selectedVillage === 'undefined')
     return (
@@ -30,7 +30,7 @@ const VillageInternetAccessInfoCard = ({ selectedVillage }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`People with Disability (Ward ${selectedVillage})`}
+        title={`People with Internet Accesss ( ${selectedVillage})`}
         chart={{
           colors: [
             theme.palette.info.main,
