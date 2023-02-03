@@ -4,16 +4,16 @@ import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardDisabilityInfoCard = ({ selectedWard }) => {
+const WardDailyWage = ({ selectedVillage }) => {
   const theme = useTheme();
-  const { wardByDisability, getWardDisabilityChart } = useModuleContext();
+  const { villageByPhoneType, getVillageByPhoneType } = useModuleContext();
 
   useEffect(() => {
-    if (!selectedWard) return;
-    getWardDisabilityChart(selectedWard);
-  }, [getWardDisabilityChart, selectedWard]);
+    if (!selectedVillage) return;
+    getVillageByPhoneType(selectedVillage);
+  }, [getVillageByPhoneType, selectedVillage]);
 
-  if (!selectedWard || selectedWard === 'undefined')
+  if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
@@ -30,28 +30,28 @@ const WardDisabilityInfoCard = ({ selectedWard }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`People with Disability (Ward ${selectedWard})`}
+        title={`Daily Wage Workers (Ward ${selectedVillage})`}
         chart={{
           colors: [
-            theme.palette.info.main,
+            theme.palette.warning.main,
             theme.palette.error.main,
             theme.palette.primary.main,
-            theme.palette.warning.main,
+            theme.palette.info.main,
           ],
           options: {
             chart: {
               stacked: true,
             },
           },
-          ...wardByDisability,
+          ...villageByPhoneType,
         }}
       />
     </Box>
   );
 };
 
-WardDisabilityInfoCard.propTypes = {
-  selectedWard: PropTypes.string.required,
+WardDailyWage.propTypes = {
+  selectedVillage: PropTypes.string.required,
 };
 
-export default WardDisabilityInfoCard;
+export default WardDailyWage;

@@ -5,16 +5,16 @@ import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardGenderInfoCard = ({ selectedWard }) => {
+const WardGenderInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
   const { wardByGenderChart, getWardGenderChart } = useModuleContext();
 
   useEffect(() => {
-    if (!selectedWard) return;
-    getWardGenderChart(selectedWard);
-  }, [getWardGenderChart, selectedWard]);
+    if (!selectedVillage) return;
+    getWardGenderChart(selectedVillage);
+  }, [getWardGenderChart, selectedVillage]);
 
-  if (!selectedWard || selectedWard === 'undefined')
+  if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
@@ -31,7 +31,7 @@ const WardGenderInfoCard = ({ selectedWard }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`Gender Claim Distribution (Ward ${selectedWard})`}
+        title={`Gender Claim Distribution (Ward ${selectedVillage})`}
         chart={{
           colors: [
             theme.palette.primary.main,
@@ -52,7 +52,7 @@ const WardGenderInfoCard = ({ selectedWard }) => {
 };
 
 WardGenderInfoCard.propTypes = {
-  selectedWard: PropTypes.string.required,
+  selectedVillage: PropTypes.string.required,
 };
 
 export default WardGenderInfoCard;

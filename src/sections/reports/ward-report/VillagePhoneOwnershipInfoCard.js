@@ -1,19 +1,20 @@
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
+import { Stack } from '@mui/system';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardDailyWage = ({ selectedWard }) => {
+const WardLandOwnershipInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
-  const { dailyWageByWard, getWardDailyWageChart } = useModuleContext();
+  const { villageByPhoneOwnership, getVillageByPhoneOwnership } = useModuleContext();
 
   useEffect(() => {
-    if (!selectedWard) return;
-    getWardDailyWageChart(selectedWard);
-  }, [getWardDailyWageChart, selectedWard]);
+    if (!selectedVillage) return;
+    getVillageByPhoneOwnership(selectedVillage);
+  }, [getVillageByPhoneOwnership, selectedVillage]);
 
-  if (!selectedWard || selectedWard === 'undefined')
+  if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
@@ -30,28 +31,28 @@ const WardDailyWage = ({ selectedWard }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`Daily Wage Workers (Ward ${selectedWard})`}
+        title={`By Land Ownership (Ward ${selectedVillage})`}
         chart={{
           colors: [
-            theme.palette.warning.main,
-            theme.palette.error.main,
             theme.palette.primary.main,
             theme.palette.info.main,
+            theme.palette.error.main,
+            theme.palette.warning.main,
           ],
           options: {
             chart: {
               stacked: true,
             },
           },
-          ...dailyWageByWard,
+          ...villageByPhoneOwnership,
         }}
       />
     </Box>
   );
 };
 
-WardDailyWage.propTypes = {
-  selectedWard: PropTypes.string.required,
+WardLandOwnershipInfoCard.propTypes = {
+  selectedVillage: PropTypes.string.required,
 };
 
-export default WardDailyWage;
+export default WardLandOwnershipInfoCard;

@@ -2,16 +2,15 @@ import { useEffect, useState } from 'react';
 import { Grid, useTheme } from '@mui/material';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
-import WardGenderInfoCard from './WardGenderInfoCard';
-import WardDailyWageInfoCard from './WardDailyWageInfoCard';
-import WardLandOwnershipInfoCard from './WardLandOwnershipInfoCard';
-import WardDisabilityInfoCard from './WardDisabilityInfoCard';
+import VillageGenderInfoCard from './VillageGenderInfoCard';
+import VillagePhoneTypeInfoCard from './VillagePhoneTypeInfoCard';
+import VillagePhoneOwnershipInfoCard from './VillagePhoneOwnershipInfoCard';
+import VillageInternetAccessInfoCard from './VillageInternetAccessInfoCard';
 
 function WardWiseReport() {
   const theme = useTheme();
-
   const { getTransactionsClaimByVillage, wardChartData } = useModuleContext();
-  const [selectedWard, setSelectedWard] = useState('');
+  const [selectedVillage, setSelectedVillage] = useState('');
 
   useEffect(() => {
     getTransactionsClaimByVillage();
@@ -47,9 +46,9 @@ function WardWiseReport() {
                 stacked: true,
                 events: {
                   click: (event, chartContext, config) => {
-                    let wardKey = String(wardChartData.chartLabel[config.dataPointIndex]?.slice(5));
+                    let VillageId = String(wardChartData.chartLabel[config.dataPointIndex]?.slice(5));
 
-                    setSelectedWard(wardKey);
+                    setSelectedVillage(VillageId);
                   },
                 },
               },
@@ -59,16 +58,16 @@ function WardWiseReport() {
         />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardGenderInfoCard selectedWard={selectedWard} />
+        <VillageGenderInfoCard selectedVillage={selectedVillage} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardDailyWageInfoCard selectedWard={selectedWard} />
+        <VillagePhoneTypeInfoCard selectedVillage={selectedVillage} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardLandOwnershipInfoCard selectedWard={selectedWard} />
+        <VillagePhoneOwnershipInfoCard selectedVillage={selectedVillage} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardDisabilityInfoCard selectedWard={selectedWard} />
+        <VillageInternetAccessInfoCard selectedVillage={selectedVillage} />
       </Grid>
     </Grid>
   );
