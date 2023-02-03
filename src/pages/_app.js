@@ -52,7 +52,7 @@ export default function MyApp(props) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <AuthProvider>
-        <LoadingOverlay open={true}>
+        <LoadingOverlay open={false}>
           <SettingsProvider>
             <MotionLazyContainer>
               <ThemeProvider>
