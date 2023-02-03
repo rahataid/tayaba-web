@@ -8,6 +8,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
 import { useErrorHandler } from '@hooks/useErrorHandler';
+import { useState } from 'react';
 
 SendToken.propTypes = {};
 
@@ -19,6 +20,7 @@ export default function SendToken() {
   const { sendH2OWheelsToVendor, activateVendor } = useProject();
   const { roles } = useAuthContext();
   const { loading, showLoading, hideLoading } = useLoading();
+  const [loadingKey, setLoadingKey] = useState(null);
   const Actions = {
     alert(message, type) {
       enqueueSnackbar(message, {
@@ -51,14 +53,13 @@ export default function SendToken() {
     async releaseH2oToken(amount) {
       if (!roles.isAdmin) return;
       if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      showLoading('transferToken');
       try {
         await sendH2OWheelsToVendor(singleVendor.walletAddress, amount);
+        setLoadingKey('transferToken');
       } catch (err) {
         console.log(err);
       }
       refreshData();
-      hideLoading('transferToken');
     },
   };
 
@@ -77,15 +78,14 @@ export default function SendToken() {
         approveCashTransfer={Actions.releaseH2oToken}
         handleClose={hideDialog}
         open={isDialogShow}
+        loadingKey={loadingKey}
       />
       {roles.isAdmin && (
         <>
           {chainData.isActive ? (
-            <LoadingOverlay open={loading.transferToken}>
-              <Button variant="outlined" color="success" onClick={showDialog}>
-                send H2O token
-              </Button>
-            </LoadingOverlay>
+            <Button variant="outlined" color="success" onClick={showDialog}>
+              send H2O token
+            </Button>
           ) : (
             <LoadingOverlay open={loading.activateVendor}>
               <Button variant="outlined" color="primary" onClick={Actions.handleActivateVendor}>

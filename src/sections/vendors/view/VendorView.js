@@ -39,6 +39,7 @@ export default function VendorView() {
     pendingWheelsToAccept,
     getProjectBalance,
     h2oToken,
+    getVendorBalance,
   } = useProject();
   const {
     query: { vendorId },
@@ -50,16 +51,18 @@ export default function VendorView() {
     if (!_vendorData?.walletAddress) return;
     if (!communityContract) return;
     let token;
-    const allowance = await getVendorAllowance(_vendorData?.walletAddress);
     const isActive = await checkActiveVendor(_vendorData?.walletAddress);
     const cashAllowance = await pendingWheelsToAccept(_vendorData?.walletAddress);
+    const vendorBalance = await getVendorBalance(_vendorData?.walletAddress);
+    const allowance = await getVendorAllowance(_vendorData?.walletAddress);
     if (h2oToken) token = await getProjectBalance();
 
     setChainData({
-      allowance: allowance.toNumber(),
       isActive,
       cashAllowance: cashAllowance.toNumber(),
       projectBalance: token ? token : null,
+      allowance: allowance.toNumber(),
+      vendorBalance,
     });
   }, [vendorId, refresh, communityContract]);
 
