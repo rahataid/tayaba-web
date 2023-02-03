@@ -9,7 +9,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
-import { useSnackbar } from 'notistack';
 
 AmountForm.propTypes = {
   approveCashTransfer: PropTypes.func,
@@ -17,25 +16,25 @@ AmountForm.propTypes = {
   open: PropTypes.bool,
   description: PropTypes.node,
   title: PropTypes.string,
+  loadingKey: PropTypes.string,
 };
 
-export default function AmountForm({ approveCashTransfer, title, description, open, handleClose }) {
+export default function AmountForm({ approveCashTransfer, title, description, open, handleClose, loadingKey }) {
   const [amount, setAmount] = useState('');
-  const { enqueueSnackbar } = useSnackbar();
   const { loading, showLoading, hideLoading } = useLoading();
 
   const handleSendCash = async (e) => {
-    showLoading('cashTransfer');
+    showLoading(loadingKey);
     await approveCashTransfer(amount);
-    hideLoading('cashTransfer');
-    enqueueSnackbar('Added Budget to Project');
+    hideLoading(loadingKey);
     handleClose();
     setAmount('');
   };
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <LoadingOverlay open={loading.cashTransfer}>
+        <LoadingOverlay open={loading[loadingKey]}>
           <DialogTitle>{title}</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ mb: 2 }}>{description}</DialogContentText>

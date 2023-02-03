@@ -9,10 +9,13 @@ import { useRouter } from 'next/router';
 import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { useSnackbar } from 'notistack';
 
 const TitleCard = ({}) => {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles } = useAuthContext();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loadingKey, setLoadingKey] = useState(null);
   const {
     push,
     query: { projectId },
@@ -31,6 +34,14 @@ const TitleCard = ({}) => {
 
   const handleAddBudgetModel = () => {
     showDialog();
+  };
+
+  const CashActions = {
+    async sendCashToProject(amount) {
+      await sendCashToProject(amount);
+      setLoadingKey('cashTransfer');
+      enqueueSnackbar('Added Budget to Project');
+    },
   };
 
   const handleBeneficiaryRouteAction = () => {
@@ -78,9 +89,10 @@ const TitleCard = ({}) => {
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
-        approveCashTransfer={sendCashToProject}
+        approveCashTransfer={CashActions?.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
+        loadingKey={loadingKey}
       />
 
       <Grid item xs={12} md={12}>
