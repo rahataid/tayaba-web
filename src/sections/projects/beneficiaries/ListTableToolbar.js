@@ -61,6 +61,7 @@ export default function ListTableToolbar({ selectedBeneficiaries }) {
       >
         <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
         <ListSearchField label={'Enter Name'} value={filter?.name || ''} onChange={onSearch} name={'name'} />
+
         {roles.isAdmin && (
           <Box
             sx={{

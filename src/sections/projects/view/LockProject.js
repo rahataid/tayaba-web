@@ -52,6 +52,7 @@ export default function LockProject({ chainData, refreshData }) {
     refreshData();
     hideLoading('projectAction');
   };
+
   return (
     <Grid item xs={12} md={12}>
       <Dialog open={isDialogShow} onClose={hideDialog}>

@@ -44,7 +44,7 @@ export default function CreateTokenDialog({ approveCreateToken, description, ope
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleCreateToken} disabled={token === '' || token < 1}>
-           Create Token
+            Create Token
           </Button>
         </DialogActions>
       </Dialog>
