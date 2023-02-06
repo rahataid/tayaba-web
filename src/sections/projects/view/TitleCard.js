@@ -41,31 +41,31 @@ const TitleCard = ({ chainData, refreshData }) => {
     showDialog();
   };
   const handleLockProject = async () => {
-    showLoading('projectAction');
+    showLoading('project-view');
     try {
       await lockProject(wallet.address);
     } catch (error) {
       console.log({ error });
-      hideLoading('projectAction');
+      hideLoading('project-view');
       hideDialog();
     }
     hideDialog();
     refreshData();
-    hideLoading('projectAction');
+    hideLoading('project-view');
   };
 
   const handleUnlockProject = async () => {
-    showLoading('projectAction');
+    showLoading('project-view');
     try {
       await unLockProject(wallet.address);
     } catch (error) {
-      hideLoading('projectAction');
+      hideLoading('project-view');
       hideDialog();
       throwError('cannot unlock Project');
     }
     hideDialog();
     refreshData();
-    hideLoading('projectAction');
+    hideLoading('project-view');
   };
   const handleClose = () => {
     setAssignTokenDialog(false);

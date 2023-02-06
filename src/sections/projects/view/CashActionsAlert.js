@@ -21,10 +21,10 @@ export default function CashActionsAlert({ projectId, chainData }) {
 
   const CashActions = {
     async acceptCash() {
-      showLoading('cashTrack');
+      showLoading('project-view');
       await acceptToken(chainData.tokenAllowance);
       setShowAlert(false);
-      hideLoading('cashTrack');
+      hideLoading('project-view');
     },
   };
 
@@ -63,12 +63,10 @@ export default function CashActionsAlert({ projectId, chainData }) {
     <>
       {showAlert && (
         <Grid item xs={12} md={12}>
-          <LoadingOverlay open={loading.cashTrack}>
-            <Alert severity={alert.type} action={alert.action}>
-              {' '}
-              {alert?.message}{' '}
-            </Alert>
-          </LoadingOverlay>
+          <Alert severity={alert.type} action={alert.action}>
+            {' '}
+            {alert?.message}{' '}
+          </Alert>
         </Grid>
       )}
     </>

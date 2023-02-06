@@ -22,7 +22,6 @@ const ProjectView = () => {
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
   const { loading, showLoading, hideLoading } = useLoading();
-  const [pageLoading, setPageLoading] = useState(true);
 
   const [flickImages, setFlickImages] = useState([]);
   const [chainData, setChainData] = useState({});
