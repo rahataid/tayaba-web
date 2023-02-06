@@ -64,7 +64,7 @@ export default function ProjectCard({ project }) {
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="body2">{moment(created_at).format('MMM DD, YYYY') || 'N/A'}</Typography>
-          <Typography variant="body2">₹ {balance || '0'}</Typography>
+          <Typography variant="body2"> {balance || '0'}</Typography>
         </Stack>
       </Stack>
     </Card>

@@ -75,6 +75,7 @@ export const BeneficiaryProvider = ({ children }) => {
       id: item?.id,
       registrationDate: item?.created_at,
       hasInternetAccess: item?.hasInternetAccess ? 'Yes' : 'No',
+      status: item?.isActivated ? 'Active' : 'Inactive',
     }));
 
     setState((prevState) => ({

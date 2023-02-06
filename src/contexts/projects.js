@@ -58,7 +58,8 @@ export const ProjectProvider = ({ children }) => {
         ? `${item?.project_manager?.name?.first} ${item?.project_manager?.name?.last}`
         : '-',
       createdAt: item?.created_at,
-      balance: item?.tokenBalance || 0,
+      balance: item?.budget - item?.disbursed,
+
       id: item?._id || item?.id,
     }));
 

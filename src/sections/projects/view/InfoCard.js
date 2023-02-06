@@ -11,7 +11,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 export default function InfoCard({ chainData }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { sendCashToProject } = useRahatDonor();
-  const { beneficiaryCount } = useProjectContext();
+  const { beneficiaryCount, singleProject } = useProjectContext();
   const { roles } = useAuthContext();
 
   const sx = { borderRadius: 2 };
@@ -60,7 +60,7 @@ export default function InfoCard({ chainData }) {
             total={
               chainData.projectBalance <= 0 ? (
                 roles.isDonor ? (
-                  <Button onClick={handleAddBudgetModel}> Add Budget</Button>
+                  <Button onClick={handleAddBudgetModel}>Add Budget</Button>
                 ) : (
                   chainData.projectBalance
                 )
@@ -77,7 +77,7 @@ export default function InfoCard({ chainData }) {
             color="error"
             icon="ph:currency-circle-dollar-light"
             title="Distributed"
-            total="0"
+            total={singleProject?.data?.disbursed || 0}
             subtitle={'H20 Wheels'}
             sx={sx}
           />
