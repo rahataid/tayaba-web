@@ -13,13 +13,11 @@ import SummaryTracker from './SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
-import LockProject from './LockProject';
 
 const ProjectView = () => {
   const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
-
   const [flickImages, setFlickImages] = useState([]);
   const [chainData, setChainData] = useState({});
 
@@ -90,7 +88,7 @@ const ProjectView = () => {
             <TitleCard refreshData={getDataFromChain} chainData={chainData} />
             <CashActionsAlert projectId={projectId} chainData={chainData} />
             <Grid item xs={12} md={12}>
-              <ProjectDetail />
+              <ProjectDetail chainData={chainData} />
             </Grid>
           </Grid>
         </Grid>

@@ -49,9 +49,10 @@ const StyledBg = styled('div')(({ theme }) => ({
 
 ProjectDetail.propTypes = {
   projectId: PropTypes.string,
+  chainData: PropTypes.object,
 };
 
-export default function ProjectDetail({ ...other }) {
+export default function ProjectDetail({ chainData, ...other }) {
   return (
     <StyledRoot {...other}>
       <Stack
@@ -67,7 +68,7 @@ export default function ProjectDetail({ ...other }) {
         }}
       >
         <Grid>
-          <BasicInfoCard />
+          <BasicInfoCard rahatChainData={chainData} />
         </Grid>
       </Stack>
       <StyledBg />

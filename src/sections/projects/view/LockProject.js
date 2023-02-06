@@ -70,7 +70,7 @@ export default function LockProject({ chainData, refreshData }) {
       {roles?.isDonor && (
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
           {chainData?.projectBalance > 0 ? (
-            <React.Fragment>
+            <>
               {chainData?.isLocked ? (
                 <>
                   <Grid container direction="column" justifyContent="center" alignItems="flex-start">
@@ -94,7 +94,7 @@ export default function LockProject({ chainData, refreshData }) {
                   </Grid>
                 </>
               )}
-            </React.Fragment>
+            </>
           ) : (
             <Chip label="Add Budget To Take Project Actions" variant="outlined" color="info" />
           )}

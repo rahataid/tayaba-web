@@ -10,12 +10,16 @@ import AmountForm from '../cash-tracker/AmountForm';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useSnackbar } from 'notistack';
 import useLoading from '@hooks/useLoading';
+import { useErrorHandler } from '@hooks/useErrorHandler';
+import { useProject } from '@services/contracts/useProject';
 
 const TitleCard = ({ chainData, refreshData }) => {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { roles } = useAuthContext();
+  const { roles, wallet } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
   const [loadingKey, setLoadingKey] = useState(null);
+  const { throwError } = useErrorHandler();
+
   const {
     push,
     query: { projectId },
@@ -24,6 +28,7 @@ const TitleCard = ({ chainData, refreshData }) => {
     title: '',
     type: '',
   });
+  const { lockProject, unLockProject } = useProject();
   const [assignTokenDialog, setAssignTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
@@ -40,10 +45,9 @@ const TitleCard = ({ chainData, refreshData }) => {
     try {
       await lockProject(wallet.address);
     } catch (error) {
-      console.log(error);
+      console.log({ error });
       hideLoading('projectAction');
       hideDialog();
-      throwError('cannot lock Project');
     }
     hideDialog();
     refreshData();
