@@ -43,7 +43,7 @@ const tokenClaimOptions = [
 ];
 
 export default function ListTableToolbar() {
-  const { filter, setFilter, village } = useBeneficiaryContext();
+  const { filter, setFilter, village, resetFilter } = useBeneficiaryContext();
 
   const onSearch = (e) => {
     const { name, value } = e.target;
@@ -111,7 +111,16 @@ export default function ListTableToolbar() {
           onSelectChange={onSearch}
           value={filter?.tokensClaimed || ''}
         />
-        <ListSearchField label={'Enter Phone'} value={filter?.phone || ''} onChange={onSearch} name={'phone'} />
+        <ListSearchField
+          label={'Enter cnic NUmber'}
+          value={filter?.cnicNumber || ''}
+          onChange={onSearch}
+          name={'cnicNumber'}
+        />
+        <Button onClick={() => resetFilter(null)} variant={'outlined'}>
+          {' '}
+          clear
+        </Button>
       </Stack>
     </>
   );

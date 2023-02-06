@@ -6,7 +6,7 @@ import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
 
-import { ActionMenu, BeneficiaryViewComp } from '@sections/beneficiaries/view';
+import { BeneficiaryViewComp } from '@sections/beneficiaries/view';
 import { BeneficiaryProvider } from '@contexts/beneficiaries';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
@@ -18,7 +18,7 @@ const BeneficiaryView = () => {
 
   return (
     <BeneficiaryProvider>
-      <Page title={PAGE_TITLE} nocard action={roles.isDonor && <ActionMenu actionTitle={'Actions'} />}>
+      <Page title={PAGE_TITLE} nocard>
         <Container maxWidth={themeStretch ? false : 'xl'}>
           <BeneficiaryViewComp />
         </Container>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography, Chip } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 
@@ -12,10 +12,12 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { singleProject } = useProjectContext();
   return (
     <>
+      {rahatChainData?.isLocked && <Chip label="Project Is Locked" variant="outlined" color="error" />}
+
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {'srso'}
+            {'Srso'}
           </Typography>
           <Typography variant="body2">Project Manager</Typography>
         </Grid>
@@ -42,7 +44,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-        <Typography variant="body1">{singleProject?.data?.description}</Typography>
+        <Typography variant="body1"> {singleProject?.data?.description}</Typography>
       </Stack>
     </>
   );

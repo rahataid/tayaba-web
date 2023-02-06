@@ -24,6 +24,7 @@ const initialState = {
   setPagination: () => {},
   getAllWards: () => {},
   getAllVillages: () => {},
+  resetFilter: () => {},
 };
 
 const BeneficiaryContext = createContext(initialState);
@@ -42,6 +43,16 @@ export const BeneficiaryProvider = ({ children }) => {
         ...prev.filter,
         ...filter,
       },
+    }));
+
+  const resetFilter = () =>
+    setState((prev) => ({
+      ...prev,
+      pagination: {
+        ...prev.pagination,
+        start: 0,
+      },
+      filter: {},
     }));
 
   const setPagination = (pagination) => setState((prev) => ({ ...prev, pagination }));
@@ -149,6 +160,7 @@ export const BeneficiaryProvider = ({ children }) => {
     getBeneficiaryById,
     getAllVillages,
     getTransactionById,
+    resetFilter,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Grid, Stack, Typography, Button, Alert } from '@mui/material';
+import { Card, Grid, Stack, Typography, Dialog, DialogTitle, DialogActions, Button, Alert } from '@mui/material';
 import ActionMenu from './ActionMenu';
 import CreateTokenDialog from '../cash-tracker/CreateTokenDialog';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
@@ -9,30 +9,71 @@ import useDialog from '@hooks/useDialog';
 import AmountForm from '../cash-tracker/AmountForm';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useSnackbar } from 'notistack';
+import useLoading from '@hooks/useLoading';
+import { useErrorHandler } from '@hooks/useErrorHandler';
+import { useProject } from '@services/contracts/useProject';
 
-const TitleCard = ({}) => {
+const TitleCard = ({ chainData, refreshData }) => {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { roles } = useAuthContext();
+  const { roles, wallet } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
   const [loadingKey, setLoadingKey] = useState(null);
+  const { throwError } = useErrorHandler();
+
   const {
     push,
     query: { projectId },
   } = useRouter();
+  const [modalData, setModalData] = useState({
+    title: '',
+    type: '',
+  });
+  const { lockProject, unLockProject } = useProject();
   const [assignTokenDialog, setAssignTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
+  const { loading, showLoading, hideLoading } = useLoading();
+  const handleUnlockModal = () => {
+    setModalData({ title: 'Are You Sure To Unlock  ?', type: 'Unlock' });
+    showDialog();
+  };
+  const handleLockModal = () => {
+    setModalData({ title: 'Are You Sure To Lock Project ?', type: 'Lock' });
+    showDialog();
+  };
+  const handleLockProject = async () => {
+    showLoading('projectAction');
+    try {
+      await lockProject(wallet.address);
+    } catch (error) {
+      console.log({ error });
+      hideLoading('projectAction');
+      hideDialog();
+    }
+    hideDialog();
+    refreshData();
+    hideLoading('projectAction');
+  };
 
+  const handleUnlockProject = async () => {
+    showLoading('projectAction');
+    try {
+      await unLockProject(wallet.address);
+    } catch (error) {
+      hideLoading('projectAction');
+      hideDialog();
+      throwError('cannot unlock Project');
+    }
+    hideDialog();
+    refreshData();
+    hideLoading('projectAction');
+  };
   const handleClose = () => {
     setAssignTokenDialog(false);
     hideDialog();
   };
 
-  const handleAssignTokenModal = () => {
-    setAssignTokenDialog((prev) => !prev);
-  };
-
   const handleAddBudgetModel = () => {
-    showDialog();
+    setAssignTokenDialog((prev) => !prev);
   };
 
   const CashActions = {
@@ -49,48 +90,43 @@ const TitleCard = ({}) => {
 
   const menuItems = [
     {
-      onClick: handleAssignTokenModal,
-      name: 'Assign Token',
-      show: roles?.isAdmin,
-    },
-    {
       onClick: handleAddBudgetModel,
       name: 'Create H20Wheel Tokens',
-      show: roles.isDonor,
+      show: roles?.isDonor,
     },
     {
-      onClick: handleAddBudgetModel,
+      onClick: handleLockModal,
       name: 'Lock Project',
-      show: roles.isDonor,
+      show: roles?.isDonor && chainData?.projectBalance > 0 && !chainData?.isLocked,
     },
     {
-      onClick: handleAddBudgetModel,
+      onClick: handleUnlockModal,
       name: 'Unlock Project',
-      show: roles.isDonor,
+      show: roles?.isDonor && chainData?.projectBalance > 0 && chainData?.isLocked,
     },
   ];
 
   return (
     <>
-      <CreateTokenDialog
-        description={
-          <>
-            Please enter No. of token you wish to Create <br />
-            <br />
-            Your have total #NA tokens
-          </>
-        }
-        cashBalance={0}
-        handleClose={handleClose}
-        open={assignTokenDialog}
-      />
-
+      <Dialog open={isDialogShow} onClose={hideDialog}>
+        {/* <LoadingOverlay open={loading.projectAction}> */}
+        <DialogTitle>{modalData.title}</DialogTitle>
+        <DialogActions>
+          {modalData?.type === 'Lock' ? (
+            <Button onClick={handleLockProject}> YES</Button>
+          ) : (
+            <Button onClick={handleUnlockProject}> YES</Button>
+          )}
+          <Button onClick={hideDialog}> NO</Button>
+        </DialogActions>
+        {/* </LoadingOverlay> */}
+      </Dialog>
       <AmountForm
         title="Add Budget in Project"
         description={<>Please enter the budget you wish to add to project</>}
         approveCashTransfer={CashActions?.sendCashToProject}
-        handleClose={hideDialog}
-        open={isDialogShow}
+        handleClose={handleClose}
+        open={assignTokenDialog}
         loadingKey={loadingKey}
       />
 
