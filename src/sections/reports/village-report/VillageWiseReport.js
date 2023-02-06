@@ -7,7 +7,7 @@ import VillagePhoneTypeInfoCard from './VillagePhoneTypeInfoCard';
 import VillagePhoneOwnershipInfoCard from './VillagePhoneOwnershipInfoCard';
 import VillageInternetAccessInfoCard from './VillageInternetAccessInfoCard';
 
-function WardWiseReport() {
+function VillageWiseReport() {
   const theme = useTheme();
   const { getTransactionsClaimByVillage, wardChartData } = useModuleContext();
   const [selectedVillage, setSelectedVillage] = useState('');
@@ -30,7 +30,7 @@ function WardWiseReport() {
              chanrt 2 - male females
         */}
         <BarchartSingle
-          title="Ward Wise Claims"
+          title="Village Wise Claims vs Assigned"
           chart={{
             colors: [
               theme.palette.primary.main,
@@ -73,6 +73,6 @@ function WardWiseReport() {
   );
 }
 
-WardWiseReport.propTypes = {};
+VillageWiseReport.propTypes = {};
 
-export default WardWiseReport;
+export default VillageWiseReport;

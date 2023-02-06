@@ -86,30 +86,15 @@ const navConfig = [
       // },
 
       {
-        title: 'Administation',
-        path: PATH_ADMINISTRATION.root,
-        icon: ICONS.admin,
+        title: 'Reports',
+        path: PATH_REPORTS.villageReport,
+        icon: ICONS.reports,
         children: [
           {
-            title: 'Users',
-            path: PATH_ADMINISTRATION.users,
+            title: 'Village Reports',
+            path: PATH_REPORTS.villageReport,
           },
         ],
-      },
-      {
-        title: 'Reports',
-        path: PATH_REPORTS.wardReport,
-        icon: ICONS.reports,
-        // children: [
-        //   {
-        //     title: 'Demographic',
-        //     path: PATH_REPORTS.demographic,
-        //   },
-        //   {
-        //     title: 'Ward Report',
-        //     path: PATH_REPORTS.wardReport,
-        //   },
-        // ],
       },
     ],
   },
