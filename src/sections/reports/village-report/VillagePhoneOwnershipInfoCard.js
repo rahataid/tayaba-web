@@ -1,28 +1,27 @@
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import { Stack } from '@mui/system';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardGenderInfoCard = ({ selectedWard }) => {
+const VillagePhoneOwnershipInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
-  const { wardByGenderChart, getWardGenderChart } = useModuleContext();
+  const { villageByPhoneOwnership, getVillageByPhoneOwnership } = useModuleContext();
 
   useEffect(() => {
-    if (!selectedWard) return;
-    getWardGenderChart(selectedWard);
-  }, [getWardGenderChart, selectedWard]);
+    if (!selectedVillage) return;
+    getVillageByPhoneOwnership(selectedVillage);
+  }, [getVillageByPhoneOwnership, selectedVillage]);
 
-  if (!selectedWard || selectedWard === 'undefined')
+  if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Ward Selected
+            No Village Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a ward to view details
+            Select a village to view details
           </Typography>
         </CardContent>
       </Card>
@@ -31,12 +30,12 @@ const WardGenderInfoCard = ({ selectedWard }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`Gender Claim Distribution (Ward ${selectedWard})`}
+        title={`By phone Ownership ( ${selectedVillage})`}
         chart={{
           colors: [
             theme.palette.primary.main,
-            theme.palette.error.main,
             theme.palette.info.main,
+            theme.palette.error.main,
             theme.palette.warning.main,
           ],
           options: {
@@ -44,15 +43,15 @@ const WardGenderInfoCard = ({ selectedWard }) => {
               stacked: true,
             },
           },
-          ...wardByGenderChart,
+          ...villageByPhoneOwnership,
         }}
       />
     </Box>
   );
 };
 
-WardGenderInfoCard.propTypes = {
-  selectedWard: PropTypes.string.required,
+VillagePhoneOwnershipInfoCard.propTypes = {
+  selectedVillage: PropTypes.string.required,
 };
 
-export default WardGenderInfoCard;
+export default VillagePhoneOwnershipInfoCard;

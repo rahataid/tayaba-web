@@ -4,24 +4,24 @@ import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardDisabilityInfoCard = ({ selectedWard }) => {
+const VillagePhoneTypeInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
-  const { wardByDisability, getWardDisabilityChart } = useModuleContext();
+  const { villageByPhoneType, getVillageByPhoneType } = useModuleContext();
 
   useEffect(() => {
-    if (!selectedWard) return;
-    getWardDisabilityChart(selectedWard);
-  }, [getWardDisabilityChart, selectedWard]);
+    if (!selectedVillage) return;
+    getVillageByPhoneType(selectedVillage);
+  }, [getVillageByPhoneType, selectedVillage]);
 
-  if (!selectedWard || selectedWard === 'undefined')
+  if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Ward Selected
+            No Village Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a ward to view details
+            Select a village to view details
           </Typography>
         </CardContent>
       </Card>
@@ -30,28 +30,28 @@ const WardDisabilityInfoCard = ({ selectedWard }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`People with Disability (Ward ${selectedWard})`}
+        title={`By Phone Type ( ${selectedVillage})`}
         chart={{
           colors: [
-            theme.palette.info.main,
+            theme.palette.warning.main,
             theme.palette.error.main,
             theme.palette.primary.main,
-            theme.palette.warning.main,
+            theme.palette.info.main,
           ],
           options: {
             chart: {
               stacked: true,
             },
           },
-          ...wardByDisability,
+          ...villageByPhoneType,
         }}
       />
     </Box>
   );
 };
 
-WardDisabilityInfoCard.propTypes = {
-  selectedWard: PropTypes.string.required,
+VillagePhoneTypeInfoCard.propTypes = {
+  selectedVillage: PropTypes.string.required,
 };
 
-export default WardDisabilityInfoCard;
+export default VillagePhoneTypeInfoCard;

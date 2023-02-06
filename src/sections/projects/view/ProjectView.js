@@ -13,11 +13,17 @@ import SummaryTracker from './SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
+import LockProject from './LockProject';
+import useLoading from '@hooks/useLoading';
+import LoadingOverlay from '@components/LoadingOverlay';
 
 const ProjectView = () => {
   const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
+  const { loading, showLoading, hideLoading } = useLoading();
+  const [pageLoading, setPageLoading] = useState(true);
+
   const [flickImages, setFlickImages] = useState([]);
   const [chainData, setChainData] = useState({});
 
@@ -53,6 +59,7 @@ const ProjectView = () => {
     const isLocked = await isProjectLocked();
     //TODO :trigger Inventory tracker data;
     updateChainData({ tokenAllowance, projectBalance, isLocked });
+    hideLoading('project-view');
   }, [h2oToken, refresh]);
 
   useEffect(() => {
@@ -70,8 +77,10 @@ const ProjectView = () => {
     return () => RahatTokenWS?.removeAllListeners();
   }, [RahatTokenWS]);
 
+  // if (pageLoading) return <div>Loading...</div>;
+
   return (
-    <>
+    <LoadingOverlay open={loading['project-view']}>
       <Grid container spacing={SPACING.GRID_SPACING}>
         <Grid item xs={12} md={8}>
           <Grid container spacing={SPACING.GRID_SPACING}>
@@ -93,7 +102,7 @@ const ProjectView = () => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </LoadingOverlay>
   );
 };
 

@@ -2,11 +2,11 @@ import { Container } from '@mui/material';
 import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
-import { WardWiseReportComp, WardWiseContextProvider } from '@sections/reports/ward-report';
+import { WardWiseReportComp, WardWiseContextProvider } from '@sections/reports/village-report';
 
 // ----------------------------------------------------------------------
 
-const PAGE_TITLE = 'Reports: Ward Wise ';
+const PAGE_TITLE = 'Reports: Village Wise ';
 
 WardWiseReport.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
