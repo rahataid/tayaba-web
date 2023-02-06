@@ -1,28 +1,27 @@
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import { Stack } from '@mui/system';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
 
-const WardLandOwnershipInfoCard = ({ selectedWard }) => {
+const VillageInternetAccessInfoCard = ({ selectedVillage }) => {
   const theme = useTheme();
-  const { wardByLandOwnership, getWardLandOwnershipChart } = useModuleContext();
+  const { villageByInternetAccess, getVillageByInternetAccess } = useModuleContext();
 
   useEffect(() => {
-    if (!selectedWard) return;
-    getWardLandOwnershipChart(selectedWard);
-  }, [getWardLandOwnershipChart, selectedWard]);
+    if (!selectedVillage) return;
+    getVillageByInternetAccess(selectedVillage);
+  }, [getVillageByInternetAccess, selectedVillage]);
 
-  if (!selectedWard || selectedWard === 'undefined')
+  if (!selectedVillage || selectedVillage === 'undefined')
     return (
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Ward Selected
+            No Village Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a ward to view details
+            Select a village to view details
           </Typography>
         </CardContent>
       </Card>
@@ -31,12 +30,12 @@ const WardLandOwnershipInfoCard = ({ selectedWard }) => {
   return (
     <Box>
       <BarchartSingle
-        title={`By Land Ownership (Ward ${selectedWard})`}
+        title={`People with Internet Accesss ( ${selectedVillage})`}
         chart={{
           colors: [
-            theme.palette.primary.main,
             theme.palette.info.main,
             theme.palette.error.main,
+            theme.palette.primary.main,
             theme.palette.warning.main,
           ],
           options: {
@@ -44,15 +43,15 @@ const WardLandOwnershipInfoCard = ({ selectedWard }) => {
               stacked: true,
             },
           },
-          ...wardByLandOwnership,
+          ...villageByInternetAccess,
         }}
       />
     </Box>
   );
 };
 
-WardLandOwnershipInfoCard.propTypes = {
-  selectedWard: PropTypes.string.required,
+VillageInternetAccessInfoCard.propTypes = {
+  selectedVillage: PropTypes.string.required,
 };
 
-export default WardLandOwnershipInfoCard;
+export default VillageInternetAccessInfoCard;

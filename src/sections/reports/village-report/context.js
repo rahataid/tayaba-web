@@ -12,7 +12,7 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  wardByGenderChart: {
+  villageByGenderChart: {
     chartData: [
       {
         data: [],
@@ -21,7 +21,7 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  dailyWageByWard: {
+  villageByPhoneType: {
     chartData: [
       {
         data: [],
@@ -30,7 +30,7 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  wardByLandOwnership: {
+  villageByPhoneOwnership: {
     chartData: [
       {
         data: [],
@@ -39,7 +39,7 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  wardByDisability: {
+  villageByInternetAccess: {
     chartData: [
       {
         data: [],
@@ -48,12 +48,12 @@ const initialState = {
     ],
     chartLabel: [],
   },
-  getTransactionsCountByWard: () => {},
+  getTransactionsClaimByVillage: () => {},
 
-  getWardGenderChart: (ward) => {},
-  getWardDailyWageChart: (ward) => {},
-  getWardLandOwnershipChart: (ward) => {},
-  getWardDisabilityChart: (ward) => {},
+  getVillageGenderChart: (villageId) => {},
+  getVillageByPhoneType: (villageId) => {},
+  getVillageByPhoneOwnership: (VillageId) => {},
+  getVillageByInternetAccess: (villageId) => {},
 };
 
 const Context = createContext(initialState);
@@ -61,19 +61,18 @@ const Context = createContext(initialState);
 export const ContextProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
 
-  const getTransactionsCountByWard = useCallback(async () => {
-    const response = await ReportingService.getTransactionsClaimCountByWard();
-
-    const chartLabel = response.data.data.map((d) => `Ward ${d.ward}`);
-
+  const getTransactionsClaimByVillage = useCallback(async () => {
+    console.log('response');
+    const response = await ReportingService.getTransactionsClaimCountByVillage();
+    const chartLabel = response.data.data.map((d) => d.name);
     const chartData = [
       {
         name: 'Claimed',
         data: response.data.data.map((d) => d.claimed),
       },
       {
-        name: 'Not Claimed',
-        data: response.data.data.map((d) => d.notClaimed),
+        name: 'Assigned',
+        data: response.data.data.map((d) => d.assigned),
       },
     ];
 
@@ -86,44 +85,44 @@ export const ContextProvider = ({ children }) => {
     }));
   }, []);
 
-  const getWardGenderChart = useCallback(async (ward) => {
-    const response = await Service.groupGenderByWard(ward);
+  const getVillageGenderChart = useCallback(async (villageId) => {
+    const response = await Service.groupTypeByVillage(villageId, 'gender');
     setState((prevState) => ({
       ...prevState,
-      wardByGenderChart: response.data.data,
+      villageByGenderChart: response.data.data,
     }));
   }, []);
 
-  const getWardDailyWageChart = useCallback(async (ward) => {
-    const response = await Service.groupWardByDailyWage(ward);
+  const getVillageByPhoneType = useCallback(async (villageId) => {
+    const response = await Service.groupTypeByVillage(villageId, 'phoneType');
     setState((prevState) => ({
       ...prevState,
-      dailyWageByWard: response.data.data,
+      villageByPhoneType: response.data.data,
     }));
   }, []);
 
-  const getWardLandOwnershipChart = useCallback(async (ward) => {
-    const response = await Service.groupWardByLandOwnership(ward);
+  const getVillageByPhoneOwnership = useCallback(async (villageId) => {
+    const response = await Service.groupTypeByVillage(villageId, 'phoneOwnedBy');
     setState((prevState) => ({
       ...prevState,
-      wardByLandOwnership: response.data.data,
+      villageByPhoneOwnership: response.data.data,
     }));
   }, []);
-  const getWardDisabilityChart = useCallback(async (ward) => {
-    const response = await Service.groupWardByDisability(ward);
+  const getVillageByInternetAccess = useCallback(async (villageId) => {
+    const response = await Service.groupTypeByVillage(villageId, 'hasInternetAccess');
     setState((prevState) => ({
       ...prevState,
-      wardByDisability: response.data.data,
+      villageByInternetAccess: response.data.data,
     }));
   }, []);
 
   const contextValues = {
     ...state,
-    getWardGenderChart,
-    getTransactionsCountByWard,
-    getWardDailyWageChart,
-    getWardLandOwnershipChart,
-    getWardDisabilityChart,
+    getVillageGenderChart,
+    getTransactionsClaimByVillage,
+    getVillageByPhoneType,
+    getVillageByPhoneOwnership,
+    getVillageByInternetAccess,
   };
 
   return <Context.Provider value={contextValues}>{children}</Context.Provider>;

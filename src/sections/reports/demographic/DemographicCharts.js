@@ -52,9 +52,9 @@ function DemographicCharts() {
     fetchData();
   }, []);
 
-  if (loadingGraph) {
-    return <LoadingScreen />;
-  }
+  // if (loadingGraph) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <Grid container spacing={SPACING.GRID_SPACING}>

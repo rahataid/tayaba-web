@@ -2,20 +2,19 @@ import { useEffect, useState } from 'react';
 import { Grid, useTheme } from '@mui/material';
 import BarchartSingle from './BarchartSingle';
 import { useModuleContext } from './context';
-import WardGenderInfoCard from './WardGenderInfoCard';
-import WardDailyWageInfoCard from './WardDailyWageInfoCard';
-import WardLandOwnershipInfoCard from './WardLandOwnershipInfoCard';
-import WardDisabilityInfoCard from './WardDisabilityInfoCard';
+import VillageGenderInfoCard from './VillageGenderInfoCard';
+import VillagePhoneTypeInfoCard from './VillagePhoneTypeInfoCard';
+import VillagePhoneOwnershipInfoCard from './VillagePhoneOwnershipInfoCard';
+import VillageInternetAccessInfoCard from './VillageInternetAccessInfoCard';
 
-function WardWiseReport() {
+function VillageWiseReport() {
   const theme = useTheme();
-
-  const { getTransactionsCountByWard, wardChartData } = useModuleContext();
-  const [selectedWard, setSelectedWard] = useState('');
+  const { getTransactionsClaimByVillage, wardChartData } = useModuleContext();
+  const [selectedVillage, setSelectedVillage] = useState('');
 
   useEffect(() => {
-    getTransactionsCountByWard();
-  }, [getTransactionsCountByWard]);
+    getTransactionsClaimByVillage();
+  }, [getTransactionsClaimByVillage]);
 
   return (
     <Grid container spacing={3}>
@@ -31,7 +30,7 @@ function WardWiseReport() {
              chanrt 2 - male females
         */}
         <BarchartSingle
-          title="Ward Wise Claims"
+          title="Village Wise Claims vs Assigned"
           chart={{
             colors: [
               theme.palette.primary.main,
@@ -47,9 +46,9 @@ function WardWiseReport() {
                 stacked: true,
                 events: {
                   click: (event, chartContext, config) => {
-                    let wardKey = String(wardChartData.chartLabel[config.dataPointIndex]?.slice(5));
+                    let VillageId = String(wardChartData.chartLabel[config.dataPointIndex]);
 
-                    setSelectedWard(wardKey);
+                    setSelectedVillage(VillageId);
                   },
                 },
               },
@@ -59,21 +58,21 @@ function WardWiseReport() {
         />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardGenderInfoCard selectedWard={selectedWard} />
+        <VillageGenderInfoCard selectedVillage={selectedVillage} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardDailyWageInfoCard selectedWard={selectedWard} />
+        <VillagePhoneTypeInfoCard selectedVillage={selectedVillage} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardLandOwnershipInfoCard selectedWard={selectedWard} />
+        <VillagePhoneOwnershipInfoCard selectedVillage={selectedVillage} />
       </Grid>
       <Grid item xs={12} md={4}>
-        <WardDisabilityInfoCard selectedWard={selectedWard} />
+        <VillageInternetAccessInfoCard selectedVillage={selectedVillage} />
       </Grid>
     </Grid>
   );
 }
 
-WardWiseReport.propTypes = {};
+VillageWiseReport.propTypes = {};
 
-export default WardWiseReport;
+export default VillageWiseReport;
