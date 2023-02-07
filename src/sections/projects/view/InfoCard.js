@@ -35,7 +35,7 @@ export default function InfoCard({ chainData }) {
     <>
       <AmountForm
         title="Add Relief Items in Project"
-        description={<>Please enter the Relief item you wish to add to project</>}
+        description={<>Please enter the Relief items you wish to add to project</>}
         approveCashTransfer={CashActions.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
