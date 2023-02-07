@@ -91,7 +91,7 @@ const TitleCard = ({ chainData, refreshData }) => {
   const menuItems = [
     {
       onClick: handleAddBudgetModel,
-      name: 'Create H20Wheel Tokens',
+      name: 'Create H2OWheel Tokens',
       show: roles?.isDonor,
     },
     {

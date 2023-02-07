@@ -161,7 +161,7 @@ const DashboardComponent = () => {
             <SummaryCard
               color="info"
               icon="ic:outline-water-drop"
-              title="H20 Disbursed"
+              title="H2O Disbursed"
               total={demographicSummary?.totalH20Disbursed}
               subtitle={'wheels'}
             />

@@ -68,7 +68,7 @@ export default function InfoCard({ chainData }) {
                 chainData.projectBalance
               )
             }
-            subtitle="H20 Wheels"
+            subtitle="H2O Wheels"
             sx={sx}
           />
         </Grid>
@@ -78,7 +78,7 @@ export default function InfoCard({ chainData }) {
             icon="ph:currency-circle-dollar-light"
             title="Distributed"
             total={singleProject?.data?.disbursed || 0}
-            subtitle={'H20 Wheels'}
+            subtitle={'H2O Wheels'}
             sx={sx}
           />
         </Grid>
