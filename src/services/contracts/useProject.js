@@ -12,6 +12,7 @@ export const useProject = () => {
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
+  console.log(communityContract);
 
   return {
     contract,
@@ -44,7 +45,7 @@ export const useProject = () => {
 
     async activateVendor(address) {
       const role = await communityContract?.VENDOR_ROLE();
-      const tx = await communityContract?.grantRoleWithEth(role, address);
+      const tx = await communityContract?.grantRole(role, address);
     },
 
     sendH2OWheelsToVendor(vendorAddress, amount) {

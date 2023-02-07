@@ -68,6 +68,16 @@ const TableContainer = () => {
   return (
     <Box>
       <ListTableToolbar />
+      <TablePagination
+        count={beneficiaries?.count}
+        component="div"
+        page={pagination?.page}
+        rowsPerPage={pagination?.limit}
+        onPageChange={(e, page) => {
+          setPagination({ start: page * pagination.limit, limit: pagination.limit, page: page });
+        }}
+        onRowsPerPageChange={handleRowChange}
+      />
       <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD} errorMessage={errorMessage}>
         {(rows, tableHeadersList) =>
           rows.map((row) => (

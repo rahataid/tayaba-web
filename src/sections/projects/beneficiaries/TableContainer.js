@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Chip, Pagination, TableCell, TableRow } from '@mui/material';
+import { Box, Button, Checkbox, Chip, TablePagination, TableCell, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useProjectContext } from '@contexts/projects';
@@ -14,23 +14,33 @@ const TableContainer = () => {
 
   const { beneficiaries, getBeneficiariesByProject } = useProjectContext();
   const [start, setStart] = useState(0);
+  const [limit, setLimit] = useState(50);
+  const [page, setPage] = useState(0);
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState([]);
+  console.log(beneficiaries);
 
   useEffect(() => {
     if (!projectId) return;
     getBeneficiariesByProject({
       projectId,
       start,
+      limit,
     });
-  }, [projectId]);
+  }, [projectId, start, limit]);
 
   const handleView = (id) => () => {
     push(`/beneficiaries/${id}`);
   };
 
   const handlePagination = (event, page) => {
-    let start = (page - 1) * beneficiaries.limit;
+    let start = page * beneficiaries.limit;
     setStart(start);
+    setPage(page);
+  };
+  const handleRowChange = (e) => {
+    setLimit(e.target.value);
+    setStart(0);
+    setPage(0);
   };
 
   // #region Table Headers
@@ -96,7 +106,14 @@ const TableContainer = () => {
   return (
     <Box sx={{ p: 1 }}>
       <ListTableToolbar selectedBeneficiaries={selectedBeneficiaries} />
-
+      <TablePagination
+        count={beneficiaries?.count}
+        component="div"
+        page={page}
+        rowsPerPage={beneficiaries?.limit}
+        onPageChange={handlePagination}
+        onRowsPerPageChange={handleRowChange}
+      />
       <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD}>
         {(rows, tableHeadersList) =>
           rows.map((row) => (
@@ -139,7 +156,14 @@ const TableContainer = () => {
           ))
         }
       </ListTable>
-      <Pagination count={beneficiaries?.totalPage} onChange={handlePagination} />
+      <TablePagination
+        count={beneficiaries?.count}
+        component="div"
+        page={page}
+        rowsPerPage={beneficiaries?.limit}
+        onPageChange={handlePagination}
+        onRowsPerPageChange={handleRowChange}
+      />
     </Box>
   );
 };
