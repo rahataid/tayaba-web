@@ -98,7 +98,7 @@ export default function SummaryTracker({ sx, ...other }) {
           <Typography variant="caption">Balance: {step.balance} </Typography>
         </>
       );
-    if (step?.label === 'Village Rep')
+    if (step?.label === 'Distribution Point Rep')
       return (
         <>
           <Typography variant="caption">Received: {step.received} </Typography>
