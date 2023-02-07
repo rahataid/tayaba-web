@@ -162,7 +162,7 @@ const DashboardComponent = () => {
               color="info"
               icon="ic:outline-water-drop"
               title="H2O Disbursed"
-              total={demographicSummary?.totalH20Disbursed}
+              total={demographicSummary?.totalH2ODisbursed}
               subtitle={'wheels'}
             />
           </Grid>
@@ -179,7 +179,7 @@ const DashboardComponent = () => {
             <SummaryCard
               color="secondary"
               icon="maki:village"
-              title="Villages"
+              title="Distribution Points"
               total={demographicSummary?.totalVillages}
               subtitle={'impacted'}
             />
@@ -224,7 +224,7 @@ const DashboardComponent = () => {
 
         <Grid item xs={12} md={6}>
           <BarchartSingle
-            title="Beneficiaries by Village"
+            title="Beneficiaries by Distribution Point"
             chart={{
               colors: [
                 theme.palette.primary.main,

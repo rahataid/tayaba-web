@@ -19,10 +19,10 @@ const VillageGenderInfoCard = ({ selectedVillage }) => {
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-            No Village Selected
+            No Distribution Point Selected
           </Typography>
           <Typography variant="h4" sx={{ color: theme.palette.text.secondary }}>
-            Select a village to view details
+            Select a Distribution Point to view details
           </Typography>
         </CardContent>
       </Card>

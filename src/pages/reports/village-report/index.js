@@ -6,7 +6,7 @@ import { WardWiseReportComp, WardWiseContextProvider } from '@sections/reports/v
 
 // ----------------------------------------------------------------------
 
-const PAGE_TITLE = 'Reports: Village Wise ';
+const PAGE_TITLE = 'Reports: Distribution Point Wise ';
 
 WardWiseReport.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
