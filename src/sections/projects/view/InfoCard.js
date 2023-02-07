@@ -34,8 +34,8 @@ export default function InfoCard({ chainData }) {
   return (
     <>
       <AmountForm
-        title="Add Budget in Project"
-        description={<>Please enter the budget you wish to add to project</>}
+        title="Add Relief Items in Project"
+        description={<>Please enter the Relief item you wish to add to project</>}
         approveCashTransfer={CashActions.sendCashToProject}
         handleClose={hideDialog}
         open={isDialogShow}
@@ -56,11 +56,11 @@ export default function InfoCard({ chainData }) {
           <SummaryCard
             color="success"
             icon="material-symbols:token"
-            title="Budget"
+            title="Relief Items"
             total={
               chainData.projectBalance <= 0 ? (
                 roles.isDonor ? (
-                  <Button onClick={handleAddBudgetModel}>Add Budget</Button>
+                  <Button onClick={handleAddBudgetModel}>Add Relief Items</Button>
                 ) : (
                   chainData.projectBalance
                 )
