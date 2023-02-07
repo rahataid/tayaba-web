@@ -12,7 +12,6 @@ export const useProject = () => {
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
-  console.log(communityContract);
 
   return {
     contract,
