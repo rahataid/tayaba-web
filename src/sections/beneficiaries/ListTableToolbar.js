@@ -84,7 +84,7 @@ export default function ListTableToolbar() {
 
       <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 0 }} justifyContent={'flex-end'}>
         <ListSelectFilter
-          label={'Village'}
+          label={'Distribution Point'}
           name={'village'}
           options={village}
           onSelectChange={onSearch}

@@ -72,7 +72,7 @@ export default function SendToken() {
             Please select the amount of H2O token you are handing over to the distributor. Distributor/Vendors have to
             accept the cash before the tokens are disbursed. <br />
             <br />
-            Your current H20 tokens is {chainData?.projectBalance}
+            Your current H2O tokens is {chainData?.projectBalance}
           </>
         }
         approveCashTransfer={Actions.releaseH2oToken}

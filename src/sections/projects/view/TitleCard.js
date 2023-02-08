@@ -41,31 +41,31 @@ const TitleCard = ({ chainData, refreshData }) => {
     showDialog();
   };
   const handleLockProject = async () => {
-    showLoading('projectAction');
+    showLoading('project-view');
     try {
       await lockProject(wallet.address);
     } catch (error) {
       console.log({ error });
-      hideLoading('projectAction');
+      hideLoading('project-view');
       hideDialog();
     }
     hideDialog();
     refreshData();
-    hideLoading('projectAction');
+    hideLoading('project-view');
   };
 
   const handleUnlockProject = async () => {
-    showLoading('projectAction');
+    showLoading('project-view');
     try {
       await unLockProject(wallet.address);
     } catch (error) {
-      hideLoading('projectAction');
+      hideLoading('project-view');
       hideDialog();
       throwError('cannot unlock Project');
     }
     hideDialog();
     refreshData();
-    hideLoading('projectAction');
+    hideLoading('project-view');
   };
   const handleClose = () => {
     setAssignTokenDialog(false);
@@ -91,7 +91,7 @@ const TitleCard = ({ chainData, refreshData }) => {
   const menuItems = [
     {
       onClick: handleAddBudgetModel,
-      name: 'Create H20Wheel Tokens',
+      name: 'Create H2OWheel Tokens',
       show: roles?.isDonor,
     },
     {

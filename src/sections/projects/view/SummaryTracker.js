@@ -32,7 +32,7 @@ const STEPS = [
     balance: 0,
   },
   {
-    label: 'Village Rep',
+    label: 'Distribution Point Rep',
     received: 0,
     disbursed: 0,
   },

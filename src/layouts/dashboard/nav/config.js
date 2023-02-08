@@ -91,7 +91,7 @@ const navConfig = [
         icon: ICONS.reports,
         children: [
           {
-            title: 'Village Reports',
+            title: 'Distribution Point Reports',
             path: PATH_REPORTS.villageReport,
           },
         ],
