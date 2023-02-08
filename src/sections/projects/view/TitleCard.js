@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Grid, Stack, Typography, Dialog, DialogTitle, DialogActions, Button, Alert } from '@mui/material';
 import ActionMenu from './ActionMenu';
-import CreateTokenDialog from '../cash-tracker/CreateTokenDialog';
+import CreateTokenDialog from '../token-tracker/CreateTokenDialog';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import { useRouter } from 'next/router';
 import useDialog from '@hooks/useDialog';
-import AmountForm from '../cash-tracker/AmountForm';
+import AmountForm from '../token-tracker/AmountForm';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useSnackbar } from 'notistack';
 import useLoading from '@hooks/useLoading';
@@ -32,6 +32,12 @@ const TitleCard = ({ chainData, refreshData }) => {
   const [assignTokenDialog, setAssignTokenDialog] = useState(false);
   const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuItemClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleUnlockModal = () => {
     setModalData({ title: 'Are You Sure To Unlock  ?', type: 'Unlock' });
     showDialog();
@@ -46,12 +52,13 @@ const TitleCard = ({ chainData, refreshData }) => {
       await lockProject(wallet.address);
     } catch (error) {
       console.log({ error });
-      hideLoading('project-view');
+      // hideLoading('project-view');
       hideDialog();
     }
-    hideDialog();
+    // hideDialog();
     refreshData();
-    hideLoading('project-view');
+    // hideLoading('project-view');
+    handleMenuItemClose();
   };
 
   const handleUnlockProject = async () => {
@@ -66,6 +73,7 @@ const TitleCard = ({ chainData, refreshData }) => {
     hideDialog();
     refreshData();
     hideLoading('project-view');
+    handleMenuItemClose();
   };
   const handleClose = () => {
     setAssignTokenDialog(false);
@@ -78,9 +86,11 @@ const TitleCard = ({ chainData, refreshData }) => {
 
   const CashActions = {
     async sendCashToProject(amount) {
+      showLoading('project-view');
       await sendCashToProject(amount);
-      setLoadingKey('cashTransfer');
+      hideLoading('project-view');
       enqueueSnackbar('Added Budget to Project');
+      handleMenuItemClose();
     },
   };
 
@@ -137,7 +147,15 @@ const TitleCard = ({ chainData, refreshData }) => {
               {' '}
               Beneficiary List{' '}
             </Button>
-            {roles?.isDonor && <ActionMenu menuItems={menuItems} actionTitle="Actions" />}
+            {roles?.isDonor && (
+              <ActionMenu
+                menuItems={menuItems}
+                actionTitle="Actions"
+                handleClose={handleMenuItemClose}
+                anchorEl={anchorEl}
+                setAnchorEl={setAnchorEl}
+              />
+            )}
           </Stack>
         </Card>
       </Grid>

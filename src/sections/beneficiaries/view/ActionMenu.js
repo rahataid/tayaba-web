@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import AmountForm from '@sections/projects/cash-tracker/AmountForm';
+import AmountForm from '@sections/projects/token-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
 
 ActionMenu.propTypes = {

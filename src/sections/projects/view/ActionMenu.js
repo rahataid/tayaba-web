@@ -11,15 +11,10 @@ ActionMenu.propTypes = {
   actionTitle: PropTypes.string,
 };
 
-export default function ActionMenu({ menuItems, actionTitle }) {
-  const [anchorEl, setAnchorEl] = useState(null);
-
+export default function ActionMenu({ menuItems, actionTitle, handleClose, anchorEl, setAnchorEl }) {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   return (
