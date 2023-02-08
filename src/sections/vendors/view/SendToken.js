@@ -5,10 +5,11 @@ import AmountForm from '@sections/projects/cash-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
 import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import LoadingOverlay from '@components/LoadingOverlay';
+// import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { useState } from 'react';
+import { LoadingButton } from '@mui/lab';
 
 SendToken.propTypes = {};
 
@@ -20,7 +21,7 @@ export default function SendToken() {
   const { sendH2OWheelsToVendor, activateVendor } = useProject();
   const { roles } = useAuthContext();
   const { loading, showLoading, hideLoading } = useLoading();
-  const [loadingKey, setLoadingKey] = useState(null);
+
   const Actions = {
     alert(message, type) {
       enqueueSnackbar(message, {
@@ -38,14 +39,12 @@ export default function SendToken() {
     },
     async handleActivateVendor() {
       // if (!singleVendor?.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      try {
-        showLoading('activateVendor');
+      showLoading('activateVendor');
 
-        await activateVendor(singleVendor?.walletAddress);
+      activateVendor(singleVendor?.walletAddress).then(async () => {
         await updateApprovalStatus(singleVendor?.walletAddress);
-      } catch (error) {
-        handleContractError(error);
-      }
+      });
+
       hideLoading('activateVendor');
       refreshData();
     },
@@ -53,13 +52,11 @@ export default function SendToken() {
     async releaseH2oToken(amount) {
       if (!roles.isAdmin) return;
       if (!singleVendor.walletAddress) return Actions.alert('Must have vendor address', 'error');
-      try {
-        await sendH2OWheelsToVendor(singleVendor.walletAddress, amount);
-        setLoadingKey('transferToken');
-      } catch (err) {
-        console.log(err);
-      }
-      refreshData();
+      showLoading('releaseH2oToken', true);
+      sendH2OWheelsToVendor(singleVendor.walletAddress, amount).then(async () => {
+        refreshData();
+        hideLoading('releaseH2oToken');
+      });
     },
   };
 
@@ -78,20 +75,30 @@ export default function SendToken() {
         approveCashTransfer={Actions.releaseH2oToken}
         handleClose={hideDialog}
         open={isDialogShow}
-        loadingKey={loadingKey}
+        loadingKey={loading['releaseH2oToken']}
       />
       {roles.isAdmin && (
         <>
           {chainData.isActive ? (
-            <Button variant="outlined" color="success" onClick={showDialog}>
-              send H2O token
-            </Button>
+            <LoadingButton
+              variant="outlined"
+              color="success"
+              onClick={showDialog}
+              loading={loading['releaseH2oToken']}
+              disabled={loading['releaseH2oToken']}
+            >
+              Send H2O token
+            </LoadingButton>
           ) : (
-            <LoadingOverlay open={loading.activateVendor}>
-              <Button variant="outlined" color="primary" onClick={Actions.handleActivateVendor}>
-                Activate Vendor
-              </Button>
-            </LoadingOverlay>
+            <LoadingButton
+              loading={loading['activateVendor']}
+              disabled={loading['activateVendor']}
+              variant="outlined"
+              color="primary"
+              onClick={Actions.handleActivateVendor}
+            >
+              Activate Vendor
+            </LoadingButton>
           )}
         </>
       )}

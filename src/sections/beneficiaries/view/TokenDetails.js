@@ -23,10 +23,10 @@ export default function TokenDetails({ chainData }) {
 
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
-    try {
-      const res = await assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1);
+
+    assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1).then(async (res) => {
       const txn = {
-        txHash: res.hash,
+        txHash: res?.hash,
         contractAddress: contract?.address,
         timestamp: Math.floor(Date.now() / 1000),
         beneficiaryId: singleBeneficiary?.data?.id,
@@ -38,34 +38,30 @@ export default function TokenDetails({ chainData }) {
       };
       await TransactionService.addTransactionData(txn);
       refreshData();
-    } catch (error) {
-      console.log(error);
-    }
+    });
+
     hideLoading('assignClaim');
     hideDialog();
   };
 
   const handleActivate = async () => {
-    try {
-      await activateBeneficiary(singleBeneficiary?.data?.walletAddress);
+    activateBeneficiary(singleBeneficiary?.data?.walletAddress).then(() => {
       refreshData();
-    } catch (error) {
-      console.log(error);
-    }
+    });
   };
 
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
       <Dialog open={isDialogShow} onClose={hideDialog}>
-        <LoadingOverlay open={loading.assignClaim}>
-          <DialogTitle> Are you sure to assign claim ?</DialogTitle>
-          <DialogActions>
-            <Button onClick={hideDialog}>Cancel</Button>
-            <Button variant="outlined" onClick={handleAssignClaim}>
-              Assign
-            </Button>
-          </DialogActions>
-        </LoadingOverlay>
+        {/* <LoadingOverlay open={loading.assignClaim}> */}
+        <DialogTitle> Are you sure to assign claim ?</DialogTitle>
+        <DialogActions>
+          <Button onClick={hideDialog}>Cancel</Button>
+          <Button variant="outlined" onClick={handleAssignClaim}>
+            Assign
+          </Button>
+        </DialogActions>
+        {/* </LoadingOverlay> */}
       </Dialog>
 
       <CardContent>

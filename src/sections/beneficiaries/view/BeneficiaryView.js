@@ -7,8 +7,8 @@ import { HistoryTable } from '@sections/transactionTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import ActionMenu from './ActionMenu';
 import { useProject } from '@services/contracts/useProject';
+import LoadingOverlay from '@components/LoadingOverlay';
 
 BeneficiaryView.propTypes = {};
 
@@ -78,7 +78,9 @@ export default function BeneficiaryView() {
       const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
       const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
       setChainData((prev) => ({ ...prev, isBenActive, balance }));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [communityContract, singleBeneficiary, refresh]);
 
   useEffect(() => {
@@ -94,7 +96,7 @@ export default function BeneficiaryView() {
   };
 
   return (
-    <>
+    <LoadingOverlay>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <BasicInfoCard chainData={chainData} />
@@ -111,6 +113,6 @@ export default function BeneficiaryView() {
       <Stack sx={{ mt: 1 }}>
         <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction.data} />
       </Stack>
-    </>
+    </LoadingOverlay>
   );
 }
