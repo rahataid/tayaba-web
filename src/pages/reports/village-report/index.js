@@ -2,7 +2,7 @@ import { Container } from '@mui/material';
 import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
-import { WardWiseReportComp, WardWiseContextProvider } from '@sections/reports/village-report';
+import { VillageWiseReportComp, VillageWiseContextProvider } from '@sections/reports/village-report';
 
 // ----------------------------------------------------------------------
 
@@ -14,12 +14,12 @@ export default function WardWiseReport() {
   const { themeStretch } = useSettingsContext();
 
   return (
-    <WardWiseContextProvider>
+    <VillageWiseContextProvider>
       <Page title={PAGE_TITLE} nocard>
         <Container maxWidth={themeStretch ? false : 'xl'}>
-          <WardWiseReportComp />
+          <VillageWiseReportComp />
         </Container>
       </Page>
-    </WardWiseContextProvider>
+    </VillageWiseContextProvider>
   );
 }

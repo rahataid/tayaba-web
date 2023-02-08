@@ -7,7 +7,6 @@ import { HistoryTable } from '@sections/transactionTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useRouter } from 'next/router';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import ActionMenu from './ActionMenu';
 import { useProject } from '@services/contracts/useProject';
 
 BeneficiaryView.propTypes = {};

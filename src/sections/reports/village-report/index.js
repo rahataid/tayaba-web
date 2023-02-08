@@ -1,2 +1,2 @@
-export { default as WardWiseReportComp } from './VillageWiseReport';
-export { ContextProvider as WardWiseContextProvider, useModuleContext } from './context';
+export { default as VillageWiseReportComp } from './VillageWiseReport';
+export { ContextProvider as VillageWiseContextProvider, useModuleContext } from './context';

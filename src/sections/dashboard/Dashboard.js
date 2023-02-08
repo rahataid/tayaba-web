@@ -1,12 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { Box, Grid } from '@mui/material';
 import SummaryCard from '@components/SummaryCard';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import BarchartSingle from './BarchartSingle';
 import Piechart from '@components/chart/Piechart';
-import { useRouter } from 'next/router';
 import { getFlickrImages } from '@services/flickr';
 import PhotoGallery from './PhotoGallery';
 import { SPACING, CHARTDATATYPES } from '@config';
@@ -15,9 +12,8 @@ import { useDashboardContext } from '@contexts/dashboard';
 
 const DashboardComponent = () => {
   const theme = useTheme();
-  const router = useRouter();
 
-  const { summary, demographicSummary, beneficiariesVillageChartData, getChartData, chartData, getDemographicSummary } =
+  const { demographicSummary, beneficiariesVillageChartData, getChartData, chartData, getDemographicSummary } =
     useDashboardContext();
 
   const [flickImages, setFlickImages] = useState([]);
