@@ -12,7 +12,7 @@ export default function TokenDetails({ chainData }) {
     <Card sx={{ width: '100%', mb: 1 }}>
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-          <Typography variant="h6">H20 Wheels Details</Typography>
+          <Typography variant="h6">H2O Wheels Details</Typography>
           <SendToken />
         </Stack>
 

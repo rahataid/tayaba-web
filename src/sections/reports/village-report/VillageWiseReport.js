@@ -30,7 +30,7 @@ function VillageWiseReport() {
              chanrt 2 - male females
         */}
         <BarchartSingle
-          title="Village Wise Claims vs Assigned"
+          title="Distribution Point Wise Claims vs Assigned"
           chart={{
             colors: [
               theme.palette.primary.main,

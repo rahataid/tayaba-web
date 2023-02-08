@@ -4,7 +4,7 @@ import { Alert, Grid, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import LoadingOverlay from '@components/LoadingOverlay';
+// import LoadingOverlay from '@components/LoadingOverlay';
 
 export default function CashActionsAlert({ projectId, chainData }) {
   const { refresh, singleProject, refreshData } = useProjectContext();
@@ -17,15 +17,14 @@ export default function CashActionsAlert({ projectId, chainData }) {
   });
   const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
-  const { sendH2OWheelsToVendor } = useProject();
+  // const { sendH2OWheelsToVendor } = useProject();
 
   const CashActions = {
     async acceptCash() {
-      showLoading('cashTrack');
+      showLoading('project-view');
       await acceptToken(chainData.tokenAllowance);
       setShowAlert(false);
-      refreshData();
-      hideLoading('cashTrack');
+      hideLoading('project-view');
     },
   };
 
@@ -64,12 +63,10 @@ export default function CashActionsAlert({ projectId, chainData }) {
     <>
       {showAlert && (
         <Grid item xs={12} md={12}>
-          <LoadingOverlay open={loading.cashTrack}>
-            <Alert severity={alert.type} action={alert.action}>
-              {' '}
-              {alert?.message}{' '}
-            </Alert>
-          </LoadingOverlay>
+          <Alert severity={alert.type} action={alert.action}>
+            {' '}
+            {alert?.message}{' '}
+          </Alert>
         </Grid>
       )}
     </>

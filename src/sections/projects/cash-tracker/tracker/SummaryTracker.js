@@ -35,7 +35,7 @@ const STEPS = [
     balance: 0,
   },
   {
-    label: 'Village Rep',
+    label: 'Distribution Point Rep',
     received: 0,
     disbursed: 0,
   },
@@ -98,7 +98,7 @@ export default function SummaryTracker({ sx, ...other }) {
           <Typography variant="caption">Balance: {step.balance} </Typography>
         </>
       );
-    if (step?.label === 'Village Rep')
+    if (step?.label === 'Distribution Point Rep')
       return (
         <>
           <Typography variant="caption">Received: {step.received} </Typography>

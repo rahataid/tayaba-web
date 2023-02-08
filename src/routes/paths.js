@@ -73,7 +73,7 @@ export const PATH_ADMINISTRATION = {
 export const PATH_REPORTS = {
   root: ROOTS_REPORTS,
 
-  villageReport: path(ROOTS_REPORTS, '/village-report'),
+  villageReport: path(ROOTS_REPORTS, '/distribution-point-report'),
 };
 
 export const PATH_APP = {

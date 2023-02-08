@@ -96,7 +96,7 @@ export const CHARTDATATYPES = [
   'simRegisteredUnder',
 ];
 export const TayabaToken = {
-  name: 'H20 Wheels',
+  name: 'H2O Wheels',
   symbol: 'H2W',
   decimals: 0,
 };

@@ -115,7 +115,7 @@ export default function TokenDetails({ chainData }) {
           alignItems="center"
           spacing={SPACING.GRID_SPACING}
         >
-          <Typography variant="subtitle2">H20 wheels received</Typography>
+          <Typography variant="subtitle2">H2O wheels received</Typography>
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="body1">{moment().format('DD MMM, YYYY')}</Typography>
           </Grid>
