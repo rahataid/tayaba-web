@@ -9,7 +9,7 @@ BasicInfoCard.propTypes = {
 };
 
 export default function BasicInfoCard({ rahatChainData, ...other }) {
-  const { singleProject } = useProjectContext();
+  const { singleProject, vendorCount } = useProjectContext();
   return (
     <>
       {rahatChainData?.isLocked && <Chip label="Project Is Locked" variant="outlined" color="error" />}
@@ -23,7 +23,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {singleProject?.data?.vendor_details.length}
+            {vendorCount}
           </Typography>
 
           <Typography variant="body2">No. Of Distributors</Typography>
