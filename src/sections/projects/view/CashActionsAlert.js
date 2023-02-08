@@ -4,10 +4,10 @@ import { Alert, Grid, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import LoadingOverlay from '@components/LoadingOverlay';
+// import LoadingOverlay from '@components/LoadingOverlay';
 
 export default function CashActionsAlert({ projectId, chainData }) {
-  const { refresh, singleProject } = useProjectContext();
+  const { refresh, singleProject, refreshData } = useProjectContext();
   const { acceptToken, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
@@ -17,7 +17,7 @@ export default function CashActionsAlert({ projectId, chainData }) {
   });
   const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
-  const { sendH2OWheelsToVendor } = useProject();
+  // const { sendH2OWheelsToVendor } = useProject();
 
   const CashActions = {
     async acceptCash() {
