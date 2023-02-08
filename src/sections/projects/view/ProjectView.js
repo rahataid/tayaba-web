@@ -53,6 +53,7 @@ const ProjectView = () => {
   }, []);
 
   let getDataFromChain = useCallback(async () => {
+    showLoading('project-view');
     let tokenAllowance = await getTokenAllowance();
     let projectBalance = await getProjectBalance();
     const isLocked = await isProjectLocked();
