@@ -52,12 +52,10 @@ const TitleCard = ({ chainData, refreshData }) => {
       await lockProject(wallet.address);
     } catch (error) {
       console.log({ error });
-      // hideLoading('project-view');
-      hideDialog();
     }
-    // hideDialog();
+    hideDialog();
     refreshData();
-    // hideLoading('project-view');
+    hideLoading('project-view');
     handleMenuItemClose();
   };
 
