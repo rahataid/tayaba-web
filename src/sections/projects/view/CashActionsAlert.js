@@ -7,7 +7,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import LoadingOverlay from '@components/LoadingOverlay';
 
 export default function CashActionsAlert({ projectId, chainData }) {
-  const { refresh, singleProject } = useProjectContext();
+  const { refresh, singleProject, refreshData } = useProjectContext();
   const { acceptToken, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
@@ -24,6 +24,7 @@ export default function CashActionsAlert({ projectId, chainData }) {
       showLoading('cashTrack');
       await acceptToken(chainData.tokenAllowance);
       setShowAlert(false);
+      refreshData();
       hideLoading('cashTrack');
     },
   };

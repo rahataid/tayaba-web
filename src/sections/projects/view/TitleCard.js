@@ -137,7 +137,7 @@ const TitleCard = ({ chainData, refreshData }) => {
               {' '}
               Beneficiary List{' '}
             </Button>
-            <ActionMenu menuItems={menuItems} actionTitle="Actions" />
+            {roles?.isDonor && <ActionMenu menuItems={menuItems} actionTitle="Actions" />}
           </Stack>
         </Card>
       </Grid>

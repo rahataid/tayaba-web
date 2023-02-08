@@ -10,7 +10,7 @@ import { BeneficiaryViewComp } from '@sections/beneficiaries/view';
 import { BeneficiaryProvider } from '@contexts/beneficiaries';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
-const PAGE_TITLE = 'Beneficairy: Details';
+const PAGE_TITLE = 'Beneficiary: Details';
 
 const BeneficiaryView = () => {
   const { themeStretch } = useSettingsContext();
