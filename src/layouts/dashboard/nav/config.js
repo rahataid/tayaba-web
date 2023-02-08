@@ -49,11 +49,7 @@ const navConfig = [
         path: PATH_PROJECTS.root,
         icon: ICONS.projects,
       },
-      // {
-      //   title: 'Claims',
-      //   path: PATH_CASH_TRACKER.root,
-      //   icon: ICONS.cashTracker,
-      // },
+
       {
         title: 'Transactions',
         path: PATH_TRANSACTIONS.root,
@@ -69,21 +65,6 @@ const navConfig = [
         path: PATH_VENDORS.root,
         icon: ICONS.vendors,
       },
-      // {
-      //   title: 'Mobilizers',
-      //   path: PATH_MOBILIZERS.root,
-      //   icon: ICONS.mobilizers,
-      // },
-      // {
-      //   title: 'Financial Institutions',
-      //   path: PATH_FINANCIAL_INSTITUTIONS.root,
-      //   icon: ICONS.financialInstitution,
-      // },
-      // {
-      //   title: 'Photo Gallery',
-      //   path: PATH_PHOTO_GALLERY.root,
-      //   icon: ICONS.photoGallery,
-      // },
 
       {
         title: 'Reports',
