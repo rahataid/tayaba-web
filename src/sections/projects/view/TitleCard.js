@@ -130,8 +130,8 @@ const TitleCard = ({ chainData, refreshData }) => {
         {/* </LoadingOverlay> */}
       </Dialog>
       <AmountForm
-        title="Add Budget in Project"
-        description={<>Please enter the budget you wish to add to project</>}
+        title="Add Relief Items in Project"
+        description={<>Please enter the Relief items you wish to add to project</>}
         approveCashTransfer={CashActions?.sendCashToProject}
         handleClose={handleClose}
         open={assignTokenDialog}

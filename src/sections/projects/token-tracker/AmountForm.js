@@ -42,7 +42,7 @@ export default function AmountForm({ approveCashTransfer, title, description, op
               autoFocus
               margin="dense"
               id="name"
-              label="Budget to add"
+              label="Relief items to add"
               type="number"
               fullWidth
               variant="outlined"

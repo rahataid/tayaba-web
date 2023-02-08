@@ -7,6 +7,7 @@ const initialState = {
   projects: [],
   singleProject: {},
   beneficiaryCount: 0,
+  vendorCount: 0,
   beneficiaries: {},
   vendors: [],
   chartData: [],
@@ -160,6 +161,7 @@ export const ProjectProvider = ({ children }) => {
         ...prev,
         beneficiariesVillageChartData: { chartLabel, chartData },
         beneficiaryCount: demographicData?.data?.data?.totalBeneficiaries || 0,
+        vendorCount: demographicData?.data?.data?.totalVendors || 0,
       }));
       return demographicData;
     } catch (err) {
