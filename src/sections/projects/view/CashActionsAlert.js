@@ -7,9 +7,8 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 // import LoadingOverlay from '@components/LoadingOverlay';
 
 export default function CashActionsAlert({ projectId, chainData }) {
-  const { refresh, singleProject, refreshData } = useProjectContext();
-  const { acceptToken, contract } = useProject();
-  const { loading, showLoading, hideLoading } = useLoading();
+  const { acceptToken } = useProject();
+  const { showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
     type: '',
     message: '',
@@ -29,14 +28,14 @@ export default function CashActionsAlert({ projectId, chainData }) {
   };
 
   const donorAllowance = useCallback(() => {
-    if (chainData.tokenAllowance > 0) {
+    if (chainData?.tokenAllowance > 0) {
       setAlert({
         type: 'info',
         message: `Pending acceptance of ${chainData.tokenAllowance} H2O wheels.`,
       });
-      setShowAlert(chainData.tokenAllowance > 0);
     }
-  }, [chainData.tokenAllowance]);
+    setShowAlert(chainData.tokenAllowance > 0);
+  }, [chainData?.tokenAllowance]);
 
   const acceptCashAction = useCallback(() => {
     if (chainData.tokenAllowance > 0) {
@@ -45,9 +44,9 @@ export default function CashActionsAlert({ projectId, chainData }) {
         message: `Confirm receival of ${chainData.tokenAllowance} H2O wheels`,
         action: <Button onClick={CashActions.acceptCash}>Accept</Button>,
       });
-      setShowAlert(chainData.tokenAllowance > 0);
     }
-  }, [chainData.tokenAllowance]);
+    setShowAlert(chainData.tokenAllowance > 0);
+  }, [chainData?.tokenAllowance]);
 
   useEffect(() => {
     if (!roles.isDonor) return;

@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { useVendorsContext } from '@contexts/vendors';
 import { useSnackbar } from 'notistack';
-import AmountForm from '@sections/projects/cash-tracker/AmountForm';
+import AmountForm from '@sections/projects/token-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
 import { useProject } from '@services/contracts/useProject';
 import { useAuthContext } from 'src/auth/useAuthContext';

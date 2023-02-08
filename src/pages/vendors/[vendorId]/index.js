@@ -4,7 +4,7 @@ import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
 import { Container } from '@mui/material';
-import { ActionMenu, VendorView } from '@sections/vendors/view';
+import { VendorView } from '@sections/vendors/view';
 import { VendorProvider } from '@contexts/vendors';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
