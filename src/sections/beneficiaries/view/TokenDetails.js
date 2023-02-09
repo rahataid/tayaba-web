@@ -51,7 +51,7 @@ export default function TokenDetails({ chainData }) {
   };
 
   return (
-    <Card sx={{ width: '100%',minHeight:'' mb: SPACING.GRID_SPACING }}>
+    <Card sx={{ width: '100%', minHeight: '', mb: SPACING.GRID_SPACING }}>
       <Dialog open={isDialogShow} onClose={hideDialog}>
         {/* <LoadingOverlay open={loading.assignClaim}> */}
         <DialogTitle> Are you sure to assign claim ?</DialogTitle>
