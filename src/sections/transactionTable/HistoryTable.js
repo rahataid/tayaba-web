@@ -7,7 +7,7 @@ const HistoryTable = ({ tableRowsList, tableHeadersList, ...other }) => (
   <Card>
     <CardContent>
       <Typography
-        variant="h5"
+        variant="subtitle1"
         sx={{
           mb: 2,
         }}

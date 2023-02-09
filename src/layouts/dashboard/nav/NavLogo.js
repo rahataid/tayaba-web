@@ -17,16 +17,7 @@ export default function NavUnicefLogo() {
         bottom: 0,
       }}
     >
-      <Box
-        component="img"
-        src="/assets/images/unicef-logo.png"
-        // sx={{
-        //   width: 100,
-        //   height: 100,
-        //   display: 'block',
-        //   margin: 'auto',
-        // }}
-      />
+      <Box component="img" src="/logo/tayaba-logo.png" />
     </Stack>
   );
 }

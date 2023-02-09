@@ -15,24 +15,25 @@ import MenuPopover from '../../../components/menu-popover';
 import { IconButtonAnimate } from '../../../components/animate';
 import truncateEthAddress from '@utils/truncateEthAddress';
 import { APP_NAME, BLOCKCHAIN_EXPLORER } from '@config';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
 
 // ----------------------------------------------------------------------
 
 const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: '/',
-  },
-  {
-    label: 'Settings',
-    onClick: () => {
-      console.log('settings drawer');
-    },
-  },
+  // {
+  //   label: 'Home',
+  //   linkTo: '/',
+  // },
+  // {
+  //   label: 'Profile',
+  //   linkTo: '/',
+  // },
+  // {
+  //   label: 'Settings',
+  //   onClick: () => {
+  //     console.log('settings drawer');
+  //   },
+  // },
 ];
 
 // ----------------------------------------------------------------------
@@ -100,12 +101,11 @@ export default function AccountPopover() {
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }} noWrap>
             {user?.email}
           </Typography>
-          <Button href={`${BLOCKCHAIN_EXPLORER}/address/${wallet?.address}`} target="_blank" rel="noopener noreferrer">
-            {truncateEthAddress(wallet?.address)}
-          </Button>
+
+          <WalletExplorerButton address={wallet?.address} type="address" />
         </Box>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
         <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
@@ -117,7 +117,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1, color: 'red' }}>
           Logout
         </MenuItem>
       </MenuPopover>

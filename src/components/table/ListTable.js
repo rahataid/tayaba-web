@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import TableHeadCustom from './TableHeadCustom';
 import Scrollbar from '@components/scrollbar';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
 
 ListTable.propTypes = {
   size: PropTypes.string,
@@ -33,11 +34,7 @@ export default function ListTable({
   const conditionalRendering = (row, key) => {
     switch (key) {
       case 'txHash':
-        return (
-          <Button href={`${BLOCKCHAIN_EXPLORER}/tx/${row}`} target="_blank" rel="noopener noreferrer">
-            {truncateEthAddress(row)}
-          </Button>
-        );
+        return <WalletExplorerButton address={row} type="tx" />;
       case 'timestamp':
         return moment.unix(row).fromNow();
       case 'createdAt':

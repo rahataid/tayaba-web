@@ -133,6 +133,8 @@ const DashboardComponent = () => {
     };
   }, []);
 
+  console.log('demographicSummary', demographicSummary);
+
   return (
     <Box>
       <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}>
@@ -158,7 +160,7 @@ const DashboardComponent = () => {
               color="info"
               icon="ic:outline-water-drop"
               title="H2O Disbursed"
-              total={demographicSummary?.totalH2ODisbursed}
+              total={demographicSummary?.totalH20Disbursed}
               subtitle={'wheels'}
             />
           </Grid>

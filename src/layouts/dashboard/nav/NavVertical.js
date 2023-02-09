@@ -15,7 +15,7 @@ import { NavSectionVertical } from '../../../components/nav-section';
 //
 import navConfig from './config';
 import NavAccount from './NavAccount';
-// import NavUnicefLogo from './NavUnicefLogo';
+import NavLogo from './NavLogo';
 
 // ----------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {/* <NavUnicefLogo /> */}
+      <NavLogo />
     </Scrollbar>
   );
 
