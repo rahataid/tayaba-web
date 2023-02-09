@@ -2,11 +2,9 @@ import { CONTRACTS } from '@config';
 import { useContract } from '@hooks/contracts';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
-import { useState } from 'react';
 import Web3Utils from '@utils/web3Utils';
 
 export const useProject = () => {
-  let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();
   const [contract, abi] = useContract(CONTRACTS.CVAPROJECT);
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
@@ -39,12 +37,12 @@ export const useProject = () => {
 
     async checkActiveVendor(address) {
       const role = await communityContract?.VENDOR_ROLE();
-      return communityContract?.hasRole(role, address);
+      return communityContract?.hasRole(role, address).catch(handleContractError);
     },
 
     async activateVendor(address) {
       const role = await communityContract?.VENDOR_ROLE();
-      const tx = await communityContract?.grantRole(role, address);
+      return communityContract?.grantRole(role, address).catch(handleContractError);
     },
 
     sendH2OWheelsToVendor(vendorAddress, amount) {
@@ -58,15 +56,14 @@ export const useProject = () => {
 
     acceptH2OByVendors: (numberOfTokens) => contract?.acceptAllowanceByVendor(numberOfTokens.toString()),
 
-    getVendorAllowance: (vendorAddress) => contract?.vendorAllowance(vendorAddress),
-
     //   Beneficiaries
 
     checkActiveBeneficiary: (address) => communityContract?.isBeneficiary(address),
 
-    activateBeneficiary: (address) => communityContract?.addBeneficiary(address),
+    activateBeneficiary: (address) => communityContract?.addBeneficiary(address).catch(handleContractError),
 
-    assignClaimsToBeneficiaries: (walletAddress, amount) => contract?.assignClaims(walletAddress, amount?.toString()),
+    assignClaimsToBeneficiaries: (walletAddress, amount) =>
+      contract?.assignClaims(walletAddress, amount?.toString()).catch(handleContractError),
 
     beneficiaryBalance: async (walletAddress) => (await contract?.beneficiaryClaims(walletAddress))?.toNumber(),
 

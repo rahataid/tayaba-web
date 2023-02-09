@@ -30,20 +30,6 @@ export default function BasicInfoCard({ chainData }) {
               )}
             </div>
           }
-
-          {/* <div>
-            {chainData?.walletAddress ? (
-              <>
-                {chainData?.isActive ? (
-                  <Chip label="Active" color="success" />
-                ) : (
-                  <Chip label="Inactive" variant="outlined" color="error" />
-                )}
-              </>
-            ) : (
-              <Chip label="Inactive" variant="outlined" color="error" />
-            )}
-          </div> */}
         </Stack>
 
         <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
