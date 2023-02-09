@@ -51,7 +51,7 @@ export default function TokenDetails({ chainData }) {
   };
 
   return (
-    <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
+    <Card sx={{ width: '100%',minHeight:'' mb: SPACING.GRID_SPACING }}>
       <Dialog open={isDialogShow} onClose={hideDialog}>
         {/* <LoadingOverlay open={loading.assignClaim}> */}
         <DialogTitle> Are you sure to assign claim ?</DialogTitle>
@@ -66,7 +66,7 @@ export default function TokenDetails({ chainData }) {
 
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-          <Typography variant="h5">Claims Details</Typography>
+          <Typography>Claims Details</Typography>
           {chainData?.isBenActive ? (
             <>
               {(roles.isManager || roles.isAdmin) && (
@@ -78,7 +78,7 @@ export default function TokenDetails({ chainData }) {
             </>
           ) : (
             <>
-              {!roles.isDonor && (
+              {roles.isAdmin && (
                 <Button variant="outlined" onClick={handleActivate} disabled={roles?.isDonor ? true : false}>
                   {' '}
                   Activate
@@ -94,13 +94,13 @@ export default function TokenDetails({ chainData }) {
           alignItems="center"
           spacing={SPACING.GRID_SPACING}
         >
-          <Typography variant="subtitle2"> Claims Assigned</Typography>
+          <Typography variant="caption">Claimed</Typography>
 
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">{moment().format('DD MMM, YYYY')}</Typography>
+            <Typography variant="caption">{moment().format('DD/MMM/YYYY')}</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">{chainData?.balance || 0}</Typography>
+            <Typography variant="caption">{chainData?.balance || 0}</Typography>
           </Grid>
         </Stack>
 
@@ -111,12 +111,12 @@ export default function TokenDetails({ chainData }) {
           alignItems="center"
           spacing={SPACING.GRID_SPACING}
         >
-          <Typography variant="subtitle2">H2O wheels received</Typography>
+          <Typography variant="caption">Received</Typography>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">{moment().format('DD MMM, YYYY')}</Typography>
+            <Typography variant="caption">{moment().format('DD/MMM/YYYY')}</Typography>
           </Grid>
           <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1">{chainData?.totalTokenIssued || 0}</Typography>
+            <Typography variant="caption">{chainData?.totalTokenIssued || 0}</Typography>
           </Grid>
           {/* <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="h4">{chainData?.totalTokenIssued || 0}</Typography>
@@ -131,9 +131,9 @@ export default function TokenDetails({ chainData }) {
           alignItems="center"
           spacing={SPACING.GRID_SPACING}
         >
-          <Typography variant="subtitle2">Wallet</Typography>
+          <Typography variant="caption">Wallet</Typography>
 
-          <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" />
+          <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" truncateLength={8} />
         </Stack>
       </CardContent>
     </Card>
