@@ -70,7 +70,7 @@ export default function TokenDetails({ chainData }) {
           {chainData?.isBenActive ? (
             <>
               {(roles.isManager || roles.isAdmin) && (
-                <Button variant="outlined" onClick={showDialog}>
+                <Button variant="outlined" onClick={showDialog} size="small">
                   {' '}
                   Assign Claim
                 </Button>
@@ -79,7 +79,12 @@ export default function TokenDetails({ chainData }) {
           ) : (
             <>
               {roles.isAdmin && (
-                <Button variant="outlined" onClick={handleActivate} disabled={roles?.isDonor ? true : false}>
+                <Button
+                  variant="outlined"
+                  onClick={handleActivate}
+                  disabled={roles?.isDonor ? true : false}
+                  size="small"
+                >
                   {' '}
                   Activate
                 </Button>
