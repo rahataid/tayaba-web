@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Stack, Typography, Chip } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
+import { LockOutlined, LockOpenOutlined } from '@mui/icons-material';
 import moment from 'moment';
 
 BasicInfoCard.propTypes = {
@@ -12,8 +13,15 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { singleProject, vendorCount } = useProjectContext();
   return (
     <>
-      {rahatChainData?.isLocked && <Chip label="Project Is Locked" variant="outlined" color="error" />}
-
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" spacing={12}>
+        <Grid container direction="column" justifyContent="center" alignItems="flex-end">
+          {rahatChainData?.isLocked ? (
+            <Chip label={`Locked `} variant="outlined" color="error" icon={<LockOutlined />} />
+          ) : (
+            <Chip label={`Unlocked`} variant="outlined" color="success" icon={<LockOpenOutlined />} />
+          )}
+        </Grid>
+      </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>

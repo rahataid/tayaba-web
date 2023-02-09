@@ -13,7 +13,6 @@ import SummaryTracker from './SummaryTracker';
 import CashActionsAlert from './CashActionsAlert';
 import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
-import LockProject from './LockProject';
 import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
 
