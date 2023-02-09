@@ -65,7 +65,7 @@ export default function TokenDetails({ chainData }) {
       </Dialog>
 
       <CardContent>
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography>Claims Details</Typography>
           {chainData?.isBenActive ? (
             <>
@@ -123,10 +123,6 @@ export default function TokenDetails({ chainData }) {
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="caption">{chainData?.totalTokenIssued || 0}</Typography>
           </Grid>
-          {/* <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="h4">{chainData?.totalTokenIssued || 0}</Typography>
-            <Typography variant="body2">Eth Balance</Typography>
-          </Grid> */}
         </Stack>
         <Stack
           sx={{ pt: SPACING.GRID_SPACING, overflow: 'elipsis' }}

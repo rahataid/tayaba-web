@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import { Alert, Card, CardContent, CardHeader, Chip, Grid, Stack, Typography } from '@mui/material';
+import { Alert, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { useVendorsContext } from '@contexts/vendors';
 // import truncateEthAddress from '@utils/truncateEthAddress';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import SendToken from './SendToken';
 
@@ -15,15 +14,11 @@ export default function BasicInfoCard({ chainData }) {
 
   return (
     <Card>
-      <CardHeader
-        title={<Typography variant="subtitle1">{singleVendor?.name}</Typography>}
-        action={
-          <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-            <SendToken />
-          </Stack>
-        }
-      />
       <CardContent>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <Typography variant="subtitle1">{singleVendor?.name}</Typography>
+          <SendToken />
+        </Stack>
         {chainData?.pendingTokens > 0 && (
           <Alert sx={{ mt: 2 }} type="info">
             {' '}
