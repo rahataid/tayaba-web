@@ -17,11 +17,11 @@ export default function LockProject({ chainData, refreshData }) {
   const { loading, showLoading, hideLoading } = useLoading();
   const { hideDialog, showDialog, isDialogShow } = useDialog();
   const handleUnlockModal = () => {
-    setModalData({ title: 'Are You Sure To Unlock  ?', type: 'Unlock' });
+    setModalData({ title: 'Are you sure to Unlock the project?', type: 'Unlock' });
     showDialog();
   };
   const handleLockModal = () => {
-    setModalData({ title: 'Are You Sure To Lock Project ?', type: 'Lock' });
+    setModalData({ title: 'Are you sure to Lock the Project ?', type: 'Lock' });
     showDialog();
   };
   const handleLockProject = async () => {
@@ -60,11 +60,15 @@ export default function LockProject({ chainData, refreshData }) {
           <DialogTitle>{modalData.title}</DialogTitle>
           <DialogActions>
             {modalData?.type === 'Lock' ? (
-              <Button onClick={handleLockProject}> YES</Button>
+              <Button onClick={handleLockProject} variant="outlined">
+                Lock
+              </Button>
             ) : (
-              <Button onClick={handleUnlockProject}> YES</Button>
+              <Button onClick={handleUnlockProject} variant="outlined">
+                Unlock
+              </Button>
             )}
-            <Button onClick={hideDialog}> NO</Button>
+            <Button onClick={hideDialog}>Cancel</Button>
           </DialogActions>
         </LoadingOverlay>
       </Dialog>

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Stack, Typography, Chip } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
-import { LockOutlined, LockOpenOutlined } from '@mui/icons-material';
 import moment from 'moment';
+import Iconify from '@components/iconify';
 
 BasicInfoCard.propTypes = {
   rahatChainData: PropTypes.object,
@@ -16,16 +16,26 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-end">
           {rahatChainData?.isLocked ? (
-            <Chip label={`Locked `} variant="outlined" color="error" icon={<LockOutlined />} />
+            <Chip
+              label={`Locked `}
+              variant="outlined"
+              color="error"
+              icon={<Iconify icon={'material-symbols:lock-outline'} />}
+            />
           ) : (
-            <Chip label={`Unlocked`} variant="outlined" color="success" icon={<LockOpenOutlined />} />
+            <Chip
+              label={`Unlocked`}
+              variant="outlined"
+              color="success"
+              icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
+            />
           )}
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {'Srso'}
+            {'SRSO'}
           </Typography>
           <Typography variant="body2">Managed By</Typography>
         </Grid>
@@ -34,7 +44,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
             {vendorCount}
           </Typography>
 
-          <Typography variant="body2"> Distributors</Typography>
+          <Typography variant="body2">Distributor(s)</Typography>
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>

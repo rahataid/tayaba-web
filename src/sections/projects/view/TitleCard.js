@@ -37,11 +37,11 @@ const TitleCard = ({ chainData, refreshData }) => {
   };
 
   const handleUnlockModal = () => {
-    setModalData({ title: 'Are You Sure To Unlock  ?', type: 'Unlock' });
+    setModalData({ title: 'Are you sure to Unlock the project ?', type: 'Unlock' });
     showDialog();
   };
   const handleLockModal = () => {
-    setModalData({ title: 'Are You Sure To Lock Project ?', type: 'Lock' });
+    setModalData({ title: 'Are you sure to Lock the project ?', type: 'Lock' });
     showDialog();
   };
   const handleLockProject = async () => {
@@ -118,12 +118,16 @@ const TitleCard = ({ chainData, refreshData }) => {
         <LoadingOverlay open={loading.projectAction}>
           <DialogTitle>{modalData.title}</DialogTitle>
           <DialogActions>
+            <Button onClick={hideDialog}>Cancel</Button>
             {modalData?.type === 'Lock' ? (
-              <Button onClick={handleLockProject}> YES</Button>
+              <Button onClick={handleLockProject} variant="outlined">
+                Lock
+              </Button>
             ) : (
-              <Button onClick={handleUnlockProject}> YES</Button>
+              <Button onClick={handleUnlockProject} variant="outlined">
+                Unlock
+              </Button>
             )}
-            <Button onClick={hideDialog}> NO</Button>
           </DialogActions>
         </LoadingOverlay>
       </Dialog>

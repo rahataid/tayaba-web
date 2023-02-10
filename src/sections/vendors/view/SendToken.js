@@ -43,10 +43,9 @@ export default function SendToken() {
 
       activateVendor(singleVendor?.walletAddress).then(async () => {
         await updateApprovalStatus(singleVendor?.walletAddress);
+        hideLoading('activateVendor');
+        refreshData();
       });
-
-      hideLoading('activateVendor');
-      refreshData();
     },
 
     async releaseH2oToken(amount) {
