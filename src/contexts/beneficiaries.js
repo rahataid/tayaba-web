@@ -66,7 +66,6 @@ export const BeneficiaryProvider = ({ children }) => {
     for (const key in state.filter) {
       filterObj[key] = state.filter[key];
     }
-
     // let filter = state.filter?.name?.length > 3 || state.filter?.phone?.length > 3 ? state.filter : {};
 
     const response = await BeneficiaryService.getBeneficiariesList(filterObj);
@@ -89,13 +88,7 @@ export const BeneficiaryProvider = ({ children }) => {
       },
     }));
     return formatted;
-  }, [
-    state.filter,
-    state.pagination,
-    state?.filter?.village,
-    state?.filter?.isActivated,
-    state?.filter?.tokensClaimed,
-  ]);
+  }, [state?.filter, state?.pagination, state?.refresh]);
 
   const setChainData = useCallback((chainData) => {
     setState((prev) => ({

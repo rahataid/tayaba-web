@@ -1,5 +1,5 @@
 import { Box, Button, TablePagination, TableCell, TableRow, Chip } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListTableToolbar from './ListTableToolbar';
 import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
@@ -8,10 +8,12 @@ import { useBeneficiaryContext } from '@contexts/beneficiaries';
 
 const TableContainer = () => {
   const router = useRouter();
+  const [flag, setFlag] = useState(false);
   const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
   useEffect(() => {
     getBeneficiariesList();
+    setFlag(!flag);
   }, [getBeneficiariesList, filter]);
 
   useEffect(() => {
@@ -78,7 +80,12 @@ const TableContainer = () => {
         }}
         onRowsPerPageChange={handleRowChange}
       />
-      <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD} errorMessage={errorMessage}>
+      <ListTable
+        key={flag}
+        tableRowsList={beneficiaries.data}
+        tableHeadersList={TABLE_HEAD}
+        errorMessage={errorMessage}
+      >
         {(rows, tableHeadersList) =>
           rows.map((row) => (
             <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>

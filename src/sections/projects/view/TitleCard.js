@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Card, Grid, Stack, Typography, Dialog, DialogTitle, DialogActions, Button, Alert } from '@mui/material';
 import ActionMenu from './ActionMenu';
-import CreateTokenDialog from '../token-tracker/CreateTokenDialog';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import { useRouter } from 'next/router';
 import useDialog from '@hooks/useDialog';
@@ -12,7 +10,7 @@ import { useSnackbar } from 'notistack';
 import useLoading from '@hooks/useLoading';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { useProject } from '@services/contracts/useProject';
-
+import LoadingOverlay from '@components/LoadingOverlay';
 const TitleCard = ({ chainData, refreshData }) => {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles, wallet } = useAuthContext();
@@ -47,7 +45,7 @@ const TitleCard = ({ chainData, refreshData }) => {
     showDialog();
   };
   const handleLockProject = async () => {
-    showLoading('project-view');
+    showLoading('projectAction');
     try {
       await lockProject(wallet.address);
     } catch (error) {
@@ -55,22 +53,22 @@ const TitleCard = ({ chainData, refreshData }) => {
     }
     hideDialog();
     refreshData();
-    hideLoading('project-view');
+    hideLoading('projectAction');
     handleMenuItemClose();
   };
 
   const handleUnlockProject = async () => {
-    showLoading('project-view');
+    showLoading('projectAction');
     try {
       await unLockProject(wallet.address);
     } catch (error) {
-      hideLoading('project-view');
+      hideLoading('projectAction');
       hideDialog();
       throwError('cannot unlock Project');
     }
     hideDialog();
     refreshData();
-    hideLoading('project-view');
+    hideLoading('projectAction');
     handleMenuItemClose();
   };
   const handleClose = () => {
@@ -117,17 +115,17 @@ const TitleCard = ({ chainData, refreshData }) => {
   return (
     <>
       <Dialog open={isDialogShow} onClose={hideDialog}>
-        {/* <LoadingOverlay open={loading.projectAction}> */}
-        <DialogTitle>{modalData.title}</DialogTitle>
-        <DialogActions>
-          {modalData?.type === 'Lock' ? (
-            <Button onClick={handleLockProject}> YES</Button>
-          ) : (
-            <Button onClick={handleUnlockProject}> YES</Button>
-          )}
-          <Button onClick={hideDialog}> NO</Button>
-        </DialogActions>
-        {/* </LoadingOverlay> */}
+        <LoadingOverlay open={loading.projectAction}>
+          <DialogTitle>{modalData.title}</DialogTitle>
+          <DialogActions>
+            {modalData?.type === 'Lock' ? (
+              <Button onClick={handleLockProject}> YES</Button>
+            ) : (
+              <Button onClick={handleUnlockProject}> YES</Button>
+            )}
+            <Button onClick={hideDialog}> NO</Button>
+          </DialogActions>
+        </LoadingOverlay>
       </Dialog>
       <AmountForm
         title="Add Relief Items in Project"
