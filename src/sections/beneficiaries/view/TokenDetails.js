@@ -24,24 +24,28 @@ export default function TokenDetails({ chainData }) {
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
 
-    assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1).then(async (res) => {
-      const txn = {
-        txHash: res?.hash,
-        contractAddress: contract?.address,
-        timestamp: Math.floor(Date.now() / 1000),
-        beneficiaryId: singleBeneficiary?.data?.id,
-        vendorId: singleBeneficiary?.data?.vendor?.id || 1,
-        projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id || 1,
-        amount: 1,
-        isOffline: false,
-        txType: 'wallet',
-      };
-      await TransactionService.addTransactionData(txn);
-      refreshData();
-    });
-
-    hideLoading('assignClaim');
-    hideDialog();
+    assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1)
+      .then(async (res) => {
+        const txn = {
+          txHash: res?.hash,
+          contractAddress: contract?.address,
+          timestamp: Math.floor(Date.now() / 1000),
+          beneficiaryId: singleBeneficiary?.data?.id,
+          vendorId: singleBeneficiary?.data?.vendor?.id || 1,
+          projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id || 1,
+          amount: 1,
+          isOffline: false,
+          txType: 'wallet',
+        };
+        await TransactionService.addTransactionData(txn);
+        hideDialog();
+        hideLoading('assignClaim');
+        refreshData();
+      })
+      .catch((err) => {
+        hideDialog();
+        hideLoading('assignClaim');
+      });
   };
 
   const handleActivate = async () => {
@@ -52,16 +56,17 @@ export default function TokenDetails({ chainData }) {
 
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
+
       <Dialog open={isDialogShow} onClose={hideDialog}>
-        {/* <LoadingOverlay open={loading.assignClaim}> */}
-        <DialogTitle> Are you sure to assign claim ?</DialogTitle>
-        <DialogActions>
-          <Button onClick={hideDialog}>Cancel</Button>
-          <Button variant="outlined" onClick={handleAssignClaim}>
-            Assign
-          </Button>
-        </DialogActions>
-        {/* </LoadingOverlay> */}
+        <LoadingOverlay open={loading.assignClaim}>
+          <DialogTitle> Are you sure to assign claim ?</DialogTitle>
+          <DialogActions>
+            <Button onClick={hideDialog}>Cancel</Button>
+            <Button variant="outlined" onClick={handleAssignClaim}>
+              Assign
+            </Button>
+          </DialogActions>
+        </LoadingOverlay>
       </Dialog>
 
       <CardContent>
