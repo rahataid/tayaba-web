@@ -1,4 +1,4 @@
-import { DashboardService, ReportingService } from '@services';
+import { DashboardService, ReportingService, VillagesService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -142,7 +142,7 @@ export const DashboardProvider = ({ children }) => {
   });
 
   const getGeoMapData = useCallback(async () => {
-    const response = await DashboardService.getGeoMapData();
+    const response = await VillagesService.getVillages();
     setState((prev) => ({
       ...prev,
       mapData: response.data.data,

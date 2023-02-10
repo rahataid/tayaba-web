@@ -10,10 +10,6 @@ export const DashboardService = {
     return client.get('reports/dashboard/summary');
   },
 
-  getGeoMapData() {
-    return client.get('/reports/beneficiaries/geo');
-  },
-
   getGenderDistribution() {
     return client.get('/stats/beneficiaries/gender');
   },

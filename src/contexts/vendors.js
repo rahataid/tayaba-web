@@ -1,4 +1,4 @@
-import { TransactionService, VendorService } from '@services';
+import { TransactionService, VendorService, VillagesService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
@@ -11,6 +11,7 @@ const initialState = {
   refresh: false,
   transaction: {},
   vendorEthBalance: 0,
+  vendorVillage: [],
   getVendorsList: () => {},
   getVendorById: () => {},
   setChainData: () => {},
@@ -18,6 +19,9 @@ const initialState = {
   refreshData: () => {},
   getVendorEthBalance: () => {},
   getTransactions: () => {},
+  getVillageVendors: (villageId) => {
+    console.log('Not implemented yet');
+  },
 };
 
 const VendorsContext = createContext(initialState);
@@ -91,9 +95,10 @@ export const VendorProvider = ({ children }) => {
     }));
   }, [state.singleVendor?.walletAddress, wallet]);
 
-  const updateApprovalStatus = useCallback(async (walletAddress) => {
-    return VendorService.updateVendorApprovalStatus(walletAddress);
-  });
+  const updateApprovalStatus = useCallback(
+    async (walletAddress) => VendorService.updateVendorApprovalStatus(walletAddress),
+    []
+  );
 
   const getTransactions = useCallback(async (id) => {
     const response = await TransactionService.getTransactionList({ vendorId: id });
@@ -115,6 +120,26 @@ export const VendorProvider = ({ children }) => {
     return formatted;
   });
 
+  const getVillageVendors = useCallback(async (villageId) => {
+    const { data } = await VillagesService.getVillageById(villageId);
+    console.log('data.data', data);
+
+    // turn village data object into array of lontitude and latitude
+    const mapData = Array(Object.keys(data).length)
+      .fill(0)
+      .map((_, i) => {
+        const key = Object.keys(data.data)[i];
+        console.log('key', key);
+        return { longitude: data.data['longitude'], latitude: data.data['latitude'] };
+      });
+
+    setState((prev) => ({
+      ...prev,
+      vendorVillage: mapData,
+    }));
+    return mapData;
+  }, []);
+
   const contextValue = {
     ...state,
     refreshData,
@@ -124,6 +149,7 @@ export const VendorProvider = ({ children }) => {
     getVendorEthBalance,
     updateApprovalStatus,
     getTransactions,
+    getVillageVendors,
   };
 
   return <VendorsContext.Provider value={contextValue}>{children}</VendorsContext.Provider>;

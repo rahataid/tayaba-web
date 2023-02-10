@@ -50,7 +50,7 @@ export const useProject = () => {
     },
 
     // vendorAllowancePending
-    pendingWheelsToAccept: (vendorAddress) => contract?.vendorAllowancePending(vendorAddress),
+    pendingWheelsToAccept: async (vendorAddress) => (await contract?.vendorAllowancePending(vendorAddress))?.toNumber(),
 
     //Should accept allowance from project
 

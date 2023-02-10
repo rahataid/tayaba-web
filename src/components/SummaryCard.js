@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import { Card, Typography, Stack, Box } from '@mui/material';
 // utils
-import { fCurrency, fPercent } from '@utils/formatNumber';
 // components
 import Iconify from '@components/iconify';
-import Chart, { useChart } from '@components/chart';
 
 // ----------------------------------------------------------------------
 
@@ -22,8 +19,6 @@ SummaryCard.propTypes = {
 };
 
 export default function SummaryCard({ title, total, icon, subtitle, color = 'primary', sx, ...other }) {
-  const theme = useTheme();
-
   return (
     <Card
       sx={{
@@ -53,7 +48,7 @@ export default function SummaryCard({ title, total, icon, subtitle, color = 'pri
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography variant="subtitle2">{title}</Typography>
-        <Typography variant="h3">{total}</Typography>
+        <Typography variant="h3">{total || 0}</Typography>
         <Box component="span" sx={{ opacity: 0.72, typography: 'body2' }}>
           {subtitle}
         </Box>
