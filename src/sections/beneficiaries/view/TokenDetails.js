@@ -51,7 +51,7 @@ export default function TokenDetails({ chainData }) {
   };
 
   return (
-    <Card sx={{ width: '100%', minHeight: '', mb: SPACING.GRID_SPACING }}>
+    <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
       <Dialog open={isDialogShow} onClose={hideDialog}>
         {/* <LoadingOverlay open={loading.assignClaim}> */}
         <DialogTitle> Are you sure to assign claim ?</DialogTitle>
@@ -65,12 +65,12 @@ export default function TokenDetails({ chainData }) {
       </Dialog>
 
       <CardContent>
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography>Claims Details</Typography>
           {chainData?.isBenActive ? (
             <>
               {(roles.isManager || roles.isAdmin) && (
-                <Button variant="outlined" onClick={showDialog}>
+                <Button variant="outlined" onClick={showDialog} size="small">
                   {' '}
                   Assign Claim
                 </Button>
@@ -79,7 +79,12 @@ export default function TokenDetails({ chainData }) {
           ) : (
             <>
               {roles.isAdmin && (
-                <Button variant="outlined" onClick={handleActivate} disabled={roles?.isDonor ? true : false}>
+                <Button
+                  variant="outlined"
+                  onClick={handleActivate}
+                  disabled={roles?.isDonor ? true : false}
+                  size="small"
+                >
                   {' '}
                   Activate
                 </Button>
@@ -118,10 +123,6 @@ export default function TokenDetails({ chainData }) {
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Typography variant="caption">{chainData?.totalTokenIssued || 0}</Typography>
           </Grid>
-          {/* <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="h4">{chainData?.totalTokenIssued || 0}</Typography>
-            <Typography variant="body2">Eth Balance</Typography>
-          </Grid> */}
         </Stack>
         <Stack
           sx={{ pt: SPACING.GRID_SPACING, overflow: 'elipsis' }}

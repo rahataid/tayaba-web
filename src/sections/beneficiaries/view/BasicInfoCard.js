@@ -9,8 +9,7 @@ BasicInfoCard.propTypes = {
 };
 
 export default function BasicInfoCard({ chainData }) {
-  const { singleBeneficiary, setChainData, refreshData } = useBeneficiaryContext();
-  const { roles } = useAuthContext();
+  const { singleBeneficiary } = useBeneficiaryContext();
 
   return (
     <Card sx={{ width: '100%', mb: 1 }}>

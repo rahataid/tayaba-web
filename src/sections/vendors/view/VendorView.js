@@ -6,6 +6,7 @@ import { HistoryTable } from '@sections/transactionTable';
 import { useVendorsContext } from '@contexts/vendors';
 import { useRouter } from 'next/router';
 import { useProject } from '@services/contracts/useProject';
+import { MapView } from './maps';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {
@@ -31,7 +32,8 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 };
 
 export default function VendorView() {
-  const { getVendorById, setChainData, chainData, refresh, transaction } = useVendorsContext();
+  const { getVendorById, setChainData, chainData, refresh, transaction, getVillageVendors, singleVendor } =
+    useVendorsContext();
   const {
     getVendorAllowance,
     checkActiveVendor,
@@ -52,14 +54,14 @@ export default function VendorView() {
     if (!communityContract) return;
     let token;
     const isActive = await checkActiveVendor(_vendorData?.walletAddress);
-    const cashAllowance = await pendingWheelsToAccept(_vendorData?.walletAddress);
+    const pendingTokens = await pendingWheelsToAccept(_vendorData?.walletAddress);
     const vendorBalance = await getVendorBalance(_vendorData?.walletAddress);
     const allowance = await getVendorAllowance(_vendorData?.walletAddress);
     if (h2oToken) token = await getProjectBalance();
 
     setChainData({
       isActive,
-      cashAllowance: cashAllowance.toNumber(),
+      pendingTokens,
       projectBalance: token ? token : null,
       allowance,
       vendorBalance,
@@ -70,20 +72,29 @@ export default function VendorView() {
     init();
   }, [init]);
 
+  useEffect(() => {
+    if (!vendorId) return;
+    if (!singleVendor?.villageId) return;
+    getVillageVendors(singleVendor?.villageId);
+  }, [vendorId, singleVendor?.walletAddress]);
+
   return (
     <>
       {' '}
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={7}>
+          <TokenDetails chainData={chainData} />
+        </Grid>
+        <Grid item xs={12} md={5}>
           <BasicInfoCard chainData={chainData} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TokenDetails chainData={chainData} />
+          <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={transaction?.data} />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <MapView />
         </Grid>
       </Grid>
-      <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={transaction?.data} />
-      </Stack>
     </>
   );
 }

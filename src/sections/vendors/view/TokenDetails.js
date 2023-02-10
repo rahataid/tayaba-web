@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
-import SendToken from './SendToken';
+import { Stack } from '@mui/material';
+import SummaryCard from '@components/SummaryCard';
 
 TokenDetails.propTypes = {
   chainData: PropTypes.object,
@@ -9,34 +9,29 @@ TokenDetails.propTypes = {
 
 export default function TokenDetails({ chainData }) {
   return (
-    <Card sx={{ width: '100%', mb: 1 }}>
-      <CardContent>
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={12}>
-          <Typography variant="h6">H2O Wheels Details</Typography>
-          <SendToken />
-        </Stack>
-
-        {chainData?.cashAllowance > 0 && (
-          <Alert sx={{ mt: 2 }} type="info">
-            {' '}
-            This distributor has yet to accept {chainData?.cashAllowance}.
-          </Alert>
-        )}
-        <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="body1">{chainData?.allowance}</Typography>
-            <Typography variant="body2">Balance</Typography>
-          </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="body1">{chainData?.cashAllowance || 0}</Typography>
-            <Typography variant="body2">Pending</Typography>
-          </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-            <Typography variant="body1">{chainData?.vendorBalance || 0}</Typography>
-            <Typography variant="body2">Disbursed</Typography>
-          </Grid>
-        </Stack>
-      </CardContent>
-    </Card>
+    <>
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <SummaryCard
+          title="Balance"
+          total={chainData?.allowance}
+          sx={{ width: '100%', maxWidth: 200 }}
+          subtitle="tokens"
+        />
+        <SummaryCard
+          title="Pending"
+          total={chainData?.pendingTokens}
+          sx={{ width: '100%', maxWidth: 200 }}
+          subtitle="tokens"
+          color="warning"
+        />
+        <SummaryCard
+          title="Disbursed"
+          total={chainData?.vendorBalance || 0}
+          sx={{ width: '100%', maxWidth: 200 }}
+          subtitle="tokens"
+          color="info"
+        />
+      </Stack>
+    </>
   );
 }
