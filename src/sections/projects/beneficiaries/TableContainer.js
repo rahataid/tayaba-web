@@ -17,7 +17,6 @@ const TableContainer = () => {
   const [limit, setLimit] = useState(50);
   const [page, setPage] = useState(0);
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState([]);
-  console.log(beneficiaries);
 
   useEffect(() => {
     if (!projectId) return;
@@ -117,7 +116,7 @@ const TableContainer = () => {
       <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD}>
         {(rows, tableHeadersList) =>
           rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['select'].align}>
                 <Checkbox
                   checked={selectedBeneficiaries.includes(row.walletAddress)}

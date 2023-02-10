@@ -81,7 +81,7 @@ const TableContainer = () => {
       <ListTable tableRowsList={beneficiaries.data} tableHeadersList={TABLE_HEAD} errorMessage={errorMessage}>
         {(rows, tableHeadersList) =>
           rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
 
               <TableCell align={tableHeadersList['cnicNumber'].align}>{row.cnicNumber}</TableCell>
