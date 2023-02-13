@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import { useAuthContext } from 'src/auth/useAuthContext';
 
 BasicInfoCard.propTypes = {
   chainData: PropTypes.object,

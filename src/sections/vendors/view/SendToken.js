@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import { useVendorsContext } from '@contexts/vendors';
 import { useSnackbar } from 'notistack';
 import AmountForm from '@sections/projects/token-tracker/AmountForm';
@@ -8,7 +7,6 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 // import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
 import { useErrorHandler } from '@hooks/useErrorHandler';
-import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 
 SendToken.propTypes = {};

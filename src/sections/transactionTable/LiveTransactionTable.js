@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Button, Card, CardHeader, Grid, Stack, Pagination } from '@mui/material';
+import { Alert, Button, Card, Stack, Pagination } from '@mui/material';
 import ListTable from '@components/table/ListTable';
 import useWSTransaction from '@hooks/useWSTransaction';
 import { TransactionService } from '@services/transactionTable';

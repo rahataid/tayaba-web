@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Grid, Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
 import { HistoryTable } from '@sections/transactionTable';
