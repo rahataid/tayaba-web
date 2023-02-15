@@ -42,7 +42,7 @@ export const useProject = () => {
 
     async activateVendor(address) {
       const role = await communityContract?.VENDOR_ROLE();
-      return communityContract?.grantRole(role, address).catch(handleContractError);
+      return communityContract?.grantRoleWithEth(role, address).catch(handleContractError);
     },
 
     sendH2OWheelsToVendor(vendorAddress, amount) {
