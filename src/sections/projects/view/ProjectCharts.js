@@ -146,7 +146,7 @@ const ProjectChart = ({ projectId }) => {
         {beneficiariesVillageChartData ? (
           <Grid item xs={12} md={12}>
             <Barchart
-              title="Beneficaries per DIstribution Point"
+              title="Beneficaries per Distribution Point"
               chart={beneficiariesVillageChartData}
               setSelectedVillage={setSelectedVillage}
               handleVillage={handleVillage}

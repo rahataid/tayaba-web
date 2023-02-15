@@ -93,7 +93,6 @@ export const useProject = () => {
           callData.push(data);
         }
         const multicall = await Web3Utils.multicall.send(callData, contract);
-        console.log('multicall', multicall);
         return multicall;
       } catch (e) {
         handleContractError(e);
