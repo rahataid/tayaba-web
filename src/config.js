@@ -74,6 +74,7 @@ export const ROLES = {
   ADMIN: 'admin',
   DONOR: 'donor',
   MANAGER: 'manager',
+  STAKEHOLDER: 'stakeholder',
 };
 
 export const CONTRACTS = {
