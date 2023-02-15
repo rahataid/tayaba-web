@@ -56,7 +56,6 @@ export default function TokenDetails({ chainData }) {
 
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
-
       <Dialog open={isDialogShow} onClose={hideDialog}>
         <LoadingOverlay open={loading.assignClaim}>
           <DialogTitle> Are you sure to assign claim ?</DialogTitle>
@@ -75,10 +74,16 @@ export default function TokenDetails({ chainData }) {
           {chainData?.isBenActive ? (
             <>
               {(roles.isManager || roles.isAdmin) && (
-                <Button variant="outlined" onClick={showDialog} size="small">
-                  {' '}
-                  Assign Claim
-                </Button>
+                <>
+                  {chainData?.balance < 1 ? (
+                    <Button variant="outlined" onClick={showDialog} size="small">
+                      {' '}
+                      Assign Claim
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
+                </>
               )}
             </>
           ) : (
