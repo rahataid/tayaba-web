@@ -101,4 +101,4 @@ export const TayabaToken = {
   decimals: 0,
 };
 
-export const NETWORK_GAS_LIMIT = 8000000;
+export const NETWORK_GAS_LIMIT = 18000000;
