@@ -30,9 +30,9 @@ const activationCode = {
 };
 
 const BulkAssign = ({ selectedBeneficiaries }) => {
-  const { bulkActivateBeneficiaries, bulkAssignBeneficiaries, bulkGetBeneficiaryClaims } = useProject();
+  const { bulkActivateBeneficiaries, bulkAssignBeneficiaries } = useProject();
   const { handleError } = useErrorHandler();
-  const { getBeneficiariesByProject } = useProjectContext();
+  const { getBeneficiariesByProject, beneficiaries } = useProjectContext();
 
   const {
     query: { projectId },
@@ -42,6 +42,12 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [numberOfTokens, setNumberOfTokens] = useState(NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY);
+
+  const assignedBeneficiaries = beneficiaries?.data?.filter((beneficiary) => beneficiary?.tokensAssigned > 0);
+
+  const unassignedSelectedBeneficiaries = selectedBeneficiaries.filter(
+    (address) => !assignedBeneficiaries.find((beneficiary) => beneficiary.walletAddress === address)
+  );
 
   useEffect(() => {
     if (!selectedBeneficiaries.length) return;
@@ -74,7 +80,7 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
         return;
       }
 
-      const activated = await bulkActivateBeneficiaries(selectedBeneficiaries);
+      const activated = await bulkActivateBeneficiaries(unassignedSelectedBeneficiaries);
 
       if (activated.status) {
         // const activatedAddresses = activated.logs.map((log) => log.address);
@@ -87,7 +93,7 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
 
         setActivationStatus(activationCode.assigning);
 
-        const assigned = await bulkAssignBeneficiaries(selectedBeneficiaries, numberOfTokens);
+        const assigned = await bulkAssignBeneficiaries(unassignedSelectedBeneficiaries, numberOfTokens);
         if (assigned.status) {
           // const updateAssignedStatus = selectedBeneficiaries.map(async (address) => {
           //   const update = await BeneficiaryService.updateUsingWalletAddress(address, {
@@ -151,8 +157,10 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
                 value={numberOfTokens}
               />
               <Typography variant="caption" mt={2}>
-                Selected beneficiaries: {selectedBeneficiaries.length} | Total tokens to assign:{' '}
-                {selectedBeneficiaries.length * numberOfTokens}
+                Selected beneficiaries:<strong> {selectedBeneficiaries.length}</strong>, out of which{' '}
+                <strong> {assignedBeneficiaries?.length}</strong> are already assigned. So{' '}
+                <strong> {unassignedSelectedBeneficiaries.length}</strong> beneficiaries will be assigned with{' '}
+                <strong>{numberOfTokens}</strong> tokens each.
               </Typography>
             </Stack>
           </DialogContentText>
