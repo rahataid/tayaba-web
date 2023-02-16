@@ -1,10 +1,9 @@
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Typography, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 // auth
 import { useAuthContext } from '../../../auth/useAuthContext';
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
 
 // ----------------------------------------------------------------------
 
