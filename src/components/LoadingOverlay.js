@@ -12,7 +12,7 @@ const LoadingOverlay = ({ open, onClose, children }) => (
         color: '#FFFFFF',
         opacity: ' 0.6 !important',
         borderRadius: 1,
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        zIndex: (theme) => theme.zIndex.drawer + 500,
         position: 'absolute',
       }}
       open={open}
