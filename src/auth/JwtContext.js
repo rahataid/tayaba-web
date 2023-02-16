@@ -37,6 +37,7 @@ const initialState = {
     isAdmin: false,
     isManager: false,
     isDonor: false,
+    isStakeholder: false,
   },
   addToken: () => {},
   deleteToken: () => {},
@@ -157,6 +158,7 @@ function AuthProvider({ children }) {
       isDonor: authState.user?.roles?.includes(ROLES.DONOR) || false,
       isAdmin: authState.user?.roles?.includes(ROLES.ADMIN) || false,
       isManager: authState.user?.roles?.includes(ROLES.MANAGER) || false,
+      isStakeholder: authState.user?.roles?.includes(ROLES.STAKEHOLDER) || false,
     }),
     [authState.user]
   );

@@ -5,17 +5,18 @@ import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
 import ListTable from '@components/table/ListTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 const TableContainer = () => {
   const router = useRouter();
   const [flag, setFlag] = useState(false);
   const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
+  const { roles } = useAuthContext();
   useEffect(() => {
     getBeneficiariesList();
     setFlag(!flag);
   }, [getBeneficiariesList, filter]);
-
   useEffect(() => {
     getAllVillages();
   }, [getAllVillages]);
@@ -89,9 +90,11 @@ const TableContainer = () => {
         {(rows, tableHeadersList) =>
           rows.map((row) => (
             <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
+              <TableCell align={tableHeadersList['name'].align}>{roles.isStakeholder ? 'XXXX' : row.name}</TableCell>
 
-              <TableCell align={tableHeadersList['cnicNumber'].align}>{row.cnicNumber}</TableCell>
+              <TableCell align={tableHeadersList['cnicNumber'].align}>
+                {roles.isStakeholder ? 'XXXX' : row.cnicNumber}
+              </TableCell>
 
               <TableCell align={tableHeadersList['hasInternetAccess'].align}>{row.hasInternetAccess}</TableCell>
 

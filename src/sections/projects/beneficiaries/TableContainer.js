@@ -5,6 +5,7 @@ import { useProjectContext } from '@contexts/projects';
 import ListTable from '@components/table/ListTable';
 import Iconify from '@components/iconify';
 import ListTableToolbar from './ListTableToolbar';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 const TableContainer = () => {
   const {
@@ -17,7 +18,7 @@ const TableContainer = () => {
   const [limit, setLimit] = useState(50);
   const [page, setPage] = useState(0);
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState([]);
-
+  const { roles } = useAuthContext();
   useEffect(() => {
     if (!projectId) return;
     getBeneficiariesByProject({
@@ -98,6 +99,7 @@ const TableContainer = () => {
       id: 'action',
       label: 'Action',
       align: 'left',
+      show: !roles.isStakeholder,
     },
   };
   // #endregion
@@ -132,9 +134,11 @@ const TableContainer = () => {
                   }}
                 />
               </TableCell>
-              <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
+              <TableCell align={tableHeadersList['name'].align}>{roles.isStakeholder ? 'XXXX' : row.name}</TableCell>
 
-              <TableCell align={tableHeadersList['cnicNumber'].align}>{row.cnicNumber}</TableCell>
+              <TableCell align={tableHeadersList['cnicNumber'].align}>
+                {roles.isStakeholder ? 'XXXX' : row.cnicNumber}
+              </TableCell>
 
               <TableCell align={tableHeadersList['hasInternetAccess'].align}>{row.hasInternetAccess}</TableCell>
 
@@ -146,11 +150,13 @@ const TableContainer = () => {
 
               <TableCell align={tableHeadersList['tokensClaimed'].align}>{row.tokensClaimed}</TableCell>
 
-              <TableCell align={tableHeadersList['action'].align}>
-                <Button onClick={handleView(row.id)} variant="text">
-                  <Iconify icon="ic:outline-remove-red-eye" />
-                </Button>
-              </TableCell>
+              {!roles.isStakeholder && (
+                <TableCell align={tableHeadersList['action'].align}>
+                  <Button onClick={handleView(row.id)} variant="text">
+                    <Iconify icon="ic:outline-remove-red-eye" />
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           ))
         }
