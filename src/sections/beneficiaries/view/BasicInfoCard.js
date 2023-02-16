@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { useAppAuthContext } from 'src/auth/JwtContext';
 
 BasicInfoCard.propTypes = {
   chainData: PropTypes.object,
@@ -9,7 +10,7 @@ BasicInfoCard.propTypes = {
 
 export default function BasicInfoCard({ chainData }) {
   const { singleBeneficiary } = useBeneficiaryContext();
-  const { roles } = useAuthContext();
+  const { roles } = useAppAuthContext();
 
   return (
     <Card sx={{ width: '100%', mb: 1 }}>
