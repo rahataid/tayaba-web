@@ -99,6 +99,7 @@ const TableContainer = () => {
       id: 'action',
       label: 'Action',
       align: 'left',
+      show: !roles.isStakeholder,
     },
   };
   // #endregion
