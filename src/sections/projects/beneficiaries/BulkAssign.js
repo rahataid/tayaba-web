@@ -160,7 +160,8 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
                 Selected beneficiaries:<strong> {selectedBeneficiaries.length}</strong>, out of which{' '}
                 <strong> {assignedBeneficiaries?.length}</strong> are already assigned. So{' '}
                 <strong> {unassignedSelectedBeneficiaries.length}</strong> beneficiaries will be assigned with{' '}
-                <strong>{numberOfTokens}</strong> tokens each.
+                <strong>{numberOfTokens}</strong> tokens each. | Total tokens to be assigned:{' '}
+                <strong>{unassignedSelectedBeneficiaries.length * numberOfTokens}</strong>
               </Typography>
             </Stack>
           </DialogContentText>
