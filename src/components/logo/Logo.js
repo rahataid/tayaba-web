@@ -12,11 +12,7 @@ import { APP_NAME } from '@config';
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const logo = (
     <Tooltip title={APP_NAME}>
-      <Box
-        component="img"
-        src="/logo/tayaba-nav-logo.png"
-        sx={{ width: 164, height: 'auto', cursor: 'pointer', ...sx }}
-      />
+      <Box component="img" src="/logo/rahat-logo.png" sx={{ width: 164, height: 'auto', cursor: 'pointer', ...sx }} />
     </Tooltip>
   );
 
