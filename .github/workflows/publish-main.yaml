@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: build and push web
+      - name: build && push web
         id: build-push-web
         uses: docker/build-push-action@v3
         with:
@@ -42,3 +42,4 @@ jobs:
           file: Dockerfile
           push: true
           tags: esatya/tayaba-web:main
+          
