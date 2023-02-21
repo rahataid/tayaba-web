@@ -46,7 +46,7 @@ export default function ListTable({
 
   const renderTableCell = (list, head) =>
     list.map((listItem, index) => (
-      <TableRow key={`${listItem.id}-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+      <TableRow hover key={`${listItem.id}-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         {Object.keys(head).map((headerKey) => {
           const tableKeyId = head[headerKey].id;
 
