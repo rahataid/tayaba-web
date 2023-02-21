@@ -8,3 +8,4 @@ export { default as EthExplorerService } from '@services/ethExplorer';
 export * as ReportingService from '@services/reporting';
 export { TransactionService } from '@services/transactionTable';
 export { default as VillagesService } from '@services/villages';
+export { ChainCacheService } from '@services/chaincache';

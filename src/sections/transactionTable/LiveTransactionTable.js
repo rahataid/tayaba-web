@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Button, Card, Stack, Pagination } from '@mui/material';
 import ListTable from '@components/table/ListTable';
 import useWSTransaction from '@hooks/useWSTransaction';
-import { TransactionService } from '@services/transactionTable';
+import { ChainCacheService } from '@services';
 import Iconify from '@components/iconify';
 import { useRouter } from 'next/router';
 import { PATH_REPORTS } from '@routes/paths';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import { CONTRACTS } from '@config';
+import truncateEthAddress from '@utils/truncateEthAddress';
 
 const TABLE_HEAD = {
   timestamp: {
@@ -21,34 +24,22 @@ const TABLE_HEAD = {
   },
   name: {
     id: 'name',
-    label: 'Beneficiary',
+    label: 'TxType',
     align: 'left',
   },
-  functionType: {
-    id: 'functionType',
-    label: 'Type',
+  beneficiary: {
+    id: 'beneficiary',
+    label: 'Beneficiary',
   },
-
   amount: {
     id: 'amount',
     label: 'Amount',
     align: 'left',
   },
-
-  txType: {
-    id: 'txType',
-    label: 'TxType',
-    align: 'left',
-  },
-
-  mode: {
-    id: 'mode',
-    label: 'Mode',
-    align: 'left',
-  },
 };
 
 const LiveTransactionTable = (props) => {
+  const { contracts } = useAuthContext();
   const [list, setList] = useState([]);
   const [error, setError] = useState(null);
 
@@ -70,16 +61,12 @@ const LiveTransactionTable = (props) => {
   const fetchTransactionList = async () => {
     try {
       const {
-        data: { data },
-      } = await TransactionService.getTransactionList();
-      const formatted = data.data.map((tx) => ({
+        data: { rows },
+      } = await ChainCacheService.listTransactions(contracts[CONTRACTS.CVAPROJECT]);
+      const formatted = rows.map((tx) => ({
         ...tx,
-        name: tx.beneficiary_data.name,
-        village: 'name',
-        mode: tx.isOffline ? 'Offline' : 'Online',
-        functionType: 'Beneficiary Assign',
-        txType: tx.txType,
-        timestamp: tx?.timestamp,
+        beneficiary: truncateEthAddress(tx.params.find((param) => param.name === 'beneficiary')?.value),
+        amount: tx.params.find((param) => param.name === 'amount')?.value,
       }));
       setList(formatted);
     } catch (error) {
