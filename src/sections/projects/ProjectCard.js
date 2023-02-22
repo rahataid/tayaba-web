@@ -48,7 +48,7 @@ export default function ProjectCard({ project }) {
         <NextLink href={`projects/${id}`} passHref>
           <Image
             alt={name}
-            src={'https://live.staticflickr.com/65535/52602020720_1380831249_b.jpg'}
+            src={'https://live.staticflickr.com/65535/52704625310_f17af896d5_b.jpg'}
             ratio="1/1"
             sx={{ borderRadius: 1.5 }}
           />

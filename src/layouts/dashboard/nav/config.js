@@ -6,6 +6,7 @@ import {
   PATH_REPORTS,
   PATH_VENDORS,
   PATH_TRANSACTIONS,
+  PATH_PHOTO_GALLERY,
 } from '@routes/paths';
 // components
 import Iconify from '@components/iconify';
@@ -49,6 +50,11 @@ const navConfig = [
         title: 'Transactions',
         path: PATH_TRANSACTIONS.root,
         icon: ICONS.transactions,
+      },
+      {
+        title: 'Photo Gallery',
+        path: PATH_PHOTO_GALLERY.root,
+        icon: ICONS.photoGallery,
       },
       {
         title: 'Beneficiary',

@@ -11,7 +11,9 @@ const PhotoGalleryComp = (props) => {
       // per_page: 100,
     };
     const res = await getFlickrImages(params);
-    setImages(res.photo);
+    let list = res.photo;
+    list = list.sort((a, b) => parseInt(b.id) - parseInt(b.id));
+    setImages(list);
   };
 
   useEffect(() => {
