@@ -59,10 +59,10 @@ export default function InfoCard({ chainData }) {
             title="Relief Items"
             total={
               chainData.projectBalance <= 0 ? (
-                roles.isDonor ? (
+                roles.isDonor && !chainData?.isLocked ? (
                   <Button onClick={handleAddBudgetModel}>Add Relief Items</Button>
                 ) : (
-                  chainData.projectBalance
+                  chainData.projectBalance || 0
                 )
               ) : (
                 chainData.projectBalance
