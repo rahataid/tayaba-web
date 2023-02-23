@@ -14,7 +14,7 @@ export default function LoginPage() {
     <GuestGuard>
       <LoginProvider>
         <Head>
-          <title> Login | {APP_NAME}</title>
+          <title> Login | {APP_NAME} - Rahat</title>
         </Head>
 
         <LoginComp />

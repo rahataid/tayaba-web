@@ -227,7 +227,7 @@ export default function AuthLoginForm() {
           },
         }}
       >
-        Login into {APP_NAME}
+        Login into Rahat
       </LoadingButton>
     </FormProvider>
   );

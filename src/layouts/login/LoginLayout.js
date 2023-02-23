@@ -20,7 +20,7 @@ export default function LoginLayout({ children, illustration, title }) {
   return (
     <StyledRoot>
       <StyledSection>
-        <Typography variant="h1">{APP_NAME}</Typography>
+        <Typography variant="h1">Rahat</Typography>
         {/* <Image
           disabledEffect
           visibleByDefault
@@ -31,12 +31,13 @@ export default function LoginLayout({ children, illustration, title }) {
 
         <StyledSectionBg />
         <Stack spacing={3} sx={{ position: 'relative', zIndex: 9 }}>
-          <Typography variant="body1" sx={{ mt: 2, maxWidth: 400, textAlign: 'center' }}>
-            Supporting vulnerable communities with a simple and efficient relief distribution platform.
+          <Typography variant="body1" sx={{ mt: 2, maxWidth: 480, textAlign: 'center' }}>
+            Supporting vulnerable communities with a simple and efficient relief distribution platform powered by
+            Blockchain.
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ position: 'absolute', bottom: 40, textAlign: 'center' }}>
-          © 2022 {APP_NAME}. All rights reserved
+          © 2022 Rumsan. All rights reserved
         </Typography>
       </StyledSection>
 
