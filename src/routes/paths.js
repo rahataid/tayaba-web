@@ -43,6 +43,7 @@ export const PATH_CASH_TRACKER = {
 };
 export const PATH_TRANSACTIONS = {
   root: ROOT_TRANSACTIONS,
+  view: (slug) => path(ROOT_TRANSACTIONS, '/' + slug),
 };
 
 export const PATH_BENEFICIARY = {

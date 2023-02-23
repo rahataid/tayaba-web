@@ -8,8 +8,20 @@ let chainCacher = axios.create({
 });
 
 export const ChainCacheService = {
-  listTransactions: async (address) => {
+  listContractTransactions: async (address) => {
     let response = await chainCacher.get(`/contracts/${address}/events?names=ClaimAssigned,ClaimProcessed`);
+    return response.data;
+  },
+
+  listTransactions: async (params) => {
+    let response = await chainCacher.get(`/transactions`, {
+      params,
+    });
+    return response.data;
+  },
+
+  getTransaction: async (txHash) => {
+    let response = await chainCacher.get(`/transactions/${txHash}`);
     return response.data;
   },
 };
