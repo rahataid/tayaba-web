@@ -13,6 +13,7 @@ export const getFlickrImages = async (params) => {
       photoset_id: FLICKR_PHOTOSET,
       format: 'json',
       nojsoncallback: 1,
+      extras: 'date_upload,date_taken',
       ...params,
     },
   });

@@ -95,9 +95,11 @@ export const ContextProvider = ({ children }) => {
 
   const getVillageByPhoneType = useCallback(async (villageId) => {
     const response = await Service.groupTypeByVillage(villageId, 'phoneType');
+    let resData = response.data.data;
+    resData.chartLabel = resData.chartLabel.map((d) => d.replace('dumbphone', 'no-phone'));
     setState((prevState) => ({
       ...prevState,
-      villageByPhoneType: response.data.data,
+      villageByPhoneType: resData,
     }));
   }, []);
 

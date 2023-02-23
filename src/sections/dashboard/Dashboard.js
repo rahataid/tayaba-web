@@ -120,9 +120,7 @@ const DashboardComponent = () => {
 
   useEffect(() => {
     const getFlickPics = async () => {
-      const params = {
-        per_page: 10,
-      };
+      const params = {};
       const res = await getFlickrImages(params);
       setFlickImages(res.photo);
     };
@@ -158,10 +156,10 @@ const DashboardComponent = () => {
           <Grid item xs={12} md={6}>
             <SummaryCard
               color="info"
-              icon="ic:outline-water-drop"
-              title="H2O Disbursed"
+              icon="mdi:wheel-barrow"
+              title="H2O wheels"
               total={demographicSummary?.totalH20Disbursed}
-              subtitle={'wheels'}
+              subtitle={'disbursed'}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -177,7 +175,7 @@ const DashboardComponent = () => {
             <SummaryCard
               color="secondary"
               icon="maki:village"
-              title="Distribution Points"
+              title="Village(s)"
               total={demographicSummary?.totalVillages}
               subtitle={'impacted'}
             />

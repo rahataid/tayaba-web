@@ -172,7 +172,9 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
             loading={buttonLoading}
             loadingPosition="start"
             startIcon={buttonLoading && <Iconify icon="eos-icons:loading" />}
-            disabled={buttonLoading || activationStatus === activationCode.assigned}
+            disabled={
+              buttonLoading || activationStatus === activationCode.assigned || !unassignedSelectedBeneficiaries.length
+            }
             variant="outlined"
             onClick={handleBulkAssign}
           >

@@ -26,18 +26,18 @@ export default function TokenDetails({ chainData }) {
 
     assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1)
       .then(async (res) => {
-        const txn = {
-          txHash: res?.hash,
-          contractAddress: contract?.address,
-          timestamp: Math.floor(Date.now() / 1000),
-          beneficiaryId: singleBeneficiary?.data?.id,
-          vendorId: singleBeneficiary?.data?.vendor?.id || 1,
-          projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id || 1,
-          amount: 1,
-          isOffline: false,
-          txType: 'wallet',
-        };
-        await TransactionService.addTransactionData(txn);
+        // const txn = {
+        //   txHash: res?.hash,
+        //   contractAddress: contract?.address,
+        //   timestamp: Math.floor(Date.now() / 1000),
+        //   beneficiaryId: singleBeneficiary?.data?.id,
+        //   vendorId: singleBeneficiary?.data?.vendor?.id || 1,
+        //   projectId: singleBeneficiary?.data?.beneficiary_project_details[0].id || 1,
+        //   amount: 1,
+        //   isOffline: false,
+        //   txType: 'wallet',
+        // };
+        // await TransactionService.addTransactionData(txn);
         hideDialog();
         hideLoading('assignClaim');
         refreshData();
