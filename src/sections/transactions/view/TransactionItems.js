@@ -1,3 +1,4 @@
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import { Box, Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import moment from 'moment';
 
@@ -13,9 +14,7 @@ const TransactionItems = ({ transaction }) => {
             </Typography>
           </Grid>
           <Grid item xs={8} md={8}>
-            <Typography variant="caption1" gutterBottom component="div">
-              {transaction?.txHash}
-            </Typography>
+            <WalletExplorerButton address={transaction?.txHash} truncateLength={16} />
           </Grid>
         </Grid>
 
@@ -67,9 +66,18 @@ const TransactionItems = ({ transaction }) => {
             </Typography>
           </Grid>
           <Grid item xs={8} md={8}>
+            <WalletExplorerButton address={transaction?.from} truncateLength={16} />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={2}>
+          <Grid item xs={4} md={4}>
             <Typography variant="caption1" gutterBottom component="div">
-              {transaction?.from}
+              To :
             </Typography>
+          </Grid>
+          <Grid item xs={8} md={8}>
+            <WalletExplorerButton address={transaction?.to} truncateLength={16} />
           </Grid>
         </Grid>
       </CardContent>

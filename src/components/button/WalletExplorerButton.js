@@ -16,7 +16,7 @@ const WalletExplorerButton = ({
   copyButton = true,
   ...props
 }) => (
-  <Stack direction="row" spacing={0} justifyContent="flex-start" alignItems="center">
+  <Stack direction="row" spacing={0} justifyContent="flex-start" alignItems="flex-start">
     <Button
       disabled={!address}
       {...props}

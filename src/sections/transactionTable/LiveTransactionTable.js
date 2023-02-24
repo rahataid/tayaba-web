@@ -59,7 +59,10 @@ const LiveTransactionTable = (props) => {
 
   const fetchTransactionList = async () => {
     try {
-      const { data } = await ChainCacheService.listTransactions();
+      const { data } = await ChainCacheService.listTransactions({
+        method:
+          'mintTokenAndApprove,acceptToken,createAllowanceToVendor,acceptAllowanceByVendor,lockProject,unlockProject,processTokenRequest',
+      });
       const formatted = data.map((tx) => ({
         ...tx,
       }));
