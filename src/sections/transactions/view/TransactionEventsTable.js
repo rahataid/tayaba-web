@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardContent, CardHeader, Stack, TableCell, TableRow, Typography } from '@mui/material';
 import ListTable from '@components/table/ListTable';
-import { arrayToObject } from '@utils/flattenArray';
+import { arrayToObject, getObjectKeyByValue } from '@utils/flattenArray';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import truncateEthAddress from '@utils/truncateEthAddress';
 import { useAuthContext } from 'src/auth/useAuthContext';
@@ -11,9 +11,6 @@ const TransactionEventsTable = ({ transaction }) => {
   const formatParams = (params) => arrayToObject(params);
 
   const { contracts } = useAuthContext();
-
-  const getObjectKeyByValue = (object, value) =>
-    Object.keys(object).find((key) => object[key]?.toLowerCase() === value?.toLowerCase());
 
   return (
     <Card

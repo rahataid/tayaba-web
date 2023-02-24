@@ -29,3 +29,6 @@ export const arrayToObject = (inputArray) => {
   }
   return outputObject;
 };
+
+export const getObjectKeyByValue = (object, value) =>
+  Object.keys(object).find((key) => object[key]?.toLowerCase() === value?.toLowerCase());
