@@ -13,9 +13,10 @@ const WalletExplorerButton = ({
   truncate = true,
   children,
   truncateLength = 4,
+  copyButton = true,
   ...props
 }) => (
-  <Stack direction="row" spacing={0} justifyContent="center" alignItems="center">
+  <Stack direction="row" spacing={0} justifyContent="flex-start" alignItems="flex-start">
     <Button
       disabled={!address}
       {...props}
@@ -26,7 +27,7 @@ const WalletExplorerButton = ({
       {children ? children : truncate ? truncateEthAddress(address, truncateLength) : address ?? 'N/A'}
     </Button>
 
-    {address && (
+    {copyButton && (
       <Tooltip title="Copy to clipboard">
         <Button
           padding={0}
@@ -45,6 +46,7 @@ WalletExplorerButton.propTypes = {
   children: PropTypes.node,
   truncate: PropTypes.bool,
   truncateLength: PropTypes.number,
+  copyButton: PropTypes.bool,
 };
 
 export default WalletExplorerButton;
