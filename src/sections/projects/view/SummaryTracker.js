@@ -92,7 +92,7 @@ export default function SummaryTracker({ sx, ...other }) {
         <>
           <Typography variant="caption">Budget: {step.budget} </Typography>
           <Typography variant="caption">Balance: {step.balance} </Typography>
-          <WalletExplorerButton address={step?.txHash}>
+          <WalletExplorerButton copyButton={false} address={step?.txHash}>
             {step?.timestamp > 0 && moment.unix(step?.timestamp).format('DD/MM/YYYY')}
           </WalletExplorerButton>
         </>
@@ -103,7 +103,7 @@ export default function SummaryTracker({ sx, ...other }) {
         <>
           <Typography variant="caption">Claims: {step.claims} </Typography>
           <Typography variant="caption">Received: {step.received} </Typography>
-          <WalletExplorerButton address={step?.txHash}>
+          <WalletExplorerButton copyButton={false} address={step?.txHash}>
             {step?.timestamp > 0 && moment.unix(step?.timestamp).format('DD/MM/YYYY')}
           </WalletExplorerButton>
         </>
@@ -113,7 +113,7 @@ export default function SummaryTracker({ sx, ...other }) {
         <>
           <Typography variant="caption">Allowance: {step.allowance} </Typography>
           <Typography variant="caption">Disbursed: {step.disbursed} </Typography>
-          <WalletExplorerButton address={step?.txHash}>
+          <WalletExplorerButton copyButton={false} address={step?.txHash}>
             {step?.timestamp > 0 && moment.unix(step?.timestamp).format('DD/MM/YYYY')}
           </WalletExplorerButton>
         </>
@@ -123,7 +123,7 @@ export default function SummaryTracker({ sx, ...other }) {
       <>
         <Typography variant="caption">Received: {step?.received} </Typography>
         <Typography variant="caption">Balance: {step?.balance} </Typography>
-        <WalletExplorerButton address={step?.txHash}>
+        <WalletExplorerButton copyButton={false} address={step?.txHash}>
           {step?.timestamp > 0 && moment.unix(step?.timestamp).format('DD/MM/YYYY')}
         </WalletExplorerButton>
       </>

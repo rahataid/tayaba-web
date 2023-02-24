@@ -102,12 +102,12 @@ export default function AccountPopover() {
             {user?.email}
           </Typography>
 
-          <WalletExplorerButton address={wallet?.address} type="address" />
+          <WalletExplorerButton copyButton={false} address={wallet?.address} type="address" truncateLength={6} />
         </Box>
 
         {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-        <Stack sx={{ p: 1 }}>
+        <Stack sx={{ p: 0 }}>
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)} {...option}>
               {option.label}
