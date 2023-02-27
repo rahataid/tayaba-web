@@ -7,6 +7,10 @@ import { useVendorsContext } from '@contexts/vendors';
 import { useRouter } from 'next/router';
 import { useProject } from '@services/contracts/useProject';
 import { MapView } from './maps';
+import { ChainCacheService } from '@services/chaincache';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import { CONTRACTS } from '@config';
+import truncateEthAddress from '@utils/truncateEthAddress';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {
@@ -32,8 +36,8 @@ const TRANSACTION_TABLE_HEADER_LIST = {
 };
 
 export default function VendorView() {
-  const { getVendorById, setChainData, chainData, refresh, transaction, getVillageVendors, singleVendor } =
-    useVendorsContext();
+  const { contracts } = useAuthContext();
+  const { getVendorById, setChainData, chainData, refresh, getVillageVendors, singleVendor } = useVendorsContext();
   const {
     getVendorAllowance,
     checkActiveVendor,
@@ -46,6 +50,8 @@ export default function VendorView() {
   const {
     query: { vendorId },
   } = useRouter();
+
+  const [transactions, setTransactions] = React.useState([]);
 
   const init = useCallback(async () => {
     if (!vendorId) return;
@@ -68,6 +74,26 @@ export default function VendorView() {
     });
   }, [vendorId, refresh, communityContract]);
 
+  const fetchTransactionList = async () => {
+    try {
+      const {
+        data: { rows },
+      } = await ChainCacheService.listTransactionsByVendor(
+        contracts[CONTRACTS.CVAPROJECT],
+        singleVendor?.walletAddress
+      );
+      console.log(rows);
+      const formatted = rows.map((tx) => ({
+        ...tx,
+        beneficiary: truncateEthAddress(tx.params.find((param) => param.name === 'beneficiary')?.value),
+        amount: tx.params.find((param) => param.name === 'amount')?.value,
+      }));
+      setTransactions(formatted);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     init();
   }, [init]);
@@ -76,6 +102,7 @@ export default function VendorView() {
     if (!vendorId) return;
     if (!singleVendor?.villageId) return;
     getVillageVendors(singleVendor?.villageId);
+    fetchTransactionList();
   }, [vendorId, singleVendor?.walletAddress]);
 
   return (
@@ -89,7 +116,7 @@ export default function VendorView() {
           <BasicInfoCard chainData={chainData} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={transaction?.data} />
+          <HistoryTable tableHeadersList={TRANSACTION_TABLE_HEADER_LIST} tableRowsList={transactions} />
         </Grid>
         <Grid item xs={12} md={6}>
           <MapView />

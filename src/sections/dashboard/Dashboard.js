@@ -120,9 +120,7 @@ const DashboardComponent = () => {
 
   useEffect(() => {
     const getFlickPics = async () => {
-      const params = {
-        per_page: 10,
-      };
+      const params = {};
       const res = await getFlickrImages(params);
       setFlickImages(res.photo);
     };

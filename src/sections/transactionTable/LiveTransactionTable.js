@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, Card, Stack, Pagination } from '@mui/material';
+import { Alert, Button, Card, Stack, Pagination, TableRow, TableCell } from '@mui/material';
 import ListTable from '@components/table/ListTable';
 import useWSTransaction from '@hooks/useWSTransaction';
-import { TransactionService } from '@services/transactionTable';
+import { ChainCacheService } from '@services';
 import Iconify from '@components/iconify';
 import { useRouter } from 'next/router';
-import { PATH_REPORTS } from '@routes/paths';
+import { PATH_REPORTS, PATH_TRANSACTIONS } from '@routes/paths';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import { CONTRACTS } from '@config';
+import truncateEthAddress from '@utils/truncateEthAddress';
+import moment from 'moment';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import Link from 'next/link';
 
 const TABLE_HEAD = {
   timestamp: {
@@ -19,36 +25,20 @@ const TABLE_HEAD = {
     label: 'TxHash',
     align: 'left',
   },
-  name: {
-    id: 'name',
-    label: 'Beneficiary',
+  method: {
+    id: 'method',
+    label: 'Method',
     align: 'left',
   },
-  functionType: {
-    id: 'functionType',
-    label: 'Type',
-  },
-
-  amount: {
-    id: 'amount',
-    label: 'Amount',
-    align: 'left',
-  },
-
-  txType: {
-    id: 'txType',
-    label: 'TxType',
-    align: 'left',
-  },
-
-  mode: {
-    id: 'mode',
-    label: 'Mode',
+  action: {
+    id: 'action',
+    label: 'Action',
     align: 'left',
   },
 };
 
 const LiveTransactionTable = (props) => {
+  const { contracts } = useAuthContext();
   const [list, setList] = useState([]);
   const [error, setError] = useState(null);
 
@@ -69,18 +59,14 @@ const LiveTransactionTable = (props) => {
 
   const fetchTransactionList = async () => {
     try {
-      const {
-        data: { data },
-      } = await TransactionService.getTransactionList();
-      const formatted = data.data.map((tx) => ({
+      const { data } = await ChainCacheService.listTransactions({
+        method:
+          'mintTokenAndApprove,acceptToken,createAllowanceToVendor,acceptAllowanceByVendor,lockProject,unlockProject,processTokenRequest',
+      });
+      const formatted = data.map((tx) => ({
         ...tx,
-        name: tx.beneficiary_data.name,
-        village: 'name',
-        mode: tx.isOffline ? 'Offline' : 'Online',
-        functionType: 'Beneficiary Assign',
-        txType: tx.txType,
-        timestamp: tx?.timestamp,
       }));
+
       setList(formatted);
     } catch (error) {
       console.error(error);
@@ -108,7 +94,25 @@ const LiveTransactionTable = (props) => {
       {' '}
       {/* <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2 }} md={12}></Stack> */}
       {error && <Alert severity="error">{error}</Alert>}
-      <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list} />
+      <ListTable tableHeadersList={TABLE_HEAD} tableRowsList={list}>
+        {(rows, headers) =>
+          rows.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell align={headers['timestamp'].align}>{moment.unix(row.timestamp).fromNow()}</TableCell>
+              <TableCell align="left">
+                <WalletExplorerButton address={row.txHash} copyButton={false} />
+              </TableCell>
+              <TableCell align="left">{row.method}</TableCell>
+
+              <TableCell align="left">
+                <Button onClick={() => router.push(PATH_TRANSACTIONS.view(row.txHash))} variant="text">
+                  View
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
+        }
+      </ListTable>
       <Pagination count={list?.totalPage} onChange={handlePagination} />
     </Card>
   );

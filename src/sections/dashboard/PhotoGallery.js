@@ -32,7 +32,7 @@ PhotoGallery.propTypes = {
 
 export default function PhotoGallery({ list, ...other }) {
   const theme = useTheme();
-
+  list = list.sort((a, b) => parseInt(b.id) - parseInt(b.id));
   const carouselRef = useRef(null);
 
   const [currentIndex, setCurrentIndex] = useState(theme.direction === 'rtl' ? list.length - 1 : 0);

@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, Chip, TablePagination, TableCell, TableRow } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useProjectContext } from '@contexts/projects';
 import ListTable from '@components/table/ListTable';
@@ -19,6 +19,7 @@ const TableContainer = () => {
   const [page, setPage] = useState(0);
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState([]);
   const { roles } = useAuthContext();
+  const [isAllChecked, setIsAllChecked] = useState(false);
   useEffect(() => {
     if (!projectId) return;
     getBeneficiariesByProject({
@@ -31,7 +32,10 @@ const TableContainer = () => {
   const handleView = (id) => () => {
     push(`/beneficiaries/${id}`);
   };
-
+  const removeAll = () => {
+    const benList = beneficiaries.data.map((beneficiary) => beneficiary.walletAddress);
+    setSelectedBeneficiaries(selectedBeneficiaries.filter((x) => !benList.includes(x)));
+  };
   const handlePagination = (event, page) => {
     let start = page * beneficiaries.limit;
     setStart(start);
@@ -43,6 +47,15 @@ const TableContainer = () => {
     setPage(0);
   };
 
+  const handleCheck = useCallback(() => {
+    if (!beneficiaries || !beneficiaries?.data) return;
+    const walletArr = beneficiaries?.data?.map((elem) => elem.walletAddress);
+    const set2 = new Set(selectedBeneficiaries);
+    setIsAllChecked(walletArr.every((item) => set2.has(item)));
+  }, [selectedBeneficiaries, beneficiaries]);
+  useEffect(() => {
+    handleCheck();
+  }, [handleCheck]);
   // #region Table Headers
   const TABLE_HEAD = {
     select: {
@@ -50,13 +63,17 @@ const TableContainer = () => {
       label: (
         <Checkbox
           defaultChecked={false}
-          indeterminate={selectedBeneficiaries.length > 0 && selectedBeneficiaries.length < beneficiaries.data.length}
+          indeterminate={selectedBeneficiaries.length > 0 && !isAllChecked}
+          checked={isAllChecked}
           onChange={(e) => {
             const { checked } = e.target;
             if (checked) {
-              setSelectedBeneficiaries(beneficiaries.data.map((beneficiary) => beneficiary.walletAddress));
+              setSelectedBeneficiaries([
+                ...selectedBeneficiaries,
+                ...beneficiaries.data.map((beneficiary) => beneficiary.walletAddress),
+              ]);
             } else {
-              setSelectedBeneficiaries([]);
+              removeAll();
             }
           }}
         />
