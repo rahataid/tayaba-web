@@ -8,7 +8,17 @@ import { useForm, Controller } from 'react-hook-form';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import { Stack, Grid, Button, TextField, Typography, IconButton, InputAdornment, FormHelperText,MenuItem } from '@mui/material';
+import {
+  Stack,
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
+  FormHelperText,
+  MenuItem,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -37,15 +47,18 @@ export default function ProjectAdd() {
     startDate: '',
     endDate: '',
     budget: '',
-    projects: '',
+    projectsTypes: '',
   });
   const [step, setStep] = useState(0);
-  const {projects, getProjectsList} = useProjectContext();
+  const { projectsTypesList, getProjectsTypesList } = useProjectContext();
   const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
     defaultValues,
   });
+  console.log({ projectsTypesList });
+  console.log('hello');
+
   const {
     watch,
     reset,
@@ -62,9 +75,9 @@ export default function ProjectAdd() {
     setStep(1);
   };
 
-    useEffect(() => {
-        getProjectsList();
-    },[getProjectsList]);
+  useEffect(() => {
+    getProjectsTypesList();
+  }, [getProjectsTypesList]);
   return (
     <>
       {step === 0 && (
@@ -135,17 +148,16 @@ export default function ProjectAdd() {
             </Grid>
             <Grid item xs={12} md={6}>
               <Stack spacing={3}>
-              <RHFSelect name={'projectList'} label="Select Project Type">
+                <RHFSelect name={'projectList'} label="Select Project Type">
                   {' '}
                   <option value="" />
-                  {projects
-                    ? projects?.map((obj) => (
-                        <option key={obj.id} value={obj.id}>
-                          {obj.name}
+                  {projectsTypesList
+                    ? projectsTypesList?.map((obj) => (
+                        <option key={obj.value} value={obj.value}>
+                          {obj.label}
                         </option>
                       ))
                     : ''}
-                    
                 </RHFSelect>
               </Stack>
             </Grid>

@@ -5,6 +5,7 @@ import { useErrorHandler } from '@hooks/useErrorHandler';
 
 const initialState = {
   projects: [],
+  projectsTypesList: [],
   singleProject: {},
   beneficiaryCount: 0,
   vendorCount: 0,
@@ -32,6 +33,7 @@ const initialState = {
   getChartData: () => {},
   getBeneficiariesByvillage: () => {},
   setFilter: () => {},
+  getProjectsTypesList: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -169,6 +171,18 @@ export const ProjectProvider = ({ children }) => {
     }
   });
 
+  const getProjectsTypesList = useCallback(async () => {
+    const { data } = await ProjectService.getProjectsTypesList();
+    const formattedData = data.data.map((elem) => ({
+      label: elem.name,
+      value: elem.id,
+    }));
+    setState((prev) => ({
+      ...prev,
+      projectsTypesList: formattedData,
+    }));
+  }, []);
+
   const contextValue = {
     ...state,
     refreshData,
@@ -180,6 +194,7 @@ export const ProjectProvider = ({ children }) => {
     getChartData,
     getBeneficiariesByvillage,
     setFilter,
+    getProjectsTypesList,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

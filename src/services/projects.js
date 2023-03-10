@@ -7,6 +7,11 @@ export const ProjectService = {
       params,
     });
   },
+  getProjectsTypesList(params) {
+    return clientApi.get('/projectsTypes', {
+      params,
+    });
+  },
 
   getProjectById(id) {
     return clientApi.get(`/projects/${id}`);
