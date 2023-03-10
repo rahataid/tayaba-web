@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { useRef, useEffect, useState } from 'react';
+import { useProjectContext } from '@contexts/projects';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -7,7 +8,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import { Stack, Grid, Button, TextField, Typography, IconButton, InputAdornment, FormHelperText } from '@mui/material';
+import { Stack, Grid, Button, TextField, Typography, IconButton, InputAdornment, FormHelperText,MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -36,8 +37,10 @@ export default function ProjectAdd() {
     startDate: '',
     endDate: '',
     budget: '',
+    projects: '',
   });
   const [step, setStep] = useState(0);
+  const {projects, getProjectsList} = useProjectContext();
   const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
@@ -59,6 +62,9 @@ export default function ProjectAdd() {
     setStep(1);
   };
 
+    useEffect(() => {
+        getProjectsList();
+    },[getProjectsList]);
   return (
     <>
       {step === 0 && (
@@ -129,12 +135,16 @@ export default function ProjectAdd() {
             </Grid>
             <Grid item xs={12} md={6}>
               <Stack spacing={3}>
-              <RHFSelect name={'projectList'} label="Select Project">
+              <RHFSelect name={'projectList'} label="Select Project Type">
                   {' '}
-                  <option>Special Project</option>
-                  <option>Crisis Response</option>
-                  <option>UBI</option>
-                  <option>Micro Loans</option>
+                  <option value="" />
+                  {projects
+                    ? projects?.map((obj) => (
+                        <option key={obj.id} value={obj.id}>
+                          {obj.name}
+                        </option>
+                      ))
+                    : ''}
                     
                 </RHFSelect>
               </Stack>
