@@ -127,6 +127,18 @@ export default function ProjectAdd() {
                 <RHFTextField id="Budget" name="budget" label="Budget" />
               </Stack>
             </Grid>
+            <Grid item xs={12} md={6}>
+              <Stack spacing={3}>
+              <RHFSelect name={'projectList'} label="Select Project">
+                  {' '}
+                  <option>Special Project</option>
+                  <option>Crisis Response</option>
+                  <option>UBI</option>
+                  <option>Micro Loans</option>
+                    
+                </RHFSelect>
+              </Stack>
+            </Grid>
           </Grid>
 
           <LoadingButton
