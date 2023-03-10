@@ -66,66 +66,30 @@ export default function AddedInfo({ projectInfo, setStep }) {
           <Card>
             <FormProvider methods={methods} onSubmit={handleSubmit(handleFinish)}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={12} md={9}>
                   <Stack spacing={3}>
                     <RHFTextField id="walletAddress" name="walletAddress" label="Wallet Address" />
-                    <Button onClick={handleCreateWallet}>Generate Wallet Address</Button>
-                    <div>
-                      <Stack direction="row" alignItems="center" spacing={3}>
-                        <Button
-                          color="warning"
-                          variant="contained"
-                          onClick={handleClickAttachPhoto}
-                          startIcon={<Iconify icon="eva:cloud-upload-fill" />}
-                        >
-                          Upload photo
-                        </Button>
-                        <div>
-                          {values.photo?.name && <Typography variant="subtitle2">{values.photo.name}</Typography>}
-                          {values.photo?.size && (
-                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                              {values.photo.size}
-                            </Typography>
-                          )}
-                        </div>
-                        <input
-                          {...register('photo')}
-                          ref={fileInputRef}
-                          type="file"
-                          onChange={(event) => {
-                            const file = event.target.files?.[0];
-                            setValue('photo', file);
-                          }}
-                          style={{ display: 'none' }}
-                        />
-                      </Stack>
-                      {!!errors?.photo && (
-                        <FormHelperText sx={{ px: 2, display: 'block' }} error>
-                          {errors?.photo?.message}
-                        </FormHelperText>
-                      )}
-                    </div>
                   </Stack>
-                  <Button
-                    sx={{ margin: 3 }}
-                    color="primary"
-                    size="large"
-                    variant="contained"
-                    onClick={() => setStep(0)}
-                  >
-                    Previous
-                  </Button>
-                  <LoadingButton
-                    sx={{ margin: 3 }}
-                    color="primary"
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                  >
-                    Add
-                  </LoadingButton>
                 </Grid>
+                <Grid item xs={12} md={3}>
+                  <Stack spacing={3}>
+                    <Button onClick={handleCreateWallet}>Generate Wallet Address</Button>
+                  </Stack>
+                </Grid>
+
+                <Button sx={{ margin: 3 }} color="primary" size="large" variant="contained" onClick={() => setStep(0)}>
+                  Previous
+                </Button>
+                <LoadingButton
+                  sx={{ margin: 3 }}
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  Add
+                </LoadingButton>
               </Grid>
             </FormProvider>
           </Card>
