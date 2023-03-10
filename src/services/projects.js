@@ -58,4 +58,8 @@ export const ProjectService = {
   getTrackerData(name) {
     return clientApi.get(`/misc/${name}`);
   },
+  
+  addProject(payload) {
+    return clientApi.post('/projects', payload);
+  },
 };

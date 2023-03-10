@@ -34,6 +34,7 @@ const initialState = {
   getBeneficiariesByvillage: () => {},
   setFilter: () => {},
   getProjectsTypesList: () => {},
+  addProject: () => {}
 };
 
 const ProjectsContext = createContext(initialState);
@@ -82,13 +83,17 @@ export const ProjectProvider = ({ children }) => {
         : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
-
+    
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
     }));
     return formatted;
   }, []);
+
+  const addProject = (data) => {
+    return ProjectService.addProject(data);
+  };
 
   const getBeneficiariesByProject = useCallback(
     async (query) => {
@@ -195,6 +200,8 @@ export const ProjectProvider = ({ children }) => {
     getBeneficiariesByvillage,
     setFilter,
     getProjectsTypesList,
+    addProject 
+
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
