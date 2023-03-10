@@ -48,7 +48,7 @@ export default function ProjectAdd() {
     endDate: '',
     projectsTypes: '',
   });
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const { projectsTypesList, getProjectsTypesList } = useProjectContext();
   const methods = useForm({
     mode: 'onTouched',
