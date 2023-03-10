@@ -11,7 +11,6 @@ import FormProvider, { RHFEditor, RHFSelect, RHFTextField } from '@components/ho
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 import Web3Utils from '@utils/web3Utils';
-import Iconify from '@components/iconify';
 const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
@@ -116,11 +115,11 @@ export default function AddedInfo({ projectInfo, setStep }) {
                 {Object.entries(projectInfo).map(([key, value]) =>
                   value instanceof Date ? (
                     <Grid item xs={12} md={6}>
-                      <Typography paddingLeft={2} variant="body">
+                      <Typography paddingLeft={2} variant="h5">
                         {' '}
                         {moment(value).format('DD MMM YYYY')}
                       </Typography>
-                      <Typography paddingLeft={2} variant="h5">
+                      <Typography paddingLeft={2} variant="body">
                         {' '}
                         {key.charAt(0).toUpperCase() + key.slice(1)}
                       </Typography>

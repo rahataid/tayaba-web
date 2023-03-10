@@ -46,7 +46,6 @@ export default function ProjectAdd() {
     description: '',
     startDate: '',
     endDate: '',
-    budget: '',
     projectsTypes: '',
   });
   const [step, setStep] = useState(1);
@@ -137,11 +136,6 @@ export default function ProjectAdd() {
                     />
                   </Stack>
                 </LocalizationProvider>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Stack spacing={3}>
-                <RHFTextField id="Budget" name="budget" label="Budget" />
               </Stack>
             </Grid>
             <Grid item xs={12} md={6}>

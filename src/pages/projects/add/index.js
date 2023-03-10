@@ -14,7 +14,7 @@ export default function ProjectAddView() {
 
   return (
     <ProjectProvider>
-      <Page title={PAGE_TITLE}>
+      <Page title={PAGE_TITLE} nocard>
         <Container maxWidth={themeStretch ? false : 'xl'}>
           <ProjectAdd />
         </Container>
