@@ -49,15 +49,13 @@ export default function ProjectAdd() {
     budget: '',
     projectsTypes: '',
   });
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const { projectsTypesList, getProjectsTypesList } = useProjectContext();
   const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
     defaultValues,
   });
-  console.log({ projectsTypesList });
-  console.log('hello');
 
   const {
     watch,

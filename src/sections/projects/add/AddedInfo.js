@@ -7,11 +7,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { Stack, Grid, Button, TextField, Typography, Card } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
-import FormProvider, { RHFEditor, RHFCheckbox, RHFTextField } from '@components/hook-form';
+import FormProvider, { RHFEditor, RHFSelect, RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 import Web3Utils from '@utils/web3Utils';
 import Iconify from '@components/iconify';
+const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
   walletAddress: Yup.string()
@@ -65,51 +66,79 @@ export default function AddedInfo({ projectInfo, setStep }) {
         <Grid item xs={12} md={6}>
           <Card>
             <FormProvider methods={methods} onSubmit={handleSubmit(handleFinish)}>
-              <Grid container spacing={3}>
+              <Grid container padding={1} spacing={3}>
                 <Grid item xs={12} md={9}>
                   <Stack spacing={3}>
                     <RHFTextField id="walletAddress" name="walletAddress" label="Wallet Address" />
                   </Stack>
                 </Grid>
                 <Grid item xs={12} md={3}>
+                  <Button onClick={handleCreateWallet}>Generate Wallet Address</Button>
+                </Grid>
+                <Grid item xs={12} md={12}>
                   <Stack spacing={3}>
-                    <Button onClick={handleCreateWallet}>Generate Wallet Address</Button>
+                    <RHFSelect name="community" label="Select Community">
+                      {' '}
+                      <option>Select Community</option>
+                      {community
+                        ? community?.map((obj) => (
+                            <option key={obj.value} value={obj.value}>
+                              {obj.label}
+                            </option>
+                          ))
+                        : ''}
+                    </RHFSelect>
                   </Stack>
                 </Grid>
-
-                <Button sx={{ margin: 3 }} color="primary" size="large" variant="contained" onClick={() => setStep(0)}>
-                  Previous
-                </Button>
-                <LoadingButton
-                  sx={{ margin: 3 }}
-                  color="primary"
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  loading={isSubmitting}
-                >
-                  Add
-                </LoadingButton>
+                <Grid item xs={12} md={12}>
+                  <Button sx={{ margin: 1 }} color="primary" size="large" variant="outlined" onClick={() => setStep(0)}>
+                    Previous
+                  </Button>
+                  <LoadingButton
+                    sx={{ margin: 1 }}
+                    color="primary"
+                    size="large"
+                    type="submit"
+                    variant="outlined"
+                    loading={isSubmitting}
+                  >
+                    Add
+                  </LoadingButton>
+                </Grid>
               </Grid>
             </FormProvider>
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card sx={{ backfaceVisibility: 3 }}>
+          <Card>
             <Stack spacing={3} padding={1}>
-              {Object.entries(projectInfo).map(([key, value]) =>
-                value instanceof Date ? (
-                  <Typography paddingLeft={2}>
-                    {' '}
-                    {key.charAt(0).toUpperCase() + key.slice(1)} : {moment(value).toLocaleString()}
-                  </Typography>
-                ) : (
-                  <Typography paddingLeft={2}>
-                    {' '}
-                    {key.charAt(0).toUpperCase() + key.slice(1)} : {value}
-                  </Typography>
-                )
-              )}
+              <Grid container spacing={3}>
+                {Object.entries(projectInfo).map(([key, value]) =>
+                  value instanceof Date ? (
+                    <Grid item xs={12} md={6}>
+                      <Typography paddingLeft={2} variant="body">
+                        {' '}
+                        {moment(value).format('DD MMM YYYY')}
+                      </Typography>
+                      <Typography paddingLeft={2} variant="h5">
+                        {' '}
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12} md={6}>
+                      <Typography paddingLeft={2} variant="h5">
+                        {' '}
+                        {value}
+                      </Typography>
+                      <Typography paddingLeft={2} variant="body">
+                        {' '}
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </Typography>
+                    </Grid>
+                  )
+                )}
+              </Grid>
             </Stack>
           </Card>
         </Grid>
