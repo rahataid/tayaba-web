@@ -1,13 +1,13 @@
 import * as Yup from 'yup';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 // @mui
-import { Stack, Grid, Button, TextField, Typography, Card } from '@mui/material';
+import { Stack, Grid, Button, Typography, Card } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
-import FormProvider, { RHFEditor, RHFSelect, RHFTextField } from '@components/hook-form';
+import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 import Web3Utils from '@utils/web3Utils';
@@ -24,7 +24,6 @@ export default function AddedInfo({ projectInfo, setStep }) {
   const [defaultValues, setDefaultValues] = useState({
     walletAddress: '',
   });
-  const fileInputRef = useRef(null);
   const { addProject } = useProjectContext();
   const methods = useForm({
     mode: 'onTouched',
@@ -33,18 +32,12 @@ export default function AddedInfo({ projectInfo, setStep }) {
   });
   const {
     watch,
-    reset,
     control,
-    register,
     setValue,
-    resetField,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = methods;
-  const values = watch();
-  const handleClickAttachPhoto = () => {
-    fileInputRef.current?.click();
-  };
+
   const handleFinish = async (data) => {
     try {
       await addProject({ ...data, ...projectInfo });
@@ -58,7 +51,6 @@ export default function AddedInfo({ projectInfo, setStep }) {
     setDefaultValues({ walletAddress: wallet.address });
     setValue('walletAddress', wallet.address);
   };
-  //   useLayoutEffect(() => {}, [projectInfo]);
   return (
     <>
       <Grid container spacing={3}>

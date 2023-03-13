@@ -68,6 +68,7 @@ export default function ProjectAdd() {
   } = methods;
 
   const onSubmit = async (data) => {
+    console.log(data);
     setDefaultValues(data);
     setStep(1);
   };
