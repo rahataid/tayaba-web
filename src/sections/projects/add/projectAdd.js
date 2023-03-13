@@ -7,6 +7,7 @@ import { useForm, Controller } from 'react-hook-form';
 // @mui
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import formFields from './data/formFields.json';
 
 import {
   Stack,
@@ -25,6 +26,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 // components
 import FormProvider, { RHFEditor, RHFSelect, RHFTextField } from '@components/hook-form';
 import AddedInfo from './AddedInfo';
+import DynamicForm from './DynamicForm';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -39,6 +41,7 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function ProjectAdd() {
+  console.log(formFields);
   const [defaultValues, setDefaultValues] = useState({
     name: '',
     location: '',
@@ -48,7 +51,7 @@ export default function ProjectAdd() {
     endDate: '',
     projectsTypes: '',
   });
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const { projectsTypesList, getProjectsTypesList } = useProjectContext();
   const methods = useForm({
     mode: 'onTouched',
@@ -169,6 +172,7 @@ export default function ProjectAdd() {
         </FormProvider>
       )}
       {step === 1 && <AddedInfo projectInfo={defaultValues} setStep={setStep} />}
+      {step === 2 && <DynamicForm items={formFields} setStep={setStep} />}
     </>
   );
 }
