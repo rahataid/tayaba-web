@@ -74,6 +74,8 @@ export default function Stepper() {
     setStep((prev) => prev - 1);
   };
 
+  const isLast = step === Object.keys(stepObj).length - 1;
+
   return (
     <>
       <FormProvider methods={methods} onSubmit={handleSubmit(stepObj[step].handleNext)}>
@@ -88,9 +90,16 @@ export default function Stepper() {
               previous
             </Button>
           )}
-          <Button type="submit" variant={'outlined'}>
-            next
-          </Button>
+          {!isLast ? (
+            <Button type="submit" variant={'outlined'}>
+              next
+            </Button>
+          ) : (
+            <Button type="submit" variant="contained">
+              {' '}
+              Finish
+            </Button>
+          )}
         </Stack>
       </FormProvider>
     </>
