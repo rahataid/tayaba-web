@@ -1,5 +1,4 @@
 // form
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 // @mui
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -20,7 +19,6 @@ export default function DynamicForm({ items = [] }) {
 
   const {
     control,
-
     handleSubmit,
     formState: { errors, isSubmitting },
   } = methods;
@@ -87,20 +85,8 @@ export default function DynamicForm({ items = [] }) {
   const onSubmit = () => {};
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        {renderForms(items)}
-      </Grid>
-      <LoadingButton
-        sx={{ margin: 3 }}
-        color="primary"
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-      >
-        Next
-      </LoadingButton>
-    </FormProvider>
+    <Grid container spacing={3}>
+      {renderForms(items)}
+    </Grid>
   );
 }
