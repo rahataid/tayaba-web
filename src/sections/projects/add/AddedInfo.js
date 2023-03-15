@@ -20,7 +20,8 @@ const FormSchema = Yup.object().shape({
     .max(100, 'Maximum 15 characters'),
   //   walletAddress: Yup.string().required('Wallet Address is required'),
 });
-export default function AddedInfo({ projectInfo, setStep }) {
+export default function AddedInfo({ projectInfo = {}, setStep }) {
+  console.log({ projectInfo });
   const [defaultValues, setDefaultValues] = useState({
     walletAddress: '',
   });
@@ -54,53 +55,7 @@ export default function AddedInfo({ projectInfo, setStep }) {
   return (
     <>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <FormProvider methods={methods} onSubmit={handleSubmit(handleFinish)}>
-              <Grid container padding={1} spacing={3}>
-                <Grid item xs={12} md={9}>
-                  <Stack spacing={3}>
-                    <RHFTextField id="walletAddress" name="walletAddress" label="Wallet Address" />
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                  <Button onClick={handleCreateWallet}>Generate Wallet Address</Button>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Stack spacing={3}>
-                    <RHFSelect name="community" label="Select Community">
-                      {' '}
-                      <option>Select Community</option>
-                      {community
-                        ? community?.map((obj) => (
-                            <option key={obj.value} value={obj.value}>
-                              {obj.label}
-                            </option>
-                          ))
-                        : ''}
-                    </RHFSelect>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Button sx={{ margin: 1 }} color="primary" size="large" variant="outlined" onClick={() => setStep(0)}>
-                    Previous
-                  </Button>
-                  <LoadingButton
-                    sx={{ margin: 1 }}
-                    color="primary"
-                    size="large"
-                    type="submit"
-                    variant="outlined"
-                    loading={isSubmitting}
-                  >
-                    Add
-                  </LoadingButton>
-                </Grid>
-              </Grid>
-            </FormProvider>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <Card>
             <Stack spacing={3} padding={1}>
               <Grid container spacing={3}>

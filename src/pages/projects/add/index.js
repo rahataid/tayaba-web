@@ -4,7 +4,7 @@ import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
 import { Container } from '@mui/material';
-import ProjectAdd from '@sections/projects/add/ProjectAdd';
+import { ProjectAdd } from '@sections/projects/add';
 import { ProjectProvider } from '@contexts/projects';
 
 const PAGE_TITLE = 'Project: Add';
