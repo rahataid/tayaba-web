@@ -3,6 +3,11 @@
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
+export function stringifyDestinationRoute(path) {
+  return {
+    destinationRoute: JSON.stringify({path}),
+  }
+}
 
 const ROOTS_DASHBOARD = '/dashboard';
 const ROOTS_PROJECTS = '/projects';
@@ -39,6 +44,7 @@ export const PATH_PROJECTS = {
   list: path(ROOTS_PROJECTS),
   view: path(ROOTS_PROJECTS, '/[id]'),
   addBudget: path(ROOTS_PROJECTS, '/[id]/add-budget'),
+  addProject: path(ROOTS_PROJECTS,'/add'),
 };
 
 export const PATH_CASH_TRACKER = {

@@ -9,7 +9,7 @@ import { ProjectProvider } from '@contexts/projects';
 import { useRouter } from 'next/router';
 import useWalletConnection from '@hooks/useWalletConnection';
 import snackbar, { useSnackbar } from '@components/snackbar';
-import { PATH_CONNECT_WALLET } from '@routes/paths';
+import { PATH_CONNECT_WALLET, PATH_PROJECTS, stringifyDestinationRoute } from '@routes/paths';
 
 const PAGE_TITLE = 'Projects';
 
@@ -27,10 +27,13 @@ export default function ProjectsList() {
           variant:'warning'
         }
       );
-      push(PATH_CONNECT_WALLET.root);
+      push({
+       pathname: PATH_CONNECT_WALLET.root,
+       query: stringifyDestinationRoute(PATH_PROJECTS.addProject),
+      });
       return
     }
-    push(`/projects/add`);
+    push(PATH_PROJECTS.addProject);
   };
   return (
     <ProjectProvider>

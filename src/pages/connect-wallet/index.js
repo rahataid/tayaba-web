@@ -20,9 +20,15 @@ ConnectWallet.getLayout = (page) => <CompactLayout>{page}</CompactLayout>;
 export default function ConnectWallet() {
   const {isWalletConnected} = useWalletConnection();
   const router  = useRouter();
+  const destinationRoute = router.query?.destinationRoute;
+  const destinationPath = destinationRoute ? JSON?.parse(destinationRoute)?.path : '' ;
 
   useEffect(()=> {
     if(isWalletConnected){
+      if(destinationPath){
+        router.push(destinationPath);
+        return
+      }
       router.back();
     }
   },[isWalletConnected]);
@@ -53,7 +59,7 @@ export default function ConnectWallet() {
 
           <Button sx={{ mt: 2 }} size="large" variant="contained" 
             onClick={() => {
-                window.history.back();
+               router.back();
             }}>
             Go back
           </Button>
