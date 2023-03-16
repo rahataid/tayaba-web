@@ -14,7 +14,7 @@ const ROOTS_MOBILIZERS = '/mobilizers';
 const ROOTS_FINANCIAL_INSTITUTIONS = '/financial-institutions';
 const ROOTS_ADMININSTRATION = '/admin';
 const ROOTS_REPORTS = '/reports';
-
+const ROOTS_CONNECT_WALLET = '/connect-wallet';
 const ROOTS_AUTH = '/auth';
 const ROOTS_APP = '/app';
 const ROOTS_PHOTO_GALLERY = '/photo-gallery';
@@ -24,6 +24,10 @@ const ROOTS_PHOTO_GALLERY = '/photo-gallery';
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),
+};
+
+export const PATH_CONNECT_WALLET = {
+  root: ROOTS_CONNECT_WALLET,
 };
 
 export const PATH_DASHBOARD = {
