@@ -13,6 +13,7 @@ import FormProvider from '@components/hook-form';
 import AddedInfo from './AddedInfo';
 import DynamicForm from './DynamicForm';
 import CommonFormFields from './CommonFormFields';
+import ContractDeploy from './ContractDeploy';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -41,7 +42,7 @@ export default function Stepper() {
   const { handleSubmit, isSubmitting } = methods;
 
   const stepObj = {
-    0: {
+    2: {
       title: 'Common Fields',
       component: <CommonFormFields methods={methods} />,
       handleNext(data) {
@@ -50,15 +51,22 @@ export default function Stepper() {
       },
     },
     1: {
-      title: 'Project Added Info',
-      component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
-      handleNext(data) {
+      title: 'Extra Fields',
+      component: <DynamicForm items={formFields} setStep={setStep} />,
+      handleNext() {
         handleIncreaseStep();
       },
     },
-    2: {
-      title: 'Extra Fields',
-      component: <DynamicForm items={formFields} setStep={setStep} />,
+    0: {
+      title: 'Deploy Contract',
+      component: <ContractDeploy />,
+      handleNext() {
+        handleIncreaseStep();
+      },
+    },
+    3: {
+      title: 'Project Added Info',
+      component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
       handleNext() {
         handleIncreaseStep();
       },
@@ -68,7 +76,6 @@ export default function Stepper() {
   const handleIncreaseStep = () => {
     setStep((prev) => prev + 1);
   };
-  console.log(defaultValues);
 
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);

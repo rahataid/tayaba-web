@@ -8,9 +8,9 @@ export const useWallet = (privateKey) => {
 
   if (privateKey) wallet = new ethers.Wallet(privateKey);
 
-  if (isWalletConnected) {
-    return wallet.connect(library);
-  }
+  // if (isWalletConnected) {
+  //   return wallet.connect(library);
+  // }
 
   console.log('wallet', wallet);
 

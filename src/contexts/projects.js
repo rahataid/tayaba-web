@@ -34,7 +34,8 @@ const initialState = {
   getBeneficiariesByvillage: () => {},
   setFilter: () => {},
   getProjectsTypesList: () => {},
-  addProject: () => {}
+  addProject: () => {},
+  deployContract: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -83,7 +84,7 @@ export const ProjectProvider = ({ children }) => {
         : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
-    
+
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
@@ -200,8 +201,7 @@ export const ProjectProvider = ({ children }) => {
     getBeneficiariesByvillage,
     setFilter,
     getProjectsTypesList,
-    addProject 
-
+    addProject,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
