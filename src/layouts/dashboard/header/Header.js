@@ -15,7 +15,7 @@ import Iconify from '../../../components/iconify';
 import { useSettingsContext } from '../../../components/settings';
 //
 import AccountPopover from './AccountPopover';
-import ConnectWalletButton from './ConnectWalletButton';
+import ConnectWalletButton from '../../../components/connect-wallet/ConnectWalletButton';
 
 // ----------------------------------------------------------------------
 

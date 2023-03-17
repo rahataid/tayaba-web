@@ -3,6 +3,11 @@
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
+export function stringifyDestinationRoute(path) {
+  return {
+    destinationRoute: JSON.stringify({path}),
+  }
+}
 
 const ROOTS_DASHBOARD = '/dashboard';
 const ROOTS_PROJECTS = '/projects';
@@ -14,7 +19,7 @@ const ROOTS_MOBILIZERS = '/mobilizers';
 const ROOTS_FINANCIAL_INSTITUTIONS = '/financial-institutions';
 const ROOTS_ADMININSTRATION = '/admin';
 const ROOTS_REPORTS = '/reports';
-
+const ROOTS_CONNECT_WALLET = '/connect-wallet';
 const ROOTS_AUTH = '/auth';
 const ROOTS_APP = '/app';
 const ROOTS_PHOTO_GALLERY = '/photo-gallery';
@@ -26,6 +31,10 @@ export const PATH_AUTH = {
   login: path(ROOTS_AUTH, '/login'),
 };
 
+export const PATH_CONNECT_WALLET = {
+  root: ROOTS_CONNECT_WALLET,
+};
+
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
 };
@@ -35,6 +44,7 @@ export const PATH_PROJECTS = {
   list: path(ROOTS_PROJECTS),
   view: path(ROOTS_PROJECTS, '/[id]'),
   addBudget: path(ROOTS_PROJECTS, '/[id]/add-budget'),
+  addProject: path(ROOTS_PROJECTS,'/add'),
 };
 
 export const PATH_CASH_TRACKER = {
