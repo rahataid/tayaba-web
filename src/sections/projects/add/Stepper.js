@@ -107,7 +107,7 @@ export default function Stepper() {
           ) : (
             <Button onClick={handleContractDeploy} variant="contained">
               {' '}
-              Finish
+              Finish And Deploy
             </Button>
           )}
         </Stack>
