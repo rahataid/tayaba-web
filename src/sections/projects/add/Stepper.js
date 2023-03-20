@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { useRef, useEffect, useState } from 'react';
-import { useProjectContext } from '@contexts/projects';
+import { useState } from 'react';
+
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,9 @@ import FormProvider from '@components/hook-form';
 import AddedInfo from './AddedInfo';
 import DynamicForm from './DynamicForm';
 import BasicInformation from './BasicInformaitonFields';
+import { useProject } from '@services/contracts/useProject';
+import { useWeb3React } from '@web3-react/core';
+import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -28,9 +31,12 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function Stepper() {
+  const { deployContract } = useProject();
+  const { enqueueSnackbar } = useSnackbar();
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
   });
+  const [contractName, setContractName] = useState('RahatToken');
   const [step, setStep] = useState(0);
   const methods = useForm({
     mode: 'onTouched',
@@ -56,18 +62,12 @@ export default function Stepper() {
         handleIncreaseStep();
       },
     },
+
     2: {
-      title: 'Deploy Contract',
-      component: <ContractDeploy />,
-      handleNext() {
-        handleIncreaseStep();
-      },
-    },
-    3: {
       title: 'Project Added Info',
       component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
-      handleNext() {
-        handleIncreaseStep();
+      handleNext(args) {
+        handleContractDeploy(args);
       },
     },
   };
@@ -81,6 +81,11 @@ export default function Stepper() {
   };
 
   const isLast = step === Object.keys(stepObj).length - 1;
+
+  const handleContractDeploy = async (args) => {
+    const { contract } = await deployContract({ contractName, args });
+    enqueueSnackbar('Deployed Contracts');
+  };
 
   return (
     <>
