@@ -2,6 +2,8 @@ import {React, useState, useEffect} from 'react';
 import { Stack, Grid } from '@mui/material';
 import { RHFSelect } from '@components/hook-form';
 import { getFolders } from '@services/github';
+import { GITHUB_USERNAME, GITHUB_REPOSITORY } from '@config';
+
 
 const GithubProjectType = () => {
     const [folders, setFolders] = useState([]);
@@ -12,7 +14,7 @@ const GithubProjectType = () => {
 
 
     const fetchProjectFolders = async() => {
-        const projectsTypes = await getFolders ('rahataid', 'tayaba');
+        const projectsTypes = await getFolders (`${GITHUB_USERNAME}`, `${GITHUB_REPOSITORY}`);
         setFolders(projectsTypes);
     }
 

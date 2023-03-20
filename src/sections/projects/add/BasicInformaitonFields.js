@@ -13,7 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { RHFTextField } from '@components/hook-form';
 import GithubProjectType from './GithubProjectType';
 
-const CommonFormFields = ({ methods }) => {
+const BasicInformation = ({ methods }) => {
   const { control } = methods;
 
   return (
@@ -80,4 +80,4 @@ const CommonFormFields = ({ methods }) => {
     </Grid>
   );
 };
-export default CommonFormFields;
+export default BasicInformation;
