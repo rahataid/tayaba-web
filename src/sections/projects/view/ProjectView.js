@@ -92,7 +92,7 @@ const ProjectView = () => {
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <TitleCard refreshData={getDataFromChain} chainData={chainData} />
             <CashActionsAlert projectId={projectId} chainData={chainData} refreshData={refreshData} />
             <Grid item xs={12} md={12}>

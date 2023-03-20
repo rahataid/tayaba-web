@@ -16,6 +16,7 @@ import BasicInformation from './BasicInformaitonFields';
 import { useProject } from '@services/contracts/useProject';
 import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -33,12 +34,13 @@ const FormSchema = Yup.object().shape({
 export default function Stepper() {
   const { deployContract } = useProject();
   const { enqueueSnackbar } = useSnackbar();
+  const { push } = useRouter();
   const { account } = useWeb3React();
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
   });
   const [contractName, setContractName] = useState('RahatToken');
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
@@ -87,6 +89,7 @@ export default function Stepper() {
     if (!account) return;
     const { contract } = await deployContract({ contractName, args });
     enqueueSnackbar('Deployed Contracts');
+    push('/projects');
   };
 
   return (
