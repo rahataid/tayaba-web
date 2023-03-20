@@ -119,10 +119,9 @@ export const useProject = () => {
       return mapped;
     },
 
-    deployContract: async ({ contractName, args = [] }) => {
+    deployContract: async ({ contractName, args }) => {
       let { data } = await AppService.getContract('RahatToken');
-      console.log(data.data.abi);
-      return Web3Utils.deployContract({ abi: data.data.abi, byteCode: data.data.bytecode });
+      return Web3Utils.deployContract({ abi: data.data.abi, byteCode: data.data.bytecode, args });
     },
   };
 };

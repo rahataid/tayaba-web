@@ -14,7 +14,6 @@ import AddedInfo from './AddedInfo';
 import DynamicForm from './DynamicForm';
 import BasicInformation from './BasicInformaitonFields';
 import { useProject } from '@services/contracts/useProject';
-import { useWeb3React } from '@web3-react/core';
 import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
@@ -37,7 +36,7 @@ export default function Stepper() {
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
   });
   const [contractName, setContractName] = useState('RahatToken');
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
@@ -67,7 +66,7 @@ export default function Stepper() {
       title: 'Project Added Info',
       component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
       handleNext(args) {
-        handleContractDeploy(args);
+        // handleContractDeploy(args);
       },
     },
   };
@@ -106,7 +105,7 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <Button type="submit" variant="contained">
+            <Button onClick={handleContractDeploy} variant="contained">
               {' '}
               Finish
             </Button>

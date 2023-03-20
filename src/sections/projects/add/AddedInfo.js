@@ -20,7 +20,6 @@ const FormSchema = Yup.object().shape({
   //   walletAddress: Yup.string().required('Wallet Address is required'),
 });
 export default function AddedInfo({ projectInfo = {}, setStep }) {
-  console.log({ projectInfo });
   const [defaultValues, setDefaultValues] = useState({
     walletAddress: '',
   });

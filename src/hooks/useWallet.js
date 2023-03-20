@@ -12,8 +12,6 @@ export const useWallet = (privateKey) => {
   //   return wallet.connect(library);
   // }
 
-  console.log('wallet', wallet);
-
   return wallet.connect(
     new providers.StaticJsonRpcProvider(chainUrl, {
       chainId,
