@@ -39,7 +39,7 @@ const BasicInformation = ({ methods }) => {
         </Stack>
       </Grid>
 
-      <Grid item xs={12} md={12}>
+      <Grid item xs={12} md={6}>
         <Stack spacing={3}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack spacing={{ xs: 2, sm: 3 }} direction={{ xs: 'column', sm: 'row' }}>
@@ -76,7 +76,7 @@ const BasicInformation = ({ methods }) => {
           </LocalizationProvider>
         </Stack>
       </Grid>
-      <GithubProjectType/>
+      <GithubProjectType />
     </Grid>
   );
 };
