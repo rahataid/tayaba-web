@@ -10,17 +10,11 @@ import { Stack, Grid, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 // components
-import { RHFSelect, RHFTextField } from '@components/hook-form';
-import { useProject } from '@services/contracts/useProject';
+import { RHFTextField } from '@components/hook-form';
+import GithubProjectType from './GithubProjectType';
 
-const CommonFormFields = ({ methods }) => {
-  const { projectsTypesList, getProjectsTypesList } = useProjectContext();
-
+const BasicInformation = ({ methods }) => {
   const { control } = methods;
-
-  useEffect(() => {
-    getProjectsTypesList();
-  }, [getProjectsTypesList]);
 
   return (
     <Grid container spacing={3}>
@@ -82,22 +76,8 @@ const CommonFormFields = ({ methods }) => {
           </LocalizationProvider>
         </Stack>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Stack spacing={3}>
-          <RHFSelect name={'projectsTypes'} label="Select Project Type">
-            {' '}
-            <option value="" />
-            {projectsTypesList
-              ? projectsTypesList?.map((obj) => (
-                  <option key={obj.value} value={obj.value}>
-                    {obj.label}
-                  </option>
-                ))
-              : ''}
-          </RHFSelect>
-        </Stack>
-      </Grid>
+      <GithubProjectType />
     </Grid>
   );
 };
-export default CommonFormFields;
+export default BasicInformation;

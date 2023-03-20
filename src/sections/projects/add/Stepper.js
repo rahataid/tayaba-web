@@ -12,8 +12,7 @@ import { Stack, Button, Typography, Box } from '@mui/material';
 import FormProvider from '@components/hook-form';
 import AddedInfo from './AddedInfo';
 import DynamicForm from './DynamicForm';
-import CommonFormFields from './CommonFormFields';
-import ContractDeploy from './ContractDeploy';
+import BasicInformation from './BasicInformaitonFields';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -43,8 +42,8 @@ export default function Stepper() {
 
   const stepObj = {
     0: {
-      title: 'Common Fields',
-      component: <CommonFormFields methods={methods} />,
+      title: 'Basic Information',
+      component: <BasicInformation methods={methods} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
         handleIncreaseStep();
