@@ -22,6 +22,10 @@ export const CHAINCACHE_APPID = process.env.NEXT_PUBLIC_CHAINCACHE_APPID || '';
 
 export const IPFS_GATEWAY = process.env.NEXT_PUBLIC_IPFS_GATEWAY || '';
 
+export const GITHUB_API_URL = process.env.NEXT_PUBLIC_GITHUB_API_URL || '';
+export const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME || '';
+export const GITHUB_REPOSITORY = process.env.NEXT_PUBLIC_GITHUB_REPOSITORY || '';
+
 export const COGNITO_API = {
   userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
   clientId: process.env.AWS_COGNITO_CLIENT_ID,
