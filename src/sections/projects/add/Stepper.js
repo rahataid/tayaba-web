@@ -42,7 +42,7 @@ export default function Stepper() {
   const { handleSubmit, isSubmitting } = methods;
 
   const stepObj = {
-    2: {
+    0: {
       title: 'Common Fields',
       component: <CommonFormFields methods={methods} />,
       handleNext(data) {
@@ -57,7 +57,7 @@ export default function Stepper() {
         handleIncreaseStep();
       },
     },
-    0: {
+    2: {
       title: 'Deploy Contract',
       component: <ContractDeploy />,
       handleNext() {
