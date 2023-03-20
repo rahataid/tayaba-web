@@ -15,6 +15,7 @@ import DynamicForm from './DynamicForm';
 import BasicInformation from './BasicInformaitonFields';
 import { useProject } from '@services/contracts/useProject';
 import { useSnackbar } from 'notistack';
+import { useWeb3React } from '@web3-react/core';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -32,6 +33,7 @@ const FormSchema = Yup.object().shape({
 export default function Stepper() {
   const { deployContract } = useProject();
   const { enqueueSnackbar } = useSnackbar();
+  const { account } = useWeb3React();
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
   });
@@ -82,6 +84,7 @@ export default function Stepper() {
   const isLast = step === Object.keys(stepObj).length - 1;
 
   const handleContractDeploy = async (args) => {
+    if (!account) return;
     const { contract } = await deployContract({ contractName, args });
     enqueueSnackbar('Deployed Contracts');
   };
