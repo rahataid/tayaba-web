@@ -18,6 +18,9 @@ import { useProject } from '@services/contracts/useProject';
 import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
+import { useProjectContext } from '@contexts/projects';
+import { useAppAuthContext } from 'src/auth/JwtContext';
+import { CONTRACTS } from '@config';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -29,7 +32,7 @@ const FormSchema = Yup.object().shape({
     .min(Yup.ref('startDate'), 'End date must be later than start date'),
   projectManager: Yup.string().required('Project Manager is required'),
   location: Yup.string().required('Project Types is required'),
-  projectsTypes: Yup.string().required('Project Types is required'),
+  projectType: Yup.string().required('Project Types is required'),
 });
 
 export default function Stepper() {
@@ -38,11 +41,11 @@ export default function Stepper() {
   const { push } = useRouter();
   const { account } = useWeb3React();
   const [defaultValues, setDefaultValues] = useState({
-    0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
+    0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
-  const [contractName, setContractName] = useState('RahatToken');
   const [step, setStep] = useState(0);
-  const [folders, setFolders] = useState([]);
+  const { abi, byteCode, contractName } = useProjectContext();
+  const { contracts } = useAppAuthContext();
 
   const methods = useForm({
     mode: 'onTouched',
@@ -50,12 +53,12 @@ export default function Stepper() {
     values: defaultValues[step],
   });
 
-  const { handleSubmit, isSubmitting } = methods;
+  const { handleSubmit } = methods;
 
   const stepObj = {
     0: {
       title: 'Basic Information',
-      component: <BasicInformation folders={folders} methods={methods} />,
+      component: <BasicInformation methods={methods} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
         handleIncreaseStep();
@@ -63,7 +66,7 @@ export default function Stepper() {
     },
     1: {
       title: 'Extra Fields',
-      component: <DynamicForm items={formFields} setStep={setStep} />,
+      component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext() {
         handleIncreaseStep();
       },
@@ -71,7 +74,9 @@ export default function Stepper() {
 
     2: {
       title: 'Project Added Info',
-      component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
+      component: (
+        <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues[0]} setStep={setStep} />
+      ),
       handleNext(args) {
         // handleContractDeploy(args);
       },
@@ -86,15 +91,21 @@ export default function Stepper() {
     setStep((prev) => prev - 1);
   };
 
-// useEffect(() => {   
-//   fetchProjectFolders();
-// },[]);
-
   const isLast = step === Object.keys(stepObj).length - 1;
 
-  const handleContractDeploy = async (args) => {
-    if (!account) return;
-    const { contract } = await deployContract({ contractName, args });
+  const handleContractDeploy = async () => {
+    // if (!account) return;
+
+    if (!contractName) return;
+    let args = [
+      defaultValues[0].name,
+      contracts[CONTRACTS.RAHATTOKEN],
+      contracts[CONTRACTS.CLAIM],
+      '0xcdD96aB6bA2819B53ee9c5273b60d98383F2171b',
+      contracts[CONTRACTS.COMMUNITY],
+    ];
+
+    const { contract } = await deployContract({ byteCode, abi, args });
     enqueueSnackbar('Deployed Contracts');
     push('/projects');
   };

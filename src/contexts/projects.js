@@ -1,9 +1,7 @@
 import { ProjectService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useErrorHandler } from '@hooks/useErrorHandler';
-import { getFolders, fetchApiFormFields } from '@services/github';
-import { GITHUB_USERNAME,GITHUB_REPOSITORY } from '@config';
+import { getFolders, fetchApiFormFields, fetchContract } from '@services/github';
 
 const initialState = {
   projects: [],
@@ -17,8 +15,9 @@ const initialState = {
   refresh: false,
   isRahatResponseLive: false,
   error: {},
+
   githubProjectTypes: [],
-  formFields:[],
+  formFields: [],
   beneficiariesVillageChartData: {
     chartData: [
       {
@@ -28,6 +27,9 @@ const initialState = {
     ],
     chartLabel: [],
   },
+  abi: [],
+  byteCode: '',
+  contractName: '',
   getProjectsList: () => {},
   getProjectById: () => {},
   getBeneficiariesByProject: () => {},
@@ -40,7 +42,8 @@ const initialState = {
   getProjectsTypesList: () => {},
   getGithubProjectTypes: () => {},
   getFormFields: () => {},
-  addProject: () => {}
+  addProject: () => {},
+  getContracts: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -81,20 +84,34 @@ export const ProjectProvider = ({ children }) => {
   }, []);
 
   const getGithubProjectTypes = useCallback(async () => {
-    const projectsTypes = await getFolders (`${GITHUB_USERNAME}`, `${GITHUB_REPOSITORY}`);
-    setState(() => ({
-      githubProjectTypes : projectsTypes,
+    const projectsTypes = await getFolders();
+    setState((prev) => ({
+      ...prev,
+      githubProjectTypes: projectsTypes,
     }));
-      return projectsTypes;
-    }, []);
-  
-    const getFormFields = useCallback(async () => {
-      const formFields = await fetchApiFormFields(`${GITHUB_USERNAME}`, `${GITHUB_REPOSITORY}`);
-      setState(() => ({
-        formFields : formFields,
-      }));
-      return formFields; 
-    },[]);
+    return projectsTypes;
+  }, []);
+
+  const getFormFields = useCallback(async (projectType) => {
+    console.log({ projectType });
+    const formFields = await fetchApiFormFields(projectType);
+    setState((prev) => ({
+      ...prev,
+      formFields: formFields,
+    }));
+    return formFields;
+  }, []);
+
+  const getContracts = useCallback(async (projectType) => {
+    let { abi, bytecode, contractName } = await fetchContract(projectType);
+    setState((prev) => ({
+      ...prev,
+      abi,
+      byteCode: bytecode,
+      contractName,
+    }));
+    return;
+  }, []);
 
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
@@ -225,6 +242,7 @@ export const ProjectProvider = ({ children }) => {
     getGithubProjectTypes,
     getFormFields,
     addProject,
+    getContracts,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

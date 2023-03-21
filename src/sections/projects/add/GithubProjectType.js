@@ -19,11 +19,11 @@ const GithubProjectType = ({fetchProjectFolders}) => {
     <>
      <Grid item xs={12} md={6}>
         <Stack spacing={3}>
-          <RHFSelect name={'projectsTypes'} label="Select Project Type">
+          <RHFSelect name={'projectType'} label="Select Project Type">
             {' '}
             <option value="" />
             {githubProjectTypes?.map((folder) => (
-                  <option key={folder.name} value={folder.url}>
+                  <option key={folder.name} value={folder.name}>
                     {folder.name}
                   </option>
                 ))

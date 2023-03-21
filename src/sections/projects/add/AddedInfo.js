@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -19,32 +19,12 @@ const FormSchema = Yup.object().shape({
     .max(100, 'Maximum 15 characters'),
   //   walletAddress: Yup.string().required('Wallet Address is required'),
 });
-export default function AddedInfo({ projectInfo = {}, setStep }) {
-  const [defaultValues, setDefaultValues] = useState({
-    walletAddress: '',
-  });
-  const { addProject } = useProjectContext();
-  const methods = useForm({
-    mode: 'onTouched',
-    resolver: yupResolver(FormSchema),
-    defaultValues,
-  });
-  const {
-    watch,
-    control,
-    setValue,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = methods;
-
-  const handleFinish = async (data) => {
-    try {
-      await addProject({ ...data, ...projectInfo });
-      setStep(0);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+export default function AddedInfo({ projectInfo = {}, projectType, setStep }) {
+  const { getContracts } = useProjectContext();
+  useEffect(() => {
+    if (!projectType) return;
+    getContracts(projectType);
+  }, [projectType]);
 
   return (
     <>

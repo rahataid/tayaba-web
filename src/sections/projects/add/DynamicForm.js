@@ -14,13 +14,13 @@ import { useProjectContext } from '@contexts/projects';
 import { useEffect } from 'react';
 // ----------------------------------------------------------------------
 
-export default function DynamicForm({ items = [] }) {
-
-  const{getFormFields, formFields } = useProjectContext();
+export default function DynamicForm({ items = [], projectType }) {
+  const { getFormFields, formFields } = useProjectContext();
 
   useEffect(() => {
-    getFormFields();
-  }, [getFormFields]);
+    if (!projectType) return;
+    getFormFields(projectType);
+  }, [getFormFields, projectType]);
 
   const methods = useForm({
     mode: 'onTouched',
@@ -87,14 +87,13 @@ export default function DynamicForm({ items = [] }) {
 
         default:
           return (
-          <Grid item xs={12} md={6}>
-          <RHFTextField id={item.name} name={item.name} label={item.label} required={item.required} />
-        </Grid>);
+            <Grid item xs={12} md={6}>
+              <RHFTextField id={item.name} name={item.name} label={item.label} required={item.required} />
+            </Grid>
+          );
       }
     });
   };
-
-  const onSubmit = () => {};
 
   return (
     <Grid container spacing={3}>
