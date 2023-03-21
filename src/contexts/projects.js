@@ -213,6 +213,7 @@ export const ProjectProvider = ({ children }) => {
     getBeneficiariesByvillage,
     setFilter,
     getProjectsTypesList,
+    getGithubProjectTypes,
     addProject,
   };
 
