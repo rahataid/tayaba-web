@@ -2,6 +2,8 @@ import { ProjectService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useErrorHandler } from '@hooks/useErrorHandler';
+import { getFolders } from '@services/github';
+import { GITHUB_USERNAME,GITHUB_REPOSITORY } from '@config';
 
 const initialState = {
   projects: [],
@@ -15,6 +17,7 @@ const initialState = {
   refresh: false,
   isRahatResponseLive: false,
   error: {},
+  githubProjectTypes: [],
   beneficiariesVillageChartData: {
     chartData: [
       {
@@ -34,6 +37,7 @@ const initialState = {
   getBeneficiariesByvillage: () => {},
   setFilter: () => {},
   getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
   addProject: () => {}
 };
 
@@ -73,6 +77,15 @@ export const ProjectProvider = ({ children }) => {
     }));
     return formatted;
   }, []);
+
+  const getGithubProjectTypes = useCallback(async () => {
+    const projectsTypes = await getFolders (`${GITHUB_USERNAME}`, `${GITHUB_REPOSITORY}`);
+    setState(() => ({
+      githubProjectTypes : projectsTypes,
+    }));
+      return projectsTypes;
+    }, []);
+  
 
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
@@ -200,6 +213,7 @@ export const ProjectProvider = ({ children }) => {
     getBeneficiariesByvillage,
     setFilter,
     getProjectsTypesList,
+    getGithubProjectTypes,
     addProject 
 
   };

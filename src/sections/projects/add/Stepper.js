@@ -13,6 +13,7 @@ import FormProvider from '@components/hook-form';
 import AddedInfo from './AddedInfo';
 import DynamicForm from './DynamicForm';
 import BasicInformation from './BasicInformaitonFields';
+import { getFolders } from '@services/github';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -32,6 +33,8 @@ export default function Stepper() {
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
   });
   const [step, setStep] = useState(0);
+  const [folders, setFolders] = useState([]);
+
   const methods = useForm({
     mode: 'onTouched',
     resolver: yupResolver(FormSchema),
@@ -43,7 +46,7 @@ export default function Stepper() {
   const stepObj = {
     0: {
       title: 'Basic Information',
-      component: <BasicInformation methods={methods} />,
+      component: <BasicInformation folders={folders} methods={methods} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
         handleIncreaseStep();
@@ -73,6 +76,10 @@ export default function Stepper() {
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);
   };
+
+// useEffect(() => {   
+//   fetchProjectFolders();
+// },[]);
 
   const isLast = step === Object.keys(stepObj).length - 1;
 

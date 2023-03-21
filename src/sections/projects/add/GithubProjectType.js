@@ -1,26 +1,19 @@
 import {React, useState, useEffect} from 'react';
 import { Stack, Grid } from '@mui/material';
 import { RHFSelect } from '@components/hook-form';
-import { getFolders } from '@services/github';
-import { GITHUB_USERNAME, GITHUB_REPOSITORY } from '@config';
+import { useProjectContext } from '@contexts/projects';
 
 
-const GithubProjectType = () => {
-    const [folders, setFolders] = useState([]);
+const GithubProjectType = ({fetchProjectFolders}) => {
+    const{githubProjectTypes,getGithubProjectTypes}= useProjectContext()
 
-    // const content = "bW9kdWxlLmV4cG9ydHMgPSB7CiAgT1RQOiAidGJsT3RwcyIsCiAgVVNFUjog\nInRibFVzZXJzIiwKICBBVVRIOiAidGJsQXV0aHMiLAogIFJPTEU6ICJ0YmxS\nb2xlcyIsCiAgQkVORUZJQ0lBUklFUzogInRibEJlbmVmaWNpYXJpZXMiLAog\nIFBST0pFQ1RTOiAidGJsUHJvamVjdHMiLAogIFZJTExBR0VTIDogInRibFZp\nbGxhZ2VzIiwKICBQUk9KRUNUX0JFTkVGRUNJQVJJRVMgOiAidGJsUHJvamVj\ndEJlbmVmaWNpYXJpZXMiLAogIFBST0pFQ1RfVkVORE9SUyA6ICJ0YmxQcm9q\nZWN0VmVuZG9ycyIsCiAgVkVORE9SIDogInRibFZlbmRvcnMiCn07Cg==\n";
+    // const content = "WwogICAgewogICAgICAibmFtZSI6ICJudW1iZXJPZkJlbmVmaWNpYXJpZXMi\nLAogICAgICAiZmllbGRUeXBlIjogIm51bWJlciIsCiAgICAgICJpc1JlcXVp\ncmVkIjogdHJ1ZSwKICAgICAgImxhYmVsIjogIk5vIG9mIEJlbmVmaWNpYXJp\nZXMiCiAgICB9LAogICAgewogICAgICAibmFtZSI6ICJhbW91bnRQZXJCZW5l\nZmljaWFyeSIsCiAgICAgICJmaWVsZFR5cGUiOiAibnVtYmVyIiwKICAgICAg\nImlzUmVxdWlyZWQiOiB0cnVlLAogICAgICAibGFiZWwiOiAiQW1vdW50IGZv\nciBCZW5lZmljaWFyaWVzIgogICAgfSwKICAgIHsKICAgICAgIm5hbWUiOiAi\nQW50aWNpcGF0b3J5IEFjdGlvbiIsCiAgICAgICJmaWVsZFR5cGUiOiAidGV4\ndCIsCiAgICAgICJpc1JlcXVpcmVkIjogdHJ1ZSwKICAgICAgImxhYmVsIjog\nIkFudGljaXBhdG9yeSBBY3Rpb24iCiAgICB9CiAgXQ==\n";
     // const decodedContent = atob(content);
-    // console.log(decodedContent);
-
-
-    const fetchProjectFolders = async() => {
-        const projectsTypes = await getFolders (`${GITHUB_USERNAME}`, `${GITHUB_REPOSITORY}`);
-        setFolders(projectsTypes);
-    }
-
-    useEffect(() => {   
-        fetchProjectFolders();
-    },[]);
+    // console.log(JSON.parse(decodedContent));
+     
+    useEffect(()=>{
+      getGithubProjectTypes();
+    },[getGithubProjectTypes])
 
   return (
     <>
@@ -29,7 +22,7 @@ const GithubProjectType = () => {
           <RHFSelect name={'projectsTypes'} label="Select Project Type">
             {' '}
             <option value="" />
-            {folders?.map((folder) => (
+            {githubProjectTypes?.map((folder) => (
                   <option key={folder.name} value={folder.name}>
                     {folder.name}
                   </option>
