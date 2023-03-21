@@ -5,7 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 // @mui
 import { Stack, Grid, Button, Typography, Card } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 // components
 import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
@@ -21,7 +20,6 @@ const FormSchema = Yup.object().shape({
   //   walletAddress: Yup.string().required('Wallet Address is required'),
 });
 export default function AddedInfo({ projectInfo = {}, setStep }) {
-  console.log({ projectInfo });
   const [defaultValues, setDefaultValues] = useState({
     walletAddress: '',
   });
@@ -47,11 +45,7 @@ export default function AddedInfo({ projectInfo = {}, setStep }) {
       console.log(err);
     }
   };
-  const handleCreateWallet = async () => {
-    let wallet = Web3Utils.generateWallet();
-    setDefaultValues({ walletAddress: wallet.address });
-    setValue('walletAddress', wallet.address);
-  };
+
   return (
     <>
       <Grid container spacing={3}>

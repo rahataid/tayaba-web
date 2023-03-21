@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { useRef, useEffect, useState } from 'react';
-import { useProjectContext } from '@contexts/projects';
+import { useState } from 'react';
+
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -14,6 +14,10 @@ import AddedInfo from './AddedInfo';
 import DynamicForm from './DynamicForm';
 import BasicInformation from './BasicInformaitonFields';
 import { getFolders } from '@services/github';
+import { useProject } from '@services/contracts/useProject';
+import { useSnackbar } from 'notistack';
+import { useWeb3React } from '@web3-react/core';
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -29,9 +33,14 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function Stepper() {
+  const { deployContract } = useProject();
+  const { enqueueSnackbar } = useSnackbar();
+  const { push } = useRouter();
+  const { account } = useWeb3React();
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectsTypes: '' },
   });
+  const [contractName, setContractName] = useState('RahatToken');
   const [step, setStep] = useState(0);
   const [folders, setFolders] = useState([]);
 
@@ -53,17 +62,18 @@ export default function Stepper() {
       },
     },
     1: {
-      title: 'Project Added Info',
-      component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
-      handleNext(data) {
-        handleIncreaseStep();
-      },
-    },
-    2: {
       title: 'Extra Fields',
       component: <DynamicForm items={formFields} setStep={setStep} />,
       handleNext() {
         handleIncreaseStep();
+      },
+    },
+
+    2: {
+      title: 'Project Added Info',
+      component: <AddedInfo projectInfo={defaultValues[0]} setStep={setStep} />,
+      handleNext(args) {
+        // handleContractDeploy(args);
       },
     },
   };
@@ -71,7 +81,6 @@ export default function Stepper() {
   const handleIncreaseStep = () => {
     setStep((prev) => prev + 1);
   };
-  console.log(defaultValues);
 
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);
@@ -82,6 +91,13 @@ export default function Stepper() {
 // },[]);
 
   const isLast = step === Object.keys(stepObj).length - 1;
+
+  const handleContractDeploy = async (args) => {
+    if (!account) return;
+    const { contract } = await deployContract({ contractName, args });
+    enqueueSnackbar('Deployed Contracts');
+    push('/projects');
+  };
 
   return (
     <>
@@ -102,9 +118,9 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <Button type="submit" variant="contained">
+            <Button onClick={handleContractDeploy} variant="contained">
               {' '}
-              Finish
+              Finish And Deploy
             </Button>
           )}
         </Stack>

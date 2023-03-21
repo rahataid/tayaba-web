@@ -7,6 +7,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 export const useContract = (contractName, options = { isWebsocket: false }) => {
   let { chainWebSocket, contracts } = useAuthContext();
   const [abi] = useAbi(contractName);
+
   const wallet = useWallet();
   const [contract, setContract] = useState(null);
 

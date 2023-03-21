@@ -1,18 +1,85 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Stack, Typography, Chip } from '@mui/material';
+import { Grid, Stack, Typography, Chip, Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 import Iconify from '@components/iconify';
+import useDialog from '@hooks/useDialog';
+
+import { useProject } from '@services/contracts/useProject';
+import LoadingOverlay from '@components/LoadingOverlay';
+import useLoading from '@hooks/useLoading';
 
 BasicInfoCard.propTypes = {
   rahatChainData: PropTypes.object,
 };
 
 export default function BasicInfoCard({ rahatChainData, ...other }) {
-  const { singleProject, vendorCount } = useProjectContext();
+  const { isDialogShow, showDialog, hideDialog } = useDialog();
+  const { singleProject, vendorCount, refreshData } = useProjectContext();
+  const [modalData, setModalData] = useState({
+    title: '',
+    type: '',
+  });
+
+  const { loading, showLoading, hideLoading } = useLoading();
+
+  const { lockProject, unLockProject } = useProject();
+
+  const handleUnlockModal = () => {
+    setModalData({ title: 'Are you sure to Unlock the project ?', type: 'Unlock' });
+    showDialog();
+  };
+
+  const handleLockModal = () => {
+    setModalData({ title: 'Are you sure to Lock the project ?', type: 'Lock' });
+    showDialog();
+  };
+
+  const handleLockProject = async () => {
+    showLoading('projectAction');
+    try {
+      await lockProject(wallet.address);
+    } catch (error) {
+      console.log({ error });
+    }
+    hideDialog();
+    refreshData();
+    hideLoading('projectAction');
+  };
+
+  const handleUnlockProject = async () => {
+    showLoading('projectAction');
+    try {
+      await unLockProject(wallet.address);
+    } catch (error) {
+      hideLoading('projectAction');
+      hideDialog();
+      throwError('cannot unlock Project');
+    }
+    hideDialog();
+    refreshData();
+    hideLoading('projectAction');
+  };
   return (
     <>
+      <Dialog open={isDialogShow} onClose={hideDialog}>
+        <LoadingOverlay open={loading.projectAction}>
+          <DialogTitle>{modalData.title}</DialogTitle>
+          <DialogActions>
+            <Button onClick={hideDialog}>Cancel</Button>
+            {modalData?.type === 'Lock' ? (
+              <Button onClick={handleLockProject} variant="outlined">
+                Lock
+              </Button>
+            ) : (
+              <Button onClick={handleUnlockProject} variant="outlined">
+                Unlock
+              </Button>
+            )}
+          </DialogActions>
+        </LoadingOverlay>
+      </Dialog>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-end">
           {rahatChainData?.isLocked ? (
@@ -21,12 +88,14 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
               variant="outlined"
               color="error"
               icon={<Iconify icon={'material-symbols:lock-outline'} />}
+              onClick={handleUnlockModal}
             />
           ) : (
             <Chip
               label={`Unlocked`}
               variant="outlined"
               color="success"
+              onClick={handleLockModal}
               icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
             />
           )}

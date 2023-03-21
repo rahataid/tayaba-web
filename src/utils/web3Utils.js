@@ -76,6 +76,23 @@ const Web3Utils = {
       return contract.callStatic.multicall(callData);
     },
   },
+
+  deployContract: async ({
+    abi,
+    byteCode,
+    args = ['Rahat', 'RTH', '0x462C2fd10c0196aFd959a09eC6eB005e7Fd6D67d', 0],
+  }) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const factory = new ethers.ContractFactory(abi, byteCode, signer);
+    console.log({ args });
+    const contract = await factory.deploy(...args);
+    const receipt = await contract.deployTransaction.wait();
+    return {
+      blockNumber: receipt.blockNumber,
+      contract: new ethers.Contract(contract.address, abi, provider),
+    };
+  },
 };
 
 export default Web3Utils;
