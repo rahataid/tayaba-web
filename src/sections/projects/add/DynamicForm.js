@@ -33,7 +33,7 @@ export default function DynamicForm({ items = [] }) {
   } = methods;
 
   const renderForms = (formItems) => {
-    return formFields.map((item) => {
+    return formFields?.map((item) => {
       switch (item.fieldType) {
         case 'number':
           return (
@@ -86,7 +86,10 @@ export default function DynamicForm({ items = [] }) {
           );
 
         default:
-          return;
+          return (
+          <Grid item xs={12} md={6}>
+          <RHFTextField id={item.name} name={item.name} label={item.label} required={item.required} />
+        </Grid>);
       }
     });
   };

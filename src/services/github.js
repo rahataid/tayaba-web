@@ -16,11 +16,11 @@ export const getFolders = async () => {
 export const fetchApiFormFields = async (folderName) => {
   try {
     const response = await axios.get(
-      `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPOSITORY}/main/${folderName}/cvaProject.metadata`
+      `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPOSITORY}/main/Anticipatory%20Action/cvaProject.metadata`
     );
     console.log(response);
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
