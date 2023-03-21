@@ -23,7 +23,7 @@ const GithubProjectType = ({fetchProjectFolders}) => {
             {' '}
             <option value="" />
             {githubProjectTypes?.map((folder) => (
-                  <option key={folder.name} value={folder.name}>
+                  <option key={folder.name} value={folder.url}>
                     {folder.name}
                   </option>
                 ))

@@ -2,7 +2,7 @@ import { ProjectService } from '@services';
 import { createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useErrorHandler } from '@hooks/useErrorHandler';
-import { getFolders } from '@services/github';
+import { getFolders, fetchApiFormFields } from '@services/github';
 import { GITHUB_USERNAME,GITHUB_REPOSITORY } from '@config';
 
 const initialState = {
@@ -18,6 +18,7 @@ const initialState = {
   isRahatResponseLive: false,
   error: {},
   githubProjectTypes: [],
+  formFields:[],
   beneficiariesVillageChartData: {
     chartData: [
       {
@@ -38,6 +39,7 @@ const initialState = {
   setFilter: () => {},
   getProjectsTypesList: () => {},
   getGithubProjectTypes: () => {},
+  getFormFields: () => {},
   addProject: () => {}
 };
 
@@ -86,6 +88,13 @@ export const ProjectProvider = ({ children }) => {
       return projectsTypes;
     }, []);
   
+    const getFormFields = useCallback(async () => {
+      const formFields = await fetchApiFormFields(`${GITHUB_USERNAME}`, `${GITHUB_REPOSITORY}`);
+      setState(() => ({
+        formFields : formFields,
+      }));
+      return formFields; 
+    },[]);
 
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
@@ -214,6 +223,7 @@ export const ProjectProvider = ({ children }) => {
     setFilter,
     getProjectsTypesList,
     getGithubProjectTypes,
+    getFormFields,
     addProject,
   };
 

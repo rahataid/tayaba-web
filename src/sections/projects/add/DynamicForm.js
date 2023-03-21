@@ -6,12 +6,22 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { Grid, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+
 // componentsimport formFields from './data/formFields.json';
 
 import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
+import { useProjectContext } from '@contexts/projects';
+import { useEffect } from 'react';
 // ----------------------------------------------------------------------
 
 export default function DynamicForm({ items = [] }) {
+
+  const{getFormFields, formFields } = useProjectContext();
+
+  useEffect(() => {
+    getFormFields();
+  }, [getFormFields]);
+
   const methods = useForm({
     mode: 'onTouched',
   });
@@ -23,7 +33,7 @@ export default function DynamicForm({ items = [] }) {
   } = methods;
 
   const renderForms = (formItems) => {
-    return formItems.map((item) => {
+    return formFields.map((item) => {
       switch (item.fieldType) {
         case 'number':
           return (
