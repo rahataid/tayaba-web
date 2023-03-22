@@ -104,11 +104,10 @@ export default function Stepper() {
       '0xcdD96aB6bA2819B53ee9c5273b60d98383F2171b',
       contracts[CONTRACTS.COMMUNITY],
     ];
-
     const { contract } = await deployContract({ byteCode, abi, args });
     enqueueSnackbar('Deployed Contracts');
     let payload = {};
-    for (const key of defaultValues) [(payload = { ...payload, ...defaultValues[key] })];
+    for (let key in defaultValues) [(payload = { ...payload, ...defaultValues[key] })];
     await addProject(payload);
     push('/projects');
   };
