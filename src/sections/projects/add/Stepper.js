@@ -44,7 +44,7 @@ export default function Stepper() {
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
   const [step, setStep] = useState(0);
-  const { abi, byteCode, contractName } = useProjectContext();
+  const { abi, byteCode, contractName, addProject } = useProjectContext();
   const { contracts } = useAppAuthContext();
 
   const methods = useForm({
@@ -107,6 +107,9 @@ export default function Stepper() {
 
     const { contract } = await deployContract({ byteCode, abi, args });
     enqueueSnackbar('Deployed Contracts');
+    let payload = {};
+    for (const key of defaultValues) [(payload = { ...payload, ...defaultValues[key] })];
+    await addProject(payload);
     push('/projects');
   };
 
