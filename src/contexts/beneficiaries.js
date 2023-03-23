@@ -113,6 +113,8 @@ export const BeneficiaryProvider = ({ children }) => {
 
   const getAllVillages = useCallback(async () => {
     const response = await BeneficiaryService.getAllVillages();
+    console.log(response);
+
     const formatted = response?.data?.data?.map((item) => ({
       label: item,
       value: item,
