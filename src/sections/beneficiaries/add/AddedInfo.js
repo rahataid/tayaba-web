@@ -1,21 +1,11 @@
-import * as Yup from 'yup';
-import { useEffect, useState } from 'react';
 // form
-
-import { Stack, Grid, Button, Typography, Card } from '@mui/material';
+import { Stack, Grid, Typography, Card } from '@mui/material';
 // components
-import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
 
 // ----------------------------------------------------------------------
 
 export default function AddedInfo({ beneficaryInfo = {} }) {
-  const { getContracts } = useProjectContext();
-  useEffect(() => {
-    if (!projectType) return;
-    getContracts(projectType);
-  }, [projectType]);
-
   return (
     <>
       <Grid container spacing={3}>

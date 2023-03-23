@@ -16,6 +16,7 @@ import BasicInformation from './BasicInformationFields';
 import { useRouter } from 'next/router';
 
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import WalletAdd from './WalletAdd';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -71,7 +72,7 @@ export default function Stepper() {
     },
     1: {
       title: 'Extra Fields',
-      component: <DynamicForm setStep={setStep} />,
+      component: <WalletAdd setStep={setStep} />,
       handleNext() {
         handleIncreaseStep();
       },

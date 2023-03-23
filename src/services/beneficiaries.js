@@ -18,7 +18,9 @@ export const BeneficiaryService = {
   getAllVillages() {
     return clientApi.get(`/beneficiaries/get-villages`);
   },
-
+  getVillagesList() {
+    return clientApi.get(`/villages`);
+  },
   getTransactionById(id) {
     return clientApi.get(`/beneficiaries/transaction/${id}`);
   },

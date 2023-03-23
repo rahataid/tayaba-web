@@ -1,16 +1,7 @@
-import * as Yup from 'yup';
-import { useEffect, useState } from 'react';
-// form
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-// @mui
-
-import { Stack, Grid, Button, Typography, Card } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { useState } from 'react';
+import { Stack, Grid, Button, Card } from '@mui/material';
 // components
-import Iconify from '@components/iconify';
-import FormProvider, { RHFSelect, RHFCheckbox, RHFTextField } from '@components/hook-form';
-import moment from 'moment';
+import { RHFSelect, RHFCheckbox, RHFTextField } from '@components/hook-form';
 import Web3Utils from '@utils/web3Utils';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 
@@ -26,55 +17,38 @@ const community = [
     value: 'rahat',
   },
 ];
-export default function AddedInfo({ beneficaryInfo, setStep }) {
+export default function WalletAdd({ beneficaryInfo, setStep }) {
   const [defaultValues, setDefaultValues] = useState({
     walletAddress: '',
     community: '',
   });
-
-  const methods = useForm({
-    mode: 'onTouched',
-    resolver: yupResolver(FormSchema),
-    defaultValues,
-  });
-  const {
-    setValue,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = methods;
-
-  const handleAdd = async (data) => {
-    try {
-      console.log(data);
-      await addBeneficiary({ ...beneficaryInfo, ...data });
-      enqueueSnackbar('Added Beneficary');
-      setStep(0);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handleCreateWallet = async () => {
     let wallet = Web3Utils.generateWallet();
     setDefaultValues({ walletAddress: wallet.address });
     setValue('walletAddress', wallet.address);
   };
-  useEffect(() => {}, [defaultValues]);
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
         <Card>
           <Grid container padding={1} spacing={3}>
-            <Grid item xs={12} md={9}>
-              <Stack spacing={3}>
-                <RHFTextField id="walletAddress" name="walletAddress" label="Wallet Address" />
-              </Stack>
+            <Grid item xs={12} md={6}>
+              <Grid container spacing={1}>
+                <Grid item xs={12} md={9}>
+                  <Stack spacing={1}>
+                    <RHFTextField id="walletAddress" name="walletAddress" label="Wallet Address" />
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Button variant="outlined" onClick={handleCreateWallet}>
+                    Generate Wallet
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={3}>
-              <Button onClick={handleCreateWallet}>Generate Wallet Address</Button>
-            </Grid>
-            <Grid item xs={12} md={12}>
+            <Grid item xs={12} md={6}>
               <Stack spacing={3}>
                 <RHFSelect name="community" label="Select Community">
                   {' '}
