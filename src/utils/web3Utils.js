@@ -93,6 +93,15 @@ const Web3Utils = {
       console.log({ deployerror: error });
     }
   },
+
+  generateWallet(cnicNumber, options) {
+    const entropy = this.getRandomEntropy();
+    if (!options) {
+      options = {};
+    }
+    // const mnemonic = entropyToMnemonic(entropy);
+    return ethers.Wallet.createRandom();
+  },
 };
 
 export default Web3Utils;
