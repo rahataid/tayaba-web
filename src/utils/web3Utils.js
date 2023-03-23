@@ -94,11 +94,8 @@ const Web3Utils = {
     }
   },
 
-  generateWallet(cnicNumber, options) {
+  generateWallet(cnicNumber, options = {}) {
     const entropy = this.getRandomEntropy();
-    if (!options) {
-      options = {};
-    }
     // const mnemonic = entropyToMnemonic(entropy);
     return ethers.Wallet.createRandom();
   },

@@ -18,15 +18,11 @@ const community = [
   },
 ];
 export default function WalletAdd({ beneficaryInfo, setStep }) {
-  const [defaultValues, setDefaultValues] = useState({
-    walletAddress: '',
-    community: '',
-  });
+  const [walletAddress, setwalletAddress] = useState();
 
   const handleCreateWallet = async () => {
-    let wallet = Web3Utils.generateWallet();
-    setDefaultValues({ walletAddress: wallet.address });
-    setValue('walletAddress', wallet.address);
+    let wallet = Web3Utils.generateWallet('');
+    setwalletAddress(wallet.address);
   };
 
   return (
@@ -38,7 +34,12 @@ export default function WalletAdd({ beneficaryInfo, setStep }) {
               <Grid container spacing={1}>
                 <Grid item xs={12} md={9}>
                   <Stack spacing={1}>
-                    <RHFTextField id="walletAddress" name="walletAddress" label="Wallet Address" />
+                    <RHFTextField
+                      id="walletAddress"
+                      value={walletAddress}
+                      name="walletAddress"
+                      label="Wallet Address"
+                    />
                   </Stack>
                 </Grid>
                 <Grid item xs={12} md={3}>
