@@ -70,7 +70,6 @@ export default function Stepper() {
       handleNext(data) {
         handleIncreaseStep();
         let basicFields = defaultValues[0];
-        console.log(basicFields);
         let payload = {};
         for (const key in data) {
           if (!basicFields[key]) {
