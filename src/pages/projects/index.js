@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React from 'react';
+import React, { useEffect } from 'react';
 import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
@@ -19,6 +19,7 @@ export default function ProjectsList() {
   const { push } = useRouter();
   const snackBar = useSnackbar();
 
+  console.log({isWalletConnected})
 
   const handleAdd = () => {
     if (!isWalletConnected) {
