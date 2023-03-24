@@ -22,7 +22,6 @@ import WalletAdd from './WalletAdd';
 const FormSchema = Yup.object().shape({
   name: Yup.string().required('Full name is required').min(4, 'Mininum 4 characters').max(24, 'Maximum 15 characters'),
   phone: Yup.string().required('Phone Number is required'),
-  projectManager: Yup.string().required('Project Manager is required'),
   description: Yup.string().required('description is required'),
   gender: Yup.string().required('Please Select Gender'),
   villageId: Yup.number().required('please Select Village'),
