@@ -4,14 +4,17 @@ import { injected } from './connectors';
 
 const useWalletConnection = () => {
   const { activate, deactivate, active, account, library, chainId, connector, error } = useWeb3React();
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [isWalletConnected, setIsWalletConnected] = useState(null);
   const [walletType, setWalletType] = useState('');
   const [networkId, setNetworkId] = useState(null);
   const [web3Provider, setWeb3Provider] = useState(null);
+  
 
   useEffect(() => {
     if (active) {
       setIsWalletConnected(true);
+    }else{
+      setIsWalletConnected(false);
     }
   }, [active]);
 
@@ -37,6 +40,7 @@ const useWalletConnection = () => {
       await handleWalletConnect(type);
       localStorage.setItem('walletType', type);
       localStorage.setItem('isWalletConnected', true);
+      setIsWalletConnected(true)
     } catch (ex) {
       console.log(ex);
     }
@@ -44,7 +48,7 @@ const useWalletConnection = () => {
 
   const disconnectWallet = async () => {
     try {
-      await deactivate();
+       deactivate();
       setIsWalletConnected(false);
       localStorage.removeItem('walletType');
       localStorage.setItem('isWalletConnected', false);
@@ -65,7 +69,7 @@ const useWalletConnection = () => {
   };
   useEffect(() => {
     connectWalletOnPageLoad();
-  }, []);
+  }, [walletType,isWalletConnected]);
 
   useEffect(() => {
     if (library) {
@@ -73,6 +77,7 @@ const useWalletConnection = () => {
       setWeb3Provider(library.provider);
     }
   }, [library]);
+
 
   return {
     connectWalletOnPageLoad,

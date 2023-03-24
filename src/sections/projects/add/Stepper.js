@@ -82,9 +82,7 @@ export default function Stepper() {
 
     2: {
       title: 'Project Added Info',
-      component: (
-        <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues[0]} setStep={setStep} />
-      ),
+      component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext(args) {
         // handleContractDeploy(args);
       },
