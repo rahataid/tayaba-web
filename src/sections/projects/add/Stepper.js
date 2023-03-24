@@ -54,7 +54,7 @@ export default function Stepper() {
   });
 
   const { handleSubmit } = methods;
-
+  console.log(defaultValues);
   const stepObj = {
     0: {
       title: 'Basic Information',
@@ -68,16 +68,21 @@ export default function Stepper() {
       title: 'Extra Fields',
       component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext(data) {
-        setDefaultValues({ ...defaultValues, [step]: data });
         handleIncreaseStep();
+        let basicFields = defaultValues[0];
+        let payload = {};
+        for (const key in data) {
+          if (!basicFields[key]) {
+            payload = { ...payload, [key]: data[key] };
+          }
+        }
+        setDefaultValues({ ...defaultValues, [step]: { extras: payload } });
       },
     },
 
     2: {
       title: 'Project Added Info',
-      component: (
-        <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />
-      ),
+      component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext(args) {
         // handleContractDeploy(args);
       },
@@ -97,20 +102,26 @@ export default function Stepper() {
   const handleContractDeploy = async () => {
     // if (!account) return;
 
-    if (!contractName) return;
-    let args = [
-      defaultValues[0].name,
-      contracts[CONTRACTS.RAHATTOKEN],
-      contracts[CONTRACTS.CLAIM],
-      '0xcdD96aB6bA2819B53ee9c5273b60d98383F2171b',
-      contracts[CONTRACTS.COMMUNITY],
-    ];
-    const { contract } = await deployContract({ byteCode, abi, args });
-    enqueueSnackbar('Deployed Contracts');
-    let payload = {};
-    for (let key in defaultValues) [(payload = { ...payload, ...defaultValues[key] })];
-    await addProject(payload);
-    push('/projects');
+    try {
+      if (!contractName) return;
+      let args = [
+        defaultValues[0].name,
+        contracts[CONTRACTS.RAHATTOKEN],
+        contracts[CONTRACTS.CLAIM],
+        '0xcdD96aB6bA2819B53ee9c5273b60d98383F2171b',
+        contracts[CONTRACTS.COMMUNITY],
+      ];
+      const { contract } = await deployContract({ byteCode, abi, args });
+      enqueueSnackbar('Deployed Contracts');
+      let payload = {};
+      for (const key in defaultValues) {
+        payload = { ...payload, ...defaultValues[key] };
+      }
+      await addProject(payload);
+      push('/projects');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

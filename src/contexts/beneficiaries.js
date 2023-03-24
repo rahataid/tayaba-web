@@ -112,10 +112,10 @@ export const BeneficiaryProvider = ({ children }) => {
   }, []);
 
   const getAllVillages = useCallback(async () => {
-    const response = await BeneficiaryService.getAllVillages();
-    const formatted = response?.data?.data?.map((item) => ({
-      label: item,
-      value: item,
+    const response = await BeneficiaryService.getVillagesList();
+    const formatted = response?.data?.data?.map((village) => ({
+      label: village.name,
+      value: village.id,
     }));
     setState((prev) => ({
       ...prev,
