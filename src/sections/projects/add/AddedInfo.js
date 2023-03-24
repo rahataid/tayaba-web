@@ -34,17 +34,52 @@ export default function AddedInfo({ projectInfo = {}, projectType, setStep }) {
           <Card>
             <Stack spacing={3} padding={6}>
               <Grid container spacing={5}>
-                {Object.entries(projectInfo[1]).map(([key, value]) =>
-                    value instanceof Date ? (
-                      <Grid item xs={12} md={3}>
-                        <RHFTextField id={key} name={key} label={key.charAt(0).toUpperCase() + key.slice(1)} value={moment(value).format('DD MMM YYYY')} disabled={true} />
+                {Object.entries(projectInfo[0]).map(([key, value]) =>
+                  value instanceof Date ? (
+                    <Grid item xs={12} md={3}>
+                      <RHFTextField
+                        id={key}
+                        name={key}
+                        label={key.charAt(0).toUpperCase() + key.slice(1)}
+                        value={moment(value).format('DD MMM YYYY')}
+                        disabled={true}
+                      />
                     </Grid>
                   ) : (
                     <Grid item xs={12} md={6}>
-                      <RHFTextField id={key} name={key} label={key.charAt(0).toUpperCase() + key.slice(1)} value={value} disabled={true} />
+                      <RHFTextField
+                        id={key}
+                        name={key}
+                        label={key.charAt(0).toUpperCase() + key.slice(1)}
+                        value={value}
+                        disabled={true}
+                      />
                     </Grid>
                   )
-                  )}                               
+                )}
+                {Object.entries(projectInfo[1].extras).map(([key, value]) =>
+                  value instanceof Date ? (
+                    <Grid item xs={12} md={3}>
+                      <RHFTextField
+                        id={key}
+                        name={key}
+                        label={key.charAt(0).toUpperCase() + key.slice(1)}
+                        value={moment(value).format('DD MMM YYYY')}
+                        disabled={true}
+                      />
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12} md={6}>
+                      <RHFTextField
+                        id={key}
+                        name={key}
+                        label={key.charAt(0).toUpperCase() + key.slice(1)}
+                        value={value}
+                        disabled={true}
+                      />
+                    </Grid>
+                  )
+                )}
               </Grid>
             </Stack>
           </Card>
