@@ -111,3 +111,15 @@ export const TayabaToken = {
 };
 
 export const NETWORK_GAS_LIMIT = 18000000;
+
+export const gender = {
+  Male: 'M',
+  Female: 'F',
+  Others: 'O',
+};
+
+export const phoneType = {
+  SmartPhone: 'smartphone',
+  FeaturePhone: 'featurephone',
+  DumbPhone: 'dumbphone',
+};
