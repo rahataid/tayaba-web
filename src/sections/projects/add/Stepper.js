@@ -57,7 +57,7 @@ export default function Stepper() {
   console.log(defaultValues);
   const stepObj = {
     0: {
-      title: 'Basic Information',
+      title: ' General Project Information',
       component: <BasicInformation methods={methods} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
@@ -65,7 +65,7 @@ export default function Stepper() {
       },
     },
     1: {
-      title: 'Extra Fields',
+      title: 'Specific Project Information.',
       component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext(data) {
         handleIncreaseStep();
@@ -81,7 +81,7 @@ export default function Stepper() {
     },
 
     2: {
-      title: 'Project Added Info',
+      title: 'Review and Deploy.',
       component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext(args) {
         // handleContractDeploy(args);
