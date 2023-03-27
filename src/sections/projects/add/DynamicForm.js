@@ -9,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 // componentsimport formFields from './data/formFields.json';
 
-import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
+import { RHFSelect, RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
 import { useEffect } from 'react';
 // ----------------------------------------------------------------------
