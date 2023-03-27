@@ -120,8 +120,8 @@ export default function Stepper() {
       for (const key in defaultValues) {
         payload = { ...payload, ...defaultValues[key] };
       }
-      await addProject(payload);
-      push('/projects');
+      let { data } = await addProject(payload);
+      push(`/projects/${data?.data?.id}`);
     } catch (err) {
       console.log(err);
     }
