@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import { useProjectContext } from '@contexts/projects';
 import { useAppAuthContext } from 'src/auth/JwtContext';
 import { CONTRACTS } from '@config';
+import { LoadingButton } from '@mui/lab';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -40,6 +41,7 @@ export default function Stepper() {
   const { enqueueSnackbar } = useSnackbar();
   const { push } = useRouter();
   const { account } = useWeb3React();
+  const [loading, setLoading] = useState(false);
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
@@ -84,7 +86,7 @@ export default function Stepper() {
       title: 'Review and Deploy.',
       component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext(args) {
-        // handleContractDeploy(args);
+        handleContractDeploy(args);
       },
     },
   };
@@ -100,8 +102,8 @@ export default function Stepper() {
   const isLast = step === Object.keys(stepObj).length - 1;
 
   const handleContractDeploy = async () => {
+    setLoading(!loading);
     // if (!account) return;
-
     try {
       if (!contractName) return;
       let args = [
@@ -112,6 +114,7 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
+      console.log(contract);
       enqueueSnackbar('Deployed Contracts');
       let payload = {};
       for (const key in defaultValues) {
@@ -122,6 +125,7 @@ export default function Stepper() {
     } catch (err) {
       console.log(err);
     }
+    setLoading(!loading);
   };
 
   return (
@@ -143,10 +147,10 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <Button onClick={handleContractDeploy} variant="contained">
+            <LoadingButton onClick={handleContractDeploy} variant="contained" loading={loading}>
               {' '}
               Finish And Deploy
-            </Button>
+            </LoadingButton>
           )}
         </Stack>
       </FormProvider>
