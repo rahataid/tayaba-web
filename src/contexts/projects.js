@@ -117,9 +117,7 @@ export const ProjectProvider = ({ children }) => {
     const response = await ProjectService.getProjectById(id);
     const formatted = {
       ...response.data,
-      projectManagerName: response.data?.project_manager?.name
-        ? `${response.data?.project_manager?.name?.first} ${response.data?.project_manager?.name?.last}`
-        : '-',
+      projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
 
@@ -259,4 +257,3 @@ export const useProjectContext = () => {
   }
   return context;
 };
- 
