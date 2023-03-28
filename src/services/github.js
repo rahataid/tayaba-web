@@ -1,5 +1,5 @@
+import { GITHUB_API_URL, GITHUB_REPOSITORY, GITHUB_USERNAME } from '@config';
 import axios from 'axios';
-import { GITHUB_API_URL, GITHUB_USERNAME, GITHUB_REPOSITORY } from '@config';
 
 export const getFolders = async () => {
   try {

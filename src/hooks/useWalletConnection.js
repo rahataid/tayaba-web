@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { injected } from './connectors';
-import Web3Utils from '@utils/web3Utils';
 import { NETWORK_GAS_LIMIT } from '@config';
+import Web3Utils from '@utils/web3Utils';
+import { useWeb3React } from '@web3-react/core';
+import { useCallback, useEffect, useState } from 'react';
+import { injected } from './connectors';
 
 
 const useWalletConnection = () => {
@@ -10,28 +10,28 @@ const useWalletConnection = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(null);
   const [walletType, setWalletType] = useState('');
   const [networkId, setNetworkId] = useState(null);
-  const [web3Provider, setWeb3Provider] = useState(null);  
+  const [web3Provider, setWeb3Provider] = useState(null);
 
   useEffect(() => {
     if (active) {
       setIsWalletConnected(true);
-    }else{
+    } else {
       setIsWalletConnected(false);
     }
   }, [active]);
 
-  const getBalance = useCallback(async() => {
-    if(!account) return;
+  const getBalance = useCallback(async () => {
+    if (!account) return;
 
     const balanceInWei = await library.eth.getBalance(account);
     const balance = Web3Utils.weiToEth(balanceInWei.toString()) || null;
     const gasLimit = Web3Utils.weiToEth(NETWORK_GAS_LIMIT.toString()) || null;
     const hasEnoughBalance = +balance >= +gasLimit || null;
-    const requiredBalance = NETWORK_GAS_LIMIT - balance || null; 
+    const requiredBalance = NETWORK_GAS_LIMIT - balance || null;
 
-    return {balance, hasEnoughBalance, requiredBalance, gasLimit, networkGasLimit: NETWORK_GAS_LIMIT};
+    return { balance, hasEnoughBalance, requiredBalance, gasLimit, networkGasLimit: NETWORK_GAS_LIMIT };
 
-  },[library, account]);
+  }, [library, account]);
 
   const handleWalletConnect = async (type) => {
     let connector;
@@ -63,7 +63,7 @@ const useWalletConnection = () => {
 
   const disconnectWallet = async () => {
     try {
-       deactivate();
+      deactivate();
       setIsWalletConnected(false);
       localStorage.removeItem('walletType');
       localStorage.setItem('isWalletConnected', false);
@@ -84,7 +84,7 @@ const useWalletConnection = () => {
   };
   useEffect(() => {
     connectWalletOnPageLoad();
-  }, [walletType,isWalletConnected]);
+  }, [walletType, isWalletConnected]);
 
   useEffect(() => {
     if (library) {

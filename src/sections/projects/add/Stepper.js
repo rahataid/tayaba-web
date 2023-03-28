@@ -49,15 +49,15 @@ export default function Stepper() {
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
   const [step, setStep] = useState(0);
-  const [balanceInfo, setBalanceInfo] = useState({balance: null,gasLimit: null ,hasEnoughBalance: null, requiredBalance: null});
+  const [balanceInfo, setBalanceInfo] = useState({ balance: null, gasLimit: null, hasEnoughBalance: null, requiredBalance: null });
   const { abi, byteCode, contractName, addProject } = useProjectContext();
   const { contracts } = useAppAuthContext();
   const { getBalance } = useWalletConnection();
-  
+
   useEffect(() => {
     const getAccountBalance = async () => {
       const accountBalanceInfo = await getBalance();
-      setBalanceInfo({balance:accountBalanceInfo?.balance, gasLimit:accountBalanceInfo?.gasLimit, hasEnoughBalance:accountBalanceInfo?.hasEnoughBalance, requiredBalance:accountBalanceInfo?.requiredBalance});
+      setBalanceInfo({ balance: accountBalanceInfo?.balance, gasLimit: accountBalanceInfo?.gasLimit, hasEnoughBalance: accountBalanceInfo?.hasEnoughBalance, requiredBalance: accountBalanceInfo?.requiredBalance });
     }
     getAccountBalance();
   }, []);
@@ -165,8 +165,8 @@ export default function Stepper() {
             </LoadingButton>
           )}
         </Stack>
-        { !balanceInfo.hasEnoughBalance &&
-          <Alert severity="warning">
+        {!balanceInfo.hasEnoughBalance &&
+          <Alert sx={{ m: 2 }} severity="warning">
             <AlertTitle>Not Enough Balance!!</AlertTitle>
             Your balance is <strong>{balanceInfo.balance} ETH</strong>. You need <strong>{balanceInfo.gasLimit} ETH</strong> more to deploy.
           </Alert>
