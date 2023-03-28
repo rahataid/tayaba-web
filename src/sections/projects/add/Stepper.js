@@ -56,7 +56,6 @@ export default function Stepper() {
   });
 
   const { handleSubmit } = methods;
-  console.log(defaultValues);
   const stepObj = {
     0: {
       title: ' General Project Information',

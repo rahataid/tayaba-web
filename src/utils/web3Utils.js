@@ -1,6 +1,8 @@
 import { NETWORK_GAS_LIMIT } from '@config';
 import EthCrypto from 'eth-crypto';
 import { ethers } from 'ethers';
+import web3 from "web3";
+
 
 const Web3Utils = {
   getRandomString(length) {
@@ -10,6 +12,10 @@ const Web3Utils = {
       result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
     }
     return result;
+  },
+
+  weiToEth(weiAmount) {
+    return web3.utils.fromWei(weiAmount, "Ether");
   },
 
   getRandomEntropy() {

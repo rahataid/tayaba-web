@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from './connectors';
+import Web3Utils from '@utils/web3Utils';
+
 
 const useWalletConnection = () => {
   const { activate, deactivate, active, account, library, chainId, connector, error } = useWeb3React();
   const [isWalletConnected, setIsWalletConnected] = useState(null);
   const [walletType, setWalletType] = useState('');
   const [networkId, setNetworkId] = useState(null);
-  const [web3Provider, setWeb3Provider] = useState(null);
-  
+  const [web3Provider, setWeb3Provider] = useState(null);  
 
   useEffect(() => {
     if (active) {
@@ -17,6 +18,13 @@ const useWalletConnection = () => {
       setIsWalletConnected(false);
     }
   }, [active]);
+
+  const getBalance = useCallback(async() => {
+    if(!account) return;
+    const balance = await library.eth.getBalance(account);
+    const balanceInEth = Web3Utils.weiToEth(balance);
+    return balance;
+  },[library, account]);
 
   const handleWalletConnect = async (type) => {
     let connector;
@@ -85,6 +93,7 @@ const useWalletConnection = () => {
     walletType,
     connectWallet,
     disconnectWallet,
+    getBalance,
     account,
     chainId,
     connector,
