@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import { useProjectContext } from '@contexts/projects';
 import { useAppAuthContext } from 'src/auth/JwtContext';
 import { CONTRACTS } from '@config';
+import { LoadingButton } from '@mui/lab';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -40,6 +41,7 @@ export default function Stepper() {
   const { enqueueSnackbar } = useSnackbar();
   const { push } = useRouter();
   const { account } = useWeb3React();
+  const [loading, setLoading] = useState(false);
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
@@ -57,7 +59,7 @@ export default function Stepper() {
   console.log(defaultValues);
   const stepObj = {
     0: {
-      title: 'Basic Information',
+      title: ' General Project Information',
       component: <BasicInformation methods={methods} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
@@ -65,7 +67,7 @@ export default function Stepper() {
       },
     },
     1: {
-      title: 'Extra Fields',
+      title: 'Specific Project Information.',
       component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext(data) {
         handleIncreaseStep();
@@ -81,10 +83,10 @@ export default function Stepper() {
     },
 
     2: {
-      title: 'Project Added Info',
+      title: 'Review and Deploy.',
       component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext(args) {
-        // handleContractDeploy(args);
+        handleContractDeploy(args);
       },
     },
   };
@@ -100,8 +102,8 @@ export default function Stepper() {
   const isLast = step === Object.keys(stepObj).length - 1;
 
   const handleContractDeploy = async () => {
+    setLoading(!loading);
     // if (!account) return;
-
     try {
       if (!contractName) return;
       let args = [
@@ -112,16 +114,18 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
+      console.log(contract);
       enqueueSnackbar('Deployed Contracts');
       let payload = {};
       for (const key in defaultValues) {
         payload = { ...payload, ...defaultValues[key] };
       }
-      await addProject(payload);
-      push('/projects');
+      let { data } = await addProject(payload);
+      push(`/projects/${data?.data?.id}`);
     } catch (err) {
       console.log(err);
     }
+    setLoading(!loading);
   };
 
   return (
@@ -143,10 +147,10 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <Button onClick={handleContractDeploy} variant="contained">
+            <LoadingButton onClick={handleContractDeploy} variant="contained" loading={loading}>
               {' '}
               Finish And Deploy
-            </Button>
+            </LoadingButton>
           )}
         </Stack>
       </FormProvider>

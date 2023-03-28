@@ -17,6 +17,7 @@ BasicInfoCard.propTypes = {
 export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { singleProject, vendorCount, refreshData } = useProjectContext();
+  console.log(singleProject);
   const [modalData, setModalData] = useState({
     title: '',
     type: '',
@@ -104,7 +105,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {'SRSO'}
+            {singleProject?.data?.projectManager}
           </Typography>
           <Typography variant="body2">Managed By</Typography>
         </Grid>
