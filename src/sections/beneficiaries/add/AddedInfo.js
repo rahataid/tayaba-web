@@ -15,7 +15,7 @@ export default function AddedInfo({ beneficaryInfo = {} }) {
               <Grid container spacing={3}>
                 {Object.entries(beneficaryInfo).map(([key, value]) =>
                   value instanceof Date ? (
-                    <Grid item xs={12} md={6}>
+                    <Grid key={`${key}-${value}`} item xs={12} md={6}>
                       <Typography paddingLeft={2} variant="h5">
                         {' '}
                         {moment(value).format('DD MMM YYYY')}
@@ -26,7 +26,7 @@ export default function AddedInfo({ beneficaryInfo = {} }) {
                       </Typography>
                     </Grid>
                   ) : (
-                    <Grid item xs={12} md={6}>
+                    <Grid key={`${key}-${value}`} item xs={12} md={6}>
                       <Typography paddingLeft={2} variant="h5">
                         {' '}
                         {value}

@@ -130,9 +130,7 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const addProject = (data) => {
-    return ProjectService.addProject(data);
-  };
+  const addProject = (data) => ProjectService.addProject(data);
 
   const getBeneficiariesByProject = useCallback(
     async (query) => {
@@ -259,4 +257,3 @@ export const useProjectContext = () => {
   }
   return context;
 };
- 

@@ -119,8 +119,6 @@ export const useProject = () => {
       return mapped;
     },
 
-    deployContract: async ({ byteCode, abi, args }) => {
-      return Web3Utils.deployContract({ byteCode, abi, args });
-    },
+    deployContract: async ({ byteCode, abi, args }) => Web3Utils.deployContract({ byteCode, abi, args }),
   };
 };

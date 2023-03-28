@@ -7,6 +7,7 @@ import {
   PATH_VENDORS,
   PATH_TRANSACTIONS,
   PATH_PHOTO_GALLERY,
+  PATH_COMMUNICATION,
 } from '@routes/paths';
 // components
 import Iconify from '@components/iconify';
@@ -60,6 +61,16 @@ const navConfig = [
         title: 'Beneficiary',
         path: PATH_BENEFICIARY.root,
         icon: ICONS.beneficiary,
+      },
+      {
+        title: 'Communications',
+        path: PATH_COMMUNICATION.root,
+        children: [
+          {
+            title: 'Campaigns',
+            path: PATH_COMMUNICATION.campaigns,
+          },
+        ],
       },
       {
         title: 'Distributors',

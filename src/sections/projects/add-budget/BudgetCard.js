@@ -4,14 +4,12 @@ import { Box } from '@mui/material';
 import BudgetInfo from './BudgetInfo';
 import AddTokenInput from './AddTokenInput';
 
-const BudgetCard = (props) => {
-  return (
-    <Box>
-      <BudgetInfo />
-      <AddTokenInput />
-    </Box>
-  );
-};
+const BudgetCard = (props) => (
+  <Box>
+    <BudgetInfo />
+    <AddTokenInput />
+  </Box>
+);
 
 BudgetCard.propTypes = {};
 
