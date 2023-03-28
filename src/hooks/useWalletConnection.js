@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from './connectors';
 import Web3Utils from '@utils/web3Utils';
+import { NETWORK_GAS_LIMIT } from '@config';
 
 
 const useWalletConnection = () => {
@@ -21,10 +22,14 @@ const useWalletConnection = () => {
 
   const getBalance = useCallback(async() => {
     if(!account) return;
-    const balance = await library.eth.getBalance(account);
-    // const balanceInEth = Web3Utils.weiToEth(balance);
-    console.log(balance)
-    return balance;
+
+    const balanceInWei = await library.eth.getBalance(account);
+    const balance = Web3Utils.weiToEth(balanceInWei.toString()) || null;
+    const hasEnoughBalance = +balance >= +Web3Utils.weiToEth(NETWORK_GAS_LIMIT.toString())|| null;
+    const requiredBalance = NETWORK_GAS_LIMIT - balance || null; 
+
+    return {balance, hasEnoughBalance, requiredBalance, networkGasLimit: NETWORK_GAS_LIMIT};
+
   },[library, account]);
 
   const handleWalletConnect = async (type) => {

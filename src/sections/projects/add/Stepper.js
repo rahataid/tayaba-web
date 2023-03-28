@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import formFields from './data/formFields.json';
 
-import { Stack, Button, Typography, Box } from '@mui/material';
+import { Stack, Button, Typography, Box, Alert } from '@mui/material';
 
 // components
 import FormProvider from '@components/hook-form';
@@ -20,7 +20,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useProjectContext } from '@contexts/projects';
 import { useAppAuthContext } from 'src/auth/JwtContext';
-import { CONTRACTS, NETWORK_GAS_LIMIT } from '@config';
+import { CONTRACTS } from '@config';
 import { LoadingButton } from '@mui/lab';
 import useWalletConnection from '@hooks/useWalletConnection';
 
@@ -50,23 +50,17 @@ export default function Stepper() {
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
   const [step, setStep] = useState(0);
+  const [balanceInfo, setBalanceInfo] = useState({balance: null, hasEnoughBalance: null, requiredBalance: null});
   const { abi, byteCode, contractName, addProject } = useProjectContext();
-  const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
   const { contracts } = useAppAuthContext();
   const { getBalance } = useWalletConnection();
-
-  
-  const checkGasFee = async() => {
-    let balance = await getBalance();
-    if( balance > NETWORK_GAS_LIMIT){
-      setHasEnoughBalance(true);
-    }else{
-      setHasEnoughBalance(false);
-    }
-  }
   
   useEffect(() => {
-    checkGasFee();
+    const getAccountBalance = async () => {
+      const accountBalanceInfo = await getBalance();
+      setBalanceInfo({balance:accountBalanceInfo?.balance, hasEnoughBalance:accountBalanceInfo?.hasEnoughBalance, requiredBalance:accountBalanceInfo?.requiredBalance});
+    }
+    getAccountBalance();
   }, []);
 
   const methods = useForm({
@@ -166,12 +160,17 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <LoadingButton disabled={!hasEnoughBalance} onClick={handleContractDeploy} variant="contained" loading={loading}>
+            <LoadingButton disabled={!balanceInfo.hasEnoughBalance} onClick={handleContractDeploy} variant="contained" loading={loading}>
               {' '}
               Finish And Deploy
             </LoadingButton>
           )}
         </Stack>
+        {/* { !balanceInfo.hasEnoughBalance && isLast &&
+          <Alert severity="warning">
+            You have {balance} ETH. to deploy contract.
+          </Alert>
+        } */}
       </FormProvider>
     </>
   );
