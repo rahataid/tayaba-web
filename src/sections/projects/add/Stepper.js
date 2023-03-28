@@ -114,9 +114,8 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
-      console.log(contract);
       enqueueSnackbar('Deployed Contracts');
-      let payload = {};
+      let payload = { wallet: contract.wallet };
       for (const key in defaultValues) {
         payload = { ...payload, ...defaultValues[key] };
       }
