@@ -25,10 +25,11 @@ const useWalletConnection = () => {
 
     const balanceInWei = await library.eth.getBalance(account);
     const balance = Web3Utils.weiToEth(balanceInWei.toString()) || null;
-    const hasEnoughBalance = +balance >= +Web3Utils.weiToEth(NETWORK_GAS_LIMIT.toString())|| null;
+    const gasLimit = Web3Utils.weiToEth(NETWORK_GAS_LIMIT.toString()) || null;
+    const hasEnoughBalance = +balance >= +gasLimit || null;
     const requiredBalance = NETWORK_GAS_LIMIT - balance || null; 
 
-    return {balance, hasEnoughBalance, requiredBalance, networkGasLimit: NETWORK_GAS_LIMIT};
+    return {balance, hasEnoughBalance, requiredBalance, gasLimit, networkGasLimit: NETWORK_GAS_LIMIT};
 
   },[library, account]);
 

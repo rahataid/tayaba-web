@@ -1,9 +1,7 @@
 import { CONTRACTS } from '@config';
 import { useContract } from '@hooks/contracts';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import Web3Utils from '@utils/web3Utils';
-import { AppService } from '..';
 
 export const useProject = () => {
   const [contract, abi] = useContract(CONTRACTS.CVAPROJECT);

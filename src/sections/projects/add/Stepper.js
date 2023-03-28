@@ -1,28 +1,27 @@
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useState,useEffect } from 'react';
 
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import formFields from './data/formFields.json';
 
-import { Stack, Button, Typography, Box, Alert } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Stack, Typography } from '@mui/material';
 
 // components
 import FormProvider from '@components/hook-form';
-import AddedInfo from './AddedInfo';
-import DynamicForm from './DynamicForm';
-import BasicInformation from './BasicInformaitonFields';
-import { getFolders } from '@services/github';
+import { CONTRACTS } from '@config';
+import { useProjectContext } from '@contexts/projects';
+import useWalletConnection from '@hooks/useWalletConnection';
+import { LoadingButton } from '@mui/lab';
 import { useProject } from '@services/contracts/useProject';
-import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
-import { useProjectContext } from '@contexts/projects';
+import { useSnackbar } from 'notistack';
 import { useAppAuthContext } from 'src/auth/JwtContext';
-import { CONTRACTS } from '@config';
-import { LoadingButton } from '@mui/lab';
-import useWalletConnection from '@hooks/useWalletConnection';
+import AddedInfo from './AddedInfo';
+import BasicInformation from './BasicInformaitonFields';
+import DynamicForm from './DynamicForm';
 
 
 
@@ -50,7 +49,7 @@ export default function Stepper() {
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
   const [step, setStep] = useState(0);
-  const [balanceInfo, setBalanceInfo] = useState({balance: null, hasEnoughBalance: null, requiredBalance: null});
+  const [balanceInfo, setBalanceInfo] = useState({balance: null,gasLimit: null ,hasEnoughBalance: null, requiredBalance: null});
   const { abi, byteCode, contractName, addProject } = useProjectContext();
   const { contracts } = useAppAuthContext();
   const { getBalance } = useWalletConnection();
@@ -58,7 +57,7 @@ export default function Stepper() {
   useEffect(() => {
     const getAccountBalance = async () => {
       const accountBalanceInfo = await getBalance();
-      setBalanceInfo({balance:accountBalanceInfo?.balance, hasEnoughBalance:accountBalanceInfo?.hasEnoughBalance, requiredBalance:accountBalanceInfo?.requiredBalance});
+      setBalanceInfo({balance:accountBalanceInfo?.balance, gasLimit:accountBalanceInfo?.gasLimit, hasEnoughBalance:accountBalanceInfo?.hasEnoughBalance, requiredBalance:accountBalanceInfo?.requiredBalance});
     }
     getAccountBalance();
   }, []);
@@ -152,12 +151,12 @@ export default function Stepper() {
           {step !== 0 && (
             <Button onClick={handleDecreaseStep} variant={'outlined'}>
               {' '}
-              previous
+              Previous
             </Button>
           )}
           {!isLast ? (
-            <Button type="submit" variant={'outlined'}>
-              next
+            <Button disabled={!balanceInfo.hasEnoughBalance} type="submit" variant={'outlined'}>
+              Next
             </Button>
           ) : (
             <LoadingButton disabled={!balanceInfo.hasEnoughBalance} onClick={handleContractDeploy} variant="contained" loading={loading}>
@@ -166,11 +165,12 @@ export default function Stepper() {
             </LoadingButton>
           )}
         </Stack>
-        {/* { !balanceInfo.hasEnoughBalance && isLast &&
+        { !balanceInfo.hasEnoughBalance &&
           <Alert severity="warning">
-            You have {balance} ETH. to deploy contract.
+            <AlertTitle>Not Enough Balance!!</AlertTitle>
+            Your balance is <strong>{balanceInfo.balance} ETH</strong>. You need <strong>{balanceInfo.gasLimit} ETH</strong> more to deploy.
           </Alert>
-        } */}
+        }
       </FormProvider>
     </>
   );
