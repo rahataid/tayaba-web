@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,8 +20,12 @@ import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useProjectContext } from '@contexts/projects';
 import { useAppAuthContext } from 'src/auth/JwtContext';
-import { CONTRACTS } from '@config';
+import { CONTRACTS, NETWORK_GAS_LIMIT } from '@config';
 import { LoadingButton } from '@mui/lab';
+import useWalletConnection from '@hooks/useWalletConnection';
+
+
+
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -47,7 +51,23 @@ export default function Stepper() {
   });
   const [step, setStep] = useState(0);
   const { abi, byteCode, contractName, addProject } = useProjectContext();
+  const [hasEnoughBalance, setHasEnoughBalance] = useState(false);
   const { contracts } = useAppAuthContext();
+  const { getBalance } = useWalletConnection();
+
+  
+  const checkGasFee = async() => {
+    let balance = await getBalance();
+    if( balance > NETWORK_GAS_LIMIT){
+      setHasEnoughBalance(true);
+    }else{
+      setHasEnoughBalance(false);
+    }
+  }
+  
+  useEffect(() => {
+    checkGasFee();
+  }, []);
 
   const methods = useForm({
     mode: 'onTouched',
@@ -146,7 +166,7 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <LoadingButton onClick={handleContractDeploy} variant="contained" loading={loading}>
+            <LoadingButton disabled={!hasEnoughBalance} onClick={handleContractDeploy} variant="contained" loading={loading}>
               {' '}
               Finish And Deploy
             </LoadingButton>

@@ -8,7 +8,6 @@ import { Stack, Grid, Button, Typography, Card } from '@mui/material';
 // components
 import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
-import useWalletConnection from '@hooks/useWalletConnection';
 import moment from 'moment';
 import Web3Utils from '@utils/web3Utils';
 const community = [];
@@ -22,13 +21,6 @@ const FormSchema = Yup.object().shape({
 });
 export default function AddedInfo({ projectInfo = {}, projectType, setStep }) {
   const { getContracts } = useProjectContext();
-  const { getBalance } = useWalletConnection();
-
-  const [accountBalance, setAccountBalance] = useState(0);
-
-  useEffect(() => {
-    getBalance();
-  }, [getBalance]);
 
   useEffect(() => {
     if (!projectType) return;

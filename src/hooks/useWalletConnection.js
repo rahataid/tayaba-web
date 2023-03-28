@@ -22,7 +22,8 @@ const useWalletConnection = () => {
   const getBalance = useCallback(async() => {
     if(!account) return;
     const balance = await library.eth.getBalance(account);
-    const balanceInEth = Web3Utils.weiToEth(balance);
+    // const balanceInEth = Web3Utils.weiToEth(balance);
+    console.log(balance)
     return balance;
   },[library, account]);
 
