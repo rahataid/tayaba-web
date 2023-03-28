@@ -1,13 +1,11 @@
-/* eslint-disable import/no-unresolved */
-import React from 'react';
-import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
-import { Button, Container } from '@mui/material';
-import { CampaignsListView } from '@sections/communications/campaigns';
 import { CommunicationsProvider } from '@contexts/communications';
-import { useRouter } from 'next/router';
+import DashboardLayout from '@layouts/dashboard';
+import { Button, Container } from '@mui/material';
 import { PATH_COMMUNICATION } from '@routes/paths';
+import { CampaignsListView } from '@sections/communications/campaigns';
+import { useRouter } from 'next/router';
 
 const PAGE_TITLE = 'Communication: Campaigns';
 

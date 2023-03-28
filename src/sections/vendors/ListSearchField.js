@@ -1,7 +1,6 @@
-import { InputAdornment, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 // import { useModuleContext } from '../context';
-import Iconify from '@components/iconify';
 
 const ListSearchField = ({ label = '' }) => (
   //   const { filter, setListFilter } = useModuleContext();
