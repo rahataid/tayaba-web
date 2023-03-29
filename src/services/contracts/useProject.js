@@ -28,7 +28,7 @@ export const useProject = () => {
 
     getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
-    getProjectBalance: async (address) => (await h2oToken?.balanceOf(address))?.toNumber(),
+    getProjectBalance: async () => (await h2oToken?.balanceOf(contractAddress))?.toNumber(),
 
     getVendorBalance: async (walletAddress) => (await h2oToken?.balanceOf(walletAddress))?.toNumber(),
 
