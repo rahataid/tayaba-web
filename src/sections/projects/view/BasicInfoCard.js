@@ -23,6 +23,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
     type: '',
   });
 
+  console.log(singleProject);
   const { loading, showLoading, hideLoading } = useLoading();
 
   const { lockProject, unLockProject } = useProject();

@@ -87,14 +87,14 @@ const ProjectView = () => {
               <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
               <InfoCard chainData={chainData} />
               <SummaryTracker />
-              <ProjectChart projectId={projectId} />
+              <ProjectChart projectId={singleProject?.data?.id} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <Grid container spacing={2}>
             <TitleCard refreshData={getDataFromChain} chainData={chainData} />
-            <CashActionsAlert projectId={projectId} chainData={chainData} refreshData={refreshData} />
+            <CashActionsAlert projectId={singleProject?.data?.id} chainData={chainData} refreshData={refreshData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail chainData={chainData} />
             </Grid>

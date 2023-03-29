@@ -18,7 +18,7 @@ ProjectCard.propTypes = {
 };
 
 export default function ProjectCard({ project }) {
-  const { id, name, created_at, status, balance } = project;
+  const { id, wallet, name, created_at, status, balance } = project;
 
   return (
     <Card
@@ -45,7 +45,7 @@ export default function ProjectCard({ project }) {
           </Label>
         )}
 
-        <NextLink href={`projects/${id}`} passHref>
+        <NextLink href={`projects/${wallet}`} passHref>
           <Image
             alt={name}
             src={'https://live.staticflickr.com/65535/52704625310_f17af896d5_b.jpg'}
@@ -56,7 +56,7 @@ export default function ProjectCard({ project }) {
       </Box>
 
       <Stack spacing={2.5} sx={{ p: 3 }}>
-        <NextLink href={`projects/${id}`} passHref>
+        <NextLink href={`projects/${wallet}`} passHref>
           <Link color="inherit" variant="h6" noWrap>
             {name}
           </Link>
