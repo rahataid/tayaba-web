@@ -128,6 +128,21 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const getProjectByWallet = useCallback(async (address) => {
+    const response = await ProjectService.getProjectByWallet(address);
+    const formatted = {
+      ...response.data,
+      projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
+      projectCreatedAt: response.data?.project_manager?.created_at,
+    };
+
+    setState((prev) => ({
+      ...prev,
+      singleProject: formatted,
+    }));
+    return formatted;
+  }, []);
+
   const addProject = (data) => {
     return ProjectService.addProject(data);
   };
@@ -241,6 +256,7 @@ export const ProjectProvider = ({ children }) => {
     getFormFields,
     addProject,
     getContracts,
+    getProjectByWallet,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

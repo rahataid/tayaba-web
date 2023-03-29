@@ -17,6 +17,10 @@ export const ProjectService = {
     return clientApi.get(`/projects/${id}`);
   },
 
+  getProjectByWallet(address) {
+    return clientApi.get(`/projects/${address}`);
+  },
+
   getBeneficiariesByProject(query) {
     return clientApi.get(`/beneficiaries`, {
       params: query,
@@ -58,7 +62,7 @@ export const ProjectService = {
   getTrackerData(name) {
     return clientApi.get(`/misc/${name}`);
   },
-  
+
   addProject(payload) {
     return clientApi.post('/projects', payload);
   },

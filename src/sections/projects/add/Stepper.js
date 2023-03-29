@@ -114,7 +114,6 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
-      console.log(contract);
       enqueueSnackbar('Deployed Contracts');
       let payload = {};
       for (const key in defaultValues) {

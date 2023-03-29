@@ -17,7 +17,7 @@ import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
 
 const ProjectView = () => {
-  const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
+  const { getProjectByWallet, singleProject, refreshData, refresh } = useProjectContext();
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
   const { loading, showLoading, hideLoading } = useLoading();
@@ -26,7 +26,7 @@ const ProjectView = () => {
   const [chainData, setChainData] = useState({});
 
   const {
-    query: { projectId },
+    query: { projectId: walletAddress },
   } = useRouter();
 
   const updateChainData = (d) => {
@@ -66,9 +66,9 @@ const ProjectView = () => {
   }, [getDataFromChain]);
 
   useEffect(() => {
-    if (!projectId) return;
-    getProjectById(projectId);
-  }, [projectId, alert.show]);
+    if (!walletAddress) return;
+    getProjectByWallet(walletAddress);
+  }, [walletAddress, alert.show]);
 
   useEffect(() => {
     RahatTokenWS?.on('Approval', getDataFromChain);
