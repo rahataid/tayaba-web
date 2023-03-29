@@ -18,7 +18,7 @@ export const ProjectService = {
     return clientApi.get(`/projects/${id}`);
   },
 
-  getProjectByWallet(address) {
+  getProjectByAddress(address) {
     return clientApi.get(`/projects/wallet/${address}`);
   },
 

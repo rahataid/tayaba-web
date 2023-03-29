@@ -128,8 +128,8 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getProjectByWallet = useCallback(async (address) => {
-    const response = await ProjectService.getProjectByWallet(address);
+  const getProjectByAddress = useCallback(async (address) => {
+    const response = await ProjectService.getProjectByAddress(address);
     const formatted = {
       ...response.data,
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
@@ -256,7 +256,7 @@ export const ProjectProvider = ({ children }) => {
     getFormFields,
     addProject,
     getContracts,
-    getProjectByWallet,
+    getProjectByAddress,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

@@ -6,6 +6,7 @@ import Web3Utils from '@utils/web3Utils';
 import { AppService } from '..';
 
 export const useProject = () => {
+  const { contractAddress } = useAuthContext();
   const [contract, abi] = useContract(CONTRACTS.CVAPROJECT);
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
@@ -19,15 +20,15 @@ export const useProject = () => {
     communityContract,
     isProjectLocked: () => contract?.isLocked(),
 
-    lockProject: () => donorContract?.lockProject(contract?.address).catch(handleContractError),
+    lockProject: () => donorContract?.lockProject(contractAddress).catch(handleContractError),
 
-    unLockProject: () => donorContract?.unlockProject(contract?.address).catch(handleContractError),
+    unLockProject: () => donorContract?.unlockProject(contractAddress).catch(handleContractError),
 
     acceptToken: (amount) => contract?.acceptToken(donorContract?.address, amount).catch(handleContractError),
 
     getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
-    getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),
+    getProjectBalance: async (address) => (await h2oToken?.balanceOf(address))?.toNumber(),
 
     getVendorBalance: async (walletAddress) => (await h2oToken?.balanceOf(walletAddress))?.toNumber(),
 
