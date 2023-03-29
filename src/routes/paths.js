@@ -101,7 +101,7 @@ export const PATH_PHOTO_GALLERY = {
 export const PATH_COMMUNICATION = {
   root: ROOTS_COMMUNICATIONS,
   campaigns: path(ROOTS_COMMUNICATIONS, '/campaigns'),
-  createCampaigns: path(ROOTS_COMMUNICATIONS, '/create'),
+  createCampaigns: path(ROOTS_COMMUNICATIONS, '/campaigns/create'),
   logs: path(ROOTS_COMMUNICATIONS, '/logs'),
   transports: path(ROOTS_COMMUNICATIONS, '/transports'),
 };

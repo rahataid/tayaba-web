@@ -126,3 +126,5 @@ export const phoneType = {
   FeaturePhone: 'featurephone',
   DumbPhone: 'dumbphone',
 };
+
+export const CAMPAIGN_TYPES = ['EMAIL', 'SMS', 'PHONE'];

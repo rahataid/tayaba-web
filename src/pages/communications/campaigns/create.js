@@ -7,14 +7,14 @@ import { PATH_COMMUNICATION } from '@routes/paths';
 import { CreateCampaignView } from '@sections/communications/campaigns/create';
 import { useRouter } from 'next/router';
 
-const PAGE_TITLE = 'Communication: View Campaign';
+const PAGE_TITLE = 'Communication: Create Campaign';
 
 export default function BeneficiaryList() {
   const { themeStretch } = useSettingsContext();
   const { push } = useRouter();
 
   const handleAdd = () => {
-    push(PATH_COMMUNICATION.createCampaigns);
+    push(PATH_COMMUNICATION.campaigns);
   };
 
   return (

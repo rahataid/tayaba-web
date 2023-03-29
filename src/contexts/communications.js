@@ -3,7 +3,9 @@ import { createContext, useCallback, useContext, useMemo, useState } from 'react
 
 const initialState = {
   campaigns: [],
+  transports: [],
   getCampaigns: () => {},
+  getTransports: () => {},
 };
 
 const CommunicationsContext = createContext(initialState);
@@ -26,12 +28,27 @@ export const CommunicationsProvider = ({ children }) => {
     }));
   }, []);
 
+  const getTransports = useCallback(async () => {
+    const response = await CommunicationService.getTransports();
+
+    const formatted = response.data.map((res) => ({
+      label: res.name,
+      value: res.id,
+    }));
+
+    setState((prevState) => ({
+      ...prevState,
+      transports: formatted,
+    }));
+  }, []);
+
   const contextValue = useMemo(
     () => ({
       ...state,
       getCampaigns,
+      getTransports,
     }),
-    [state.campaigns]
+    [state.campaigns, state.transports]
   );
 
   return <CommunicationsContext.Provider value={contextValue}>{children}</CommunicationsContext.Provider>;

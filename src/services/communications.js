@@ -10,4 +10,6 @@ const api = axios.create({
 
 export const CommunicationService = {
   getCampaigns: () => api.get('/campaigns'),
+
+  getTransports: () => api.get('/transports'),
 };
