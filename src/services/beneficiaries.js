@@ -28,4 +28,8 @@ export const BeneficiaryService = {
   updateUsingWalletAddress(walletAddress, data) {
     return clientApi.patch(`/beneficiaries/wallet-address/${walletAddress}`, data);
   },
+
+  addBeneficiary(payload) {
+    return clientApi.post(`/beneficiaries`, payload);
+  },
 };

@@ -57,7 +57,7 @@ export default function Stepper() {
     values: defaultValues[step],
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, setValue } = methods;
 
   const stepObj = {
     0: {
@@ -70,15 +70,23 @@ export default function Stepper() {
     },
     1: {
       title: 'Extra Fields',
-      component: <WalletAdd setStep={setStep} />,
-      handleNext() {
+      component: <WalletAdd setValue={setValue} />,
+      handleNext(data) {
+        let basicFields = defaultValues[0];
+        let payload = {};
+        for (const key in data) {
+          if (!basicFields[key]) {
+            payload = { ...payload, [key]: data[key] };
+          }
+        }
+        setDefaultValues({ ...defaultValues, [step]: payload });
         handleIncreaseStep();
       },
     },
 
     2: {
       title: 'Benificary  Added Info',
-      component: <AddedInfo beneficaryInfo={defaultValues[0]} setStep={setStep} />,
+      component: <AddedInfo beneficaryInfo={defaultValues[0]} />,
       handleNext(args) {},
     },
   };
@@ -92,9 +100,13 @@ export default function Stepper() {
   };
 
   const isLast = step === Object.keys(stepObj).length - 1;
-
-  const handleContractDeploy = async () => {
-    let ben = await addBeneficiary(defaultValues);
+  console.log({ defaultValues });
+  const handleFinish = async () => {
+    let payload = {};
+    for (const key in defaultValues) {
+      payload = { ...payload, ...defaultValues[key] };
+    }
+    let ben = await addBeneficiary(payload);
     push('/beneficaries');
   };
 
@@ -117,7 +129,7 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <Button onClick={handleContractDeploy} variant="contained">
+            <Button onClick={handleFinish} variant="contained">
               {' '}
               Finish
             </Button>

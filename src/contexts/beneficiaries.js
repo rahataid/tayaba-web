@@ -15,6 +15,7 @@ const initialState = {
     limit: 50,
     page: 0,
   },
+  addBeneficiary: () => {},
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
   getTransactionById: () => {},
@@ -111,6 +112,10 @@ export const BeneficiaryProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const addBeneficiary = (payload) => {
+    return BeneficiaryService.addBeneficiary(payload);
+  };
+
   const getAllVillages = useCallback(async () => {
     const response = await BeneficiaryService.getVillagesList();
     const formatted = response?.data?.data?.map((village) => ({
@@ -155,6 +160,7 @@ export const BeneficiaryProvider = ({ children }) => {
     getAllVillages,
     getTransactionById,
     resetFilter,
+    addBeneficiary,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;

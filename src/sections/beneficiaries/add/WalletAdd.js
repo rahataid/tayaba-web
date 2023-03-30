@@ -17,7 +17,7 @@ const community = [
     value: 'rahat',
   },
 ];
-export default function WalletAdd({ beneficaryInfo, setStep }) {
+export default function WalletAdd({ setValue }) {
   const [walletAddress, setwalletAddress] = useState('');
 
   const handleCreateWallet = async () => {
