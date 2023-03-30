@@ -55,7 +55,6 @@ const BasicInformation = ({ methods }) => {
                   />
                 )}
               />
-
               <Controller
                 name="endDate"
                 control={control}

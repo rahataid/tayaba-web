@@ -116,7 +116,7 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
-    const { name, location, owner, description, startDate, endDate, extras } = response.data.data;
+    const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
       ...response.data,
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
