@@ -9,6 +9,7 @@ import useDialog from '@hooks/useDialog';
 import { useProject } from '@services/contracts/useProject';
 import LoadingOverlay from '@components/LoadingOverlay';
 import useLoading from '@hooks/useLoading';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 BasicInfoCard.propTypes = {
   rahatChainData: PropTypes.object,
@@ -17,23 +18,23 @@ BasicInfoCard.propTypes = {
 export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { singleProject, vendorCount, refreshData } = useProjectContext();
-  console.log(singleProject);
   const [modalData, setModalData] = useState({
     title: '',
     type: '',
   });
 
+  const { roles, wallet } = useAuthContext();
   const { loading, showLoading, hideLoading } = useLoading();
 
   const { lockProject, unLockProject } = useProject();
 
   const handleUnlockModal = () => {
-    setModalData({ title: 'Are you sure to Unlock the project ?', type: 'Unlock' });
+    setModalData({ title: 'Are you sure to Unlock the project?', type: 'Unlock' });
     showDialog();
   };
 
   const handleLockModal = () => {
-    setModalData({ title: 'Are you sure to Lock the project ?', type: 'Lock' });
+    setModalData({ title: 'Are you sure to Lock the project?', type: 'Lock' });
     showDialog();
   };
 
@@ -83,22 +84,26 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       </Dialog>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-end">
-          {rahatChainData?.isLocked ? (
-            <Chip
-              label={`Locked `}
-              variant="outlined"
-              color="error"
-              icon={<Iconify icon={'material-symbols:lock-outline'} />}
-              onClick={handleUnlockModal}
-            />
-          ) : (
-            <Chip
-              label={`Unlocked`}
-              variant="outlined"
-              color="success"
-              onClick={handleLockModal}
-              icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
-            />
+          {roles?.isDonor && (
+            <>
+              {rahatChainData?.isLocked ? (
+                <Chip
+                  label={`Locked `}
+                  variant="outlined"
+                  color="error"
+                  icon={<Iconify icon={'material-symbols:lock-outline'} />}
+                  onClick={handleUnlockModal}
+                />
+              ) : (
+                <Chip
+                  label={`Unlocked`}
+                  variant="outlined"
+                  color="success"
+                  onClick={handleLockModal}
+                  icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
+                />
+              )}
+            </>
           )}
         </Grid>
       </Stack>
