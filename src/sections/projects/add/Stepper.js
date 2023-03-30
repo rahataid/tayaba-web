@@ -1,27 +1,26 @@
-import * as Yup from 'yup';
 import { useState } from 'react';
+import * as Yup from 'yup';
 
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import formFields from './data/formFields.json';
 
-import { Stack, Button, Typography, Box } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 // components
 import FormProvider from '@components/hook-form';
-import AddedInfo from './AddedInfo';
-import DynamicForm from './DynamicForm';
-import BasicInformation from './BasicInformaitonFields';
-import { getFolders } from '@services/github';
+import { CONTRACTS } from '@config';
+import { useProjectContext } from '@contexts/projects';
+import { LoadingButton } from '@mui/lab';
 import { useProject } from '@services/contracts/useProject';
-import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
-import { useProjectContext } from '@contexts/projects';
+import { useSnackbar } from 'notistack';
 import { useAppAuthContext } from 'src/auth/JwtContext';
-import { CONTRACTS } from '@config';
-import { LoadingButton } from '@mui/lab';
+import AddedInfo from './AddedInfo';
+import BasicInformation from './BasicInformaitonFields';
+import DynamicForm from './DynamicForm';
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
@@ -138,12 +137,12 @@ export default function Stepper() {
           {step !== 0 && (
             <Button onClick={handleDecreaseStep} variant={'outlined'}>
               {' '}
-              previous
+              Previous
             </Button>
           )}
           {!isLast ? (
             <Button type="submit" variant={'outlined'}>
-              next
+              Next
             </Button>
           ) : (
             <LoadingButton onClick={handleContractDeploy} variant="contained" loading={loading}>
