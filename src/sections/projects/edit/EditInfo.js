@@ -4,13 +4,14 @@ import * as Yup from 'yup';
 import { Card, Grid, Stack } from '@mui/material';
 // components
 import { RHFTextField } from '@components/hook-form';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-import { useProjectContext } from '@contexts/projects';
-import { useRouter } from 'next/router';
 import FormProvider from '@components/hook-form/FormProvider';
-import { useForm } from 'react-hook-form';
+import { useProjectContext } from '@contexts/projects';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from '@mui/material';
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
@@ -27,8 +28,7 @@ const FormSchema = Yup.object().shape({
 
 export default function EditInfo() {
     const [formValues, setFormValues] = useState({});
-    const { getProjectById, singleProject } = useProjectContext();
-    console.log(singleProject);
+    const { getProjectById, editData } = useProjectContext();
 
     const methods = useForm({
         mode: 'onTouched',
@@ -41,9 +41,9 @@ export default function EditInfo() {
     } = useRouter();
 
     useEffect(() => {
-        if (!singleProject) return;
-        setFormValues(singleProject);
-    }, [singleProject]);
+        if (!editData) return;
+        setFormValues(editData);
+    }, [editData]);
 
     useEffect(() => {
         if (!projectId) return;
@@ -51,7 +51,7 @@ export default function EditInfo() {
     }, [getProjectById, projectId]);
 
     return (
-        <FormProvider methods={methods}>
+        <FormProvider methods={methods} value={formValues}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
                     <Card>
@@ -104,6 +104,11 @@ export default function EditInfo() {
                     </Card>
                 </Grid>
             </Grid>
+            <Stack direction={'row'} paddingTop={2} spacing={2}>
+                <Button variant={'outlined'}>
+                    Edit
+                </Button>
+            </Stack>
         </FormProvider>
     );
 }

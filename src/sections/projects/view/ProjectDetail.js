@@ -60,7 +60,7 @@ export default function ProjectDetail({ chainData, ...other }) {
         justifyContent="center"
         alignItems={{ xs: 'center', md: 'flex-start' }}
         sx={{
-          pl: 5,
+          pl: 1,
           py: { xs: 5, md: 0 },
           pr: { xs: 5, md: 0 },
           textAlign: { xs: 'center', md: 'left' },

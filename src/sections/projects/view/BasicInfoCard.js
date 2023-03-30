@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Stack, Typography, Chip, Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
-import { useProjectContext } from '@contexts/projects';
-import moment from 'moment';
 import Iconify from '@components/iconify';
-import useDialog from '@hooks/useDialog';
-
-import { useProject } from '@services/contracts/useProject';
 import LoadingOverlay from '@components/LoadingOverlay';
+import { useProjectContext } from '@contexts/projects';
+import useDialog from '@hooks/useDialog';
 import useLoading from '@hooks/useLoading';
+import { Button, Chip, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
+import { useProject } from '@services/contracts/useProject';
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 BasicInfoCard.propTypes = {
   rahatChainData: PropTypes.object,
@@ -16,8 +16,8 @@ BasicInfoCard.propTypes = {
 
 export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { singleProject, vendorCount, refreshData } = useProjectContext();
-  console.log(singleProject);
+  const { singleProject, vendorCount, refreshData, editData } = useProjectContext();
+  const router = useRouter();
   const [modalData, setModalData] = useState({
     title: '',
     type: '',
@@ -30,6 +30,10 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
   const handleUnlockModal = () => {
     setModalData({ title: 'Are you sure to Unlock the project ?', type: 'Unlock' });
     showDialog();
+  };
+
+  const handleEditProject = () => {
+    router.push(`/projects/edit/${router.query.projectId}`);
   };
 
   const handleLockModal = () => {
@@ -81,7 +85,13 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
           </DialogActions>
         </LoadingOverlay>
       </Dialog>
-      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" spacing={12}>
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-around" spacing={10}>
+        <Chip
+          label={`Edit Project`}
+          variant="outlined"
+          color="success"
+          onClick={handleEditProject}
+        />
         <Grid container direction="column" justifyContent="center" alignItems="flex-end">
           {rahatChainData?.isLocked ? (
             <Chip
@@ -104,13 +114,13 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+          <Typography variant="h5" sx={{ fontWeight: 400 }}>
             {singleProject?.data?.projectManager}
           </Typography>
           <Typography variant="body2">Managed By</Typography>
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+          <Typography variant="h5" sx={{ fontWeight: 400 }}>
             {vendorCount}
           </Typography>
 
@@ -119,13 +129,13 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" alignItems="flex-start">
-          <Typography variant="body1" sx={{ fontWeight: 600 }}>
+          <Typography variant="body1" sx={{ fontWeight: 400 }}>
             {moment(singleProject?.data?.startDate).format('DD MMM YYYY')}
           </Typography>
           <Typography variant="caption">Start Date</Typography>
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-          <Typography variant="body1" sx={{ fontWeight: 600 }}>
+          <Typography variant="body1" sx={{ fontWeight: 400 }}>
             {moment(singleProject?.data?.endDate).format('DD MMM YYYY')}
           </Typography>
           <Typography variant="caption">End Date</Typography>

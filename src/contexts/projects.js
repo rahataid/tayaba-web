@@ -15,6 +15,7 @@ const initialState = {
   refresh: false,
   isRahatResponseLive: false,
   error: {},
+  editData: {},
 
   githubProjectTypes: [],
   formFields: [],
@@ -117,13 +118,14 @@ export const ProjectProvider = ({ children }) => {
     const response = await ProjectService.getProjectById(id);
     const { name, location, owner, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
-      name, location, owner, description, startDate, endDate, ...extras,
+      ...response.data,
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
+      editData: { name, location, description, startDate, endDate, ...extras },
     }));
     return formatted;
   }, []);
