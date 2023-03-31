@@ -13,6 +13,11 @@ export const ProjectService = {
     });
   },
 
+  editProject(id, data) {
+    console.log('sent')
+    return clientApi.patch(`/projects/update?id=${id}`, data)
+  },
+
   getProjectById(id) {
     return clientApi.get(`/projects/${id}`);
   },
@@ -58,7 +63,7 @@ export const ProjectService = {
   getTrackerData(name) {
     return clientApi.get(`/misc/${name}`);
   },
-  
+
   addProject(payload) {
     return clientApi.post('/projects', payload);
   },

@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
-import { useProjectContext } from '@contexts/projects';
 // form
 import { Controller } from 'react-hook-form';
 // @mui
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { Stack, Grid, TextField } from '@mui/material';
+import { Grid, Stack, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 // components
@@ -57,7 +55,6 @@ const BasicInformation = ({ methods }) => {
                   />
                 )}
               />
-
               <Controller
                 name="endDate"
                 control={control}

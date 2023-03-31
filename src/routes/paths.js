@@ -45,6 +45,7 @@ export const PATH_PROJECTS = {
   view: path(ROOTS_PROJECTS, '/[id]'),
   addBudget: path(ROOTS_PROJECTS, '/[id]/add-budget'),
   addProject: path(ROOTS_PROJECTS, '/add'),
+  editroject: path(ROOTS_PROJECTS, '/edit'),
   addBeneficary: path(ROOTS_BENEFICIARY, '/add'),
 };
 
