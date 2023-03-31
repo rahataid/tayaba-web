@@ -31,21 +31,22 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => {},
-  getProjectById: () => {},
-  getBeneficiariesByProject: () => {},
-  getVendorsByProject: () => {},
-  refreshData: () => {},
-  setRahatResponseStatus: () => {},
-  getChartData: () => {},
-  getBeneficiariesByvillage: () => {},
-  setFilter: () => {},
-  getProjectsTypesList: () => {},
-  getGithubProjectTypes: () => {},
-  getFormFields: () => {},
-  addProject: () => {},
-  getContracts: () => {},
-  editProject: () => {},
+  getProjectsList: () => { },
+  getProjectById: () => { },
+  getProjectByAddress: () => { },
+  getBeneficiariesByProject: () => { },
+  getVendorsByProject: () => { },
+  refreshData: () => { },
+  setRahatResponseStatus: () => { },
+  getChartData: () => { },
+  getBeneficiariesByvillage: () => { },
+  setFilter: () => { },
+  getProjectsTypesList: () => { },
+  getGithubProjectTypes: () => { },
+  getFormFields: () => { },
+  addProject: () => { },
+  getContracts: () => { },
+  editProject: () => { },
 };
 
 const ProjectsContext = createContext(initialState);
@@ -123,16 +124,19 @@ export const ProjectProvider = ({ children }) => {
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
+    console.log(formatted)
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
-      editData: { name, location, description, startDate, endDate, ...extras },
+      editData: { name, location, description, startDate, endDate, extras },
     }));
     return formatted;
   }, []);
 
+
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
+    const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
       ...response.data,
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
@@ -142,7 +146,11 @@ export const ProjectProvider = ({ children }) => {
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
+      editData: { name, location, description, startDate, endDate, extras },
+
     }));
+
+
     return formatted;
   }, []);
 

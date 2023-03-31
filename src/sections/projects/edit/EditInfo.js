@@ -29,7 +29,8 @@ const FormSchema = Yup.object().shape({
 export default function EditInfo() {
 
     const [formValues, setFormValues] = useState({});
-    const { getProjectById, editData, editProject } = useProjectContext();
+    const [formKeys, setFormKeys] = useState([])
+    const { getProjectByAddress, editData } = useProjectContext();
     const { enqueueSnackbar } = useSnackbar()
 
     const {
@@ -38,27 +39,31 @@ export default function EditInfo() {
     } = useRouter();
 
     const handleEdit = async (data) => {
-        try {
+        const extrasKey = Object.keys(editData?.extras)
 
-            console.log('handleEdit')
-            const editData = {
-                ...formValues,
-                ...data
+        const extras = {};
+        for (const key in data) {
+            if (extrasKey.includes(key)) {
+                extras[key] = data[key];
+                delete data[key];
             }
-            console.log(editData)
-            await ProjectService.editProject(projectId, editData)
-            enqueueSnackbar('Project Successfully edited')
-            push(`/projects/${projectId}`)
-
-        } catch (error) {
-            enqueueSnackbar('Something went wrong!', {
-                variant: 'error'
-            })
         }
+        console.log('e', extras)
+
+        let payload = {
+            extras,
+            ...data
+        }
+
+        await ProjectService.editProject(projectId, payload);
+        enqueueSnackbar('Project Successfully edited');
+        push(`/projects/${projectId}`);
     };
 
     const handleError = async (error) => {
-        console.log(error)
+        enqueueSnackbar('Something went wrong!', {
+            variant: 'error'
+        })
     }
 
     const methods = useForm({
@@ -74,14 +79,21 @@ export default function EditInfo() {
 
     useEffect(() => {
         if (!editData) return;
-        setFormValues(editData);
-        reset(editData);
+        setFormKeys(Object.keys(editData))
+        const { extras, ...rest } = editData
+        const formV = {
+
+            ...rest,
+            ...extras,
+        }
+        setFormValues(formV);
+        reset(formV);
     }, [editData]);
 
     useEffect(() => {
         if (!projectId) return;
-        getProjectById(projectId);
-    }, [getProjectById, projectId]);
+        getProjectByAddress(projectId);
+    }, [getProjectByAddress, projectId]);
 
     return (
         <FormProvider methods={methods} value={formValues} onSubmit={handleSubmit(handleEdit, handleError)}>
