@@ -1,15 +1,12 @@
+import { useEffect } from 'react';
 import * as Yup from 'yup';
-import { useEffect, useState } from 'react';
 // form
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 // @mui
-import { Stack, Grid, Button, Typography, Card } from '@mui/material';
+import { Card, Grid, Stack } from '@mui/material';
 // components
-import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
+import { RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
 import moment from 'moment';
-import Web3Utils from '@utils/web3Utils';
 const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
@@ -19,7 +16,7 @@ const FormSchema = Yup.object().shape({
     .max(100, 'Maximum 15 characters'),
   //   walletAddress: Yup.string().required('Wallet Address is required'),
 });
-export default function AddedInfo({ projectInfo = {}, projectType, setStep }) {
+export default function AddedInfo({ projectInfo = {}, projectType }) {
   const { getContracts } = useProjectContext();
 
   useEffect(() => {

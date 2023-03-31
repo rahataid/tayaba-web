@@ -16,6 +16,7 @@ const TableContainer = () => {
   const handleView = (id) => () => {
     router.push(`/projects/${id}`);
   };
+
   return (
     <Box sx={{ p: 1 }}>
       <ProjectsList list={projects} onClick={handleView} />

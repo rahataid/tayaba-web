@@ -14,6 +14,15 @@ export const ProjectService = {
     });
   },
 
+  editProject(id, data) {
+    console.log('sent')
+    return clientApi.patch(`/projects/update?id=${id}`, data)
+  },
+
+  delete(id) {
+    return clientApi.patch(`/projects/${id}/delete`)
+  },
+
   getProjectById(id) {
     return clientApi.get(`/projects/${id}`);
   },
