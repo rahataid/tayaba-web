@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-
 import { Stack, Button, Typography, Box } from '@mui/material';
 
 // components
@@ -21,7 +20,7 @@ import WalletAdd from './WalletAdd';
 const FormSchema = Yup.object().shape({
   name: Yup.string().required('Full name is required').min(4, 'Mininum 4 characters').max(24, 'Maximum 15 characters'),
   phone: Yup.string().required('Phone Number is required'),
-  description: Yup.string().required('description is required'),
+  projectId: Yup.number().required(' prroject is required'),
   gender: Yup.string().required('Please Select Gender'),
   villageId: Yup.number().required('please Select Village'),
   phoneOwnedBy: Yup.string().required('Phone Owner is Required'),
@@ -29,7 +28,7 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function Stepper() {
-  const { addBeneficiary } = useBeneficiaryContext();
+  const { addBeneficiary, getAllProjects, projects, getAllVillages, village } = useBeneficiaryContext();
 
   const { push } = useRouter();
   const [defaultValues, setDefaultValues] = useState({
@@ -45,10 +44,10 @@ export default function Stepper() {
     },
   });
   const [step, setStep] = useState(0);
-  const { getAllVillages, village } = useBeneficiaryContext();
 
   useEffect(() => {
     getAllVillages();
+    getAllProjects();
   }, [getAllVillages]);
 
   const methods = useForm({
@@ -57,12 +56,12 @@ export default function Stepper() {
     values: defaultValues[step],
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, setValue } = methods;
 
   const stepObj = {
     0: {
       title: 'Basic Information',
-      component: <BasicInformation methods={methods} village={village} />,
+      component: <BasicInformation methods={methods} village={village} projects={projects} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
         handleIncreaseStep();
@@ -70,15 +69,23 @@ export default function Stepper() {
     },
     1: {
       title: 'Extra Fields',
-      component: <WalletAdd setStep={setStep} />,
-      handleNext() {
+      component: <WalletAdd setValue={setValue} />,
+      handleNext(data) {
+        let basicFields = defaultValues[0];
+        let payload = {};
+        for (const key in data) {
+          if (!basicFields[key]) {
+            payload = { ...payload, [key]: data[key] };
+          }
+        }
+        setDefaultValues({ ...defaultValues, [step]: payload });
         handleIncreaseStep();
       },
     },
 
     2: {
       title: 'Benificary  Added Info',
-      component: <AddedInfo beneficaryInfo={defaultValues[0]} setStep={setStep} />,
+      component: <AddedInfo beneficaryInfo={defaultValues[0]} />,
       handleNext(args) {},
     },
   };
@@ -92,10 +99,14 @@ export default function Stepper() {
   };
 
   const isLast = step === Object.keys(stepObj).length - 1;
-
-  const handleContractDeploy = async () => {
-    let ben = await addBeneficiary(defaultValues);
-    push('/beneficaries');
+  console.log({ defaultValues });
+  const handleFinish = async () => {
+    let payload = {};
+    for (const key in defaultValues) {
+      payload = { ...payload, ...defaultValues[key] };
+    }
+    let ben = await addBeneficiary(payload);
+    push('/beneficiaries');
   };
 
   return (
@@ -117,7 +128,7 @@ export default function Stepper() {
               next
             </Button>
           ) : (
-            <Button onClick={handleContractDeploy} variant="contained">
+            <Button onClick={handleFinish} variant="contained">
               {' '}
               Finish
             </Button>
