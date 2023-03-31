@@ -7,11 +7,12 @@ import { AppService } from '..';
 
 export const useProject = () => {
   const { contractAddress } = useAuthContext();
-  const [contract, abi] = useContract(CONTRACTS.CVAPROJECT);
+  const [contract, abi] = useContract(CONTRACTS.CVAPROJECT, { contractAddress });
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
+  console.log({ contractAddress });
 
   return {
     contract,
