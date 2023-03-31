@@ -7,6 +7,7 @@ export const ProjectService = {
       params,
     });
   },
+
   getProjectsTypesList(params) {
     return clientApi.get('/projectsTypes', {
       params,
@@ -24,6 +25,10 @@ export const ProjectService = {
 
   getProjectById(id) {
     return clientApi.get(`/projects/${id}`);
+  },
+
+  getProjectByAddress(address) {
+    return clientApi.get(`/projects/wallet/${address}`);
   },
 
   getBeneficiariesByProject(query) {

@@ -32,6 +32,7 @@ const initialState = {
   contracts: null,
   addresses: null,
   wallet: null,
+  contractAddress: null,
   startBlockNumber: 0,
   roles: {
     isAdmin: false,
@@ -44,6 +45,7 @@ const initialState = {
   addUser: () => {},
   addKey: () => {},
   logout: () => {},
+  setContractAddress: () => {},
 };
 
 const AppAuthContext = createContext({
@@ -136,6 +138,10 @@ function AuthProvider({ children }) {
     saveCurrentUser(user);
   };
 
+  const setContractAddress = (contractAddress) => {
+    setAuthState((prev) => ({ ...prev, contractAddress }));
+  };
+
   const deleteToken = () => {
     deleteAccessToken();
     setAuthState((prev) => ({ ...prev, isInitialized: true, token: '' }));
@@ -172,6 +178,7 @@ function AuthProvider({ children }) {
       addKey,
       logout,
       roles,
+      setContractAddress,
     }),
     [authState, roles]
   );

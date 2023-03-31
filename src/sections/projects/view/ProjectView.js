@@ -15,9 +15,11 @@ import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
 import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 const ProjectView = () => {
-  const { getProjectById, singleProject, refreshData, refresh } = useProjectContext();
+  const { getProjectByAddress, singleProject, refreshData, refresh } = useProjectContext();
+  const { setContractAddress } = useAuthContext();
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
   const { loading, showLoading, hideLoading } = useLoading();
@@ -26,7 +28,7 @@ const ProjectView = () => {
   const [chainData, setChainData] = useState({});
 
   const {
-    query: { projectId },
+    query: { projectId: contractAddress },
   } = useRouter();
 
   const updateChainData = (d) => {
@@ -54,7 +56,7 @@ const ProjectView = () => {
   let getDataFromChain = useCallback(async () => {
     showLoading('project-view');
     let tokenAllowance = await getTokenAllowance();
-    let projectBalance = await getProjectBalance();
+    let projectBalance = await getProjectBalance(contractAddress);
     const isLocked = await isProjectLocked();
     //TODO :trigger Inventory tracker data;
     updateChainData({ tokenAllowance, projectBalance, isLocked });
@@ -66,9 +68,10 @@ const ProjectView = () => {
   }, [getDataFromChain]);
 
   useEffect(() => {
-    if (!projectId) return;
-    getProjectById(projectId);
-  }, [projectId, alert.show]);
+    if (!contractAddress) return;
+    getProjectByAddress(contractAddress);
+    setContractAddress(contractAddress);
+  }, [contractAddress, alert.show]);
 
   useEffect(() => {
     RahatTokenWS?.on('Approval', getDataFromChain);
@@ -87,14 +90,14 @@ const ProjectView = () => {
               <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
               <InfoCard chainData={chainData} />
               <SummaryTracker />
-              <ProjectChart projectId={projectId} />
+              <ProjectChart projectId={singleProject?.data?.id} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <Grid container spacing={2}>
             <TitleCard refreshData={getDataFromChain} chainData={chainData} />
-            <CashActionsAlert projectId={projectId} chainData={chainData} refreshData={refreshData} />
+            <CashActionsAlert projectId={singleProject?.data?.id} chainData={chainData} refreshData={refreshData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail chainData={chainData} />
             </Grid>

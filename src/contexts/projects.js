@@ -31,21 +31,21 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
-  setFilter: () => { },
-  getProjectsTypesList: () => { },
-  getGithubProjectTypes: () => { },
-  getFormFields: () => { },
-  addProject: () => { },
-  getContracts: () => { },
-  editProject: () => { },
+  getProjectsList: () => {},
+  getProjectById: () => {},
+  getBeneficiariesByProject: () => {},
+  getVendorsByProject: () => {},
+  refreshData: () => {},
+  setRahatResponseStatus: () => {},
+  getChartData: () => {},
+  getBeneficiariesByvillage: () => {},
+  setFilter: () => {},
+  getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
+  getFormFields: () => {},
+  addProject: () => {},
+  getContracts: () => {},
+  editProject: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -131,6 +131,21 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const getProjectByAddress = useCallback(async (address) => {
+    const response = await ProjectService.getProjectByAddress(address);
+    const formatted = {
+      ...response.data,
+      projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
+      projectCreatedAt: response.data?.project_manager?.created_at,
+    };
+
+    setState((prev) => ({
+      ...prev,
+      singleProject: formatted,
+    }));
+    return formatted;
+  }, []);
+
   const addProject = (data) => {
     return ProjectService.addProject(data);
   };
@@ -138,7 +153,7 @@ export const ProjectProvider = ({ children }) => {
   const editProject = (data) => {
     console.log('editProject');
     return ProjectService.editProject(data);
-  }
+  };
   const getBeneficiariesByProject = useCallback(
     async (query) => {
       let filterObj = {
@@ -247,6 +262,7 @@ export const ProjectProvider = ({ children }) => {
     getFormFields,
     addProject,
     getContracts,
+    getProjectByAddress,
     editProject,
   };
 

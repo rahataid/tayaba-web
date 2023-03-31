@@ -114,16 +114,16 @@ export default function Stepper() {
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
-      let payload = { wallet: contract.wallet };
+      let payload = { contractAddress: contract.address };
       for (const key in defaultValues) {
         payload = { ...payload, ...defaultValues[key] };
       }
-      let { data } = await addProject(payload);
-      push(`/projects/${data?.data?.id}`);
+      await addProject(payload);
+      push(`/projects/${contract.address}`);
     } catch (err) {
       console.log(err);
     }
-    setLoading(!loading);
+    setLoading(false);
   };
 
   return (
