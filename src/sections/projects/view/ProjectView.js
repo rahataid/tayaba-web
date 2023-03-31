@@ -57,7 +57,6 @@ const ProjectView = () => {
     showLoading('project-view');
     let tokenAllowance = await getTokenAllowance();
     let projectBalance = await getProjectBalance(contractAddress);
-    console.log({ projectBalance });
     const isLocked = await isProjectLocked();
     //TODO :trigger Inventory tracker data;
     updateChainData({ tokenAllowance, projectBalance, isLocked });

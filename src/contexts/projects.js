@@ -31,21 +31,21 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
-  setFilter: () => { },
-  getProjectsTypesList: () => { },
-  getGithubProjectTypes: () => { },
-  getFormFields: () => { },
-  addProject: () => { },
-  getContracts: () => { },
-  editProject: () => { },
+  getProjectsList: () => {},
+  getProjectById: () => {},
+  getBeneficiariesByProject: () => {},
+  getVendorsByProject: () => {},
+  refreshData: () => {},
+  setRahatResponseStatus: () => {},
+  getChartData: () => {},
+  getBeneficiariesByvillage: () => {},
+  setFilter: () => {},
+  getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
+  getFormFields: () => {},
+  addProject: () => {},
+  getContracts: () => {},
+  editProject: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -153,7 +153,7 @@ export const ProjectProvider = ({ children }) => {
   const editProject = (data) => {
     console.log('editProject');
     return ProjectService.editProject(data);
-  }
+  };
   const getBeneficiariesByProject = useCallback(
     async (query) => {
       let filterObj = {
@@ -262,11 +262,8 @@ export const ProjectProvider = ({ children }) => {
     getFormFields,
     addProject,
     getContracts,
-<<<<<<< HEAD
     getProjectByAddress,
-=======
     editProject,
->>>>>>> back-stage
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
