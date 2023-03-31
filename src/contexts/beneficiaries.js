@@ -15,6 +15,8 @@ const initialState = {
     limit: 50,
     page: 0,
   },
+  projects: [],
+  addBeneficiary: () => {},
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
   getTransactionById: () => {},
@@ -25,6 +27,7 @@ const initialState = {
   getAllWards: () => {},
   getAllVillages: () => {},
   resetFilter: () => {},
+  getAllProjects: () => {},
 };
 
 const BeneficiaryContext = createContext(initialState);
@@ -99,7 +102,6 @@ export const BeneficiaryProvider = ({ children }) => {
 
   const getBeneficiaryById = useCallback(async (id) => {
     const response = await BeneficiaryService.getBeneficiaryById(id);
-
     const formatted = {
       ...response.data,
     };
@@ -111,6 +113,10 @@ export const BeneficiaryProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const addBeneficiary = (payload) => {
+    return BeneficiaryService.addBeneficiary(payload);
+  };
+
   const getAllVillages = useCallback(async () => {
     const response = await BeneficiaryService.getVillagesList();
     const formatted = response?.data?.data?.map((village) => ({
@@ -120,6 +126,19 @@ export const BeneficiaryProvider = ({ children }) => {
     setState((prev) => ({
       ...prev,
       village: formatted,
+    }));
+    return formatted;
+  }, []);
+
+  const getAllProjects = useCallback(async () => {
+    const response = await BeneficiaryService.getProjectsList();
+    const formatted = response?.data?.data.map((project) => ({
+      label: project.name,
+      value: project.id,
+    }));
+    setState((prev) => ({
+      ...prev,
+      projects: formatted,
     }));
     return formatted;
   }, []);
@@ -155,6 +174,8 @@ export const BeneficiaryProvider = ({ children }) => {
     getAllVillages,
     getTransactionById,
     resetFilter,
+    addBeneficiary,
+    getAllProjects,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;
