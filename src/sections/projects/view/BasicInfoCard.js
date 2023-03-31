@@ -86,12 +86,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
         </LoadingOverlay>
       </Dialog>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-around" spacing={10}>
-        <Chip
-          label={`Edit Project`}
-          variant="outlined"
-          color="success"
-          onClick={handleEditProject}
-        />
+
         <Grid container direction="column" justifyContent="center" alignItems="flex-end">
           {rahatChainData?.isLocked ? (
             <Chip

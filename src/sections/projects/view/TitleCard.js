@@ -11,6 +11,8 @@ import useLoading from '@hooks/useLoading';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { useProject } from '@services/contracts/useProject';
 import LoadingOverlay from '@components/LoadingOverlay';
+import { ProjectService } from '@services/projects';
+import { PATH_PROJECTS } from '@routes/paths';
 const TitleCard = ({ chainData, refreshData }) => {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles, wallet } = useAuthContext();
@@ -22,6 +24,7 @@ const TitleCard = ({ chainData, refreshData }) => {
     push,
     query: { projectId },
   } = useRouter();
+
   const [modalData, setModalData] = useState({
     title: '',
     type: '',
@@ -91,8 +94,26 @@ const TitleCard = ({ chainData, refreshData }) => {
   };
 
   const handleBeneficiaryRouteAction = () => {
+
     push(`/projects/${projectId}/beneficiaries`);
   };
+
+  const handleDelete = async () => {
+    try {
+      console.log('Delete', projectId)
+      await ProjectService.delete(projectId)
+      enqueueSnackbar('Project Deleted', {
+        'variant': 'success'
+      })
+      push(PATH_PROJECTS.root)
+    } catch (error) {
+      enqueueSnackbar('Error deleting project', {
+        variant: 'error'
+      })
+      console.log(error)
+    }
+  }
+
 
   const menuItems = [
     {
@@ -110,6 +131,16 @@ const TitleCard = ({ chainData, refreshData }) => {
       name: 'Unlock Project',
       show: roles?.isDonor && chainData?.projectBalance > 0 && chainData?.isLocked,
     },
+    {
+      name: "Edit",
+      onClick: () => push(`/projects/edit/${projectId}`),
+      show: roles?.isDonor
+    },
+    {
+      name: 'Delete',
+      onClick: handleDelete,
+      show: roles?.isDonor
+    }
   ];
 
   return (

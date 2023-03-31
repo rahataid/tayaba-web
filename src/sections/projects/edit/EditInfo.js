@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ProjectService } from '@services/projects';
+import { useSnackbar } from 'notistack';
 const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
@@ -29,19 +30,31 @@ export default function EditInfo() {
 
     const [formValues, setFormValues] = useState({});
     const { getProjectById, editData, editProject } = useProjectContext();
+    const { enqueueSnackbar } = useSnackbar()
 
     const {
         query: { projectId },
+        push
     } = useRouter();
 
     const handleEdit = async (data) => {
-        console.log('handleEdit')
-        const editData = {
-            ...formValues,
-            ...data
+        try {
+
+            console.log('handleEdit')
+            const editData = {
+                ...formValues,
+                ...data
+            }
+            console.log(editData)
+            await ProjectService.editProject(projectId, editData)
+            enqueueSnackbar('Project Successfully edited')
+            push(`/projects/${projectId}`)
+
+        } catch (error) {
+            enqueueSnackbar('Something went wrong!', {
+                variant: 'error'
+            })
         }
-        console.log(editData)
-        await ProjectService.editProject(projectId, editData)
     };
 
     const handleError = async (error) => {
