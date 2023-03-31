@@ -4,14 +4,29 @@ import { CAMPAIGN_TYPES, SPACING } from '@config';
 import { useCommunications } from '@contexts/communications';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
-import { Checkbox, Chip, Grid, ListItemText, MenuItem, OutlinedInput, Select, Stack, TextField } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Chip,
+  Grid,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { CommunicationService } from '@services/communications';
 import { getLabelsByValues } from '@utils/arrays';
-import { useEffect } from 'react';
+import { parseMultiLineInput } from '@utils/strings';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+import RegisterAudiencesModal from './RegisterAudiencesModal';
 
 const FormSchema = Yup.object().shape({
   name: Yup.string()
@@ -25,23 +40,27 @@ const FormSchema = Yup.object().shape({
   transportId: Yup.number().required('Select the transport for the campaign'),
 });
 
-const audiences = [
-  {
-    label: 'New',
-    value: 1,
-  },
-  {
-    label: 'Existing',
-    value: 2,
-  },
-];
-
 const CreateCampaign = () => {
-  const { transports, getTransports } = useCommunications();
+  const { transports, getTransports, audiences, getAudiences, getBeneficiaries, beneficiaries } = useCommunications();
+  const { push } = useRouter();
+
+  const [isAddAudienceModalOpen, setIsAddAudienceModalOpen] = useState(false);
+
+  const handleAudienceModal = () => {
+    setIsAddAudienceModalOpen((o) => !o);
+  };
 
   useEffect(() => {
     getTransports();
   }, []);
+
+  useEffect(() => {
+    getAudiences();
+  }, [getAudiences, isAddAudienceModalOpen]);
+
+  useEffect(() => {
+    getBeneficiaries();
+  }, [getBeneficiaries]);
 
   const methods = useForm({
     mode: 'onTouched',
@@ -58,17 +77,23 @@ const CreateCampaign = () => {
   const { handleSubmit, control, getValues } = methods;
   // console.log('first', getValues('audienceIds'));
 
-  const handleFormSubmit = (data) => {
-    const formatted = {
-      ...data,
-      startTime: data.startTime.toISOString(),
-      details: JSON.parse(data.details),
-    };
-    console.log('data', formatted);
+  const handleFormSubmit = async (data) => {
+    try {
+      const formatted = {
+        ...data,
+        startTime: data.startTime.toISOString(),
+        details: parseMultiLineInput(data.details, 'OBJECT'),
+      };
+      const saved = await CommunicationService.createCampaigns(formatted);
+      push(`/communications/campaigns/${saved.id}`);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(handleFormSubmit)}>
+      <RegisterAudiencesModal isOpen={isAddAudienceModalOpen} onClose={handleAudienceModal} list={beneficiaries} />
       <Grid container spacing={SPACING.GRID_SPACING}>
         <Grid item md={4} xs={12}>
           <RHFTextField id="name" name={'name'} label="Campaign Name" />
@@ -118,7 +143,7 @@ const CreateCampaign = () => {
         </RHFSelect>
       </Grid>
 
-      <Grid item md={6}>
+      <Grid item md={6} mt={SPACING.GRID_SPACING}>
         <Controller
           name="audienceIds"
           control={control}
@@ -143,6 +168,9 @@ const CreateCampaign = () => {
             </Select>
           )}
         />
+        <Button size="small" onClick={handleAudienceModal}>
+          Register Audiences
+        </Button>
       </Grid>
 
       <Stack mt={2}>

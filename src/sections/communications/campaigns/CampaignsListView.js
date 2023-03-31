@@ -2,7 +2,9 @@ import Iconify from '@components/iconify';
 import ListTable from '@components/table/ListTable';
 import { useCommunications } from '@contexts/communications';
 import { Box, Button, Stack, TableCell, TableRow } from '@mui/material';
+import { CommunicationService } from '@services/communications';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 const tableHeaders = {
@@ -46,8 +48,16 @@ const tableHeaders = {
 
 const CampaignsListView = (props) => {
   const { campaigns, getCampaigns } = useCommunications();
+  const { push } = useRouter();
 
-  console.log('campaigns', campaigns);
+  const handleTriggerCampaign = (id) => async () => {
+    try {
+      const success = await CommunicationService.triggerCampaign(id);
+      console.log('success', success);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getCampaigns();
@@ -69,8 +79,14 @@ const CampaignsListView = (props) => {
               <TableCell align={headers['totalAudiences'].align}>{row?.totalAudiences}</TableCell>
               <TableCell align={headers['actions'].align}>
                 <Stack direction={'row'}>
-                  <Button startIcon={<Iconify icon="grommet-icons:trigger" />} />
-                  <Button startIcon={<Iconify icon="ic:outline-remove-red-eye" />} />
+                  <Button
+                    startIcon={<Iconify icon="grommet-icons:trigger" />}
+                    onClick={handleTriggerCampaign(row?.id)}
+                  />
+                  <Button
+                    startIcon={<Iconify icon="ic:outline-remove-red-eye" />}
+                    onClick={() => push(`/communications/campaigns/${row.id}`)}
+                  />
                 </Stack>
               </TableCell>
             </TableRow>
