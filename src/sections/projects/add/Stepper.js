@@ -114,6 +114,7 @@ export default function Stepper() {
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
+
       let payload = { contractAddress: contract.address };
       for (const key in defaultValues) {
         payload = { ...payload, ...defaultValues[key] };
