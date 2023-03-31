@@ -32,4 +32,7 @@ export const BeneficiaryService = {
   addBeneficiary(payload) {
     return clientApi.post(`/beneficiaries`, payload);
   },
+  getProjectsList() {
+    return clientApi.get(`/projects`);
+  },
 };

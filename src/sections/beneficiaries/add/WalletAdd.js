@@ -3,7 +3,6 @@ import { Stack, Grid, Button, Card } from '@mui/material';
 // components
 import { RHFSelect, RHFCheckbox, RHFTextField } from '@components/hook-form';
 import Web3Utils from '@utils/web3Utils';
-import { useBeneficiaryContext } from '@contexts/beneficiaries';
 
 // ----------------------------------------------------------------------
 
@@ -19,10 +18,10 @@ const community = [
 ];
 export default function WalletAdd({ setValue }) {
   const [walletAddress, setwalletAddress] = useState('');
-
   const handleCreateWallet = async () => {
     let wallet = Web3Utils.generateWallet('');
     setwalletAddress(wallet.address);
+    setValue('walletAddress', wallet.address);
   };
 
   return (
