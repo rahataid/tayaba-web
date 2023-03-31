@@ -16,7 +16,7 @@ const FormSchema = Yup.object().shape({
     .max(100, 'Maximum 15 characters'),
   //   walletAddress: Yup.string().required('Wallet Address is required'),
 });
-export default function AddedInfo({ projectInfo = {}, projectType, setStep }) {
+export default function AddedInfo({ projectInfo = {}, projectType }) {
   const { getContracts } = useProjectContext();
 
   useEffect(() => {

@@ -45,6 +45,7 @@ const initialState = {
   getFormFields: () => { },
   addProject: () => { },
   getContracts: () => { },
+  editProject: () => { },
 };
 
 const ProjectsContext = createContext(initialState);
@@ -134,6 +135,10 @@ export const ProjectProvider = ({ children }) => {
     return ProjectService.addProject(data);
   };
 
+  const editProject = (data) => {
+    console.log('editProject');
+    return ProjectService.editProject(data);
+  }
   const getBeneficiariesByProject = useCallback(
     async (query) => {
       let filterObj = {
@@ -242,6 +247,7 @@ export const ProjectProvider = ({ children }) => {
     getFormFields,
     addProject,
     getContracts,
+    editProject,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

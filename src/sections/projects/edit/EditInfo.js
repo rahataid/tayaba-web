@@ -12,6 +12,7 @@ import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { ProjectService } from '@services/projects';
 const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
@@ -21,28 +22,47 @@ const FormSchema = Yup.object().shape({
         .required('End date is required')
         .nullable()
         .min(Yup.ref('startDate'), 'End date must be later than start date'),
-    projectManager: Yup.string().required('Project Manager is required'),
     location: Yup.string().required('Project Types is required'),
-    projectType: Yup.string().required('Project Types is required'),
 });
 
 export default function EditInfo() {
-    const [formValues, setFormValues] = useState({});
-    const { getProjectById, editData } = useProjectContext();
 
-    const methods = useForm({
-        mode: 'onTouched',
-        resolver: yupResolver(FormSchema),
-        values: formValues,
-    });
+    const [formValues, setFormValues] = useState({});
+    const { getProjectById, editData, editProject } = useProjectContext();
 
     const {
         query: { projectId },
     } = useRouter();
 
+    const handleEdit = async (data) => {
+        console.log('handleEdit')
+        const editData = {
+            ...formValues,
+            ...data
+        }
+        console.log(editData)
+        await ProjectService.editProject(projectId, editData)
+    };
+
+    const handleError = async (error) => {
+        console.log(error)
+    }
+
+    const methods = useForm({
+        mode: 'onTouched',
+        resolver: yupResolver(FormSchema),
+        defaultValues: formValues,
+        value: formValues,
+    });
+
+
+    const { handleSubmit, reset } = methods
+
+
     useEffect(() => {
         if (!editData) return;
         setFormValues(editData);
+        reset(editData);
     }, [editData]);
 
     useEffect(() => {
@@ -51,7 +71,7 @@ export default function EditInfo() {
     }, [getProjectById, projectId]);
 
     return (
-        <FormProvider methods={methods} value={formValues}>
+        <FormProvider methods={methods} value={formValues} onSubmit={handleSubmit(handleEdit, handleError)}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
                     <Card>
@@ -64,7 +84,6 @@ export default function EditInfo() {
                                                 id={key}
                                                 name={key}
                                                 label={key.charAt(0).toUpperCase() + key.slice(1)}
-                                                value={moment(value).format('DD MMM YYYY')}
                                             />
                                         </Grid>
                                     ) : (
@@ -73,7 +92,6 @@ export default function EditInfo() {
                                                 id={key}
                                                 name={key}
                                                 label={key.charAt(0).toUpperCase() + key.slice(1)}
-                                                value={value}
                                             />
                                         </Grid>
                                     )
@@ -85,7 +103,6 @@ export default function EditInfo() {
                                                 id={key}
                                                 name={key}
                                                 label={key.charAt(0).toUpperCase() + key.slice(1)}
-                                                value={moment(value).format('DD MMM YYYY')}
                                             />
                                         </Grid>
                                     ) : (
@@ -94,7 +111,6 @@ export default function EditInfo() {
                                                 id={key}
                                                 name={key}
                                                 label={key.charAt(0).toUpperCase() + key.slice(1)}
-                                                value={value}
                                             />
                                         </Grid>
                                     )
@@ -105,7 +121,7 @@ export default function EditInfo() {
                 </Grid>
             </Grid>
             <Stack direction={'row'} paddingTop={2} spacing={2}>
-                <Button variant={'outlined'}>
+                <Button type='submit' variant={'outlined'}>
                     Edit
                 </Button>
             </Stack>
