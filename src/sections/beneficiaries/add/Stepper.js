@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 
 // components
 import FormProvider from '@components/hook-form';
+import AddedInfo from './AddedInfo';
 import BasicInformation from './BasicInformationFields';
-import AddedInfo from './WalletAdd';
 
 import { useRouter } from 'next/router';
 
