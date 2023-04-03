@@ -9,3 +9,4 @@ export * as ReportingService from '@services/reporting';
 export { TransactionService } from '@services/transactionTable';
 export { default as VillagesService } from '@services/villages';
 export { ChainCacheService } from '@services/chaincache';
+export { CommunicationService } from '@services/communications';

@@ -12,11 +12,14 @@ const TableContainer = () => {
   const [flag, setFlag] = useState(false);
   const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
+
   const { roles } = useAuthContext();
+
   useEffect(() => {
     getBeneficiariesList();
     setFlag(!flag);
   }, [getBeneficiariesList, filter]);
+
   useEffect(() => {
     getAllVillages();
   }, [getAllVillages]);

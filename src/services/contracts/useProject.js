@@ -1,9 +1,8 @@
 import { CONTRACTS } from '@config';
 import { useContract } from '@hooks/contracts';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import Web3Utils from '@utils/web3Utils';
-import { AppService } from '..';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useProject = () => {
   const { contractAddress } = useAuthContext();
@@ -120,8 +119,6 @@ export const useProject = () => {
       return mapped;
     },
 
-    deployContract: async ({ byteCode, abi, args }) => {
-      return Web3Utils.deployContract({ byteCode, abi, args });
-    },
+    deployContract: async ({ byteCode, abi, args }) => Web3Utils.deployContract({ byteCode, abi, args }),
   };
 };

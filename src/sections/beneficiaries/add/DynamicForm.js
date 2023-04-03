@@ -1,3 +1,1 @@
-export const DynamicForm = () => {
-  return <></>;
-};
+export const DynamicForm = () => <></>;

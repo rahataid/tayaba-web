@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect } from 'react';
-import { Grid } from '@mui/material';
-import BasicInfoCard from './BasicInfoCard';
-import TokenDetails from './TokenDetails';
-import { HistoryTable } from '@sections/transactionTable';
-import { useVendorsContext } from '@contexts/vendors';
-import { useRouter } from 'next/router';
-import { useProject } from '@services/contracts/useProject';
-import { MapView } from './maps';
-import { ChainCacheService } from '@services/chaincache';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { CONTRACTS } from '@config';
+import { useVendorsContext } from '@contexts/vendors';
+import { Grid } from '@mui/material';
+import { HistoryTable } from '@sections/transactionTable';
+import { ChainCacheService } from '@services/chaincache';
+import { useProject } from '@services/contracts/useProject';
 import truncateEthAddress from '@utils/truncateEthAddress';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect } from 'react';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import BasicInfoCard from './BasicInfoCard';
+import { MapView } from './maps';
+import TokenDetails from './TokenDetails';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {

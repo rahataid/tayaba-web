@@ -1,12 +1,13 @@
 // routes
 import {
   PATH_BENEFICIARY,
+  PATH_COMMUNICATION,
   PATH_DASHBOARD,
+  PATH_PHOTO_GALLERY,
   PATH_PROJECTS,
   PATH_REPORTS,
-  PATH_VENDORS,
   PATH_TRANSACTIONS,
-  PATH_PHOTO_GALLERY,
+  PATH_VENDORS,
 } from '@routes/paths';
 // components
 import Iconify from '@components/iconify';
@@ -28,6 +29,7 @@ const ICONS = {
   financialInstitution: icon('material-symbols:finance-chip-outline'),
   reports: icon('iconoir:reports'),
   photoGallery: icon('material-symbols:gallery-thumbnail-outline-rounded'),
+  communication: icon('carbon:communication-unified'),
 };
 
 const navConfig = [
@@ -60,6 +62,17 @@ const navConfig = [
         title: 'Beneficiary',
         path: PATH_BENEFICIARY.root,
         icon: ICONS.beneficiary,
+      },
+      {
+        title: 'Communications',
+        path: PATH_COMMUNICATION.root,
+        icon: ICONS.communication,
+        children: [
+          {
+            title: 'Campaigns',
+            path: PATH_COMMUNICATION.campaigns,
+          },
+        ],
       },
       {
         title: 'Distributors',
