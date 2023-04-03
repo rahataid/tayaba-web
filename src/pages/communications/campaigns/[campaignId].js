@@ -18,7 +18,7 @@ export default function BeneficiaryList() {
   const { themeStretch } = useSettingsContext();
   const {
     push,
-    query: { projectId },
+    query: { campaignId },
   } = useRouter();
   const { handleError } = useErrorHandler();
 
@@ -27,7 +27,7 @@ export default function BeneficiaryList() {
   };
 
   const triggerCampaign = () => {
-    CommunicationService.triggerCampaign(projectId).catch(handleError);
+    CommunicationService.triggerCampaign(campaignId).catch(handleError);
   };
 
   return (

@@ -58,9 +58,8 @@ const CampaignsListView = (props) => {
   const handleTriggerCampaign = (id) => async () => {
     setTriggeringCampaign(true);
     try {
-      const success = await CommunicationService.triggerCampaign(id);
+      await CommunicationService.triggerCampaign(id);
       enqueueSnackbar('Campaign triggered successfully', { variant: 'success' });
-      console.log('success', success);
     } catch (error) {
       enqueueSnackbar('Error triggering campaign', { variant: 'error' });
       console.log(error);
