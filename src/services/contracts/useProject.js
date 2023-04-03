@@ -6,19 +6,25 @@ import Web3Utils from '@utils/web3Utils';
 import { AppService } from '..';
 
 export const useProject = () => {
-  const { contractAddress } = useAuthContext();
+  const { contractAddress, wallet } = useAuthContext();
   const [contract, abi] = useContract(CONTRACTS.CVAPROJECT, { contractAddress });
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
   const { handleContractError } = useErrorHandler();
-
   return {
     contract,
     // project functions
     h2oToken,
     communityContract,
     isProjectLocked: () => contract?.isLocked(),
+    approveProject: async () => {
+      let rahatCommunity = await communityContract?.connect(wallet).approveProject(contractAddress);
+      return wallet.sendTransaction({
+        to: rahatCommunity.address,
+        value: ethers.utils.parseEther('1.0'),
+      });
+    },
 
     lockProject: () => donorContract?.lockProject(contractAddress).catch(handleContractError),
 

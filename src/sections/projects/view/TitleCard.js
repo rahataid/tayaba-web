@@ -13,6 +13,7 @@ import { useProject } from '@services/contracts/useProject';
 import LoadingOverlay from '@components/LoadingOverlay';
 import { ProjectService } from '@services/projects';
 import { PATH_PROJECTS } from '@routes/paths';
+import ApproveProject from './ApproveProject';
 const TitleCard = ({ chainData, refreshData }) => {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { roles, wallet } = useAuthContext();
@@ -34,6 +35,8 @@ const TitleCard = ({ chainData, refreshData }) => {
   const { sendCashToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [approveProjectDialog, setApproveProjectDialog] = useState(false);
 
   const handleMenuItemClose = () => {
     setAnchorEl(null);
@@ -76,6 +79,8 @@ const TitleCard = ({ chainData, refreshData }) => {
   };
   const handleClose = () => {
     setAssignTokenDialog(false);
+    setApproveProjectDialog(false);
+    handleMenuItemClose();
     hideDialog();
   };
 
@@ -94,26 +99,29 @@ const TitleCard = ({ chainData, refreshData }) => {
   };
 
   const handleBeneficiaryRouteAction = () => {
-
     push(`/projects/${projectId}/beneficiaries`);
   };
 
   const handleDelete = async () => {
     try {
-      console.log('Delete', projectId)
-      await ProjectService.delete(projectId)
+      console.log('Delete', projectId);
+      await ProjectService.delete(projectId);
       enqueueSnackbar('Project Deleted', {
-        'variant': 'success'
-      })
-      push(PATH_PROJECTS.root)
+        variant: 'success',
+      });
+      push(PATH_PROJECTS.root);
     } catch (error) {
       enqueueSnackbar('Error deleting project', {
-        variant: 'error'
-      })
-      console.log(error)
+        variant: 'error',
+      });
+      console.log(error);
     }
-  }
+  };
+  const handleApprove = () => {
+    setApproveProjectDialog(true);
 
+    return;
+  };
 
   const menuItems = [
     {
@@ -132,15 +140,20 @@ const TitleCard = ({ chainData, refreshData }) => {
       show: roles?.isDonor && chainData?.projectBalance > 0 && chainData?.isLocked,
     },
     {
-      name: "Edit",
+      name: 'Edit',
       onClick: () => push(`/projects/edit/${projectId}`),
-      show: roles?.isDonor
+      show: roles?.isDonor,
     },
     {
       name: 'Delete',
       onClick: handleDelete,
-      show: roles?.isDonor
-    }
+      show: roles?.isDonor,
+    },
+    {
+      name: 'Approve',
+      onClick: handleApprove,
+      show: roles?.isDonor,
+    },
   ];
 
   return (
@@ -170,7 +183,7 @@ const TitleCard = ({ chainData, refreshData }) => {
         open={assignTokenDialog}
         loadingKey={loadingKey}
       />
-
+      <ApproveProject open={approveProjectDialog} handleClose={handleClose} handleMenuItemClose={handleMenuItemClose} />
       <Grid item xs={12} md={12}>
         <Card variant="outlined">
           <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
