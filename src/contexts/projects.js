@@ -33,6 +33,7 @@ const initialState = {
   contractName: '',
   getProjectsList: () => {},
   getProjectById: () => {},
+  getProjectByAddress: () => {},
   getBeneficiariesByProject: () => {},
   getVendorsByProject: () => {},
   refreshData: () => {},
@@ -123,32 +124,36 @@ export const ProjectProvider = ({ children }) => {
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
+    console.log(formatted);
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
-      editData: { name, location, description, startDate, endDate, ...extras },
+      editData: { name, location, description, startDate, endDate, extras },
     }));
     return formatted;
   }, []);
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
+    const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
       ...response.data,
-      projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
+      projectManagerName: response.data?.project_manager?.name
+        ? `${response.data?.project_manager?.name?.first} ${response.data?.project_manager?.name?.last}`
+        : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
 
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
+      editData: { name, location, description, startDate, endDate, extras },
     }));
+
     return formatted;
   }, []);
 
-  const addProject = (data) => {
-    return ProjectService.addProject(data);
-  };
+  const addProject = (data) => ProjectService.addProject(data);
 
   const editProject = (data) => {
     console.log('editProject');

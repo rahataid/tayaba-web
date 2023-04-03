@@ -12,12 +12,12 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import FormProvider from '@components/hook-form';
 import { CONTRACTS } from '@config';
 import { useProjectContext } from '@contexts/projects';
-import { LoadingButton } from '@mui/lab';
 import { useProject } from '@services/contracts/useProject';
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAppAuthContext } from 'src/auth/JwtContext';
+import LoadingButton from 'src/theme/overrides/LoadingButton';
 import AddedInfo from './AddedInfo';
 import BasicInformation from './BasicInformaitonFields';
 import DynamicForm from './DynamicForm';
@@ -40,13 +40,14 @@ export default function Stepper() {
   const { enqueueSnackbar } = useSnackbar();
   const { push } = useRouter();
   const { account } = useWeb3React();
-  const [loading, setLoading] = useState(false);
+  const { abi, byteCode, contractName, addProject } = useProjectContext();
+  const { contracts } = useAppAuthContext();
+
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
   const [step, setStep] = useState(0);
-  const { abi, byteCode, contractName, addProject } = useProjectContext();
-  const { contracts } = useAppAuthContext();
+  const [loading, setLoading] = useState(false);
 
   const methods = useForm({
     mode: 'onTouched',
@@ -55,10 +56,10 @@ export default function Stepper() {
   });
 
   const { handleSubmit } = methods;
-  console.log(defaultValues);
+
   const stepObj = {
     0: {
-      title: ' General Project Information',
+      title: 'Basic Information',
       component: <BasicInformation methods={methods} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
@@ -66,7 +67,7 @@ export default function Stepper() {
       },
     },
     1: {
-      title: 'Specific Project Information.',
+      title: 'Extra Fields',
       component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext(data) {
         handleIncreaseStep();
@@ -82,10 +83,10 @@ export default function Stepper() {
     },
 
     2: {
-      title: 'Review and Deploy.',
+      title: 'Project Added Info',
       component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext(args) {
-        handleContractDeploy(args);
+        // handleContractDeploy(args);
       },
     },
   };
@@ -101,10 +102,11 @@ export default function Stepper() {
   const isLast = step === Object.keys(stepObj).length - 1;
 
   const handleContractDeploy = async () => {
-    setLoading(!loading);
     // if (!account) return;
+
     try {
       if (!contractName) return;
+      setLoading(true);
       let args = [
         defaultValues[0].name,
         contracts[CONTRACTS.RAHATTOKEN],
@@ -114,6 +116,7 @@ export default function Stepper() {
       ];
       const { contract } = await deployContract({ byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
+
       let payload = { contractAddress: contract.address };
       for (const key in defaultValues) {
         payload = { ...payload, ...defaultValues[key] };
@@ -145,7 +148,7 @@ export default function Stepper() {
               Next
             </Button>
           ) : (
-            <LoadingButton onClick={handleContractDeploy} variant="contained" loading={loading}>
+            <LoadingButton loading={loading} onClick={handleContractDeploy} variant="contained">
               {' '}
               Finish And Deploy
             </LoadingButton>

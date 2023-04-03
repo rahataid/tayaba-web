@@ -9,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 // componentsimport formFields from './data/formFields.json';
 
-import { RHFSelect, RHFTextField } from '@components/hook-form';
+import FormProvider, { RHFSelect, RHFTextField } from '@components/hook-form';
 import { useProjectContext } from '@contexts/projects';
 import { useEffect } from 'react';
 // ----------------------------------------------------------------------
@@ -32,8 +32,8 @@ export default function DynamicForm({ items = [], projectType }) {
     formState: { errors, isSubmitting },
   } = methods;
 
-  const renderForms = (formItems) => {
-    return formFields?.map((item) => {
+  const renderForms = (formItems) =>
+    formFields?.map((item) => {
       switch (item.fieldType) {
         case 'number':
           return (
@@ -93,7 +93,6 @@ export default function DynamicForm({ items = [], projectType }) {
           );
       }
     });
-  };
 
   return (
     <Grid container spacing={3}>

@@ -2,12 +2,11 @@ import Iconify from '@components/iconify';
 import LoadingOverlay from '@components/LoadingOverlay';
 import { useProjectContext } from '@contexts/projects';
 import useDialog from '@hooks/useDialog';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 import useLoading from '@hooks/useLoading';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { Button, Chip, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
 import moment from 'moment';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -17,36 +16,36 @@ BasicInfoCard.propTypes = {
 
 export default function BasicInfoCard({ rahatChainData, ...other }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { singleProject, vendorCount, refreshData, editData } = useProjectContext();
-  const router = useRouter();
+  const { singleProject, vendorCount, refreshData } = useProjectContext();
+  // const router = useRouter();
+  const { lockProject, unLockProject } = useProject();
+  const { throwError } = useErrorHandler();
+
+  const { loading, showLoading, hideLoading } = useLoading();
+
   const [modalData, setModalData] = useState({
     title: '',
     type: '',
   });
 
-  const { roles, wallet } = useAuthContext();
-  const { loading, showLoading, hideLoading } = useLoading();
-
-  const { lockProject, unLockProject } = useProject();
-
   const handleUnlockModal = () => {
-    setModalData({ title: 'Are you sure to Unlock the project?', type: 'Unlock' });
+    setModalData({ title: 'Are you sure to Unlock the project ?', type: 'Unlock' });
     showDialog();
   };
 
-  const handleEditProject = () => {
-    router.push(`/projects/edit/${router.query.projectId}`);
-  };
+  // const handleEditProject = () => {
+  //   router.push(`/projects/edit/${router.query.projectId}`);
+  // };
 
   const handleLockModal = () => {
-    setModalData({ title: 'Are you sure to Lock the project?', type: 'Lock' });
+    setModalData({ title: 'Are you sure to Lock the project ?', type: 'Lock' });
     showDialog();
   };
 
   const handleLockProject = async () => {
     showLoading('projectAction');
     try {
-      await lockProject(wallet.address);
+      await lockProject(singleProject?.data.contractAddress);
     } catch (error) {
       console.log({ error });
     }
@@ -58,7 +57,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
   const handleUnlockProject = async () => {
     showLoading('projectAction');
     try {
-      await unLockProject(wallet.address);
+      await unLockProject(singleProject?.data.contractAddress);
     } catch (error) {
       hideLoading('projectAction');
       hideDialog();
@@ -89,26 +88,22 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       </Dialog>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-around" spacing={10}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-end">
-          {roles?.isDonor && (
-            <>
-              {rahatChainData?.isLocked ? (
-                <Chip
-                  label={`Locked `}
-                  variant="outlined"
-                  color="error"
-                  icon={<Iconify icon={'material-symbols:lock-outline'} />}
-                  onClick={handleUnlockModal}
-                />
-              ) : (
-                <Chip
-                  label={`Unlocked`}
-                  variant="outlined"
-                  color="success"
-                  onClick={handleLockModal}
-                  icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
-                />
-              )}
-            </>
+          {rahatChainData?.isLocked ? (
+            <Chip
+              label={`Locked `}
+              variant="outlined"
+              color="error"
+              icon={<Iconify icon={'material-symbols:lock-outline'} />}
+              onClick={handleUnlockModal}
+            />
+          ) : (
+            <Chip
+              label={`Unlocked`}
+              variant="outlined"
+              color="success"
+              onClick={handleLockModal}
+              icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
+            />
           )}
         </Grid>
       </Stack>

@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import { Alert, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { useVendorsContext } from '@contexts/vendors';
+import { Alert, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 // import truncateEthAddress from '@utils/truncateEthAddress';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import SendToken from './SendToken';
