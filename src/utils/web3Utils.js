@@ -77,9 +77,9 @@ const Web3Utils = {
     },
   },
 
-  deployContract: async ({ abi, byteCode, args }) => {
+  deployContract: async (provider, { abi, byteCode, args }) => {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const factory = new ethers.ContractFactory(abi, byteCode, signer);
       console.log({ args });

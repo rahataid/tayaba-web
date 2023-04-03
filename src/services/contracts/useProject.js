@@ -5,11 +5,13 @@ import Web3Utils from '@utils/web3Utils';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useProject = () => {
-  const { contractAddress, wallet } = useAuthContext();
+  const { contractAddress } = useAuthContext();
+
   const [contract, abi] = useContract(CONTRACTS.CVAPROJECT, { contractAddress });
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
+
   const { handleContractError } = useErrorHandler();
   return {
     contract,
@@ -18,11 +20,13 @@ export const useProject = () => {
     communityContract,
     isProjectLocked: () => contract?.isLocked(),
     approveProject: async () => {
-      let rahatCommunity = await communityContract?.connect(wallet).approveProject(contractAddress);
-      return wallet.sendTransaction({
-        to: rahatCommunity.address,
-        value: ethers.utils.parseEther('1.0'),
-      });
+      console.log(communityContract);
+
+      return await communityContract.approveProject(contractAddress);
+      // return wallet.sendTransaction({
+      //   to: rahatCommunity.address,
+      //   value: ethers.utils.parseEther('1.0'),
+      // });
     },
 
     lockProject: () => donorContract?.lockProject(contractAddress).catch(handleContractError),
@@ -124,7 +128,5 @@ export const useProject = () => {
 
       return mapped;
     },
-
-    deployContract: async ({ byteCode, abi, args }) => Web3Utils.deployContract({ byteCode, abi, args }),
   };
 };

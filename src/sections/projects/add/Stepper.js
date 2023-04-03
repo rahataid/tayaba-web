@@ -12,7 +12,9 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import FormProvider from '@components/hook-form';
 import { CONTRACTS } from '@config';
 import { useProjectContext } from '@contexts/projects';
+import useWalletConnection from '@hooks/useWalletConnection';
 import { useProject } from '@services/contracts/useProject';
+import Web3Utils from '@utils/web3Utils';
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -42,6 +44,7 @@ export default function Stepper() {
   const { account } = useWeb3React();
   const { abi, byteCode, contractName, addProject } = useProjectContext();
   const { contracts } = useAppAuthContext();
+  const { web3Provider } = useWalletConnection();
 
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
@@ -114,7 +117,8 @@ export default function Stepper() {
         '0xcdD96aB6bA2819B53ee9c5273b60d98383F2171b',
         contracts[CONTRACTS.COMMUNITY],
       ];
-      const { contract } = await deployContract({ byteCode, abi, args });
+
+      const { contract } = await Web3Utils.deployContract(web3Provider, { byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
 
       let payload = { contractAddress: contract.address };
