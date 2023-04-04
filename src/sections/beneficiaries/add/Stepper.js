@@ -104,8 +104,12 @@ export default function Stepper() {
     for (const key in defaultValues) {
       payload = { ...payload, ...defaultValues[key] };
     }
-    let ben = await addBeneficiary(payload);
-    push('/beneficiaries');
+    try {
+      let ben = await addBeneficiary(payload);
+      push('/beneficiaries');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
