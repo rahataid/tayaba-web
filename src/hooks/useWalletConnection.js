@@ -74,67 +74,14 @@ const useWalletConnection = () => {
   }, [walletType, isWalletConnected]);
 
   useEffect(() => {
-    console.log('networkId', networkId);
-    const handleNetworkChange = (newNetworkId) => {
-      if (newNetworkId !== networkId) {
-        alert('Network changed!');
-      }
-    };
-
-    const handleAccountChange = (newAccount) => {
-      if (newAccount !== account) {
-        alert('Account changed!');
-      }
-    };
-
     if (library) {
-      console.log('library', library);
-      library.eth.net.getId().then(async (id) => {
-        setNetworkId(id);
-        // Add logic to check if network settings are available in MetaMask
-        library.eth.net.getId().then((chId) => {
-          const networkSettings = parseInt(chId) === parseInt(chainId);
-          if (!networkSettings) {
-            // If network settings are not available, prompt user to add them
-            window.ethereum.request({
-              method: 'wallet_addEthereumChain',
-              params: [
-                {
-                  chainId: `0x${chainId.toString(16)}`,
-                  rpcUrls: [
-                    'http://localhost:8545',
-                    /* Array of RPC URLs for the network */
-                  ],
-                  chainName: 'Rahat Chain',
-                  nativeCurrency: {
-                    name: 'RTH',
-                    symbol: 'RTH',
-                    decimals: 2,
-                  },
-                  blockExplorerUrls: [
-                    /* Block explorer URL */
-                  ],
-                },
-              ],
-            });
-          }
-        });
-
-        setWeb3Provider(library.provider);
-        if (library.on) {
-          library.on('networkChanged', handleNetworkChange);
-          library.on('accountsChanged', handleAccountChange);
-        }
-
-        return () => {
-          if (library.off) {
-            library.off('networkChanged', handleNetworkChange);
-            library.off('accountsChanged', handleAccountChange);
-          }
-        };
+      library.getNetwork().then((network) => {
+        setNetworkId(network.chainId);
       });
+      setWeb3Provider(library.provider);
     }
-  }, [library, networkId, chainId, account]);
+  }, [library]);
+
   return {
     connectWalletOnPageLoad,
     isWalletConnected,
