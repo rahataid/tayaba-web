@@ -36,6 +36,7 @@ const useWalletConnection = () => {
 
   const connectWallet = useCallback(async (type) => {
     try {
+      back;
       await handleWalletConnect(type);
       localStorage.setItem('walletType', type);
       localStorage.setItem('isWalletConnected', true);
@@ -72,6 +73,7 @@ const useWalletConnection = () => {
 
   useEffect(() => {
     if (library) {
+      console.log({ library });
       library.eth.net.getId().then(setNetworkId);
       setWeb3Provider(library.provider);
     }
