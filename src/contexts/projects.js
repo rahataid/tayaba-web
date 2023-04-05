@@ -136,6 +136,13 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
+    if (response.data.data === null) {
+      setState((prev) => ({
+        ...prev,
+        singleProject: null,
+      }));
+      return null;
+    }
     const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
       ...response.data,
