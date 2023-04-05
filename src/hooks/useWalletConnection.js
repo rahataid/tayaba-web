@@ -1,9 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
 import { useCallback, useEffect, useState } from 'react';
+import { useAuthContext } from 'src/auth/useAuthContext';
 import { injected } from './connectors';
 
 const useWalletConnection = () => {
-  const { activate, deactivate, active, account, library, chainId, connector, error } = useWeb3React();
+  const { activate, deactivate, active, account, library, connector, error } = useWeb3React();
+  const { chainId } = useAuthContext();
+
   const [isWalletConnected, setIsWalletConnected] = useState(null);
   const [walletType, setWalletType] = useState('');
   const [networkId, setNetworkId] = useState(null);
@@ -71,13 +74,67 @@ const useWalletConnection = () => {
   }, [walletType, isWalletConnected]);
 
   useEffect(() => {
-    if (library) {
-      console.log({ library });
-      library.eth.net.getId().then(setNetworkId);
-      setWeb3Provider(library.provider);
-    }
-  }, [library]);
+    console.log('networkId', networkId);
+    const handleNetworkChange = (newNetworkId) => {
+      if (newNetworkId !== networkId) {
+        alert('Network changed!');
+      }
+    };
 
+    const handleAccountChange = (newAccount) => {
+      if (newAccount !== account) {
+        alert('Account changed!');
+      }
+    };
+
+    if (library) {
+      console.log('library', library);
+      library.eth.net.getId().then(async (id) => {
+        setNetworkId(id);
+        // Add logic to check if network settings are available in MetaMask
+        library.eth.net.getId().then((chId) => {
+          const networkSettings = parseInt(chId) === parseInt(chainId);
+          if (!networkSettings) {
+            // If network settings are not available, prompt user to add them
+            window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [
+                {
+                  chainId: `0x${chainId.toString(16)}`,
+                  rpcUrls: [
+                    'http://localhost:8545',
+                    /* Array of RPC URLs for the network */
+                  ],
+                  chainName: 'Rahat Chain',
+                  nativeCurrency: {
+                    name: 'RTH',
+                    symbol: 'RTH',
+                    decimals: 2,
+                  },
+                  blockExplorerUrls: [
+                    /* Block explorer URL */
+                  ],
+                },
+              ],
+            });
+          }
+        });
+
+        setWeb3Provider(library.provider);
+        if (library.on) {
+          library.on('networkChanged', handleNetworkChange);
+          library.on('accountsChanged', handleAccountChange);
+        }
+
+        return () => {
+          if (library.off) {
+            library.off('networkChanged', handleNetworkChange);
+            library.off('accountsChanged', handleAccountChange);
+          }
+        };
+      });
+    }
+  }, [library, networkId, chainId, account]);
   return {
     connectWalletOnPageLoad,
     isWalletConnected,

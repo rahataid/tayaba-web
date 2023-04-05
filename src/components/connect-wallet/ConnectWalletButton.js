@@ -7,7 +7,7 @@ import WalletDrawer from './WalletDrawer';
 const WalletIcon = <Iconify icon="material-symbols:account-balance-wallet-outline" />;
 
 const ConnectWalletButton = () => {
-  const { isWalletConnected, walletType, disconnectWallet, account } = useWalletConnection();
+  const { isWalletConnected, walletType, disconnectWallet } = useWalletConnection();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
