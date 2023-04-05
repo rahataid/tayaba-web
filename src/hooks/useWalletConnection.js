@@ -36,7 +36,6 @@ const useWalletConnection = () => {
 
   const connectWallet = useCallback(async (type) => {
     try {
-      back;
       await handleWalletConnect(type);
       localStorage.setItem('walletType', type);
       localStorage.setItem('isWalletConnected', true);
