@@ -27,6 +27,9 @@ export const controllers = {
   list() {
     return tblData.toArray();
   },
+  clear() {
+    return tblAbi.clear();
+  }
 };
 
 export default controllers;
