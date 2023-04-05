@@ -33,7 +33,7 @@ export default function AddedInfo({ projectInfo = {}, projectType }) {
               <Grid container spacing={5}>
                 {Object.entries(projectInfo[0]).map(([key, value]) =>
                   value instanceof Date ? (
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={3} key={`${key}-${value}`}>
                       <RHFTextField
                         id={key}
                         name={key}
@@ -43,7 +43,7 @@ export default function AddedInfo({ projectInfo = {}, projectType }) {
                       />
                     </Grid>
                   ) : (
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6} key={`${key}-${value}`}>
                       <RHFTextField
                         id={key}
                         name={key}
@@ -56,7 +56,7 @@ export default function AddedInfo({ projectInfo = {}, projectType }) {
                 )}
                 {Object.entries(projectInfo[1].extras).map(([key, value]) =>
                   value instanceof Date ? (
-                    <Grid item xs={12} md={3}>
+                    <Grid key={`${key}-${value}`} item xs={12} md={3}>
                       <RHFTextField
                         id={key}
                         name={key}
@@ -66,7 +66,7 @@ export default function AddedInfo({ projectInfo = {}, projectType }) {
                       />
                     </Grid>
                   ) : (
-                    <Grid item xs={12} md={6}>
+                    <Grid key={`${key}-${value}`} item xs={12} md={6}>
                       <RHFTextField
                         id={key}
                         name={key}
