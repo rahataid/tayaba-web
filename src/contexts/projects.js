@@ -1,7 +1,7 @@
 import { ProjectService } from '@services';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { fetchApiFormFields, fetchContract, getFolders } from '@services/github';
 import PropTypes from 'prop-types';
-import { getFolders, fetchApiFormFields, fetchContract } from '@services/github';
+import { createContext, useCallback, useContext, useState } from 'react';
 
 const initialState = {
   projects: [],
@@ -31,22 +31,22 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => {},
-  getProjectById: () => {},
-  getProjectByAddress: () => {},
-  getBeneficiariesByProject: () => {},
-  getVendorsByProject: () => {},
-  refreshData: () => {},
-  setRahatResponseStatus: () => {},
-  getChartData: () => {},
-  getBeneficiariesByvillage: () => {},
-  setFilter: () => {},
-  getProjectsTypesList: () => {},
-  getGithubProjectTypes: () => {},
-  getFormFields: () => {},
-  addProject: () => {},
-  getContracts: () => {},
-  editProject: () => {},
+  getProjectsList: () => { },
+  getProjectById: () => { },
+  getProjectByAddress: () => { },
+  getBeneficiariesByProject: () => { },
+  getVendorsByProject: () => { },
+  refreshData: () => { },
+  setRahatResponseStatus: () => { },
+  getChartData: () => { },
+  getBeneficiariesByvillage: () => { },
+  setFilter: () => { },
+  getProjectsTypesList: () => { },
+  getGithubProjectTypes: () => { },
+  getFormFields: () => { },
+  addProject: () => { },
+  getContracts: () => { },
+  editProject: () => { },
 };
 
 const ProjectsContext = createContext(initialState);
@@ -132,6 +132,7 @@ export const ProjectProvider = ({ children }) => {
     }));
     return formatted;
   }, []);
+
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
