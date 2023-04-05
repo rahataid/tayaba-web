@@ -13,13 +13,13 @@ import FormProvider from '@components/hook-form';
 import { CONTRACTS } from '@config';
 import { useProjectContext } from '@contexts/projects';
 import useWalletConnection from '@hooks/useWalletConnection';
+import { LoadingButton } from '@mui/lab';
 import { useProject } from '@services/contracts/useProject';
 import Web3Utils from '@utils/web3Utils';
 import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAppAuthContext } from 'src/auth/JwtContext';
-import LoadingButton from 'src/theme/overrides/LoadingButton';
 import AddedInfo from './AddedInfo';
 import BasicInformation from './BasicInformaitonFields';
 import DynamicForm from './DynamicForm';
@@ -101,6 +101,7 @@ export default function Stepper() {
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);
   };
+  console.log(web3Provider);
 
   const isLast = step === Object.keys(stepObj).length - 1;
 
@@ -132,7 +133,6 @@ export default function Stepper() {
     }
     setLoading(false);
   };
-
   return (
     <>
       <FormProvider methods={methods} onSubmit={handleSubmit(stepObj[step].handleNext)}>

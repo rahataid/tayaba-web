@@ -9,13 +9,12 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 
 // ----------------------------------------------------------------------
 
-import PropTypes from 'prop-types';
 import { CacheProvider } from '@emotion/react';
+import PropTypes from 'prop-types';
 // next
 import Head from 'next/head';
 
 import { Web3ReactProvider } from '@web3-react/core';
-import Web3 from 'web3';
 
 // utils
 import createEmotionCache from '../utils/createEmotionCache';
@@ -24,23 +23,24 @@ import ThemeProvider from '../theme';
 // locales
 import ThemeLocalization from '../locales';
 // components
-import ProgressBar from '../components/progress-bar';
-import SnackbarProvider from '../components/snackbar';
 import { MotionLazyContainer } from '../components/animate';
-import { ThemeSettings, SettingsProvider } from '../components/settings';
+import ProgressBar from '../components/progress-bar';
+import { SettingsProvider, ThemeSettings } from '../components/settings';
+import SnackbarProvider from '../components/snackbar';
 
 // Check our docs
 // https://docs.minimals.cc/authentication/js-version
 
-import { AuthProvider } from '../auth/JwtContext';
 import LoadingOverlay from '@components/LoadingOverlay';
+import { ethers } from 'ethers';
+import { AuthProvider } from '../auth/JwtContext';
 
 // ----------------------------------------------------------------------
 
 const clientSideEmotionCache = createEmotionCache();
 
 function getLibrary(provider) {
-  return new Web3(provider);
+  return new ethers.providers.Web3Provider(provider);
 }
 
 MyApp.propTypes = {
