@@ -23,6 +23,7 @@ import { CommunicationService } from '@services/communications';
 import { getLabelsByValues } from '@utils/arrays';
 import { parseMultiLineInput } from '@utils/strings';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -43,6 +44,7 @@ const FormSchema = Yup.object().shape({
 const CreateCampaign = () => {
   const { transports, getTransports, audiences, getAudiences, getBeneficiaries, beneficiaries } = useCommunications();
   const { push } = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [isAddAudienceModalOpen, setIsAddAudienceModalOpen] = useState(false);
 
@@ -85,8 +87,10 @@ const CreateCampaign = () => {
         details: parseMultiLineInput(data.details, 'OBJECT'),
       };
       const saved = await CommunicationService.createCampaigns(formatted);
-      push(`/communications/campaigns/${saved.id}`);
+      enqueueSnackbar('Campaign created successfully', { variant: 'success' });
+      push(`/communications/campaigns/${saved.data.id}`);
     } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
       console.log('error', error);
     }
   };
