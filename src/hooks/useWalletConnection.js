@@ -86,7 +86,6 @@ const useWalletConnection = () => {
             await library.send('wallet_switchEthereumChain', [{ chainId: chainIdHex }]);
             const { Url } = BLOCKCHAIN_NETWORKS[chainId];
             const provider = new providers.JsonRpcProvider(Url);
-            console.log({ provider });
             setWeb3Provider(provider);
           } catch (error) {
             console.log({ error });

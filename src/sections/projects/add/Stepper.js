@@ -101,7 +101,6 @@ export default function Stepper() {
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);
   };
-  console.log(web3Provider);
 
   const isLast = step === Object.keys(stepObj).length - 1;
 
