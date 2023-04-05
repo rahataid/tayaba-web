@@ -15,7 +15,6 @@ export const ProjectService = {
   },
 
   editProject(id, data) {
-    console.log('sent')
     return clientApi.patch(`/projects/update?contractAddress=${id}`, data)
   },
 

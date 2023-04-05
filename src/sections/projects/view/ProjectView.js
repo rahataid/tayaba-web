@@ -1,21 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
-import InfoCard from './InfoCard';
-import { useProjectContext } from '@contexts/projects';
-import { useRouter } from 'next/router';
+import LoadingOverlay from '@components/LoadingOverlay';
 import { SPACING } from '@config';
-import ProjectChart from './ProjectCharts';
-import { getFlickrImages } from '@services/flickr';
-import ImageSlider from './ImageSlider';
-import ProjectDetail from './ProjectDetail';
-import TitleCard from './TitleCard';
-import SummaryTracker from './SummaryTracker';
-import CashActionsAlert from './CashActionsAlert';
+import { useProjectContext } from '@contexts/projects';
+import useLoading from '@hooks/useLoading';
+import { Grid } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
 import { useRahatToken } from '@services/contracts/useRahatToken';
-import useLoading from '@hooks/useLoading';
-import LoadingOverlay from '@components/LoadingOverlay';
+import { getFlickrImages } from '@services/flickr';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import CashActionsAlert from './CashActionsAlert';
+import ImageSlider from './ImageSlider';
+import InfoCard from './InfoCard';
+import ProjectChart from './ProjectCharts';
+import ProjectDetail from './ProjectDetail';
+import SummaryTracker from './SummaryTracker';
+import TitleCard from './TitleCard';
 
 const ProjectView = () => {
   const { getProjectByAddress, singleProject, refreshData, refresh } = useProjectContext();
@@ -29,6 +29,7 @@ const ProjectView = () => {
 
   const {
     query: { projectId: contractAddress },
+    push,
   } = useRouter();
 
   const updateChainData = (d) => {
@@ -37,7 +38,6 @@ const ProjectView = () => {
       ...d,
     }));
   };
-
   useEffect(() => {
     const getFlickPics = async () => {
       const params = {
@@ -80,6 +80,10 @@ const ProjectView = () => {
   }, [RahatTokenWS]);
 
   // if (pageLoading) return <div>Loading...</div>;
+  if (singleProject === null) {
+    push('/404');
+    return '';
+  }
 
   return (
     <LoadingOverlay open={loading['project-view']}>
