@@ -1,13 +1,7 @@
 import { CONTRACTS } from '@config';
-import { useAbi, useContract } from '@hooks/contracts';
-import Web3Utils from '@utils/web3Utils';
-import { useState } from 'react';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { BrainWallet } from '@ethersproject/experimental';
+import { useContract } from '@hooks/contracts';
 import { useErrorHandler } from '@hooks/useErrorHandler';
-import { EthExplorerService } from '..';
-import splitArrayToChunks from '@utils/splitArrayToChunks';
-import { Contract, ethers } from 'ethers';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useRahatCommunity = () => {
   let { contracts, startBlockNumber, networkGasLimit } = useAuthContext();

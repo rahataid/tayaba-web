@@ -1,5 +1,4 @@
 import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import { Stack } from '@mui/system';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import BarchartSingle from './BarchartSingle';

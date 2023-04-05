@@ -8,7 +8,8 @@ import { Stack, Button, Typography, Box } from '@mui/material';
 
 // components
 import FormProvider from '@components/hook-form';
-import AddedInfo from './AddedInfo';
+import AddedInfo from './WalletAdd';
+import DynamicForm from './DynamicForm';
 import BasicInformation from './BasicInformationFields';
 
 import { useRouter } from 'next/router';

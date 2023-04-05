@@ -1,7 +1,7 @@
 import { ProjectService } from '@services';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { fetchApiFormFields, fetchContract, getFolders } from '@services/github';
 import PropTypes from 'prop-types';
-import { getFolders, fetchApiFormFields, fetchContract } from '@services/github';
+import { createContext, useCallback, useContext, useState } from 'react';
 
 const initialState = {
   projects: [],
@@ -124,7 +124,7 @@ export const ProjectProvider = ({ children }) => {
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
-    console.log(formatted)
+    console.log(formatted);
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
@@ -139,7 +139,9 @@ export const ProjectProvider = ({ children }) => {
     const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
       ...response.data,
-      projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
+      projectManagerName: response.data?.project_manager?.name
+        ? `${response.data?.project_manager?.name?.first} ${response.data?.project_manager?.name?.last}`
+        : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
 
@@ -147,16 +149,12 @@ export const ProjectProvider = ({ children }) => {
       ...prev,
       singleProject: formatted,
       editData: { name, location, description, startDate, endDate, extras },
-
     }));
-
 
     return formatted;
   }, []);
 
-  const addProject = (data) => {
-    return ProjectService.addProject(data);
-  };
+  const addProject = (data) => ProjectService.addProject(data);
 
   const editProject = (data) => {
     console.log('editProject');

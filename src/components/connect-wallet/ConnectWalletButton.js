@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Box, Button } from '@mui/material';
-import useWalletConnection from '@hooks/useWalletConnection';
 import Iconify from '@components/iconify';
+import useWalletConnection from '@hooks/useWalletConnection';
+import { Box, Button } from '@mui/material';
+import { useState } from 'react';
 import WalletDrawer from './WalletDrawer';
 
 const WalletIcon = <Iconify icon="material-symbols:account-balance-wallet-outline" />;
 
 const ConnectWalletButton = () => {
   const { isWalletConnected, walletType, disconnectWallet, account } = useWalletConnection();
-  console.log('account', { account, isWalletConnected, walletType });
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 

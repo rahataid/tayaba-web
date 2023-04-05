@@ -1,8 +1,8 @@
 // form
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 // @mui
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { Grid, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -32,8 +32,8 @@ export default function DynamicForm({ items = [], projectType }) {
     formState: { errors, isSubmitting },
   } = methods;
 
-  const renderForms = (formItems) => {
-    return formFields?.map((item) => {
+  const renderForms = (formItems) =>
+    formItems?.map((item) => {
       switch (item.fieldType) {
         case 'number':
           return (
@@ -93,7 +93,6 @@ export default function DynamicForm({ items = [], projectType }) {
           );
       }
     });
-  };
 
   return (
     <Grid container spacing={3}>

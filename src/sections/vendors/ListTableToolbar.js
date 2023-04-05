@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Stack } from '@mui/material';
 // components
 import ListSearchField from './ListSearchField.js';
