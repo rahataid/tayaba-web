@@ -1,7 +1,7 @@
+import { Button, Grid, Stack } from '@mui/material';
 import { useState } from 'react';
-import { Stack, Grid, Button, Card } from '@mui/material';
 // components
-import { RHFSelect, RHFCheckbox, RHFTextField } from '@components/hook-form';
+import { RHFSelect, RHFTextField } from '@components/hook-form';
 import Web3Utils from '@utils/web3Utils';
 
 // ----------------------------------------------------------------------
@@ -16,7 +16,7 @@ const community = [
     value: 'rahat',
   },
 ];
-export default function WalletAdd({ setValue }) {
+export default function WalletAdd({ setValue, projects }) {
   const [walletAddress, setwalletAddress] = useState('');
   const handleCreateWallet = async () => {
     let wallet = Web3Utils.generateWallet('');
@@ -47,6 +47,21 @@ export default function WalletAdd({ setValue }) {
             <option>Select Community</option>
             {community
               ? community?.map((obj) => (
+                  <option key={obj.value} value={obj.value}>
+                    {obj.label}
+                  </option>
+                ))
+              : ''}
+          </RHFSelect>
+        </Stack>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Stack spacing={3}>
+          <RHFSelect name={'projectId'} label="Select Project">
+            {' '}
+            <option>Select Project</option>
+            {projects
+              ? projects?.map((obj) => (
                   <option key={obj.value} value={obj.value}>
                     {obj.label}
                   </option>
