@@ -62,6 +62,8 @@ export const PATH_TRANSACTIONS = {
 export const PATH_BENEFICIARY = {
   root: ROOTS_BENEFICIARY,
   list: path(ROOTS_BENEFICIARY),
+  editBeneficiary: path(ROOTS_BENEFICIARY, '/edit'),
+
 };
 
 export const PATH_VENDORS = {
