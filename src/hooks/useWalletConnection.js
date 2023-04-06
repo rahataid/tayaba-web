@@ -1,6 +1,4 @@
-import { BLOCKCHAIN_NETWORKS } from '@config';
 import { useWeb3React } from '@web3-react/core';
-import { providers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { injected } from './connectors';
@@ -33,7 +31,6 @@ const useWalletConnection = () => {
       default:
         connector = injected;
     }
-
     await activate(connector);
     setIsWalletConnected(true);
     setWalletType(type);
@@ -84,9 +81,8 @@ const useWalletConnection = () => {
           try {
             const chainIdHex = '0x' + Number(chainId).toString(16);
             await library.send('wallet_switchEthereumChain', [{ chainId: chainIdHex }]);
-            const { Url } = BLOCKCHAIN_NETWORKS[chainId];
-            const provider = new providers.JsonRpcProvider(Url);
-            setWeb3Provider(provider);
+
+            setWeb3Provider(library);
           } catch (error) {
             console.log({ error });
           }
@@ -110,6 +106,7 @@ const useWalletConnection = () => {
     error,
     networkId,
     web3Provider,
+    library,
   };
 };
 

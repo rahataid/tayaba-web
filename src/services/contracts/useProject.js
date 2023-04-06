@@ -22,7 +22,7 @@ export const useProject = () => {
     approveProject: async () => {
       console.log(communityContract);
 
-      return await communityContract.approveProject(contractAddress);
+      return communityContract.approveProject(contractAddress);
       // return wallet.sendTransaction({
       //   to: rahatCommunity.address,
       //   value: ethers.utils.parseEther('1.0'),

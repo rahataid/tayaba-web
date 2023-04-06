@@ -11,7 +11,9 @@ export default function ApproveProject({ open, handleClose }) {
   const [loading, setLoading] = useState(false);
   const handleApprove = async () => {
     try {
-      await approveProject();
+      console.log('approving');
+      const d = await approveProject();
+      console.log({ d });
       handleClose();
     } catch (error) {
       console.log(error);

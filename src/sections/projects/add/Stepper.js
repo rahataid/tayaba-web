@@ -44,7 +44,7 @@ export default function Stepper() {
   const { account } = useWeb3React();
   const { abi, byteCode, contractName, addProject } = useProjectContext();
   const { contracts } = useAppAuthContext();
-  const { web3Provider } = useWalletConnection();
+  const { web3Provider, library } = useWalletConnection();
 
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
@@ -118,7 +118,7 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
 
-      const { contract } = await Web3Utils.deployContract(web3Provider, { byteCode, abi, args });
+      const { contract } = await Web3Utils.deployContract(library, { byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
 
       let payload = { contractAddress: contract.address };
