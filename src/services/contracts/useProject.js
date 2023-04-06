@@ -20,13 +20,7 @@ export const useProject = () => {
     communityContract,
     isProjectLocked: () => contract?.isLocked(),
     approveProject: async () => {
-      console.log(communityContract);
-
-      return await communityContract.approveProject(contractAddress);
-      // return wallet.sendTransaction({
-      //   to: rahatCommunity.address,
-      //   value: ethers.utils.parseEther('1.0'),
-      // });
+      return communityContract.approveProject(contractAddress);
     },
 
     lockProject: () => donorContract?.lockProject(contractAddress).catch(handleContractError),

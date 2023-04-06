@@ -12,10 +12,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import FormProvider from '@components/hook-form';
 import { CONTRACTS } from '@config';
 import { useProjectContext } from '@contexts/projects';
-<<<<<<< HEAD
-=======
 import useWalletConnection from '@hooks/useWalletConnection';
->>>>>>> 193-approve-project-ui
 import { LoadingButton } from '@mui/lab';
 import { useProject } from '@services/contracts/useProject';
 import Web3Utils from '@utils/web3Utils';
