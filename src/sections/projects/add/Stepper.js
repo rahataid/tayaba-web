@@ -12,10 +12,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import FormProvider from '@components/hook-form';
 import { CONTRACTS } from '@config';
 import { useProjectContext } from '@contexts/projects';
-<<<<<<< HEAD
-=======
 import useWalletConnection from '@hooks/useWalletConnection';
->>>>>>> 193-approve-project-ui
 import { LoadingButton } from '@mui/lab';
 import { useProject } from '@services/contracts/useProject';
 import Web3Utils from '@utils/web3Utils';
@@ -47,7 +44,7 @@ export default function Stepper() {
   const { account } = useWeb3React();
   const { abi, byteCode, contractName, addProject } = useProjectContext();
   const { contracts } = useAppAuthContext();
-  const { web3Provider } = useWalletConnection();
+  const { web3Provider, library } = useWalletConnection();
 
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
@@ -104,7 +101,6 @@ export default function Stepper() {
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);
   };
-  console.log(web3Provider);
 
   const isLast = step === Object.keys(stepObj).length - 1;
 
@@ -122,7 +118,7 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
 
-      const { contract } = await Web3Utils.deployContract(web3Provider, { byteCode, abi, args });
+      const { contract } = await Web3Utils.deployContract(library, { byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
 
       let payload = { contractAddress: contract.address };

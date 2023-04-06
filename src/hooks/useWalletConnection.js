@@ -31,7 +31,6 @@ const useWalletConnection = () => {
       default:
         connector = injected;
     }
-
     await activate(connector);
     setIsWalletConnected(true);
     setWalletType(type);
@@ -69,18 +68,31 @@ const useWalletConnection = () => {
       }
     }
   };
+
   useEffect(() => {
     connectWalletOnPageLoad();
   }, [walletType, isWalletConnected]);
 
   useEffect(() => {
     if (library) {
-      library.getNetwork().then((network) => {
+      library.getNetwork().then(async (network) => {
         setNetworkId(network.chainId);
+        if (Number(network.chainId) !== Number(chainId)) {
+          try {
+            const chainIdHex = '0x' + Number(chainId).toString(16);
+            await library.send('wallet_switchEthereumChain', [{ chainId: chainIdHex }]);
+
+            setWeb3Provider(library);
+          } catch (error) {
+            console.log({ error });
+          }
+
+          return;
+        }
+        setWeb3Provider(library.provider);
       });
-      setWeb3Provider(library.provider);
     }
-  }, [library]);
+  }, [library, chainId]);
 
   return {
     connectWalletOnPageLoad,
@@ -94,6 +106,7 @@ const useWalletConnection = () => {
     error,
     networkId,
     web3Provider,
+    library,
   };
 };
 
