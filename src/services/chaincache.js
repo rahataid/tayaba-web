@@ -1,5 +1,5 @@
+import { CHAINCACHE_APPID, CHAINCACHE_URL } from '@config';
 import axios from 'axios';
-import { CHAINCACHE_URL, CHAINCACHE_APPID } from '@config';
 
 let chainCacher = axios.create({
   baseURL: `${CHAINCACHE_URL}`,
@@ -17,6 +17,14 @@ export const ChainCacheService = {
     let response = await chainCacher.get(`/contracts/${contractAddress}/events?names=ClaimProcessed`);
     const rows = response.data.data.rows.filter(
       (row) => row.params.find((param) => param.name === 'vendor')?.value === vendorAddress.toLowerCase()
+    );
+    return rows;
+  },
+
+  listTransactionByBeneficiary: async (contractAddress, beneficiaryAddress) => {
+    let response = await chainCacher.get(`/contracts/${contractAddress}/events`);
+    const rows = response.data.data.rows.filter(
+      (row) => row.params.find((param) => param.name === 'beneficiary')?.value === beneficiaryAddress.toLowerCase()
     );
     return rows;
   },
