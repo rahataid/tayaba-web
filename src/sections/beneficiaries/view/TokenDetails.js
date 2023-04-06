@@ -1,25 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Grid, Stack, Typography, Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
-import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import LoadingOverlay from '@components/LoadingOverlay';
 import { SPACING } from '@config';
-import moment from 'moment';
+import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import useDialog from '@hooks/useDialog';
 import useLoading from '@hooks/useLoading';
-import LoadingOverlay from '@components/LoadingOverlay';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { TransactionService } from '@services';
-import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import { Button, Card, CardContent, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
+import { BeneficiaryService } from '@services/beneficiaries';
 import { useProject } from '@services/contracts/useProject';
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 TokenDetails.propTypes = {};
 export default function TokenDetails({ chainData }) {
   const { singleBeneficiary, refreshData } = useBeneficiaryContext();
+  const { enqueueSnackbar } = useSnackbar();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { assignClaimsToBeneficiaries, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const { roles } = useAuthContext();
   const { activateBeneficiary } = useProject();
+  const { push } = useRouter();
 
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
@@ -54,6 +57,22 @@ export default function TokenDetails({ chainData }) {
     });
   };
 
+  const handleDelete = async () => {
+    try {
+      console.log('Delete', singleBeneficiary?.data?.walletAddress);
+      await BeneficiaryService.delete(singleBeneficiary?.data?.walletAddress);
+      enqueueSnackbar('Beneficiary Deleted', {
+        variant: 'success',
+      });
+      push('/beneficiaries');
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar('Error deleting beneficiary', {
+        variant: 'error',
+      });
+    }
+  }
+
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
       <Dialog open={isDialogShow} onClose={hideDialog}>
@@ -81,7 +100,8 @@ export default function TokenDetails({ chainData }) {
                       Assign Claim
                     </Button>
                   ) : (
-                    <></>
+                    <>
+                    </>
                   )}
                 </>
               )}
@@ -101,6 +121,9 @@ export default function TokenDetails({ chainData }) {
               )}
             </>
           )}
+          <Button variant="outlined" color='error' size="small" onClick={handleDelete}>
+            Delete
+          </Button>
         </Stack>
         <Stack
           sx={{ pt: SPACING.GRID_SPACING }}
