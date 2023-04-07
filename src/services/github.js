@@ -1,5 +1,5 @@
+import { GITHUB_API_URL, GITHUB_REPOSITORY, GITHUB_USERNAME } from '@config';
 import axios from 'axios';
-import { GITHUB_API_URL, GITHUB_USERNAME, GITHUB_REPOSITORY } from '@config';
 
 export const getFolders = async () => {
   try {
@@ -16,7 +16,6 @@ export const fetchApiFormFields = async (projectType) => {
     const response = await axios.get(
       `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPOSITORY}/main/${projectType}/cvaProject.metadata`
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -28,7 +27,6 @@ export const fetchContract = async (folderName) => {
     const response = await axios.get(
       `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPOSITORY}/main/${folderName}/projectContract.json`
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);

@@ -11,6 +11,7 @@ import { useAuthContext } from '../../../auth/useAuthContext';
 // components
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import { APP_NAME } from '@config';
+import useWalletConnection from '@hooks/useWalletConnection';
 import controllers from '@utils/indexdb';
 import { IconButtonAnimate } from '../../../components/animate';
 import { CustomAvatar } from '../../../components/custom-avatar';
@@ -41,7 +42,8 @@ const OPTIONS = [
 export default function AccountPopover() {
   const { replace, push } = useRouter();
 
-  const { user, wallet, logout } = useAuthContext();
+  const { user, logout } = useAuthContext();
+  const { account } = useWalletConnection();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -103,7 +105,7 @@ export default function AccountPopover() {
             {user?.email}
           </Typography>
 
-          <WalletExplorerButton copyButton={false} address={wallet?.address} type="address" truncateLength={6} />
+          <WalletExplorerButton copyButton={false} address={account} type="address" truncateLength={6} />
         </Box>
 
         {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}

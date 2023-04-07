@@ -39,4 +39,7 @@ export const BeneficiaryService = {
   getProjectsList() {
     return clientApi.get(`/projects`);
   },
+  delete(id) {
+    return clientApi.patch(`/beneficiaries/${id}/delete`)
+  },
 };

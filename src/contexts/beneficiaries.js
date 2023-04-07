@@ -1,11 +1,11 @@
-import { BeneficiaryService, TransactionService } from '@services';
+import { BeneficiaryService, ChainCacheService } from '@services';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useState } from 'react';
 
 const initialState = {
   beneficiaries: [],
   singleBeneficiary: {},
-  transaction: {},
+  transaction: [],
   chainData: {},
   refresh: false,
   filter: {},
@@ -19,7 +19,7 @@ const initialState = {
   addBeneficiary: () => {},
   getBeneficiariesList: () => {},
   getBeneficiaryById: () => {},
-  getTransactionById: () => {},
+  getBeneficiaryTransactions: () => {},
   setChainData: () => {},
   refreshData: () => {},
   setFilter: () => {},
@@ -114,9 +114,7 @@ export const BeneficiaryProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const addBeneficiary = (payload) => {
-    return BeneficiaryService.addBeneficiary(payload);
-  };
+  const addBeneficiary = (payload) => BeneficiaryService.addBeneficiary(payload);
 
   const assignProject = (id, payload) => {
     return BeneficiaryService.assignProject(id, payload);
@@ -148,22 +146,19 @@ export const BeneficiaryProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getTransactionById = useCallback(async (id) => {
-    const response = await TransactionService.getTransactionList({ beneficiaryId: id });
-    const formatted = response?.data?.data?.data?.map((item) => ({
-      timestamp: item?.timestamp,
-      txHash: item?.txHash,
-      event: 'Beneficiary Claim',
-      amount: item?.amount,
-      txType: item?.txType,
-      mode: item.isOffline ? 'Offline' : 'Online',
+  const getBeneficiaryTransactions = useCallback(async (contractAddress, benAddress) => {
+    const response = await ChainCacheService.listTransactionByBeneficiary(contractAddress, benAddress);
+    const formatted = response.map((r) => ({
+      ...r,
+      amount: r.params.find((param) => param.name === 'amount')?.value,
+      event: r?.name,
     }));
+
+    console.log('formatted', formatted);
 
     setState((prev) => ({
       ...prev,
-      transaction: {
-        data: formatted,
-      },
+      transaction: formatted,
     }));
     return formatted;
   }, []);
@@ -177,7 +172,7 @@ export const BeneficiaryProvider = ({ children }) => {
     getBeneficiariesList,
     getBeneficiaryById,
     getAllVillages,
-    getTransactionById,
+    getBeneficiaryTransactions,
     resetFilter,
     addBeneficiary,
     getAllProjects,

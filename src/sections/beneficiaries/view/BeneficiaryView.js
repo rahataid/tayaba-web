@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Grid, Stack } from '@mui/material';
-import BasicInfoCard from './BasicInfoCard';
-import TokenDetails from './TokenDetails';
-import MoreInfoCard from './MoreInfoCard';
-import { HistoryTable } from '@sections/transactionTable';
-import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import { useRouter } from 'next/router';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { useProject } from '@services/contracts/useProject';
 import LoadingOverlay from '@components/LoadingOverlay';
+import { CONTRACTS } from '@config';
+import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { Grid, Stack } from '@mui/material';
+import { HistoryTable } from '@sections/transactionTable';
+import { useProject } from '@services/contracts/useProject';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import BasicInfoCard from './BasicInfoCard';
+import MoreInfoCard from './MoreInfoCard';
+import TokenDetails from './TokenDetails';
 
 BeneficiaryView.propTypes = {};
 
@@ -26,7 +27,7 @@ const TABLE_HEAD = {
   },
   event: {
     id: 'event',
-    label: 'Type',
+    label: 'Event',
     align: 'left',
   },
   amount: {
@@ -34,26 +35,19 @@ const TABLE_HEAD = {
     label: 'Amount',
     align: 'left',
   },
-  txType: {
-    id: 'txType',
-    label: 'TxType',
-    align: 'left',
-  },
-  mode: {
-    id: 'mode',
-    label: 'Mode',
-    align: 'left',
-  },
 };
 // #endregion
 
 export default function BeneficiaryView() {
-  const { roles } = useAuthContext();
-  const { getBeneficiaryById, refresh, singleBeneficiary, getTransactionById, transaction } = useBeneficiaryContext();
+  const { roles, contracts } = useAuthContext();
+  const { getBeneficiaryById, refresh, singleBeneficiary, getBeneficiaryTransactions, transaction } =
+    useBeneficiaryContext();
   const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
   } = useRouter();
+
+  console.log('transaction', transaction);
 
   const [chainData, setChainData] = useState({
     isBenActive: null,
@@ -63,7 +57,7 @@ export default function BeneficiaryView() {
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
-    await getTransactionById(beneficiaryId);
+    await getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], _benData.data.walletAddress);
     //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
     // const _chainData = await beneficiaryBalance(_benData?.phone);
@@ -111,7 +105,7 @@ export default function BeneficiaryView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction.data} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction} />
       </Stack>
     </LoadingOverlay>
   );

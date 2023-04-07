@@ -6,19 +6,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import formFields from './data/formFields.json';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Stack, Typography } from '@mui/material';
 
 // components
 import FormProvider from '@components/hook-form';
 import { CONTRACTS } from '@config';
 import { useProjectContext } from '@contexts/projects';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 import useWalletConnection from '@hooks/useWalletConnection';
 import { LoadingButton } from '@mui/lab';
-import { useProject } from '@services/contracts/useProject';
 import Web3Utils from '@utils/web3Utils';
-import { useWeb3React } from '@web3-react/core';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useEffect } from 'react';
 import { useAppAuthContext } from 'src/auth/JwtContext';
 import AddedInfo from './AddedInfo';
 import BasicInformation from './BasicInformaitonFields';
@@ -38,19 +38,23 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function Stepper() {
-  const { deployContract } = useProject();
   const { enqueueSnackbar } = useSnackbar();
   const { push } = useRouter();
-  const { account } = useWeb3React();
-  const { abi, byteCode, contractName, addProject } = useProjectContext();
+  const { abi, byteCode, contractName, addProject, getFormFields, getContracts } = useProjectContext();
   const { contracts } = useAppAuthContext();
-  const { web3Provider } = useWalletConnection();
+  const { library, estimateGas, walletBalance } = useWalletConnection();
+  const { showError } = useErrorHandler();
 
   const [defaultValues, setDefaultValues] = useState({
     0: { name: '', location: '', projectManager: '', description: '', startDate: '', endDate: '', projectType: '' },
   });
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [costEstimation, setCostEstimation] = useState({
+    estimatedCost: null,
+    hasEnoughBalance: null,
+    costInEthers: null,
+  });
 
   const methods = useForm({
     mode: 'onTouched',
@@ -60,13 +64,34 @@ export default function Stepper() {
 
   const { handleSubmit } = methods;
 
+  useEffect(() => {
+    if (!defaultValues[0]?.projectType) return;
+    // getFormFields(defaultValues[0]?.projectType);
+    getContracts(defaultValues[0]?.projectType);
+  }, [getFormFields, defaultValues[0]?.projectType]);
+
   const stepObj = {
     0: {
       title: 'Basic Information',
       component: <BasicInformation methods={methods} />,
-      handleNext(data) {
+      async handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
-        handleIncreaseStep();
+        try {
+          const { estimatedCost, hasEnoughBalance, costInEthers } = await estimateGas(byteCode);
+
+          setCostEstimation({
+            estimatedCost,
+            hasEnoughBalance,
+            costInEthers,
+          });
+        } catch (error) {
+          console.log('error', error);
+          showError('Error estimating gas fee');
+        }
+
+        if (costEstimation?.hasEnoughBalance) {
+          handleIncreaseStep();
+        }
       },
     },
     1: {
@@ -88,9 +113,7 @@ export default function Stepper() {
     2: {
       title: 'Project Added Info',
       component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
-      handleNext(args) {
-        // handleContractDeploy(args);
-      },
+      handleNext: null,
     },
   };
 
@@ -101,7 +124,6 @@ export default function Stepper() {
   const handleDecreaseStep = () => {
     setStep((prev) => prev - 1);
   };
-  console.log(web3Provider);
 
   const isLast = step === Object.keys(stepObj).length - 1;
 
@@ -119,7 +141,7 @@ export default function Stepper() {
         contracts[CONTRACTS.COMMUNITY],
       ];
 
-      const { contract } = await Web3Utils.deployContract(web3Provider, { byteCode, abi, args });
+      const { contract } = await Web3Utils.deployContract(library, { byteCode, abi, args });
       enqueueSnackbar('Deployed Contracts');
 
       let payload = { contractAddress: contract.address };
@@ -148,7 +170,7 @@ export default function Stepper() {
             </Button>
           )}
           {!isLast ? (
-            <Button type="submit" variant={'outlined'}>
+            <Button disabled={costEstimation?.hasEnoughBalance === false} type="submit" variant={'outlined'}>
               Next
             </Button>
           ) : (
@@ -158,6 +180,17 @@ export default function Stepper() {
             </LoadingButton>
           )}
         </Stack>
+        {!costEstimation?.hasEnoughBalance === false && (
+          <Stack mt={2}>
+            <Alert severity="warning">
+              <AlertTitle>Not enough balance </AlertTitle>
+              <Typography>
+                You need at least {costEstimation?.costInEthers} ethers to deploy this contract. You have{' '}
+                {walletBalance} ethers in your wallet.
+              </Typography>
+            </Alert>
+          </Stack>
+        )}
       </FormProvider>
     </>
   );
