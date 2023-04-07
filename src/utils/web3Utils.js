@@ -97,6 +97,10 @@ const Web3Utils = {
     // const mnemonic = entropyToMnemonic(entropy);
     return ethers.Wallet.createRandom();
   },
+
+  weiToEth(balance) {
+    return ethers.utils.formatEther(balance);
+  },
 };
 
 export default Web3Utils;

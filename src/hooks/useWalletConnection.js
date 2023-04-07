@@ -1,16 +1,52 @@
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { injected } from './connectors';
 
 const useWalletConnection = () => {
-  const { activate, deactivate, active, account, library, connector, error } = useWeb3React();
+  const { activate, deactivate, active, account, library, connector, error, chainId: walletChainId } = useWeb3React();
   const { chainId } = useAuthContext();
 
   const [isWalletConnected, setIsWalletConnected] = useState(null);
   const [walletType, setWalletType] = useState('');
-  const [networkId, setNetworkId] = useState(null);
   const [web3Provider, setWeb3Provider] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(null);
+
+  const getAccountBalance = async () => {
+    if (account && library) {
+      const provider = new ethers.providers.Web3Provider(library.provider);
+      const balance = await provider.getBalance(account);
+      setWalletBalance(ethers.utils.formatEther(balance));
+    }
+  };
+
+  const estimateGas = async (byteCode) => {
+    const signer = library.getSigner();
+    const signerAddress = await signer.getAddress();
+    const estimatedCostHex = await library?.estimateGas({
+      from: signerAddress,
+      data: byteCode,
+    });
+    const estimatedCost = estimatedCostHex?.toNumber();
+
+    const costInEthers = ethers.utils.formatEther(estimatedCost);
+
+    const hasEnoughBalance = +walletBalance >= +costInEthers;
+
+    return {
+      hasEnoughBalance,
+      costInEthers,
+      estimatedCost,
+      walletBalance,
+    };
+  };
+
+  useEffect(() => {
+    if (account) {
+      getAccountBalance();
+    }
+  }, [account]);
 
   useEffect(() => {
     if (active) {
@@ -75,38 +111,63 @@ const useWalletConnection = () => {
 
   useEffect(() => {
     if (library) {
-      library.getNetwork().then(async (network) => {
-        setNetworkId(network.chainId);
-        if (Number(network.chainId) !== Number(chainId)) {
+      const check = async () => {
+        const parsedChainId = parseInt(chainId);
+        if (!isNaN(parsedChainId) && Number(walletChainId) !== parsedChainId) {
+          const chainIdHex = '0x' + parsedChainId.toString(16);
           try {
-            const chainIdHex = '0x' + Number(chainId).toString(16);
-            await library.send('wallet_switchEthereumChain', [{ chainId: chainIdHex }]);
-
+            await library.provider.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: chainIdHex }],
+            });
             setWeb3Provider(library);
           } catch (error) {
-            console.log({ error });
+            try {
+              await library.provider.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: chainIdHex,
+                    chainName: 'Rumsan',
+                    nativeCurrency: {
+                      name: 'ETH',
+                      symbol: 'ETH',
+                      decimals: 18,
+                    },
+                    rpcUrls: ['http://localhost:8545'],
+                    blockExplorerUrls: ['https://example.com/'],
+                  },
+                ],
+              });
+              setWeb3Provider(library);
+            } catch (error) {
+              console.log({ error });
+            }
           }
-
-          return;
+        } else {
+          setWeb3Provider(library.provider);
         }
-        setWeb3Provider(library.provider);
-      });
+      };
+      check();
     }
-  }, [library, chainId]);
+  }, [library, chainId, walletChainId]);
 
   return {
-    connectWalletOnPageLoad,
-    isWalletConnected,
+    walletBalance,
     walletType,
-    connectWallet,
-    disconnectWallet,
     account,
     chainId,
-    connector,
     error,
-    networkId,
+    networkId: walletChainId,
+
+    connectWalletOnPageLoad,
+    isWalletConnected,
+    connectWallet,
+    disconnectWallet,
+    connector,
     web3Provider,
     library,
+    estimateGas,
   };
 };
 
