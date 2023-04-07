@@ -25,22 +25,12 @@ const TABLE_HEAD = {
   },
   event: {
     id: 'event',
-    label: 'Type',
+    label: 'Event',
     align: 'left',
   },
   amount: {
     id: 'amount',
     label: 'Amount',
-    align: 'left',
-  },
-  txType: {
-    id: 'txType',
-    label: 'TxType',
-    align: 'left',
-  },
-  mode: {
-    id: 'mode',
-    label: 'Mode',
     align: 'left',
   },
 };
@@ -54,6 +44,8 @@ export default function BeneficiaryView() {
     query: { beneficiaryId },
   } = useRouter();
 
+  console.log('transaction', transaction);
+
   const [chainData, setChainData] = useState({
     isBenActive: null,
     balance: null,
@@ -66,7 +58,7 @@ export default function BeneficiaryView() {
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
-    await getTransactionById(beneficiaryId);
+    await getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], _benData.data.walletAddress);
     //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
     // const _chainData = await beneficiaryBalance(_benData?.phone);
@@ -114,7 +106,7 @@ export default function BeneficiaryView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction.data} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction} />
       </Stack>
     </LoadingOverlay>
   );

@@ -1,11 +1,10 @@
 import { gender, phoneType } from '@config';
 // form
 
-import { Stack, Grid } from '@mui/material';
 import { RHFSelect, RHFTextField } from '@components/hook-form';
+import { Grid, Stack } from '@mui/material';
 
-export default function BasicInformatonFields({ methods, village, projects }) {
-  console.log(projects);
+export default function BasicInformatonFields({ methods, village }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
@@ -21,21 +20,6 @@ export default function BasicInformatonFields({ methods, village, projects }) {
       <Grid item xs={12} md={6}>
         <Stack spacing={3}>
           <RHFTextField id="cnicNumber" name="cnicNumber" label="Cnic NUmber" />
-        </Stack>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Stack spacing={3}>
-          <RHFSelect name={'projectId'} label="Select Project">
-            {' '}
-            <option>Select Project</option>
-            {projects
-              ? projects?.map((obj) => (
-                  <option key={obj.value} value={obj.value}>
-                    {obj.label}
-                  </option>
-                ))
-              : ''}
-          </RHFSelect>
         </Stack>
       </Grid>
 

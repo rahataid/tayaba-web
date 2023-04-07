@@ -7,6 +7,10 @@ export const BeneficiaryService = {
     });
   },
 
+  assignProject(id, data) {
+    return clientApi.patch(`/beneficiaries/project/${id}`, data);
+  },
+
   getBeneficiaryByWalletAddress(walletAddress) {
     return clientApi.get(`/beneficiaries/${walletAddress}`);
   },

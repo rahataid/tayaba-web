@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
+import { DEBUG_MODE, ROLES } from '@config';
+import { AppService } from '@services';
 import {
-  isValidToken,
-  saveAccessToken,
-  getAccessToken,
+  clearStorage,
   deleteAccessToken,
-  saveCurrentUser,
-  saveKey,
+  getAccessToken,
   getCurrentUser,
   getKey,
-  clearStorage,
   getWalletAddressFromPrivateKey,
+  isValidToken,
+  saveAccessToken,
+  saveCurrentUser,
+  saveKey,
 } from '@utils/sessionManager';
-import { AppService } from '@services';
-import { ROLES, DEBUG_MODE } from '@config';
 
 // ----------------------------------------------------------------------
 

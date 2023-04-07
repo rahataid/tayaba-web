@@ -77,19 +77,15 @@ const Web3Utils = {
     },
   },
 
-  deployContract: async (providers, { abi, byteCode, args }) => {
+  deployContract: async (library, { abi, byteCode, args }) => {
     try {
-      console.log(window.ethereum);
-      const provider = new ethers.providers.Web3Provider(providers);
-      console.log(provider);
-      const signer = provider.getSigner();
+      const signer = library.getSigner();
       const factory = new ethers.ContractFactory(abi, byteCode, signer);
-      console.log({ args });
       const contract = await factory.deploy(...args);
       const receipt = await contract.deployTransaction.wait();
       return {
         blockNumber: receipt.blockNumber,
-        contract: new ethers.Contract(contract.address, abi, provider),
+        contract: new ethers.Contract(contract.address, abi, library),
       };
     } catch (error) {
       console.log({ deployerror: error });
@@ -100,6 +96,10 @@ const Web3Utils = {
     const entropy = this.getRandomEntropy();
     // const mnemonic = entropyToMnemonic(entropy);
     return ethers.Wallet.createRandom();
+  },
+
+  weiToEth(balance) {
+    return ethers.utils.formatEther(balance);
   },
 };
 

@@ -128,3 +128,12 @@ export const phoneType = {
 };
 
 export const CAMPAIGN_TYPES = ['EMAIL', 'SMS', 'PHONE'];
+
+export const BLOCKCHAIN_NETWORKS = {
+  97: {
+    Url: 'https://mainnet.infura.io/v3/',
+  },
+  1337: {
+    Url: 'http://127.0.0.1:8545',
+  },
+};

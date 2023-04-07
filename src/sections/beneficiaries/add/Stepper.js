@@ -1,15 +1,14 @@
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useState, useEffect } from 'react';
 
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Stack, Button, Typography, Box } from '@mui/material';
 
 // components
 import FormProvider from '@components/hook-form';
-import AddedInfo from './WalletAdd';
-import DynamicForm from './DynamicForm';
+import AddedInfo from './AddedInfo';
 import BasicInformation from './BasicInformationFields';
 
 import { useRouter } from 'next/router';
@@ -21,7 +20,6 @@ import WalletAdd from './WalletAdd';
 const FormSchema = Yup.object().shape({
   name: Yup.string().required('Full name is required').min(4, 'Mininum 4 characters').max(24, 'Maximum 15 characters'),
   phone: Yup.string().required('Phone Number is required'),
-  projectId: Yup.number().required(' prroject is required'),
   gender: Yup.string().required('Please Select Gender'),
   villageId: Yup.number().required('please Select Village'),
   phoneOwnedBy: Yup.string().required('Phone Owner is Required'),
@@ -62,7 +60,7 @@ export default function Stepper() {
   const stepObj = {
     0: {
       title: 'Basic Information',
-      component: <BasicInformation methods={methods} village={village} projects={projects} />,
+      component: <BasicInformation methods={methods} village={village} />,
       handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
         handleIncreaseStep();
@@ -70,7 +68,7 @@ export default function Stepper() {
     },
     1: {
       title: 'Extra Fields',
-      component: <WalletAdd setValue={setValue} />,
+      component: <WalletAdd setValue={setValue} projects={projects} />,
       handleNext(data) {
         let basicFields = defaultValues[0];
         let payload = {};
@@ -106,8 +104,12 @@ export default function Stepper() {
     for (const key in defaultValues) {
       payload = { ...payload, ...defaultValues[key] };
     }
-    let ben = await addBeneficiary(payload);
-    push('/beneficiaries');
+    try {
+      let ben = await addBeneficiary(payload);
+      push('/beneficiaries');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
