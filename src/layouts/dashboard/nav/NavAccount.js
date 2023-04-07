@@ -1,6 +1,6 @@
 // @mui
-import { styled, alpha } from '@mui/material/styles';
 import { Divider } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 // auth
 import { useAuthContext } from '../../../auth/useAuthContext';
 // components
