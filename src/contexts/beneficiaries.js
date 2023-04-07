@@ -28,6 +28,7 @@ const initialState = {
   getAllVillages: () => {},
   resetFilter: () => {},
   getAllProjects: () => {},
+  assignProject: () => {},
 };
 
 const BeneficiaryContext = createContext(initialState);
@@ -115,6 +116,10 @@ export const BeneficiaryProvider = ({ children }) => {
 
   const addBeneficiary = (payload) => BeneficiaryService.addBeneficiary(payload);
 
+  const assignProject = (id, payload) => {
+    return BeneficiaryService.assignProject(id, payload);
+  };
+
   const getAllVillages = useCallback(async () => {
     const response = await BeneficiaryService.getVillagesList();
     const formatted = response?.data?.data?.map((village) => ({
@@ -171,6 +176,7 @@ export const BeneficiaryProvider = ({ children }) => {
     resetFilter,
     addBeneficiary,
     getAllProjects,
+    assignProject,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;
