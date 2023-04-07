@@ -16,6 +16,7 @@ export default function AssignProjectModal({
   handleClose,
   assignProject,
   beneficraryId,
+  refreshData,
 }) {
   const [project, setProject] = useState('');
   const { loading, showLoading, hideLoading } = useLoading();
@@ -32,6 +33,7 @@ export default function AssignProjectModal({
     }
     hideLoading(loadingKey);
     handleClose();
+    refreshData();
     setProject('');
   };
 

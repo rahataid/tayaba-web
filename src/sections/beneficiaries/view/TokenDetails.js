@@ -6,22 +6,17 @@ import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import useDialog from '@hooks/useDialog';
 import useLoading from '@hooks/useLoading';
 import { Button, Card, CardContent, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import AssignProjectModal from './AssignProjectModal';
-
-TokenDetails.propTypes = {};
-export default function TokenDetails({ chainData }) {
-  const { singleBeneficiary, refreshData, projects, getAllProjects, assignProject } = useBeneficiaryContext();
 import { BeneficiaryService } from '@services/beneficiaries';
 import { useProject } from '@services/contracts/useProject';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import AssignProjectModal from './AssignProjectModal';
 
-TokenDetails.propTypes = {};
 export default function TokenDetails({ chainData }) {
-  const { singleBeneficiary, refreshData } = useBeneficiaryContext();
+  const { singleBeneficiary, refreshData, projects, getAllProjects, assignProject } = useBeneficiaryContext();
   const { enqueueSnackbar } = useSnackbar();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { assignClaimsToBeneficiaries, contract } = useProject();
@@ -87,7 +82,7 @@ export default function TokenDetails({ chainData }) {
         variant: 'error',
       });
     }
-  }
+  };
 
   return (
     <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
@@ -108,6 +103,7 @@ export default function TokenDetails({ chainData }) {
         projects={projects}
         assignProject={assignProject}
         beneficraryId={singleBeneficiary?.data?.id}
+        refreshData={refreshData}
       />
 
       <CardContent>
@@ -151,7 +147,7 @@ export default function TokenDetails({ chainData }) {
               )}
             </>
           )}
-          <Button variant="outlined" color='error' size="small" onClick={handleDelete}>
+          <Button variant="outlined" color="error" size="small" onClick={handleDelete}>
             Delete
           </Button>
         </Stack>
