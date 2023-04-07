@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import LoadingOverlay from '@components/LoadingOverlay';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import LoadingOverlay from '@components/LoadingOverlay';
 import { SPACING } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import useDialog from '@hooks/useDialog';
@@ -109,7 +109,8 @@ export default function TokenDetails({ chainData }) {
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography>Claims Details</Typography>
-          {singleBeneficiary?.data?.beneficiary_project_details.length === 0 ? (
+          {singleBeneficiary?.data?.beneficiary_project_details &&
+          singleBeneficiary?.data?.beneficiary_project_details.length === 0 ? (
             <Button variant="outlined" onClick={handleAssignProject} size="small">
               Assign Project
             </Button>
