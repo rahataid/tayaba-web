@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 import { useAppAuthContext } from 'src/auth/JwtContext';
 
 BasicInfoCard.propTypes = {
@@ -10,6 +9,7 @@ BasicInfoCard.propTypes = {
 
 export default function BasicInfoCard({ chainData }) {
   const { singleBeneficiary } = useBeneficiaryContext();
+  console.log(singleBeneficiary)
   const { roles } = useAppAuthContext();
 
   return (

@@ -124,7 +124,6 @@ export const ProjectProvider = ({ children }) => {
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
-    console.log(formatted);
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
@@ -167,6 +166,7 @@ export const ProjectProvider = ({ children }) => {
     console.log('editProject');
     return ProjectService.editProject(data);
   };
+
   const getBeneficiariesByProject = useCallback(
     async (query) => {
       let filterObj = {

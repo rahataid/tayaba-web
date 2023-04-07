@@ -7,8 +7,8 @@ export const BeneficiaryService = {
     });
   },
 
-  getBeneficiaryById(id) {
-    return clientApi.get(`/beneficiaries/${id}`);
+  getBeneficiaryByWalletAddress(walletAddress) {
+    return clientApi.get(`/beneficiaries/${walletAddress}`);
   },
 
   getAllWards() {

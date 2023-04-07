@@ -8,12 +8,24 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
+const FormSchema = Yup.object().shape({
+    name: Yup.string().required('Full name is required').min(4, 'Mininum 4 characters').max(24, 'Maximum 15 characters'),
+    phone: Yup.number().optional(),
+    villageId: Yup.number(),
+    gender: Yup.number().required('Gender is required'),
+    bankAccount: Yup.string(),
+    dailyDistanceCovered: Yup.number().required('Distance covered is required'),
+});
+
+
 export default function EditForm() {
+
     const {
-        query: { beneficiaryId },
+        query: { walletAddress },
     } = useRouter();
+
     const { enqueueSnackbar } = useSnackbar();
-    const { getAllVillages, village, updateBeneficiaries, getBeneficiaryById, singleBeneficiary } =
+    const { getAllVillages, village, updateUsingWalletAddress, getBeneficiaryByWalletAddress, singleBeneficiary } =
         useBeneficiaryContext();
     const beneficiarySchema = {
         dailyDistanceCovered: Yup.number().required('Email is required'),
@@ -36,9 +48,9 @@ export default function EditForm() {
     });
 
     const init = useCallback(async () => {
-        if (!beneficiaryId) return;
-        await getBeneficiaryById(beneficiaryId);
-    }, [beneficiaryId]);
+        if (!walletAddress) return;
+        await getBeneficiaryByWalletAddress(walletAddress);
+    }, [walletAddress]);
 
     useEffect(() => {
         getAllVillages();
@@ -63,8 +75,7 @@ export default function EditForm() {
 
     const handleSubmitFunction = async () => {
         try {
-            console.log(beneficary);
-            await updateBeneficiaries(beneficiaryId, beneficary);
+            await updateUsingWalletAddress(walletAddress, beneficary);
             enqueueSnackbar('Updated Beneficary');
         } catch (error) {
             console.log(error);

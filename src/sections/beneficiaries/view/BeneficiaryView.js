@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import LoadingOverlay from '@components/LoadingOverlay';
+import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { Grid, Stack } from '@mui/material';
+import { HistoryTable } from '@sections/transactionTable';
+import { useProject } from '@services/contracts/useProject';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuthContext } from 'src/auth/useAuthContext';
 import BasicInfoCard from './BasicInfoCard';
 import TokenDetails from './TokenDetails';
-import MoreInfoCard from './MoreInfoCard';
-import { HistoryTable } from '@sections/transactionTable';
-import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import { useRouter } from 'next/router';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { useProject } from '@services/contracts/useProject';
-import LoadingOverlay from '@components/LoadingOverlay';
 
 BeneficiaryView.propTypes = {};
 
@@ -49,7 +48,7 @@ const TABLE_HEAD = {
 
 export default function BeneficiaryView() {
   const { roles } = useAuthContext();
-  const { getBeneficiaryById, refresh, singleBeneficiary, getTransactionById, transaction } = useBeneficiaryContext();
+  const { getBeneficiaryById, refresh, singleBeneficiary, getTransactionById, transaction, getBeneficiaryByWalletAddress } = useBeneficiaryContext();
   const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
@@ -59,6 +58,10 @@ export default function BeneficiaryView() {
     isBenActive: null,
     balance: null,
   });
+
+  useEffect(() => {
+    getBeneficiaryByWalletAddress(beneficiaryId)
+  }, [beneficiaryId])
 
   const init = useCallback(async () => {
     if (!beneficiaryId) return;

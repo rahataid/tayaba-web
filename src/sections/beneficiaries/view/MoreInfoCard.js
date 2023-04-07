@@ -1,6 +1,5 @@
-import React from 'react';
-import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 
 const MoreInfoCard = () => {
   const { singleBeneficiary } = useBeneficiaryContext();
