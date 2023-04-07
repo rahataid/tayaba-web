@@ -72,7 +72,7 @@ export default function Stepper() {
 
   const stepObj = {
     0: {
-      title: 'Basic Information',
+      title: 'General Project Information',
       component: <BasicInformation methods={methods} />,
       async handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
@@ -84,18 +84,18 @@ export default function Stepper() {
             hasEnoughBalance,
             costInEthers,
           });
+
+          if (costEstimation?.hasEnoughBalance) {
+            handleIncreaseStep();
+          }
         } catch (error) {
           console.log('error', error);
           showError('Error estimating gas fee');
         }
-
-        if (costEstimation?.hasEnoughBalance) {
-          handleIncreaseStep();
-        }
       },
     },
     1: {
-      title: 'Extra Fields',
+      title: 'Specific Project Information',
       component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext(data) {
         handleIncreaseStep();
@@ -111,7 +111,7 @@ export default function Stepper() {
     },
 
     2: {
-      title: 'Project Added Info',
+      title: 'Review and Deploy',
       component: <AddedInfo projectType={defaultValues[0].projectType} projectInfo={defaultValues} setStep={setStep} />,
       handleNext: null,
     },
@@ -158,7 +158,7 @@ export default function Stepper() {
   return (
     <>
       <FormProvider methods={methods} onSubmit={handleSubmit(stepObj[step].handleNext)}>
-        <Typography paddingTop={2} paddingBottom={2}>
+        <Typography variant={'subtitle1'} mt={2} mb={2}>
           {stepObj[step].title}
         </Typography>
         <Box>{stepObj[step].component}</Box>
@@ -180,7 +180,7 @@ export default function Stepper() {
             </LoadingButton>
           )}
         </Stack>
-        {!costEstimation?.hasEnoughBalance === false && (
+        {costEstimation?.hasEnoughBalance === false && (
           <Stack mt={2}>
             <Alert severity="warning">
               <AlertTitle>Not enough balance </AlertTitle>
