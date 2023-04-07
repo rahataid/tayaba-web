@@ -40,24 +40,32 @@ const TABLE_HEAD = {
 
 export default function BeneficiaryView() {
   const { roles, contracts } = useAuthContext();
-  const { getBeneficiaryById, refresh, singleBeneficiary, getBeneficiaryTransactions, transaction } =
-    useBeneficiaryContext();
+  const {
+    getBeneficiaryById,
+    refresh,
+    singleBeneficiary,
+    getBeneficiaryTransactions,
+    transaction,
+    getBeneficiaryByWalletAddress,
+  } = useBeneficiaryContext();
   const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
   } = useRouter();
-
-  console.log('transaction', transaction);
 
   const [chainData, setChainData] = useState({
     isBenActive: null,
     balance: null,
   });
 
+  useEffect(() => {
+    getBeneficiaryByWalletAddress(beneficiaryId);
+  }, [beneficiaryId]);
+
   const init = useCallback(async () => {
     if (!beneficiaryId) return;
     const _benData = await getBeneficiaryById(beneficiaryId);
-    await getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], _benData.data.walletAddress);
+    await getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], beneficiaryId);
     //getBeneficiaryClaimLogs(_benData?.phone);
     if (!_benData?.phone) return;
     // const _chainData = await beneficiaryBalance(_benData?.phone);

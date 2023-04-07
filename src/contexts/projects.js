@@ -31,22 +31,22 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getProjectByAddress: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
-  setFilter: () => { },
-  getProjectsTypesList: () => { },
-  getGithubProjectTypes: () => { },
-  getFormFields: () => { },
-  addProject: () => { },
-  getContracts: () => { },
-  editProject: () => { },
+  getProjectsList: () => {},
+  getProjectById: () => {},
+  getProjectByAddress: () => {},
+  getBeneficiariesByProject: () => {},
+  getVendorsByProject: () => {},
+  refreshData: () => {},
+  setRahatResponseStatus: () => {},
+  getChartData: () => {},
+  getBeneficiariesByvillage: () => {},
+  setFilter: () => {},
+  getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
+  getFormFields: () => {},
+  addProject: () => {},
+  getContracts: () => {},
+  editProject: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -124,7 +124,6 @@ export const ProjectProvider = ({ children }) => {
       projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
     };
-    console.log(formatted);
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
@@ -132,7 +131,6 @@ export const ProjectProvider = ({ children }) => {
     }));
     return formatted;
   }, []);
-
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
@@ -167,6 +165,7 @@ export const ProjectProvider = ({ children }) => {
     console.log('editProject');
     return ProjectService.editProject(data);
   };
+
   const getBeneficiariesByProject = useCallback(
     async (query) => {
       let filterObj = {

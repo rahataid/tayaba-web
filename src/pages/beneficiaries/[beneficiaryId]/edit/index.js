@@ -8,17 +8,17 @@ import BeneficiaryEdit from '@sections/beneficiaries/edit/EditInfo';
 const PAGE_TITLE = 'Beneficiary: Edit';
 
 const BeneficiaryEditView = () => {
-    const { themeStretch } = useSettingsContext();
+  const { themeStretch } = useSettingsContext();
 
-    return (
-        <BeneficiaryProvider>
-            <Page title={PAGE_TITLE} nocard>
-                <Container maxWidth={themeStretch ? false : 'xl'}>
-                    <BeneficiaryEdit />
-                </Container>
-            </Page>
-        </BeneficiaryProvider>
-    );
+  return (
+    <BeneficiaryProvider>
+      <Page title={PAGE_TITLE} nocard>
+        <Container maxWidth={themeStretch ? false : 'xl'}>
+          <BeneficiaryEdit />
+        </Container>
+      </Page>
+    </BeneficiaryProvider>
+  );
 };
 
 BeneficiaryEditView.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

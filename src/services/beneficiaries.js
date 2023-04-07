@@ -11,8 +11,8 @@ export const BeneficiaryService = {
     return clientApi.patch(`/beneficiaries/project/${id}`, data);
   },
 
-  getBeneficiaryById(id) {
-    return clientApi.get(`/beneficiaries/${id}`);
+  getBeneficiaryByWalletAddress(walletAddress) {
+    return clientApi.get(`/beneficiaries/${walletAddress}`);
   },
 
   getAllWards() {
@@ -40,6 +40,6 @@ export const BeneficiaryService = {
     return clientApi.get(`/projects`);
   },
   delete(id) {
-    return clientApi.patch(`/beneficiaries/${id}/delete`)
+    return clientApi.patch(`/beneficiaries/${id}/delete`);
   },
 };
