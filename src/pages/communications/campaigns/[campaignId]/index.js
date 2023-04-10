@@ -44,7 +44,9 @@ export default function BeneficiaryList() {
             >
               Trigger Campaign
             </LoadingButton>
-            <Button variant="text">Edit</Button>
+            <Button variant="text" onClick={() => push(PATH_COMMUNICATION.campaigns + `/${campaignId}/edit`)}>
+              Edit
+            </Button>
             <Button onClick={handleAdd}>All Campaigns</Button>
           </Stack>
         }

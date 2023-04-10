@@ -128,13 +128,13 @@ const useWalletConnection = () => {
                 params: [
                   {
                     chainId: chainIdHex,
-                    chainName: 'Rumsan',
+                    chainName: 'Local Ganache',
                     nativeCurrency: {
                       name: 'ETH',
                       symbol: 'ETH',
                       decimals: 18,
                     },
-                    rpcUrls: ['http://localhost:8545'],
+                    rpcUrls: ['http://localhost:8545/'],
                     blockExplorerUrls: ['https://example.com/'],
                   },
                 ],
@@ -159,7 +159,6 @@ const useWalletConnection = () => {
     chainId,
     error,
     networkId: walletChainId,
-
     connectWalletOnPageLoad,
     isWalletConnected,
     connectWallet,

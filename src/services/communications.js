@@ -17,6 +17,8 @@ export const CommunicationService = {
 
   createCampaigns: (data) => api.post('/campaigns', data),
 
+  updateCampaigns: (id, data) => api.patch(`/campaigns/${id}`, data),
+
   triggerCampaign: (id) => api.get(`/campaigns/${id}/trigger`),
 
   getCampaignById: (id) => api.get(`/campaigns/${id}`),

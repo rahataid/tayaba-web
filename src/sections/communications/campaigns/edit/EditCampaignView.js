@@ -24,6 +24,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CommunicationService } from '@services/communications';
 import { getLabelsByValues } from '@utils/arrays';
 import { parseMultiLineInput } from '@utils/strings';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
@@ -44,8 +45,20 @@ const FormSchema = Yup.object().shape({
 });
 
 const CreateCampaign = () => {
-  const { transports, getTransports, audiences, getAudiences, getBeneficiaries, beneficiaries } = useCommunications();
-  const { push } = useRouter();
+  const {
+    transports,
+    getTransports,
+    audiences,
+    getAudiences,
+    getBeneficiaries,
+    beneficiaries,
+    getSingleCampaign,
+    singleCampaign,
+  } = useCommunications();
+  const {
+    push,
+    query: { campaignId },
+  } = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [isAddAudienceModalOpen, setIsAddAudienceModalOpen] = useState(false);
@@ -53,6 +66,11 @@ const CreateCampaign = () => {
   const handleAudienceModal = () => {
     setIsAddAudienceModalOpen((o) => !o);
   };
+
+  useEffect(() => {
+    if (!campaignId) return;
+    getSingleCampaign(campaignId);
+  }, [campaignId]);
 
   useEffect(() => {
     getTransports();
@@ -65,6 +83,21 @@ const CreateCampaign = () => {
   useEffect(() => {
     getBeneficiaries();
   }, [getBeneficiaries]);
+
+  useEffect(() => {
+    const singleModified = {
+      name: singleCampaign?.name,
+      type: singleCampaign?.type,
+      transportId: singleCampaign?.transportId,
+      audienceIds: singleCampaign?.audiences?.map((aud) => aud.id),
+      details: JSON.stringify(singleCampaign?.details, null, 2),
+
+      startTime: dayjs(singleCampaign?.startTime),
+    };
+
+    console.log('singleModified', singleModified);
+    reset(singleModified);
+  }, [singleCampaign]);
 
   const methods = useForm({
     mode: 'onTouched',
@@ -83,11 +116,9 @@ const CreateCampaign = () => {
     control,
     getValues,
     setError,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting },
   } = methods;
-  // console.log('first', getValues('audienceIds'));
-
-  console.log('first', { errors, isSubmitSuccessful, isSubmitting });
 
   const handleFormSubmit = async (data) => {
     try {
@@ -96,8 +127,9 @@ const CreateCampaign = () => {
         startTime: data.startTime.toISOString(),
         details: parseMultiLineInput(data.details, 'OBJECT'),
       };
-      const saved = await CommunicationService.createCampaigns(formatted);
-      enqueueSnackbar('Campaign created successfully', { variant: 'success' });
+
+      const saved = await CommunicationService.updateCampaigns(campaignId, formatted);
+      enqueueSnackbar('Campaign edited successfully', { variant: 'success' });
       push(`/communications/campaigns/${saved.data.id}`);
     } catch (error) {
       console.log('error', error?.response?.data?.errors);
@@ -230,7 +262,7 @@ const CreateCampaign = () => {
 
       <Stack mt={2}>
         <LoadingButton loading={isSubmitting} type="submit" variant="contained">
-          Create Campaign
+          Edit Campaign
         </LoadingButton>
       </Stack>
     </FormProvider>
