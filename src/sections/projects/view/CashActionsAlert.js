@@ -1,8 +1,7 @@
-import { useState, useCallback, useEffect } from 'react';
 import useLoading from '@hooks/useLoading';
-import { Alert, Grid, Button } from '@mui/material';
-import { useProjectContext } from '@contexts/projects';
+import { Alert, Button, Grid } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 // import LoadingOverlay from '@components/LoadingOverlay';
 
@@ -16,6 +15,7 @@ export default function CashActionsAlert({ projectId, chainData }) {
   });
   const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
+
   // const { sendH2OWheelsToVendor } = useProject();
 
   const CashActions = {
@@ -60,14 +60,23 @@ export default function CashActionsAlert({ projectId, chainData }) {
 
   return (
     <>
-      {showAlert && (
-        <Grid item xs={12} md={12}>
-          <Alert severity={alert.type} action={alert.action}>
-            {' '}
-            {alert?.message}{' '}
-          </Alert>
-        </Grid>
-      )}
+      <>
+        {showAlert && (
+          <Grid item xs={12} md={12}>
+            <Alert severity={alert.type} action={alert.action}>
+              {' '}
+              {alert?.message}{' '}
+            </Alert>
+          </Grid>
+        )}
+      </>
+      <>
+        {!chainData?.isApproved && (
+          <Grid item xs={12} md={12}>
+            <Alert severity={'warning'}>Project is Not Approved</Alert>
+          </Grid>
+        )}
+      </>
     </>
   );
 }
