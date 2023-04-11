@@ -1,6 +1,7 @@
 import LoadingOverlay from '@components/LoadingOverlay';
 import { CONTRACTS } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 import { Grid, Stack } from '@mui/material';
 import { HistoryTable } from '@sections/transactionTable';
 import { useProject } from '@services/contracts/useProject';
@@ -71,6 +72,7 @@ export default function BeneficiaryView() {
     // const _chainData = await beneficiaryBalance(_benData?.phone);
     // setChainData(_chainData);
   }, [beneficiaryId, refresh]);
+  const { handleError } = useErrorHandler();
 
   const fetchChainData = useCallback(async () => {
     if (!communityContract) return;
@@ -81,6 +83,7 @@ export default function BeneficiaryView() {
       const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
       setChainData((prev) => ({ ...prev, isBenActive, balance }));
     } catch (error) {
+      handleError(error);
       console.log(error);
     }
   }, [communityContract, singleBeneficiary, refresh]);
