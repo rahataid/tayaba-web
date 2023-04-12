@@ -3,10 +3,22 @@ import { ethers } from 'ethers';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { injected } from './connectors';
+import { useErrorHandler } from './useErrorHandler';
 
 const useWalletConnection = () => {
-  const { activate, deactivate, active, account, library, connector, error, chainId: walletChainId } = useWeb3React();
+  const {
+    activate,
+    deactivate,
+    active,
+    account,
+    library,
+    connector,
+    error,
+    chainId: walletChainId,
+    setError,
+  } = useWeb3React();
   const { chainId } = useAuthContext();
+  const { showError } = useErrorHandler();
 
   const [isWalletConnected, setIsWalletConnected] = useState(null);
   const [walletType, setWalletType] = useState('');
@@ -14,10 +26,14 @@ const useWalletConnection = () => {
   const [walletBalance, setWalletBalance] = useState(null);
 
   const getAccountBalance = async () => {
-    if (account && library) {
-      const provider = new ethers.providers.Web3Provider(library.provider);
-      const balance = await provider.getBalance(account);
-      setWalletBalance(ethers.utils.formatEther(balance));
+    try {
+      if (account && library) {
+        const provider = new ethers.providers.Web3Provider(library.provider);
+        const balance = await provider.getBalance(account);
+        setWalletBalance(ethers.utils.formatEther(balance));
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -99,14 +115,23 @@ const useWalletConnection = () => {
     if (localStorage.getItem('isWalletConnected') === 'true' && storedWalletType) {
       try {
         await handleWalletConnect(storedWalletType);
-      } catch (ex) {
-        console.log(ex);
+      } catch (err) {
+        setError(err.message);
       }
     }
   };
 
   useEffect(() => {
-    connectWalletOnPageLoad();
+    if (!error) return;
+    const msg = error?.message || 'Wallet connection error';
+    console.log('msg', msg);
+    showError(msg);
+
+    console.log('error', error);
+  }, [error]);
+
+  useEffect(() => {
+    connectWalletOnPageLoad().catch((err) => setError(err.message));
   }, [walletType, isWalletConnected]);
 
   useEffect(() => {

@@ -7,8 +7,8 @@ import { Box, Card, Link, Stack, Typography } from '@mui/material';
 // utils
 // redux
 // components
-import Label from '@components/label';
 import Image from '@components/image';
+import Label from '@components/label';
 import moment from 'moment';
 
 // ----------------------------------------------------------------------
@@ -18,7 +18,7 @@ ProjectCard.propTypes = {
 };
 
 export default function ProjectCard({ project }) {
-  const { id, contractAddress, name, created_at, status, balance } = project;
+  const { id, contractAddress, name, created_at, status, isApproved, balance } = project;
 
   return (
     <Card
@@ -32,7 +32,7 @@ export default function ProjectCard({ project }) {
         {status && (
           <Label
             variant="filled"
-            color={(status === 'sale' && 'error') || 'info'}
+            color={isApproved ? 'success' : 'warning'}
             sx={{
               top: 16,
               right: 16,

@@ -98,14 +98,13 @@ export default function Stepper() {
   };
 
   const isLast = step === Object.keys(stepObj).length - 1;
-  console.log({ defaultValues });
   const handleFinish = async () => {
     let payload = {};
     for (const key in defaultValues) {
       payload = { ...payload, ...defaultValues[key] };
     }
     try {
-      let ben = await addBeneficiary(payload);
+      await addBeneficiary(payload);
       push('/beneficiaries');
     } catch (error) {
       console.log(error);

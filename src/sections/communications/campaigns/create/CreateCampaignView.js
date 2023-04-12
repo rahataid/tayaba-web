@@ -83,11 +83,8 @@ const CreateCampaign = () => {
     control,
     getValues,
     setError,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { errors, isSubmitting },
   } = methods;
-  // console.log('first', getValues('audienceIds'));
-
-  console.log('first', { errors, isSubmitSuccessful, isSubmitting });
 
   const handleFormSubmit = async (data) => {
     try {

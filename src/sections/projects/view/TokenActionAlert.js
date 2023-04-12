@@ -1,12 +1,18 @@
+import { useProjectContext } from '@contexts/projects';
 import useLoading from '@hooks/useLoading';
-import { Alert, Button, Grid } from '@mui/material';
+import { Alert, AlertTitle, Button, Grid } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
+import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
-// import LoadingOverlay from '@components/LoadingOverlay';
 
-export default function CashActionsAlert({ projectId, chainData }) {
+TokenActionAlert.propTypes = {
+  chainData: PropTypes.object,
+};
+
+export default function TokenActionAlert({ chainData }) {
   const { acceptToken } = useProject();
+  const { singleProject } = useProjectContext();
   const { showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
     type: '',
@@ -72,9 +78,14 @@ export default function CashActionsAlert({ projectId, chainData }) {
         )}
       </>
       <>
-        {!chainData?.isApproved && (
+        {singleProject?.isApproved === false && (
           <Grid item xs={12} md={12}>
-            <Alert severity={'warning'}>Project is Not Approved</Alert>
+            <Alert title="Not Approved" severity={'warning'}>
+              <AlertTitle>
+                <strong>Waiting for approval</strong>
+              </AlertTitle>
+              Project has not yet been approved by the community.
+            </Alert>
           </Grid>
         )}
       </>

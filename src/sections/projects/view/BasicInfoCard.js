@@ -14,7 +14,7 @@ BasicInfoCard.propTypes = {
   rahatChainData: PropTypes.object,
 };
 
-export default function BasicInfoCard({ rahatChainData, ...other }) {
+export default function BasicInfoCard({ rahatChainData }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { singleProject, vendorCount, refreshData } = useProjectContext();
   // const router = useRouter();
@@ -33,19 +33,10 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
     showDialog();
   };
 
-  // const handleEditProject = () => {
-  //   router.push(`/projects/edit/${router.query.projectId}`);
-  // };
-
-  const handleLockModal = () => {
-    setModalData({ title: 'Are you sure to Lock the project ?', type: 'Lock' });
-    showDialog();
-  };
-
   const handleLockProject = async () => {
     showLoading('projectAction');
     try {
-      await lockProject(singleProject?.data.contractAddress);
+      await lockProject(singleProject?.contractAddress);
     } catch (error) {
       console.log({ error });
     }
@@ -57,7 +48,7 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
   const handleUnlockProject = async () => {
     showLoading('projectAction');
     try {
-      await unLockProject(singleProject?.data.contractAddress);
+      await unLockProject(singleProject?.contractAddress);
     } catch (error) {
       hideLoading('projectAction');
       hideDialog();
@@ -86,48 +77,31 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
           </DialogActions>
         </LoadingOverlay>
       </Dialog>
-      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-around" spacing={10}>
-        <Grid container direction="column" justifyContent="center" alignItems="flex-end">
-          {rahatChainData?.isLocked ? (
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" spacing={2}>
+        {singleProject?.isApproved &&
+          (rahatChainData?.isLocked ? (
             <Chip
               label={`Locked `}
-              variant="outlined"
-              color="error"
               icon={<Iconify icon={'material-symbols:lock-outline'} />}
               onClick={handleUnlockModal}
             />
           ) : (
             <Chip
               label={`Unlocked`}
-              variant="outlined"
               color="success"
-              onClick={handleLockModal}
               icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
             />
-          )}
-        </Grid>
-        <Grid container direction="column" justifyContent="center" alignItems="flex-end">
-          {rahatChainData?.isApproved ? (
-            <Chip
-              label={`Approved `}
-              variant="outlined"
-              color="error"
-              icon={<Iconify icon={'material-symbols:lock-outline'} />}
-            />
-          ) : (
-            <Chip
-              label={`Not Approved`}
-              variant="outlined"
-              color="warning"
-              icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
-            />
-          )}
-        </Grid>
+          ))}
+        <Chip
+          label={singleProject?.status}
+          color={singleProject?.isApproved ? 'success' : 'warning'}
+          icon={<Iconify icon={'material-symbols:lock-outline'} />}
+        />
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 400 }}>
-            {singleProject?.data?.projectManager}
+            {singleProject?.projectManager}
           </Typography>
           <Typography variant="body2">Managed By</Typography>
         </Grid>
@@ -142,19 +116,19 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" alignItems="flex-start">
           <Typography variant="body1" sx={{ fontWeight: 400 }}>
-            {moment(singleProject?.data?.startDate).format('DD MMM YYYY')}
+            {moment(singleProject?.startDate).format('DD MMM YYYY')}
           </Typography>
           <Typography variant="caption">Start Date</Typography>
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="body1" sx={{ fontWeight: 400 }}>
-            {moment(singleProject?.data?.endDate).format('DD MMM YYYY')}
+            {moment(singleProject?.endDate).format('DD MMM YYYY')}
           </Typography>
           <Typography variant="caption">End Date</Typography>
         </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-        <Typography variant="body1"> {singleProject?.data?.description}</Typography>
+        <Typography variant="body1"> {singleProject?.description}</Typography>
       </Stack>
     </>
   );

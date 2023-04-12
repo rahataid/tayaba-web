@@ -1,9 +1,9 @@
+import Iconify from '@components/iconify';
+import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
-import Iconify from '@components/iconify';
-import { Stack } from '@mui/material';
 
 ActionMenu.propTypes = {
   menuItems: PropTypes.array.isRequired,
@@ -40,10 +40,10 @@ export default function ActionMenu({ menuItems, actionTitle, handleClose, anchor
           'aria-labelledby': 'basic-button',
         }}
       >
-        {menuItems.map((item, index) => (
+        {menuItems.map(({ sx, ...item }, index) => (
           <>
             {item?.show ? (
-              <MenuItem key={index} onClick={item.onClick} sx={{ fontSize: 14 }}>
+              <MenuItem key={index} sx={{ ...sx, fontSize: 14 }} {...item}>
                 {item.name}
               </MenuItem>
             ) : (

@@ -9,20 +9,21 @@ import { getFlickrImages } from '@services/flickr';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
-import CashActionsAlert from './CashActionsAlert';
 import ImageSlider from './ImageSlider';
 import InfoCard from './InfoCard';
+import LoadingSkeleton from './LoadingSkeleton';
 import ProjectChart from './ProjectCharts';
 import ProjectDetail from './ProjectDetail';
 import SummaryTracker from './SummaryTracker';
 import TitleCard from './TitleCard';
+import TokenActionAlert from './TokenActionAlert';
 
 const ProjectView = () => {
   const { getProjectByAddress, singleProject, refreshData, refresh } = useProjectContext();
   const { setContractAddress } = useAuthContext();
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked, isProjectApproved } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
-  const { loading, showLoading, hideLoading } = useLoading();
+  const { loading, hideLoading } = useLoading();
 
   const [flickImages, setFlickImages] = useState([]);
   const [chainData, setChainData] = useState({});
@@ -54,7 +55,6 @@ const ProjectView = () => {
   }, []);
 
   let getDataFromChain = useCallback(async () => {
-    showLoading('project-view');
     let tokenAllowance = await getTokenAllowance();
     let projectBalance = await getProjectBalance(contractAddress);
     const isLocked = await isProjectLocked();
@@ -87,22 +87,22 @@ const ProjectView = () => {
   }
 
   return (
-    <LoadingOverlay open={loading['project-view']}>
+    <LoadingOverlay skeleton={<LoadingSkeleton />} open={loading['project-view']}>
       <Grid container spacing={SPACING.GRID_SPACING}>
         <Grid item xs={12} md={8}>
           <Grid container spacing={SPACING.GRID_SPACING}>
             <Grid item xs={12} md={12}>
-              <ImageSlider list={flickImages} projectName={singleProject?.data?.name} />
+              <ImageSlider list={flickImages} projectName={singleProject?.name} />
               <InfoCard chainData={chainData} />
               <SummaryTracker />
-              <ProjectChart projectId={singleProject?.data?.id} />
+              <ProjectChart projectId={singleProject?.id} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <Grid container spacing={2}>
             <TitleCard refreshData={getDataFromChain} chainData={chainData} />
-            <CashActionsAlert projectId={singleProject?.data?.id} chainData={chainData} refreshData={refreshData} />
+            <TokenActionAlert projectId={singleProject?.id} chainData={chainData} refreshData={refreshData} />
             <Grid item xs={12} md={12}>
               <ProjectDetail chainData={chainData} />
             </Grid>

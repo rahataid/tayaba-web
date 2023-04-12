@@ -95,7 +95,6 @@ const CreateCampaign = () => {
       startTime: dayjs(singleCampaign?.startTime),
     };
 
-    console.log('singleModified', singleModified);
     reset(singleModified);
   }, [singleCampaign]);
 

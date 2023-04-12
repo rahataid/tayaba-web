@@ -9,7 +9,6 @@ BasicInfoCard.propTypes = {
 
 export default function BasicInfoCard({ chainData }) {
   const { singleBeneficiary } = useBeneficiaryContext();
-  console.log(singleBeneficiary);
   const { roles } = useAppAuthContext();
 
   return (

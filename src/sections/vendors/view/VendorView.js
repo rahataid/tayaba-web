@@ -9,8 +9,8 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useEffect } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import BasicInfoCard from './BasicInfoCard';
-import { MapView } from './maps';
 import TokenDetails from './TokenDetails';
+import { MapView } from './maps';
 
 const TRANSACTION_TABLE_HEADER_LIST = {
   timestamp: {
@@ -82,7 +82,6 @@ export default function VendorView() {
         contracts[CONTRACTS.CVAPROJECT],
         singleVendor?.walletAddress
       );
-      console.log(rows);
       const formatted = rows.map((tx) => ({
         ...tx,
         beneficiary: truncateEthAddress(tx.params.find((param) => param.name === 'beneficiary')?.value),

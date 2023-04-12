@@ -14,12 +14,9 @@ export const useRahatDonor = () => {
     donorContract,
     rahatTokenContract,
 
-    sendCashToProject: async (amount) => {
-      try {
-        await donorContract?.mintTokenAndApprove(contracts[CONTRACTS.RAHATTOKEN], contractAddress, amount);
-      } catch (error) {
-        handleContractError(error);
-      }
-    },
+    sendTokenToProject: (amount) =>
+      donorContract
+        ?.mintTokenAndApprove(contracts[CONTRACTS.RAHATTOKEN], contractAddress, amount)
+        .catch(handleContractError),
   };
 };

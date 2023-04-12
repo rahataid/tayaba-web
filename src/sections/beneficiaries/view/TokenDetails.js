@@ -67,14 +67,12 @@ export default function TokenDetails({ chainData }) {
       refreshData();
     });
   };
-  console.log(singleBeneficiary);
 
   useEffect(() => {
     getAllProjects();
   }, [getAllProjects]);
   const handleDelete = async () => {
     try {
-      console.log('Delete', singleBeneficiary?.data?.walletAddress);
       await BeneficiaryService.delete(singleBeneficiary?.data?.walletAddress);
       enqueueSnackbar('Beneficiary Deleted', {
         variant: 'success',

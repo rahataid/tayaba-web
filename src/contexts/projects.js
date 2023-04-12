@@ -75,8 +75,8 @@ export const ProjectProvider = ({ children }) => {
         : '-',
       createdAt: item?.created_at,
       balance: item?.budget - item?.disbursed,
-
       id: item?._id || item?.id,
+      status: item?.isApproved ? 'Approved' : 'Not Approved',
     }));
 
     setState((prevState) => ({
@@ -143,12 +143,14 @@ export const ProjectProvider = ({ children }) => {
     }
     const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
-      ...response.data,
+      ...response.data?.data,
       projectManagerName: response.data?.project_manager?.name
         ? `${response.data?.project_manager?.name?.first} ${response.data?.project_manager?.name?.last}`
         : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
+      status: response?.data?.data?.isApproved ? 'Approved' : 'Not Approved',
     };
+    console.log('formatted', formatted);
 
     setState((prev) => ({
       ...prev,
