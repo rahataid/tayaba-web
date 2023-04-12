@@ -1,11 +1,11 @@
-import { Box, Button, Checkbox, Chip, TablePagination, TableCell, TableRow } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useProjectContext } from '@contexts/projects';
-import ListTable from '@components/table/ListTable';
 import Iconify from '@components/iconify';
-import ListTableToolbar from './ListTableToolbar';
+import ListTable from '@components/table/ListTable';
+import { useProjectContext } from '@contexts/projects';
+import { Box, Button, Checkbox, Chip, TableCell, TablePagination, TableRow } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import ListTableToolbar from './ListTableToolbar';
 
 const TableContainer = () => {
   const {
@@ -13,17 +13,19 @@ const TableContainer = () => {
     push,
   } = useRouter();
 
-  const { beneficiaries, getBeneficiariesByProject } = useProjectContext();
+  const { beneficiaries, getBeneficiariesByProject, getProjectByAddress, singleProject } = useProjectContext();
   const [start, setStart] = useState(0);
   const [limit, setLimit] = useState(50);
   const [page, setPage] = useState(0);
   const [selectedBeneficiaries, setSelectedBeneficiaries] = useState([]);
   const { roles } = useAuthContext();
   const [isAllChecked, setIsAllChecked] = useState(false);
+  console.log(projectId);
+
   useEffect(() => {
     if (!projectId) return;
     getBeneficiariesByProject({
-      projectId,
+      contractAddress: projectId,
       start,
       limit,
     });
