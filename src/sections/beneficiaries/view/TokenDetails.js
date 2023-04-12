@@ -67,6 +67,7 @@ export default function TokenDetails({ chainData }) {
       refreshData();
     });
   };
+  console.log(singleBeneficiary);
 
   useEffect(() => {
     getAllProjects();
@@ -108,12 +109,11 @@ export default function TokenDetails({ chainData }) {
         beneficraryId={singleBeneficiary?.data?.id}
         refreshData={refreshData}
       />
-
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography>Claims Details</Typography>
-          {singleBeneficiary?.data?.beneficiary_project_details &&
-          singleBeneficiary?.data?.beneficiary_project_details.length === 0 ? (
+          {!singleBeneficiary.data?.beneficiary_project_details ||
+          singleBeneficiary?.data?.beneficiary_project_details?.length === 0 ? (
             <Button variant="outlined" onClick={handleAssignProject} size="small">
               Assign Project
             </Button>

@@ -31,6 +31,7 @@ const initialState = {
   updateUsingWalletAddress: () => {},
   getBeneficiaryById: () => {},
   getBeneficiaryTransactions: () => {},
+  assignProject: () => {},
 };
 
 const BeneficiaryContext = createContext(initialState);
@@ -126,7 +127,8 @@ export const BeneficiaryProvider = ({ children }) => {
 
   const addBeneficiary = (payload) => BeneficiaryService.addBeneficiary(payload);
 
-  const updateUsingWalletAddress = (walletAddress, data) => BeneficiaryService.updateUsingWalletAddress(walletAddress, data);
+  const updateUsingWalletAddress = (walletAddress, data) =>
+    BeneficiaryService.updateUsingWalletAddress(walletAddress, data);
 
   const getAllVillages = useCallback(async () => {
     const response = await BeneficiaryService.getVillagesList();
@@ -153,6 +155,10 @@ export const BeneficiaryProvider = ({ children }) => {
     }));
     return formatted;
   }, []);
+
+  const assignProject = (id, payload) => {
+    return BeneficiaryService.assignProject(id, payload);
+  };
 
   const getBeneficiaryTransactions = useCallback(async (contractAddress, benAddress) => {
     const response = await ChainCacheService.listTransactionByBeneficiary(contractAddress, benAddress);
@@ -183,6 +189,7 @@ export const BeneficiaryProvider = ({ children }) => {
     addBeneficiary,
     getAllProjects,
     updateUsingWalletAddress,
+    assignProject,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;
