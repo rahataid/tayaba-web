@@ -19,6 +19,7 @@ const FormSchema = Yup.object().shape({
 
 export default function EditForm() {
   const {
+    push,
     query: { beneficiaryId: walletAddress },
   } = useRouter();
 
@@ -81,6 +82,7 @@ export default function EditForm() {
     try {
       await updateUsingWalletAddress(walletAddress, beneficary);
       enqueueSnackbar('Updated Beneficary');
+      push(`/beneficiaries/${walletAddress}`);
     } catch (error) {
       console.log(error);
     }
@@ -183,10 +185,10 @@ export default function EditForm() {
             >
               {gender
                 ? Object.keys(gender).map((obj) => (
-                    <MenuItem value={gender[obj]} key={obj}>
-                      {obj}
-                    </MenuItem>
-                  ))
+                  <MenuItem value={gender[obj]} key={obj}>
+                    {obj}
+                  </MenuItem>
+                ))
                 : ''}
             </Select>
           </FormControl>

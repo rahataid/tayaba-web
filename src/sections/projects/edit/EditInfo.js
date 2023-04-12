@@ -7,12 +7,13 @@ import { RHFTextField } from '@components/hook-form';
 import FormProvider from '@components/hook-form/FormProvider';
 import { useProjectContext } from '@contexts/projects';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { ProjectService } from '@services/projects';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 const community = [];
 // ----------------------------------------------------------------------
 const FormSchema = Yup.object().shape({
@@ -27,6 +28,7 @@ const FormSchema = Yup.object().shape({
 
 export default function EditInfo() {
   const [formValues, setFormValues] = useState({});
+  const [loading, setLoading] = useState(false);
   const { getProjectByAddress, editData } = useProjectContext();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -36,6 +38,7 @@ export default function EditInfo() {
   } = useRouter();
 
   const handleEdit = async (data) => {
+    setLoading(true);
     const extrasKey = Object.keys(editData?.extras);
 
     const extras = {};
@@ -52,6 +55,7 @@ export default function EditInfo() {
     };
 
     await ProjectService.editProject(projectId, payload);
+    setLoading(false);
     enqueueSnackbar('Project Successfully edited');
     push(`/projects/${projectId}`);
   };
@@ -123,9 +127,9 @@ export default function EditInfo() {
         </Grid>
       </Grid>
       <Stack direction={'row'} paddingTop={2} spacing={2}>
-        <Button type="submit" variant={'outlined'}>
+        <LoadingButton loading={loading} type="submit" variant={'outlined'} >
           Edit
-        </Button>
+        </LoadingButton>
       </Stack>
     </FormProvider>
   );
