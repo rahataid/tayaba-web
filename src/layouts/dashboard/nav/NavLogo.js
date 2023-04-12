@@ -1,5 +1,5 @@
 // @mui
-import { Stack, Box } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +17,10 @@ export default function NavUnicefLogo() {
         bottom: 0,
       }}
     >
-      <Box component="img" src="/logo/tayaba-logo.png" />
+      <Typography variant="subtitle1" color="grey">
+        Rahat System
+      </Typography>
+      {/* <Box component="img" src="/logo/tayaba-logo.png" /> */}
     </Stack>
   );
 }
