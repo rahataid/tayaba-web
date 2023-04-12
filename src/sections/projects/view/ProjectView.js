@@ -20,7 +20,7 @@ import TitleCard from './TitleCard';
 const ProjectView = () => {
   const { getProjectByAddress, singleProject, refreshData, refresh } = useProjectContext();
   const { setContractAddress } = useAuthContext();
-  const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked } = useProject();
+  const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked, isProjectApproved } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
   const { loading, showLoading, hideLoading } = useLoading();
 
@@ -58,8 +58,9 @@ const ProjectView = () => {
     let tokenAllowance = await getTokenAllowance();
     let projectBalance = await getProjectBalance(contractAddress);
     const isLocked = await isProjectLocked();
+    const isApproved = await isProjectApproved();
     //TODO :trigger Inventory tracker data;
-    updateChainData({ tokenAllowance, projectBalance, isLocked });
+    updateChainData({ tokenAllowance, projectBalance, isLocked, isApproved });
     hideLoading('project-view');
   }, [h2oToken, refresh]);
 

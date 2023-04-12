@@ -106,6 +106,23 @@ export default function BasicInfoCard({ rahatChainData, ...other }) {
             />
           )}
         </Grid>
+        <Grid container direction="column" justifyContent="center" alignItems="flex-end">
+          {rahatChainData?.isApproved ? (
+            <Chip
+              label={`Approved `}
+              variant="outlined"
+              color="error"
+              icon={<Iconify icon={'material-symbols:lock-outline'} />}
+            />
+          ) : (
+            <Chip
+              label={`Not Approved`}
+              variant="outlined"
+              color="warning"
+              icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
+            />
+          )}
+        </Grid>
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">

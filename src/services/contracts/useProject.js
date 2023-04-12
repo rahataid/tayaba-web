@@ -11,6 +11,7 @@ export const useProject = () => {
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
+  console.log(communityContract);
 
   const { handleContractError } = useErrorHandler();
   return {
@@ -19,6 +20,7 @@ export const useProject = () => {
     h2oToken,
     communityContract,
     isProjectLocked: () => contract?.isLocked(),
+    isProjectApproved: () => communityContract?.isProject(contractAddress),
     approveProject: async () => {
       return communityContract.approveProject(contractAddress);
     },
