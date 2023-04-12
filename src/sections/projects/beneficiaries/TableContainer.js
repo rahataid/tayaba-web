@@ -31,8 +31,8 @@ const TableContainer = () => {
     });
   }, [projectId, start, limit]);
 
-  const handleView = (id) => () => {
-    push(`/beneficiaries/${id}`);
+  const handleView = (walletAddress) => () => {
+    push(`/beneficiaries/${walletAddress}`);
   };
   const removeAll = () => {
     const benList = beneficiaries.data.map((beneficiary) => beneficiary.walletAddress);
@@ -171,7 +171,7 @@ const TableContainer = () => {
 
               {!roles.isStakeholder && (
                 <TableCell align={tableHeadersList['action'].align}>
-                  <Button onClick={handleView(row.id)} variant="text">
+                  <Button onClick={handleView(row.walletAddress)} variant="text">
                     <Iconify icon="ic:outline-remove-red-eye" />
                   </Button>
                 </TableCell>
