@@ -53,18 +53,20 @@ const CampaignsListView = (props) => {
   const { push } = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [triggerringCampaign, setTriggeringCampaign] = useState(false);
+  const [triggerringCampaign, setTriggeringCampaign] = useState(null);
 
   const handleTriggerCampaign = (id) => async () => {
-    setTriggeringCampaign(true);
+    setTriggeringCampaign(id);
     try {
       await CommunicationService.triggerCampaign(id);
       enqueueSnackbar('Campaign triggered successfully', { variant: 'success' });
     } catch (error) {
-      enqueueSnackbar('Error triggering campaign', { variant: 'error' });
+      const message = error?.response?.data?.message || 'Error triggering campaign';
+      console.log('error', error);
+      enqueueSnackbar(message, { variant: 'error' });
       console.log(error);
     } finally {
-      setTriggeringCampaign(false);
+      setTriggeringCampaign(null);
     }
   };
 
@@ -89,7 +91,7 @@ const CampaignsListView = (props) => {
               <TableCell align={headers['actions'].align}>
                 <Stack direction={'row'}>
                   <LoadingButton
-                    loading={triggerringCampaign}
+                    loading={triggerringCampaign === row?.id}
                     startIcon={<Iconify icon="grommet-icons:trigger" />}
                     onClick={handleTriggerCampaign(row?.id)}
                   />

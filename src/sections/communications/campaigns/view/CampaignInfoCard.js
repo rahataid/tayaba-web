@@ -13,7 +13,7 @@ const CampaignInfoCard = ({ campaign }) => (
           <Typography variant="caption">Type</Typography>
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
-          <Typography variant="body1">{moment(campaign?.startTime).format('DD MMM, YYYY h:m a')}</Typography>
+          <Typography variant="body1">{moment(campaign?.startTime).format('DD MMM, YYYY hh:mm a')}</Typography>
           <Typography variant="caption">Start Time</Typography>
         </Grid>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
