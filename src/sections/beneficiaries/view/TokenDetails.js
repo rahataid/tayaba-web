@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import LoadingOverlay from '@components/LoadingOverlay';
+import WalletExplorerButton from '@components/button/WalletExplorerButton';
 import { SPACING } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import useDialog from '@hooks/useDialog';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 import useLoading from '@hooks/useLoading';
 import { Button, Card, CardContent, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
 import { BeneficiaryService } from '@services/beneficiaries';
@@ -24,7 +25,7 @@ export default function TokenDetails({ chainData }) {
   const { roles } = useAuthContext();
   const { activateBeneficiary } = useProject();
   const [showProjectAssign, setShowProjectAssign] = useState(false);
-
+  const { handleError } = useErrorHandler();
   const handleAssignProject = () => {
     setShowProjectAssign(true);
   };
@@ -55,6 +56,8 @@ export default function TokenDetails({ chainData }) {
       })
       .catch((err) => {
         hideDialog();
+        useErrorHandler;
+        handleError(err);
         hideLoading('assignClaim');
       });
   };

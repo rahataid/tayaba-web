@@ -1,4 +1,5 @@
 import LoadingOverlay from '@components/LoadingOverlay';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 import useLoading from '@hooks/useLoading';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -20,6 +21,7 @@ export default function AssignProjectModal({
 }) {
   const [project, setProject] = useState('');
   const { loading, showLoading, hideLoading } = useLoading();
+  const { handleError } = useErrorHandler();
   const handleChange = (e) => {
     setProject(e.target.value);
   };
@@ -29,7 +31,7 @@ export default function AssignProjectModal({
     try {
       await assignProject(beneficraryId, { projectId: project });
     } catch (error) {
-      console.log(error);
+      handleError(error);
     }
     hideLoading(loadingKey);
     handleClose();

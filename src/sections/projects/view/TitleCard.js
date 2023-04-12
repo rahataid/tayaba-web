@@ -21,6 +21,7 @@ const TitleCard = ({ chainData, refreshData }) => {
   const [loadingKey, setLoadingKey] = useState(null);
   const { throwError } = useErrorHandler();
 
+  const { handleContractError } = useErrorHandler();
   const {
     push,
     query: { projectId },
@@ -56,6 +57,7 @@ const TitleCard = ({ chainData, refreshData }) => {
       await lockProject(wallet.address);
     } catch (error) {
       console.log({ error });
+      handleContractError(error);
     }
     hideDialog();
     refreshData();
@@ -71,6 +73,7 @@ const TitleCard = ({ chainData, refreshData }) => {
       hideLoading('projectAction');
       hideDialog();
       throwError('cannot unlock Project');
+      handleContractError(error);
     }
     hideDialog();
     refreshData();
@@ -91,9 +94,13 @@ const TitleCard = ({ chainData, refreshData }) => {
   const CashActions = {
     async sendCashToProject(amount) {
       showLoading('project-view');
-      await sendCashToProject(amount);
+      try {
+        await sendCashToProject(amount);
+        enqueueSnackbar('Added Budget to Project');
+      } catch (err) {
+        handleContractError(error);
+      }
       hideLoading('project-view');
-      enqueueSnackbar('Added Budget to Project');
       handleMenuItemClose();
     },
   };

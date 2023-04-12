@@ -21,6 +21,7 @@ export default function CashActionsAlert({ projectId, chainData }) {
   const CashActions = {
     async acceptCash() {
       showLoading('project-view');
+
       await acceptToken(chainData.tokenAllowance);
       setShowAlert(false);
       hideLoading('project-view');
