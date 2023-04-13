@@ -32,7 +32,6 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-<<<<<<< HEAD
   getProjectsList: () => {},
   getProjectById: () => {},
   getProjectByAddress: () => {},
@@ -50,24 +49,6 @@ const initialState = {
   getContracts: () => {},
   editProject: () => {},
   bulkAddBeneficiary: () => {},
-=======
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getProjectByAddress: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
-  setFilter: () => { },
-  getProjectsTypesList: () => { },
-  getGithubProjectTypes: () => { },
-  getFormFields: () => { },
-  addProject: () => { },
-  getContracts: () => { },
-  editProject: () => { },
->>>>>>> development
 };
 
 const ProjectsContext = createContext(initialState);
@@ -177,8 +158,12 @@ export const ProjectProvider = ({ children }) => {
       ...prev,
       singleProject: formatted,
       editData: {
-        name, location, description, startDate: dayjs(response?.data?.data?.startDate),
-        endDate: dayjs(response?.data?.data?.endDate), extras
+        name,
+        location,
+        description,
+        startDate: dayjs(response?.data?.data?.startDate),
+        endDate: dayjs(response?.data?.data?.endDate),
+        extras,
       },
     }));
 
