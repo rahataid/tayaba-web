@@ -97,7 +97,6 @@ export const ProjectProvider = ({ children }) => {
   }, []);
 
   const getFormFields = useCallback(async (projectType) => {
-    console.log({ projectType });
     const formFields = await fetchApiFormFields(projectType);
     setState((prev) => ({
       ...prev,
@@ -151,7 +150,6 @@ export const ProjectProvider = ({ children }) => {
       projectCreatedAt: response.data?.project_manager?.created_at,
       status: response?.data?.data?.isApproved ? 'Approved' : 'Not Approved',
     };
-    console.log('formatted', formatted);
 
     setState((prev) => ({
       ...prev,
@@ -165,7 +163,6 @@ export const ProjectProvider = ({ children }) => {
   const addProject = (data) => ProjectService.addProject(data);
 
   const editProject = (data) => {
-    console.log('editProject');
     return ProjectService.editProject(data);
   };
 
