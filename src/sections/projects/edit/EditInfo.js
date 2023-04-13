@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 // form
 // @mui
-import { Card, Grid, Stack, TextField } from '@mui/material';
+import { Card, Grid, Stack, TextField, Typography } from '@mui/material';
 // components
 import { RHFTextField } from '@components/hook-form';
 import FormProvider from '@components/hook-form/FormProvider';
@@ -59,15 +59,22 @@ export default function EditInfo() {
     };
 
     await ProjectService.editProject(projectId, payload);
+    if (!isValid) {
+      setError('afterSubmit', {
+        message: 'There are some validation errors. Please fix that before proceeding.'
+      })
+    }
     setLoading(false);
     enqueueSnackbar('Project Successfully edited');
     push(`/projects/${projectId}`);
   };
 
   const handleError = async (error) => {
-    enqueueSnackbar('Something went wrong!', {
-      variant: 'error',
-    });
+    if (!isValid) {
+      setError('afterSubmit', {
+        message: 'There are some validation errors. Please fix that before proceeding.'
+      })
+    }
   };
 
   const methods = useForm({
@@ -77,7 +84,13 @@ export default function EditInfo() {
     value: formValues,
   });
 
-  const { handleSubmit, reset, control } = methods;
+  const { handleSubmit,
+    reset, control,
+    setError,
+    formState: {
+      errors, isSubmitting, isValid
+    }
+  } = methods;
 
   useEffect(() => {
     if (!editData) return;
@@ -112,14 +125,20 @@ export default function EditInfo() {
                           name={key}
                           control={control}
                           render={({ field, fieldState: { error } }) => (
-                            <DatePicker
-                              {...field}
-                              label={key.charAt(0).toUpperCase() + key.slice(1)}
-                              inputFormat="MM/DD/YYYY"
-                              renderInput={(params) => (
-                                <TextField fullWidth {...params} error={!!error} helperText={error?.message} />
-                              )}
-                            />
+                            <Stack direction="column">
+
+                              <DatePicker
+                                {...field}
+                                label={key.charAt(0).toUpperCase() + key.slice(1)}
+                                inputFormat="MM/DD/YYYY"
+                                renderInput={(params) => (
+                                  <TextField fullWidth {...params} error={!!error} helperText={error?.message} />
+                                )}
+                              />
+                              <Typography color="error" variant={'caption'}>
+                                {error?.message}
+                              </Typography>
+                            </Stack>
                           )}
                         />
                       </LocalizationProvider>

@@ -62,7 +62,11 @@ export default function Stepper() {
     values: defaultValues[step],
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit,
+    setError,
+    formState: {
+      errors, isSubmitting, isValid
+    } } = methods;
 
   useEffect(() => {
     if (!defaultValues[0]?.projectType) return;
@@ -76,6 +80,11 @@ export default function Stepper() {
       component: <BasicInformation methods={methods} />,
       async handleNext(data) {
         setDefaultValues({ ...defaultValues, [step]: data });
+        if (!isValid) {
+          setError('afterSubmit', {
+            message: 'There are some validation errors. Please fix that before proceeding.'
+          })
+        }
         try {
           const { estimatedCost, hasEnoughBalance, costInEthers } = await estimateGas(byteCode);
 
@@ -88,6 +97,7 @@ export default function Stepper() {
           if (costEstimation?.hasEnoughBalance) {
             handleIncreaseStep();
           }
+
         } catch (error) {
           console.log('error', error);
           showError('Error estimating gas fee');
@@ -161,6 +171,9 @@ export default function Stepper() {
         <Typography variant={'subtitle1'} mt={2} mb={2}>
           {stepObj[step].title}
         </Typography>
+
+        <Stack m={2}>{!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}</Stack>
+
         <Box>{stepObj[step].component}</Box>
         <Stack direction={'row'} paddingTop={2} spacing={2}>
           {step !== 0 && (

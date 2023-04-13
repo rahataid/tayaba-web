@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { Grid, Stack, TextField } from '@mui/material';
+import { Grid, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 // components
@@ -12,7 +12,9 @@ import { RHFTextField } from '@components/hook-form';
 import GithubProjectType from './GithubProjectType';
 
 const BasicInformation = ({ methods }) => {
-  const { control } = methods;
+  const { control, formState: {
+    errors, isSubmitting, isValid
+  } } = methods;
 
   return (
     <Grid container spacing={3}>
@@ -45,28 +47,42 @@ const BasicInformation = ({ methods }) => {
                 name="startDate"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                  <DatePicker
-                    {...field}
-                    label="Start date"
-                    inputFormat="MM/DD/YYYY"
-                    renderInput={(params) => (
-                      <TextField fullWidth {...params} error={!!error} helperText={error?.message} />
-                    )}
-                  />
+                  <Stack direction="column">
+
+                    <DatePicker
+                      {...field}
+                      label="Start date"
+                      inputFormat="MM/DD/YYYY"
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} error={error?.message} helperText={error?.message} />
+                      )}
+
+                    />
+                    <Typography color="error" variant={'caption'}>
+                      {error?.message}
+                    </Typography>
+                  </Stack>
                 )}
               />
               <Controller
                 name="endDate"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                  <DatePicker
-                    {...field}
-                    label="End date"
-                    inputFormat="MM/DD/YYYY"
-                    renderInput={(params) => (
-                      <TextField fullWidth {...params} error={!!error} helperText={error?.message} />
-                    )}
-                  />
+                  <Stack direction="column">
+
+                    <DatePicker
+                      {...field}
+                      label="End date"
+                      inputFormat="MM/DD/YYYY"
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} error={error?.message} helperText={error?.message} />
+                      )}
+
+                    />
+                    <Typography color="error" variant={'caption'}>
+                      {error?.message}
+                    </Typography>
+                  </Stack>
                 )}
               />
             </Stack>
