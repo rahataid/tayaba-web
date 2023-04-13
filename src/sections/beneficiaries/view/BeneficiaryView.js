@@ -1,4 +1,3 @@
-import LoadingOverlay from '@components/LoadingOverlay';
 import { CONTRACTS } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { useErrorHandler } from '@hooks/useErrorHandler';
@@ -53,6 +52,7 @@ export default function BeneficiaryView() {
   const {
     query: { beneficiaryId },
   } = useRouter();
+  const { handleContractError, handleError } = useErrorHandler();
 
   const [chainData, setChainData] = useState({
     isBenActive: null,
@@ -61,47 +61,56 @@ export default function BeneficiaryView() {
 
   useEffect(() => {
     getBeneficiaryByWalletAddress(beneficiaryId);
+    getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], beneficiaryId).catch(handleError);
   }, [beneficiaryId]);
 
-  const init = useCallback(async () => {
-    if (!beneficiaryId) return;
-    const _benData = await getBeneficiaryById(beneficiaryId);
-    await getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], beneficiaryId);
-    //getBeneficiaryClaimLogs(_benData?.phone);
-    if (!_benData?.phone) return;
-    // const _chainData = await beneficiaryBalance(_benData?.phone);
-    // setChainData(_chainData);
-  }, [beneficiaryId, refresh]);
-  const { handleError } = useErrorHandler();
+  // const init = useCallback(async () => {
+  //   if (!beneficiaryId) return;
+  //   const _benData = await getBeneficiaryByWalletAddress(beneficiaryId);
+
+  //   // getBeneficiaryClaimLogs(_benData?.phone);
+  //   if (!_benData?.phone) return;
+  //   const _chainData = await beneficiaryBalance(_benData?.phone);
+  //   console.log('_chainData', _chainData);
+  //   setChainData(_chainData);
+  // }, [beneficiaryId, refresh]);
+
+  // useEffect(() => {
+  //   init();
+  // }, []);
 
   const fetchChainData = useCallback(async () => {
     if (!communityContract) return;
     if (!singleBeneficiary) return;
-
-    try {
-      const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
-      const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
-      setChainData((prev) => ({ ...prev, isBenActive, balance }));
-    } catch (error) {
-      handleError(error);
-      console.log(error);
-    }
+    checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress)
+      .then((isActive) => {
+        console.log('isActive', isActive);
+        if (isActive) {
+          beneficiaryBalance(singleBeneficiary?.data?.walletAddress)
+            .then((balance) => {
+              console.log('balance', balance);
+              setChainData((prev) => ({ ...prev, isBenActive: isActive, balance }));
+            })
+            .catch(handleContractError);
+        }
+      })
+      .catch(handleContractError);
   }, [communityContract, singleBeneficiary, refresh]);
 
   useEffect(() => {
     fetchChainData();
   }, [fetchChainData, refresh, communityContract]);
 
-  useEffect(() => {
-    init();
-  }, [init]);
+  // useEffect(() => {
+  //   init();
+  // }, [init]);
 
   const TokenDetailsProps = {
     chainData,
   };
 
   return (
-    <LoadingOverlay>
+    <>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <BasicInfoCard chainData={chainData} />
@@ -118,6 +127,6 @@ export default function BeneficiaryView() {
       <Stack sx={{ mt: 1 }}>
         <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction} />
       </Stack>
-    </LoadingOverlay>
+    </>
   );
 }

@@ -26,7 +26,7 @@ export default function AssignProjectModal({
     setProject(e.target.value);
   };
 
-  const handleAssign = async (e) => {
+  const handleAssign = async () => {
     showLoading(loadingKey);
     try {
       await assignProject(beneficraryId, { projectId: project });
@@ -56,7 +56,9 @@ export default function AssignProjectModal({
                 onChange={handleChange}
               >
                 {projects?.map((el) => (
-                  <MenuItem value={el.value}>{el.label}</MenuItem>
+                  <MenuItem key={el.value} value={el.value}>
+                    {el.label}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
