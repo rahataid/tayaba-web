@@ -48,6 +48,7 @@ export const PATH_PROJECTS = {
   addProject: path(ROOTS_PROJECTS, '/add'),
   editroject: path(ROOTS_PROJECTS, '/edit'),
   addBeneficary: path(ROOTS_BENEFICIARY, '/add'),
+  bulkAddBeneficiary: path(ROOTS_PROJECTS, '/[id]/beneficiaries/bulk-add'),
 };
 
 export const PATH_CASH_TRACKER = {
@@ -63,7 +64,6 @@ export const PATH_BENEFICIARY = {
   root: ROOTS_BENEFICIARY,
   list: path(ROOTS_BENEFICIARY),
   editBeneficiary: path(ROOTS_BENEFICIARY, '/edit'),
-
 };
 
 export const PATH_VENDORS = {

@@ -22,21 +22,21 @@ const TableContainer = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   useEffect(() => {
-    if (!projectId) return;
     getBeneficiariesByProject({
-      contractAddress: projectId,
       start,
       limit,
     });
-  }, [projectId, start, limit]);
+  }, [start, limit]);
 
   const handleView = (walletAddress) => () => {
     push(`/beneficiaries/${walletAddress}`);
   };
+
   const removeAll = () => {
     const benList = beneficiaries.data.map((beneficiary) => beneficiary.walletAddress);
     setSelectedBeneficiaries(selectedBeneficiaries.filter((x) => !benList.includes(x)));
   };
+
   const handlePagination = (event, page) => {
     let start = page * beneficiaries.limit;
     setStart(start);
@@ -71,7 +71,7 @@ const TableContainer = () => {
             if (checked) {
               setSelectedBeneficiaries([
                 ...selectedBeneficiaries,
-                ...beneficiaries.data.map((beneficiary) => beneficiary.walletAddress),
+                ...beneficiaries.data.map((beneficiary) => beneficiary.id),
               ]);
             } else {
               removeAll();
@@ -139,15 +139,13 @@ const TableContainer = () => {
             <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['select'].align}>
                 <Checkbox
-                  checked={selectedBeneficiaries.includes(row.walletAddress)}
+                  checked={selectedBeneficiaries.includes(row.id)}
                   onChange={(e) => {
                     const { checked } = e.target;
                     if (checked) {
-                      setSelectedBeneficiaries([...selectedBeneficiaries, row.walletAddress]);
+                      setSelectedBeneficiaries([...selectedBeneficiaries, row.id]);
                     } else {
-                      setSelectedBeneficiaries(
-                        selectedBeneficiaries.filter((beneficiary) => beneficiary !== row.walletAddress)
-                      );
+                      setSelectedBeneficiaries(selectedBeneficiaries.filter((beneficiary) => beneficiary !== row.id));
                     }
                   }}
                 />

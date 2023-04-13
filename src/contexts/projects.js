@@ -32,22 +32,23 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getProjectByAddress: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
-  setFilter: () => { },
-  getProjectsTypesList: () => { },
-  getGithubProjectTypes: () => { },
-  getFormFields: () => { },
-  addProject: () => { },
-  getContracts: () => { },
-  editProject: () => { },
+  getProjectsList: () => {},
+  getProjectById: () => {},
+  getProjectByAddress: () => {},
+  getBeneficiariesByProject: () => {},
+  getVendorsByProject: () => {},
+  refreshData: () => {},
+  setRahatResponseStatus: () => {},
+  getChartData: () => {},
+  getBeneficiariesByvillage: () => {},
+  setFilter: () => {},
+  getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
+  getFormFields: () => {},
+  addProject: () => {},
+  getContracts: () => {},
+  editProject: () => {},
+  bulkAddBeneficiary: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -97,7 +98,6 @@ export const ProjectProvider = ({ children }) => {
   }, []);
 
   const getFormFields = useCallback(async (projectType) => {
-    console.log({ projectType });
     const formFields = await fetchApiFormFields(projectType);
     setState((prev) => ({
       ...prev,
@@ -153,14 +153,17 @@ export const ProjectProvider = ({ children }) => {
       // startDate: dayjs(response?.data?.data?.startDate),
       // endDate: dayjs(response?.data?.data?.endDate)
     };
-    console.log('formatted', formatted);
 
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
       editData: {
-        name, location, description, startDate: dayjs(response?.data?.data?.startDate),
-        endDate: dayjs(response?.data?.data?.endDate), extras
+        name,
+        location,
+        description,
+        startDate: dayjs(response?.data?.data?.startDate),
+        endDate: dayjs(response?.data?.data?.endDate),
+        extras,
       },
     }));
 
@@ -170,7 +173,6 @@ export const ProjectProvider = ({ children }) => {
   const addProject = (data) => ProjectService.addProject(data);
 
   const editProject = (data) => {
-    console.log('editProject');
     return ProjectService.editProject(data);
   };
 
@@ -266,6 +268,10 @@ export const ProjectProvider = ({ children }) => {
     }));
   }, []);
 
+  const bulkAddBeneficiary = (payload) => {
+    return ProjectService.bulkAddBeneficiary(payload);
+  };
+
   const contextValue = {
     ...state,
     refreshData,
@@ -284,6 +290,7 @@ export const ProjectProvider = ({ children }) => {
     getContracts,
     getProjectByAddress,
     editProject,
+    bulkAddBeneficiary,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
