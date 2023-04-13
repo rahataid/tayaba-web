@@ -8,6 +8,10 @@ export const ProjectService = {
     });
   },
 
+  bulkAddBeneficiary(data) {
+    return clientApi.post(`/beneficiaries/project/bulkadd`, data);
+  },
+
   getProjectsTypesList(params) {
     return clientApi.get('/projectsTypes', {
       params,
@@ -15,11 +19,11 @@ export const ProjectService = {
   },
 
   editProject(id, data) {
-    return clientApi.patch(`/projects/update?contractAddress=${id}`, data)
+    return clientApi.patch(`/projects/update?contractAddress=${id}`, data);
   },
 
   delete(id) {
-    return clientApi.patch(`/projects/${id}/delete`)
+    return clientApi.patch(`/projects/${id}/delete`);
   },
 
   getProjectById(id) {
