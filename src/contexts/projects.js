@@ -47,6 +47,7 @@ const initialState = {
   addProject: () => {},
   getContracts: () => {},
   editProject: () => {},
+  bulkAddBeneficiary: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -260,6 +261,10 @@ export const ProjectProvider = ({ children }) => {
     }));
   }, []);
 
+  const bulkAddBeneficiary = (payload) => {
+    return ProjectService.bulkAddBeneficiary(payload);
+  };
+
   const contextValue = {
     ...state,
     refreshData,
@@ -278,6 +283,7 @@ export const ProjectProvider = ({ children }) => {
     getContracts,
     getProjectByAddress,
     editProject,
+    bulkAddBeneficiary,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;
