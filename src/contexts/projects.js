@@ -1,5 +1,6 @@
 import { ProjectService } from '@services';
 import { fetchApiFormFields, fetchContract, getFolders } from '@services/github';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useState } from 'react';
 
@@ -31,6 +32,7 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
+<<<<<<< HEAD
   getProjectsList: () => {},
   getProjectById: () => {},
   getProjectByAddress: () => {},
@@ -48,6 +50,24 @@ const initialState = {
   getContracts: () => {},
   editProject: () => {},
   bulkAddBeneficiary: () => {},
+=======
+  getProjectsList: () => { },
+  getProjectById: () => { },
+  getProjectByAddress: () => { },
+  getBeneficiariesByProject: () => { },
+  getVendorsByProject: () => { },
+  refreshData: () => { },
+  setRahatResponseStatus: () => { },
+  getChartData: () => { },
+  getBeneficiariesByvillage: () => { },
+  setFilter: () => { },
+  getProjectsTypesList: () => { },
+  getGithubProjectTypes: () => { },
+  getFormFields: () => { },
+  addProject: () => { },
+  getContracts: () => { },
+  editProject: () => { },
+>>>>>>> development
 };
 
 const ProjectsContext = createContext(initialState);
@@ -149,12 +169,17 @@ export const ProjectProvider = ({ children }) => {
         : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
       status: response?.data?.data?.isApproved ? 'Approved' : 'Not Approved',
+      // startDate: dayjs(response?.data?.data?.startDate),
+      // endDate: dayjs(response?.data?.data?.endDate)
     };
 
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
-      editData: { name, location, description, startDate, endDate, extras },
+      editData: {
+        name, location, description, startDate: dayjs(response?.data?.data?.startDate),
+        endDate: dayjs(response?.data?.data?.endDate), extras
+      },
     }));
 
     return formatted;

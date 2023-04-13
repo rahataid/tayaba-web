@@ -1,18 +1,22 @@
 import * as Yup from 'yup';
 // form
 // @mui
-import { Card, Grid, Stack } from '@mui/material';
+import { Card, Grid, Stack, TextField } from '@mui/material';
 // components
 import { RHFTextField } from '@components/hook-form';
 import FormProvider from '@components/hook-form/FormProvider';
 import { useProjectContext } from '@contexts/projects';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
+import { DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ProjectService } from '@services/projects';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+
 
 const community = [];
 // ----------------------------------------------------------------------
@@ -73,7 +77,7 @@ export default function EditInfo() {
     value: formValues,
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, control } = methods;
 
   useEffect(() => {
     if (!editData) return;
@@ -91,6 +95,7 @@ export default function EditInfo() {
     getProjectByAddress(projectId);
   }, [getProjectByAddress, projectId]);
 
+
   return (
     <FormProvider methods={methods} value={formValues} onSubmit={handleSubmit(handleEdit, handleError)}>
       <Grid container spacing={3}>
@@ -99,9 +104,25 @@ export default function EditInfo() {
             <Stack spacing={3} padding={6}>
               <Grid container spacing={5}>
                 {Object.entries(formValues).map(([key, value]) =>
-                  value instanceof Date ? (
+                  // TODO:find a better solution
+                  key === 'startDate' || key === 'endDate' ? (
                     <Grid key={key + value} item xs={12} md={3}>
-                      <RHFTextField id={key} name={key} label={key.charAt(0).toUpperCase() + key.slice(1)} />
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <Controller
+                          name={key}
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <DatePicker
+                              {...field}
+                              label={key.charAt(0).toUpperCase() + key.slice(1)}
+                              inputFormat="MM/DD/YYYY"
+                              renderInput={(params) => (
+                                <TextField fullWidth {...params} error={!!error} helperText={error?.message} />
+                              )}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
                     </Grid>
                   ) : (
                     <Grid key={key + value} item xs={12} md={6}>

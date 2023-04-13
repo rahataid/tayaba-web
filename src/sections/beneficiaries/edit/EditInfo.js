@@ -1,7 +1,8 @@
 import { gender } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useCallback, useEffect, useState } from 'react';
@@ -18,6 +19,8 @@ const FormSchema = Yup.object().shape({
 });
 
 export default function EditForm() {
+  const [loading, setLoading] = useState(false);
+
   const {
     push,
     query: { beneficiaryId: walletAddress },
@@ -80,8 +83,10 @@ export default function EditForm() {
 
   const handleSubmitFunction = async () => {
     try {
+      setLoading(true);
       await updateUsingWalletAddress(walletAddress, beneficary);
       enqueueSnackbar('Updated Beneficary');
+      setLoading(false);
       push(`/beneficiaries/${walletAddress}`);
     } catch (error) {
       console.log(error);
@@ -195,9 +200,9 @@ export default function EditForm() {
         </Grid>
       </Grid>
       <Grid item xs={12} md={6} padding={2} spacing={1}>
-        <Button variant="outlined" type="submit" onClick={handleSubmitFunction}>
-          Update{' '}
-        </Button>
+        <LoadingButton loading={loading} variant="outlined" type="submit" onClick={handleSubmitFunction}>
+          Update
+        </LoadingButton>
       </Grid>
     </Box>
   );

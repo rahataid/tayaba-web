@@ -121,67 +121,85 @@ const useWalletConnection = () => {
     }
   };
 
-  useEffect(() => {
+  const showErrorMessage = useCallback(() => {
     if (!error) return;
-    const msg = error?.message || 'Wallet connection error';
-    console.log('msg', msg);
+    let msg = error?.message || 'Wallet connection error';
+    const code = error?.code || 0;
+    const errors = {
+      '-32002': {
+        message: 'Please connect to the correct network',
+      },
+    };
+    if (code && errors[code]) {
+      msg = errors[code].message;
+    }
+
     showError(msg);
 
     console.log('error', error);
   }, [error]);
 
   useEffect(() => {
+    showErrorMessage();
+  }, [showErrorMessage]);
+
+  useEffect(() => {
     connectWalletOnPageLoad().catch((err) => setError(err.message));
   }, [walletType, isWalletConnected]);
 
-  useEffect(() => {
-    if (library) {
-      const check = async () => {
-        const parsedChainId = parseInt(chainId);
-        if (!isNaN(parsedChainId) && Number(walletChainId) !== parsedChainId) {
-          const chainIdHex = '0x' + parsedChainId.toString(16);
-          try {
-            await library.provider.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: chainIdHex }],
-            });
-            setWeb3Provider(library);
-          } catch (error) {
-            try {
-              await library.provider.request({
-                method: 'wallet_addEthereumChain',
-                params: [
-                  {
-                    chainId: chainIdHex,
-                    chainName: 'Local Ganache',
-                    nativeCurrency: {
-                      name: 'ETH',
-                      symbol: 'ETH',
-                      decimals: 18,
-                    },
-                    rpcUrls: ['http://localhost:8545/'],
-                    blockExplorerUrls: ['https://example.com/'],
-                  },
-                ],
-              });
-              setWeb3Provider(library);
-            } catch (error) {
-              console.log({ error });
-            }
-          }
-        } else {
-          setWeb3Provider(library.provider);
+  const switchNetwork = useCallback(async () => {
+    const parsedChainId = parseInt(chainId);
+    if (!isNaN(parsedChainId) && Number(walletChainId) !== parsedChainId) {
+      const chainIdHex = '0x' + parsedChainId.toString(16);
+      try {
+        await library.provider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: chainIdHex }],
+        });
+        setWeb3Provider(library);
+        return;
+      } catch (error) {
+        try {
+          await library.provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: chainIdHex,
+                chainName: 'Local Ganache',
+                nativeCurrency: {
+                  name: 'ETH',
+                  symbol: 'ETH',
+                  decimals: 18,
+                },
+                rpcUrls: ['http://localhost:8545/'],
+                blockExplorerUrls: ['https://example.com/'],
+              },
+            ],
+          });
+          setWeb3Provider(library);
+          return;
+        } catch (error) {
+          setError(error);
+          console.log({ error });
         }
-      };
-      check();
+      }
     }
-  }, [library, chainId, walletChainId]);
+  }, [library, chainId]);
+
+  useEffect(() => {
+    // console if network changes
+    if (library && active) {
+      library.on('chainChanged', (chainId) => {
+        console.log('chainChangedTHis is ', chainId);
+      });
+    }
+  }, [library, active]);
 
   return {
     walletBalance,
     walletType,
     account,
-    chainId,
+    expectedChainId: chainId,
     error,
     networkId: walletChainId,
     connectWalletOnPageLoad,
@@ -192,6 +210,7 @@ const useWalletConnection = () => {
     web3Provider,
     library,
     estimateGas,
+    switchNetwork,
   };
 };
 
