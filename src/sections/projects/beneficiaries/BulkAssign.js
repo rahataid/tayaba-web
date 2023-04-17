@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import Iconify from '@components/iconify';
+import { NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY, BULK_ASSIGN_CHUNK_SIZE } from '@config';
+import { useProjectContext } from '@contexts/projects';
+import { useErrorHandler } from '@hooks/useErrorHandler';
+import { LoadingButton } from '@mui/lab';
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -8,19 +12,14 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack,
   TextField,
   Typography,
-  Stack,
-  Alert,
 } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { useProjectContext } from '@contexts/projects';
-import { useRouter } from 'next/router';
-import { NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY } from '@config';
 import { useProject } from '@services/contracts/useProject';
-import Iconify from '@components/iconify';
-import { useErrorHandler } from '@hooks/useErrorHandler';
-import { BeneficiaryService } from '@services/beneficiaries';
+import { splitArrayToChunks } from '@utils/arrays';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const activationCode = {
   activating: 'Activating',
@@ -81,7 +80,6 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
       }
 
       const activated = await bulkActivateBeneficiaries(unassignedSelectedBeneficiaries);
-
       if (activated.status) {
         // const activatedAddresses = activated.logs.map((log) => log.address);
         // const updateActiveStatus = selectedBeneficiaries.map(async (address) => {
@@ -91,23 +89,32 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
 
         // await Promise.all(updateActiveStatus);
 
-        setActivationStatus(activationCode.assigning);
+        const beneficiariesGroups = splitArrayToChunks(unassignedSelectedBeneficiaries, BULK_ASSIGN_CHUNK_SIZE);
+        for (let chunkGroups of beneficiariesGroups) {
+          setActivationStatus(activationCode.assigning);
+          try {
+            let assigned = await bulkAssignBeneficiaries(chunkGroups, numberOfTokens);
 
-        const assigned = await bulkAssignBeneficiaries(unassignedSelectedBeneficiaries, numberOfTokens);
-        if (assigned.status) {
-          // const updateAssignedStatus = selectedBeneficiaries.map(async (address) => {
-          //   const update = await BeneficiaryService.updateUsingWalletAddress(address, {
-          //     tokensAssigned: numberOfTokens,
-          //   });
-          //   return update;
-          // });
+            if (assigned.status) {
+              // const updateAssignedStatus = selectedBeneficiaries.map(async (address) => {
+              //   const update = await BeneficiaryService.updateUsingWalletAddress(address, {
+              //     tokensAssigned: numberOfTokens,
+              //   });
+              //   return update;
+              // });
 
-          // await Promise.all(updateAssignedStatus);
+              // await Promise.all(updateAssignedStatus);
 
-          setActivationStatus(activationCode.assigned);
-          setOpenDialog(false);
-        } else {
-          setActivationStatus(activationCode.activated);
+              setActivationStatus(activationCode.assigned);
+              setOpenDialog(false);
+            } else {
+              setActivationStatus(activationCode.activated);
+            }
+          } catch (error) {
+            setActivationStatus('');
+            console.log(error);
+            setOpenDialog(false);
+          }
         }
       } else {
         setActivationStatus('');
