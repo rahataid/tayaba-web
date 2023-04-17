@@ -106,7 +106,6 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
               // await Promise.all(updateAssignedStatus);
 
               setActivationStatus(activationCode.assigned);
-              setOpenDialog(false);
             } else {
               setActivationStatus(activationCode.activated);
             }
@@ -115,6 +114,7 @@ const BulkAssign = ({ selectedBeneficiaries }) => {
             console.log(error);
             setOpenDialog(false);
           }
+          setOpenDialog(false);
         }
       } else {
         setActivationStatus('');
