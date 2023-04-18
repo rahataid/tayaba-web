@@ -221,7 +221,7 @@ const TitleCard = ({ chainData, refreshData }) => {
           <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
             <ActionMenu
               menuItems={memberListItems}
-              actionTitle="Member Lists"
+              actionTitle="Associates Lists"
               handleClose={handleMenuItemClose}
               anchorEl={memberAnchorEl}
               setAnchorEl={setMemberAnchorEl}
