@@ -1,6 +1,4 @@
-import { BLOCKCHAIN_EXPLORER } from '@config';
 import { Box, Button, Card, Chip, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import truncateEthAddress from '@utils/truncateEthAddress';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import TableHeadCustom from './TableHeadCustom';
@@ -52,7 +50,7 @@ export default function ListTable({
           const tableKeyId = head[headerKey].id
 
           return (
-            <TableCell align={head[headerKey]?.align} component="th" scope="row" key={tableKeyId}>
+            <TableCell align={head[headerKey]?.align} component="th" scope="row" key={`${tableKeyId}-${i}`}>
               {listItem[tableKeyId] ? conditionalRendering(listItem[tableKeyId], tableKeyId) : '-'}
             </TableCell>
           );

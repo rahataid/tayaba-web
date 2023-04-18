@@ -88,8 +88,8 @@ const TableContainer = () => {
         errorMessage={errorMessage}
       >
         {(rows, tableHeadersList) =>
-          rows.map((row) => (
-            <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          rows.map((row, i) => (
+            <TableRow key={`${row?.id}-${i}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{roles.isStakeholder ? 'XXXX' : row.name}</TableCell>
 
               <TableCell align={tableHeadersList['cnicNumber'].align}>
