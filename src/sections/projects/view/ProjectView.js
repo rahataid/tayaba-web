@@ -24,10 +24,8 @@ const ProjectView = () => {
   const { getTokenAllowance, getProjectBalance, h2oToken, isProjectLocked, isProjectApproved } = useProject();
   const { contractWS: RahatTokenWS } = useRahatToken();
   const { loading, hideLoading } = useLoading();
-
   const [flickImages, setFlickImages] = useState([]);
   const [chainData, setChainData] = useState({});
-
   const {
     query: { projectId: contractAddress },
     push,

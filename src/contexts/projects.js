@@ -165,6 +165,7 @@ export const ProjectProvider = ({ children }) => {
         endDate: dayjs(response?.data?.data?.endDate),
         extras,
       },
+      vendors: formatted.vendor_details,
     }));
 
     return formatted;
@@ -210,17 +211,17 @@ export const ProjectProvider = ({ children }) => {
     [state.filter]
   );
 
-  const getVendorsByProject = useCallback(async (projectId) => {
-    const response = await ProjectService.getVendorsByProject(projectId.toString());
+  // const getVendorsByProject = useCallback(async (projectId) => {
+  //   const response = await ProjectService.getVendorsByProject(projectId.toString());
 
-    const formatted = response.data.data;
+  //   const formatted = response.data.data;
 
-    setState((prev) => ({
-      ...prev,
-      vendors: formatted,
-    }));
-    return formatted;
-  }, []);
+  //   setState((prev) => ({
+  //     ...prev,
+  //     vendors: formatted,
+  //   }));
+  //   return formatted;
+  // }, []);
 
   const getChartData = useCallback(async (params, query) => {
     try {
@@ -279,7 +280,6 @@ export const ProjectProvider = ({ children }) => {
     getProjectsList,
     getProjectById,
     getBeneficiariesByProject,
-    getVendorsByProject,
     getChartData,
     getBeneficiariesByvillage,
     setFilter,
