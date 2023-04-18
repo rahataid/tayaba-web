@@ -36,7 +36,6 @@ export default function TableContainerView() {
   const [start, setStart] = useState(0);
   const { getProjectByAddress, vendors } = useProjectContext();
 
-  console.log({ vendors });
   const handleView = (id) => () => {
     push(`/vendors/${id}`);
   };
