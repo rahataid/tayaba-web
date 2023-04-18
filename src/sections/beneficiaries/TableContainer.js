@@ -72,7 +72,7 @@ const TableContainer = () => {
     <Box>
       <ListTableToolbar />
       <TablePagination
-        count={beneficiaries?.count}
+        count={beneficiaries?.count || 0}
         component="div"
         page={pagination?.page}
         rowsPerPage={pagination?.limit}
@@ -115,7 +115,7 @@ const TableContainer = () => {
         }
       </ListTable>
       <TablePagination
-        count={beneficiaries?.count}
+        count={beneficiaries?.count || 0}
         component="div"
         page={pagination?.page}
         rowsPerPage={pagination?.limit}

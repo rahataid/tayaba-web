@@ -1,11 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, Tooltip } from '@mui/material';
-import truncateEthAddress from '@utils/truncateEthAddress';
-import { BLOCKCHAIN_EXPLORER } from '@config';
-import { Stack } from '@mui/system';
 import Iconify from '@components/iconify';
+import { BLOCKCHAIN_EXPLORER } from '@config';
+import { Button, Tooltip } from '@mui/material';
+import { Stack } from '@mui/system';
 import copyToClipboard from '@utils/copyToClipboard';
+import truncateEthAddress from '@utils/truncateEthAddress';
+import PropTypes from 'prop-types';
 
 const WalletExplorerButton = ({
   address = 'N/A',
@@ -40,7 +39,7 @@ const WalletExplorerButton = ({
 );
 
 WalletExplorerButton.propTypes = {
-  address: PropTypes.string.isRequired,
+  address: PropTypes.string,
   type: PropTypes.oneOf(['tx', 'address', 'token', 'block']),
   props: PropTypes.object,
   children: PropTypes.node,
