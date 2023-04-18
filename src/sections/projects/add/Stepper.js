@@ -89,6 +89,11 @@ export default function Stepper() {
             handleIncreaseStep();
           }
         } catch (error) {
+          if (error?.data?.code === -32000) {
+            showError('Error estimating gas fee at the moment');
+            handleIncreaseStep();
+            return;
+          }
           console.log('error', error);
           showError('Error estimating gas fee');
         }

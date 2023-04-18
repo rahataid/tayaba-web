@@ -27,7 +27,7 @@ const ConnectToNetworkPopup = ({ open, handleClose, handleOk }) => (
 );
 
 const ConnectWalletButton = () => {
-  const { isWalletConnected, walletType, disconnectWallet, networkId, expectedChainId, switchNetwork } =
+  const { isWalletConnected, library, walletType, disconnectWallet, networkId, expectedChainId, switchNetwork } =
     useWalletConnection();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -37,12 +37,11 @@ const ConnectWalletButton = () => {
   const handleWalletDrawer = () => setDrawerOpen((prev) => !prev);
 
   const handleWrongNetworkModal = () => {
-    console.log('    here');
     setOpenWrongNetworkModal((o) => !o);
   };
 
   useEffect(() => {
-    if (String(networkId) !== String(expectedChainId)) {
+    if (library && String(networkId) !== String(expectedChainId)) {
       setConnectedToExpectedNetwork(false);
       handleWrongNetworkModal();
       // disconnectWallet();

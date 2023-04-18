@@ -96,16 +96,17 @@ const TitleCard = ({ chainData, refreshData }) => {
   };
 
   const TokenActions = {
-    async sendTokenToProject(amount) {
+    sendTokenToProject: (amount) => () => {
       showLoading('project-view');
       sendTokenToProject(amount).then(() => {
         enqueueSnackbar('Tokens sent to Project', {
           variant: 'success',
         });
         refreshData();
+        handleMenuItemClose();
+        hideLoading('project-view');
+        handleAddBudgetModel();
       });
-      handleMenuItemClose();
-      hideLoading('project-view');
     },
   };
 
@@ -136,7 +137,7 @@ const TitleCard = ({ chainData, refreshData }) => {
   const menuItems = [
     {
       onClick: handleAddBudgetModel,
-      name: 'Create H2OWheel Tokens',
+      name: 'Create Tokens',
       show: singleProject?.isApproved && roles?.isDonor,
     },
     {
@@ -189,12 +190,12 @@ const TitleCard = ({ chainData, refreshData }) => {
         </LoadingOverlay>
       </Dialog>
       <AmountForm
-        title="Add Relief Items in Project"
-        description={<>Please enter the Relief items you wish to add to project</>}
+        title="Add Tokens to Project"
+        description={<>Please enter the amount of tokens you want to send to the project.</>}
         transferToken={TokenActions?.sendTokenToProject}
         handleClose={handleClose}
         open={assignTokenDialog}
-        loadingKey={loadingKey}
+        loadingKey={'project-view'}
       />
       <ApproveProject open={approveProjectDialog} handleClose={handleClose} handleMenuItemClose={handleMenuItemClose} />
 

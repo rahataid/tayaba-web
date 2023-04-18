@@ -2,17 +2,21 @@ import LoadingOverlay from '@components/LoadingOverlay';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 export default function ApproveProject({ open, handleClose }) {
   const { approveProject } = useProject();
   const { handleContractError } = useErrorHandler();
+  const {
+    query: { projectId: contractAddress },
+  } = useRouter();
 
   const [loading, setLoading] = useState(false);
   const handleApprove = async () => {
     try {
       console.log('approving');
-      const d = await approveProject();
+      const d = await approveProject(contractAddress);
       console.log({ d });
       handleClose();
     } catch (error) {

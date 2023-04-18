@@ -92,11 +92,11 @@ export default function BasicInfoCard({ rahatChainData }) {
               icon={<Iconify icon={'material-symbols:lock-open-outline-rounded'} />}
             />
           ))}
-        <Chip
+        {/* <Chip
           label={singleProject?.status}
           color={singleProject?.isApproved ? 'success' : 'warning'}
           icon={<Iconify icon={'material-symbols:lock-outline'} />}
-        />
+        /> */}
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
