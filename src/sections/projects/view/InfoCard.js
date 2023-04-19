@@ -2,7 +2,7 @@ import SummaryCard from '@components/SummaryCard';
 import { useProjectContext } from '@contexts/projects';
 import useDialog from '@hooks/useDialog';
 import useLoading from '@hooks/useLoading';
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import AmountForm from '../token-tracker/AmountForm';
@@ -29,6 +29,8 @@ export default function InfoCard({ chainData }) {
       hideLoading('cashTransfer');
     },
   };
+  const projectBalance =
+    typeof chainData.projectBalance === 'number' ? chainData.projectBalance : 0;
 
   return (
     <>
@@ -57,17 +59,11 @@ export default function InfoCard({ chainData }) {
             icon="material-symbols:token"
             title="Relief Items"
             total={
-              chainData.projectBalance <= 0 ? (
-                roles.isDonor && !chainData?.isLocked ? (
-                  <Button disabled={!chainData?.isApproved} onClick={handleAddBudgetModel}>
-                    Add Relief Items
-                  </Button>
-                ) : (
-                  chainData.projectBalance || 0
-                )
-              ) : (
-                chainData.projectBalance
-              )
+              typeof chainData.projectBalance === 'number'
+                ? chainData.projectBalance
+                : roles.isDonor && !chainData?.isLocked && chainData?.isApproved
+                  ? 0
+                  : null
             }
             subtitle="H2O Wheels"
             sx={sx}

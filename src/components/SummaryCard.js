@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Card, Typography, Stack, Box } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 // utils
 // components
 import Iconify from '@components/iconify';
