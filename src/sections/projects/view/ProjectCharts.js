@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import { CHARTDATATYPES, SPACING } from '@config';
 import { useProjectContext } from '@contexts/projects';
 import { Grid } from '@mui/material';
-import { SPACING, CHARTDATATYPES } from '@config';
-import Piechart from './Piechart';
-import Barchart from './Barchart';
 import { useTheme } from '@mui/system';
+import { useCallback, useEffect, useState } from 'react';
+import Barchart from './Barchart';
+import Piechart from './Piechart';
 
 const ProjectChart = ({ projectId }) => {
   const { getChartData, chartData, getBeneficiariesByvillage, beneficiariesVillageChartData } = useProjectContext();
@@ -16,11 +16,11 @@ const ProjectChart = ({ projectId }) => {
   const [simcardOwenerShip, setSimcardOwenerShip] = useState();
   const [accessToInternet, setAccessToInternet] = useState();
   const [banked, setBanked] = useState();
-  const [selectedVillage, setSelectedVillage] = useState();
+  const [selectedVillage, setselectedvillage] = useState();
 
   const handleVillage = (village) => {
     if (!village || village === 'undefined') return;
-    setSelectedVillage(village);
+    setselectedvillage(village);
   };
   const formatData = useCallback(() => {
     if (!chartData) return;
@@ -148,7 +148,7 @@ const ProjectChart = ({ projectId }) => {
             <Barchart
               title="Beneficaries per Distribution Point"
               chart={beneficiariesVillageChartData}
-              setSelectedVillage={setSelectedVillage}
+              // setselectedvillage={setselectedvillage}
               handleVillage={handleVillage}
             />
           </Grid>
