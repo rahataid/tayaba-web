@@ -1,12 +1,12 @@
 import { useVendorsContext } from '@contexts/vendors';
-import { useSnackbar } from 'notistack';
-import AmountForm from '@sections/projects/token-tracker/AmountForm';
 import useDialog from '@hooks/useDialog';
+import AmountForm from '@sections/projects/token-tracker/AmountForm';
 import { useProject } from '@services/contracts/useProject';
+import { useSnackbar } from 'notistack';
 import { useAuthContext } from 'src/auth/useAuthContext';
 // import LoadingOverlay from '@components/LoadingOverlay';
-import useLoading from '@hooks/useLoading';
 import { useErrorHandler } from '@hooks/useErrorHandler';
+import useLoading from '@hooks/useLoading';
 import { LoadingButton } from '@mui/lab';
 
 SendToken.propTypes = {};

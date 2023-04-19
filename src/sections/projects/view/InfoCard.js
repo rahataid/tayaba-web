@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
-import { Grid, Button } from '@mui/material';
-import { useProjectContext } from '@contexts/projects';
 import SummaryCard from '@components/SummaryCard';
+import { useProjectContext } from '@contexts/projects';
 import useDialog from '@hooks/useDialog';
-import AmountForm from '../token-tracker/AmountForm';
-import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import useLoading from '@hooks/useLoading';
+import { Button, Grid } from '@mui/material';
+import { useRahatDonor } from '@services/contracts/useRahatDonor';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import AmountForm from '../token-tracker/AmountForm';
 
 export default function InfoCard({ chainData }) {
   const { isDialogShow, showDialog, hideDialog } = useDialog();
-  const { sendCashToProject } = useRahatDonor();
+  const { sendTokenToProject } = useRahatDonor();
   const { beneficiaryCount, singleProject } = useProjectContext();
   const { roles } = useAuthContext();
 
   const sx = { borderRadius: 2 };
 
-  const { loading, showLoading, hideLoading } = useLoading();
+  const { showLoading, hideLoading } = useLoading();
 
   const handleAddBudgetModel = () => {
     showDialog();
   };
 
-  const CashActions = {
-    async sendCashToProject(amount) {
+  const TokenActions = {
+    async sendTokenToProject(amount) {
       if (!roles.isDonor) return;
       showLoading('cashTransfer');
-      await sendCashToProject(amount);
+      await sendTokenToProject(amount);
       hideLoading('cashTransfer');
     },
   };
@@ -36,7 +35,7 @@ export default function InfoCard({ chainData }) {
       <AmountForm
         title="Add Relief Items in Project"
         description={<>Please enter the Relief items you wish to add to project</>}
-        approveCashTransfer={CashActions.sendCashToProject}
+        approveCashTransfer={TokenActions.sendTokenToProject}
         handleClose={hideDialog}
         open={isDialogShow}
       />
@@ -60,7 +59,9 @@ export default function InfoCard({ chainData }) {
             total={
               chainData.projectBalance <= 0 ? (
                 roles.isDonor && !chainData?.isLocked ? (
-                  <Button onClick={handleAddBudgetModel}>Add Relief Items</Button>
+                  <Button disabled={!chainData?.isApproved} onClick={handleAddBudgetModel}>
+                    Add Relief Items
+                  </Button>
                 ) : (
                   chainData.projectBalance || 0
                 )
@@ -77,7 +78,7 @@ export default function InfoCard({ chainData }) {
             color="error"
             icon="ph:currency-circle-dollar-light"
             title="Distributed"
-            total={singleProject?.data?.disbursed || 0}
+            total={singleProject?.disbursed || 0}
             subtitle={'H2O Wheels'}
             sx={sx}
           />

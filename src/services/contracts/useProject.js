@@ -1,32 +1,36 @@
 import { CONTRACTS } from '@config';
 import { useContract } from '@hooks/contracts';
-import { useAuthContext } from 'src/auth/useAuthContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import Web3Utils from '@utils/web3Utils';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useProject = () => {
-  const [contract, abi] = useContract(CONTRACTS.CVAPROJECT);
+  const { contractAddress } = useAuthContext();
+
+  const [contract, abi] = useContract(CONTRACTS.CVAPROJECT, { contractAddress });
   const [h2oToken] = useContract(CONTRACTS.RAHATTOKEN);
   const [donorContract] = useContract(CONTRACTS.DONOR);
   const [communityContract, communityAbi] = useContract(CONTRACTS.COMMUNITY);
-  const { handleContractError } = useErrorHandler();
 
+  const { handleContractError } = useErrorHandler();
   return {
     contract,
     // project functions
     h2oToken,
     communityContract,
     isProjectLocked: () => contract?.isLocked(),
+    isProjectApproved: () => communityContract?.isProject(contractAddress),
+    approveProject: async (contractAddress) => communityContract.approveProject(contractAddress),
 
-    lockProject: () => donorContract?.lockProject(contract?.address).catch(handleContractError),
+    lockProject: () => donorContract?.lockProject(contractAddress).catch(handleContractError),
 
-    unLockProject: () => donorContract?.unlockProject(contract?.address).catch(handleContractError),
+    unLockProject: () => donorContract?.unlockProject(contractAddress).catch(handleContractError),
 
     acceptToken: (amount) => contract?.acceptToken(donorContract?.address, amount).catch(handleContractError),
 
     getTokenAllowance: async () => (await h2oToken?.allowance(donorContract?.address, contract?.address))?.toNumber(),
 
-    getProjectBalance: async () => (await h2oToken?.balanceOf(contract?.address))?.toNumber(),
+    getProjectBalance: async () => (await h2oToken?.balanceOf(contractAddress))?.toNumber(),
 
     getVendorBalance: async (walletAddress) => (await h2oToken?.balanceOf(walletAddress))?.toNumber(),
 

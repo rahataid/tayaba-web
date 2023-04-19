@@ -76,6 +76,31 @@ const Web3Utils = {
       return contract.callStatic.multicall(callData);
     },
   },
+
+  deployContract: async (library, { abi, byteCode, args }) => {
+    try {
+      const signer = library.getSigner();
+      const factory = new ethers.ContractFactory(abi, byteCode, signer);
+      const contract = await factory.deploy(...args);
+      const receipt = await contract.deployTransaction.wait();
+      return {
+        blockNumber: receipt.blockNumber,
+        contract: new ethers.Contract(contract.address, abi, library),
+      };
+    } catch (error) {
+      console.log({ deployerror: error });
+    }
+  },
+
+  generateWallet(cnicNumber, options = {}) {
+    const entropy = this.getRandomEntropy();
+    // const mnemonic = entropyToMnemonic(entropy);
+    return ethers.Wallet.createRandom();
+  },
+
+  weiToEth(balance) {
+    return ethers.utils.formatEther(balance);
+  },
 };
 
 export default Web3Utils;

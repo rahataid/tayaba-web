@@ -2,20 +2,21 @@ import { useState } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
+import { Box, Divider, MenuItem, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Button } from '@mui/material';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
 // auth
 import { useAuthContext } from '../../../auth/useAuthContext';
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
-import { useSnackbar } from '../../../components/snackbar';
-import MenuPopover from '../../../components/menu-popover';
-import { IconButtonAnimate } from '../../../components/animate';
-import truncateEthAddress from '@utils/truncateEthAddress';
-import { APP_NAME, BLOCKCHAIN_EXPLORER } from '@config';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import { APP_NAME } from '@config';
+import useWalletConnection from '@hooks/useWalletConnection';
+import controllers from '@utils/indexdb';
+import { IconButtonAnimate } from '../../../components/animate';
+import { CustomAvatar } from '../../../components/custom-avatar';
+import MenuPopover from '../../../components/menu-popover';
+import { useSnackbar } from '../../../components/snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +42,8 @@ const OPTIONS = [
 export default function AccountPopover() {
   const { replace, push } = useRouter();
 
-  const { user, wallet, logout } = useAuthContext();
+  const { user, logout } = useAuthContext();
+  const { account } = useWalletConnection();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -58,6 +60,7 @@ export default function AccountPopover() {
   const handleLogout = async () => {
     try {
       logout();
+      controllers.clear();
       replace(PATH_AUTH.login);
       handleClosePopover();
     } catch (error) {
@@ -102,7 +105,7 @@ export default function AccountPopover() {
             {user?.email}
           </Typography>
 
-          <WalletExplorerButton copyButton={false} address={wallet?.address} type="address" truncateLength={6} />
+          <WalletExplorerButton copyButton={false} address={account} type="address" truncateLength={6} />
         </Box>
 
         {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}

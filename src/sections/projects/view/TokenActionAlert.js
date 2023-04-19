@@ -1,13 +1,18 @@
-import { useState, useCallback, useEffect } from 'react';
-import useLoading from '@hooks/useLoading';
-import { Alert, Grid, Button } from '@mui/material';
 import { useProjectContext } from '@contexts/projects';
+import useLoading from '@hooks/useLoading';
+import { Alert, AlertTitle, Button, Grid } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
-// import LoadingOverlay from '@components/LoadingOverlay';
 
-export default function CashActionsAlert({ projectId, chainData }) {
+TokenActionAlert.propTypes = {
+  chainData: PropTypes.object,
+};
+
+export default function TokenActionAlert({ chainData }) {
   const { acceptToken } = useProject();
+  const { singleProject } = useProjectContext();
   const { showLoading, hideLoading } = useLoading();
   const [alert, setAlert] = useState({
     type: '',
@@ -16,11 +21,13 @@ export default function CashActionsAlert({ projectId, chainData }) {
   });
   const { roles } = useAuthContext();
   const [showAlert, setShowAlert] = useState(false);
+
   // const { sendH2OWheelsToVendor } = useProject();
 
   const CashActions = {
     async acceptCash() {
       showLoading('project-view');
+
       await acceptToken(chainData.tokenAllowance);
       setShowAlert(false);
       hideLoading('project-view');
@@ -60,14 +67,28 @@ export default function CashActionsAlert({ projectId, chainData }) {
 
   return (
     <>
-      {showAlert && (
-        <Grid item xs={12} md={12}>
-          <Alert severity={alert.type} action={alert.action}>
-            {' '}
-            {alert?.message}{' '}
-          </Alert>
-        </Grid>
-      )}
+      <>
+        {showAlert && (
+          <Grid item xs={12} md={12}>
+            <Alert severity={alert.type} action={alert.action}>
+              {' '}
+              {alert?.message}{' '}
+            </Alert>
+          </Grid>
+        )}
+      </>
+      <>
+        {singleProject?.isApproved === false && (
+          <Grid item xs={12} md={12}>
+            <Alert title="Not Approved" severity={'warning'}>
+              <AlertTitle>
+                <strong>Waiting for approval</strong>
+              </AlertTitle>
+              Project has not yet been approved by the community.
+            </Alert>
+          </Grid>
+        )}
+      </>
     </>
   );
 }

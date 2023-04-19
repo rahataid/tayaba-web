@@ -1,0 +1,14 @@
+[
+  {
+    "name": "numberOfBeneficiaries",
+    "fieldType": "number",
+    "isRequired": true,
+    "label": "No of Beneficiaries"
+  },
+  {
+    "name": "amountPerBeneficiary",
+    "fieldType": "number",
+    "isRequired": true,
+    "label": "Amount for Beneficiaries"
+  }
+]

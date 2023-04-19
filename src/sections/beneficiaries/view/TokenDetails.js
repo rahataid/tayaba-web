@@ -1,29 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Grid, Stack, Typography, Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
-import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import { SPACING } from '@config';
-import moment from 'moment';
-import useDialog from '@hooks/useDialog';
-import useLoading from '@hooks/useLoading';
 import LoadingOverlay from '@components/LoadingOverlay';
-import { useAuthContext } from 'src/auth/useAuthContext';
-import { TransactionService } from '@services';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import { SPACING } from '@config';
+import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import useDialog from '@hooks/useDialog';
+import { useErrorHandler } from '@hooks/useErrorHandler';
+import useLoading from '@hooks/useLoading';
+import { Button, Card, CardContent, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
+import { BeneficiaryService } from '@services/beneficiaries';
 import { useProject } from '@services/contracts/useProject';
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import AssignProjectModal from './AssignProjectModal';
 
-TokenDetails.propTypes = {};
 export default function TokenDetails({ chainData }) {
-  const { singleBeneficiary, refreshData } = useBeneficiaryContext();
+  const { singleBeneficiary, refreshData, projects, getAllProjects, assignProject } = useBeneficiaryContext();
+  const { enqueueSnackbar } = useSnackbar();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { assignClaimsToBeneficiaries, contract } = useProject();
   const { loading, showLoading, hideLoading } = useLoading();
   const { roles } = useAuthContext();
   const { activateBeneficiary } = useProject();
+  const [showProjectAssign, setShowProjectAssign] = useState(false);
+  const { handleError } = useErrorHandler();
+  const handleAssignProject = () => {
+    setShowProjectAssign(true);
+  };
+  const handleAssignProjectClose = () => {
+    setShowProjectAssign(false);
+  };
+  const { push } = useRouter();
 
   const handleAssignClaim = async () => {
     showLoading('assignClaim');
-
     assignClaimsToBeneficiaries(singleBeneficiary?.data?.walletAddress, 1)
       .then(async (res) => {
         // const txn = {
@@ -44,6 +56,8 @@ export default function TokenDetails({ chainData }) {
       })
       .catch((err) => {
         hideDialog();
+        useErrorHandler;
+        handleError(err);
         hideLoading('assignClaim');
       });
   };
@@ -52,6 +66,24 @@ export default function TokenDetails({ chainData }) {
     activateBeneficiary(singleBeneficiary?.data?.walletAddress).then(() => {
       refreshData();
     });
+  };
+
+  useEffect(() => {
+    getAllProjects();
+  }, [getAllProjects]);
+  const handleDelete = async () => {
+    try {
+      await BeneficiaryService.delete(singleBeneficiary?.data?.walletAddress);
+      enqueueSnackbar('Beneficiary Deleted', {
+        variant: 'success',
+      });
+      push('/beneficiaries');
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar('Error deleting beneficiary', {
+        variant: 'error',
+      });
+    }
   };
 
   return (
@@ -67,40 +99,58 @@ export default function TokenDetails({ chainData }) {
           </DialogActions>
         </LoadingOverlay>
       </Dialog>
-
+      <AssignProjectModal
+        open={showProjectAssign}
+        handleClose={handleAssignProjectClose}
+        projects={projects}
+        assignProject={assignProject}
+        beneficraryId={singleBeneficiary?.data?.id}
+        refreshData={refreshData}
+      />
       <CardContent>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
           <Typography>Claims Details</Typography>
-          {chainData?.isBenActive ? (
+          {!singleBeneficiary?.data?.beneficiary_project_details ? (
+            <Button variant="outlined" onClick={handleAssignProject} size="small">
+              Assign Project
+            </Button>
+          ) : (
             <>
-              {(roles.isManager || roles.isAdmin) && (
+              {chainData?.isBenActive ? (
                 <>
-                  {chainData?.balance < 1 ? (
-                    <Button variant="outlined" onClick={showDialog} size="small">
+                  {(roles.isManager || roles.isAdmin) && (
+                    <>
+                      {chainData?.balance < 1 ? (
+                        <Button variant="outlined" onClick={showDialog} size="small">
+                          {' '}
+                          Assign Claim
+                        </Button>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {roles.isAdmin && (
+                    <Button
+                      variant="outlined"
+                      onClick={handleActivate}
+                      disabled={roles?.isDonor ? true : false}
+                      size="small"
+                    >
                       {' '}
-                      Assign Claim
+                      Activate
                     </Button>
-                  ) : (
-                    <></>
                   )}
                 </>
               )}
             </>
-          ) : (
-            <>
-              {roles.isAdmin && (
-                <Button
-                  variant="outlined"
-                  onClick={handleActivate}
-                  disabled={roles?.isDonor ? true : false}
-                  size="small"
-                >
-                  {' '}
-                  Activate
-                </Button>
-              )}
-            </>
           )}
+          <Button variant="outlined" color="error" size="small" onClick={handleDelete}>
+            Delete
+          </Button>
         </Stack>
         <Stack
           sx={{ pt: SPACING.GRID_SPACING }}

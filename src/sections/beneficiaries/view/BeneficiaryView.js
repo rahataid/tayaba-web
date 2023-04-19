@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Grid, Stack } from '@mui/material';
-import BasicInfoCard from './BasicInfoCard';
-import TokenDetails from './TokenDetails';
-import MoreInfoCard from './MoreInfoCard';
-import { HistoryTable } from '@sections/transactionTable';
+import { CONTRACTS } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
-import { useRouter } from 'next/router';
-import { useAuthContext } from 'src/auth/useAuthContext';
+import { useErrorHandler } from '@hooks/useErrorHandler';
+import { Grid, Stack } from '@mui/material';
+import { HistoryTable } from '@sections/transactionTable';
 import { useProject } from '@services/contracts/useProject';
-import LoadingOverlay from '@components/LoadingOverlay';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuthContext } from 'src/auth/useAuthContext';
+import BasicInfoCard from './BasicInfoCard';
+import MoreInfoCard from './MoreInfoCard';
+import TokenDetails from './TokenDetails';
 
 BeneficiaryView.propTypes = {};
 
@@ -26,7 +27,7 @@ const TABLE_HEAD = {
   },
   event: {
     id: 'event',
-    label: 'Type',
+    label: 'Event',
     align: 'left',
   },
   amount: {
@@ -34,69 +35,82 @@ const TABLE_HEAD = {
     label: 'Amount',
     align: 'left',
   },
-  txType: {
-    id: 'txType',
-    label: 'TxType',
-    align: 'left',
-  },
-  mode: {
-    id: 'mode',
-    label: 'Mode',
-    align: 'left',
-  },
 };
 // #endregion
 
 export default function BeneficiaryView() {
-  const { roles } = useAuthContext();
-  const { getBeneficiaryById, refresh, singleBeneficiary, getTransactionById, transaction } = useBeneficiaryContext();
+  const { roles, contracts } = useAuthContext();
+  const {
+    getBeneficiaryById,
+    refresh,
+    singleBeneficiary,
+    getBeneficiaryTransactions,
+    transaction,
+    getBeneficiaryByWalletAddress,
+  } = useBeneficiaryContext();
   const { checkActiveBeneficiary, communityContract, beneficiaryBalance } = useProject();
   const {
     query: { beneficiaryId },
   } = useRouter();
+  const { handleContractError, handleError } = useErrorHandler();
 
   const [chainData, setChainData] = useState({
     isBenActive: null,
     balance: null,
   });
 
-  const init = useCallback(async () => {
-    if (!beneficiaryId) return;
-    const _benData = await getBeneficiaryById(beneficiaryId);
-    await getTransactionById(beneficiaryId);
-    //getBeneficiaryClaimLogs(_benData?.phone);
-    if (!_benData?.phone) return;
-    // const _chainData = await beneficiaryBalance(_benData?.phone);
-    // setChainData(_chainData);
-  }, [beneficiaryId, refresh]);
+  useEffect(() => {
+    getBeneficiaryByWalletAddress(beneficiaryId);
+    getBeneficiaryTransactions(contracts[CONTRACTS.CVAPROJECT], beneficiaryId).catch(handleError);
+  }, [beneficiaryId]);
+
+  // const init = useCallback(async () => {
+  //   if (!beneficiaryId) return;
+  //   const _benData = await getBeneficiaryByWalletAddress(beneficiaryId);
+
+  //   // getBeneficiaryClaimLogs(_benData?.phone);
+  //   if (!_benData?.phone) return;
+  //   const _chainData = await beneficiaryBalance(_benData?.phone);
+  //   console.log('_chainData', _chainData);
+  //   setChainData(_chainData);
+  // }, [beneficiaryId, refresh]);
+
+  // useEffect(() => {
+  //   init();
+  // }, []);
 
   const fetchChainData = useCallback(async () => {
     if (!communityContract) return;
     if (!singleBeneficiary) return;
-
-    try {
-      const isBenActive = await checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress);
-      const balance = await beneficiaryBalance(singleBeneficiary?.data?.walletAddress);
-      setChainData((prev) => ({ ...prev, isBenActive, balance }));
-    } catch (error) {
-      console.log(error);
-    }
+    checkActiveBeneficiary(singleBeneficiary?.data?.walletAddress)
+      .then((isActive) => {
+        console.log('isActive', isActive);
+        if (isActive) {
+          beneficiaryBalance(singleBeneficiary?.data?.walletAddress)
+            .then((balance) => {
+              console.log('balance', balance);
+              setChainData((prev) => ({ ...prev, isBenActive: isActive, balance }));
+            })
+            .catch(handleContractError);
+        }
+      })
+      .catch(handleContractError);
   }, [communityContract, singleBeneficiary, refresh]);
 
   useEffect(() => {
     fetchChainData();
   }, [fetchChainData, refresh, communityContract]);
 
-  useEffect(() => {
-    init();
-  }, [init]);
+  // useEffect(() => {
+  //   init();
+  // }, [init]);
 
   const TokenDetailsProps = {
     chainData,
   };
 
   return (
-    <LoadingOverlay>
+    <>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <BasicInfoCard chainData={chainData} />
@@ -111,8 +125,8 @@ export default function BeneficiaryView() {
         </Grid>
       </Grid>
       <Stack sx={{ mt: 1 }}>
-        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction.data} />
+        <HistoryTable tableHeadersList={TABLE_HEAD} tableRowsList={transaction} />
       </Stack>
-    </LoadingOverlay>
+    </>
   );
 }

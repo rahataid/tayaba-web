@@ -1,11 +1,11 @@
-import { BeneficiaryService, TransactionService } from '@services';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { BeneficiaryService, ChainCacheService } from '@services';
 import PropTypes from 'prop-types';
+import { createContext, useCallback, useContext, useState } from 'react';
 
 const initialState = {
   beneficiaries: [],
   singleBeneficiary: {},
-  transaction: {},
+  transaction: [],
   chainData: {},
   refresh: false,
   filter: {},
@@ -15,8 +15,10 @@ const initialState = {
     limit: 50,
     page: 0,
   },
+  projects: [],
+  addBeneficiary: () => {},
   getBeneficiariesList: () => {},
-  getBeneficiaryById: () => {},
+  getBeneficiaryByWalletAddress: () => {},
   getTransactionById: () => {},
   setChainData: () => {},
   refreshData: () => {},
@@ -25,6 +27,11 @@ const initialState = {
   getAllWards: () => {},
   getAllVillages: () => {},
   resetFilter: () => {},
+  getAllProjects: () => {},
+  updateUsingWalletAddress: () => {},
+  getBeneficiaryById: () => {},
+  getBeneficiaryTransactions: () => {},
+  assignProject: () => {},
 };
 
 const BeneficiaryContext = createContext(initialState);
@@ -97,25 +104,37 @@ export const BeneficiaryProvider = ({ children }) => {
     }));
   }, []);
 
-  const getBeneficiaryById = useCallback(async (id) => {
-    const response = await BeneficiaryService.getBeneficiaryById(id);
-
+  const getBeneficiaryByWalletAddress = useCallback(async (walletAddress) => {
+    const response = await BeneficiaryService.getBeneficiaryByWalletAddress(walletAddress);
+    if (response.data.data === null) {
+      setState((prev) => ({
+        ...prev,
+        singleBeneficiary: null,
+      }));
+      return null;
+    }
+    const { name, phone, villageId, gender, bankAccount, dailyDistanceCovered } = response.data.data;
     const formatted = {
       ...response.data,
     };
-
     setState((prev) => ({
       ...prev,
       singleBeneficiary: formatted,
+      editData: { name, phone, villageId, gender, bankAccount, dailyDistanceCovered },
     }));
     return formatted;
   }, []);
 
+  const addBeneficiary = (payload) => BeneficiaryService.addBeneficiary(payload);
+
+  const updateUsingWalletAddress = (walletAddress, data) =>
+    BeneficiaryService.updateUsingWalletAddress(walletAddress, data);
+
   const getAllVillages = useCallback(async () => {
-    const response = await BeneficiaryService.getAllVillages();
-    const formatted = response?.data?.data?.map((item) => ({
-      label: item,
-      value: item,
+    const response = await BeneficiaryService.getVillagesList();
+    const formatted = response?.data?.data?.map((village) => ({
+      label: village.name,
+      value: village.id,
     }));
     setState((prev) => ({
       ...prev,
@@ -124,22 +143,34 @@ export const BeneficiaryProvider = ({ children }) => {
     return formatted;
   }, []);
 
-  const getTransactionById = useCallback(async (id) => {
-    const response = await TransactionService.getTransactionList({ beneficiaryId: id });
-    const formatted = response?.data?.data?.data?.map((item) => ({
-      timestamp: item?.timestamp,
-      txHash: item?.txHash,
-      event: 'Beneficiary Claim',
-      amount: item?.amount,
-      txType: item?.txType,
-      mode: item.isOffline ? 'Offline' : 'Online',
+  const getAllProjects = useCallback(async () => {
+    const response = await BeneficiaryService.getProjectsList();
+    const formatted = response?.data?.data.map((project) => ({
+      label: project.name,
+      value: project.id,
+    }));
+    setState((prev) => ({
+      ...prev,
+      projects: formatted,
+    }));
+    return formatted;
+  }, []);
+
+  const assignProject = (id, payload) => {
+    return BeneficiaryService.assignProject(id, payload);
+  };
+
+  const getBeneficiaryTransactions = useCallback(async (contractAddress, benAddress) => {
+    const response = await ChainCacheService.listTransactionByBeneficiary(contractAddress, benAddress);
+    const formatted = response.map((r) => ({
+      ...r,
+      amount: r.params.find((param) => param.name === 'amount')?.value,
+      event: r?.name,
     }));
 
     setState((prev) => ({
       ...prev,
-      transaction: {
-        data: formatted,
-      },
+      transaction: formatted,
     }));
     return formatted;
   }, []);
@@ -151,10 +182,14 @@ export const BeneficiaryProvider = ({ children }) => {
     setPagination,
     setChainData,
     getBeneficiariesList,
-    getBeneficiaryById,
+    getBeneficiaryByWalletAddress,
     getAllVillages,
-    getTransactionById,
+    getBeneficiaryTransactions,
     resetFilter,
+    addBeneficiary,
+    getAllProjects,
+    updateUsingWalletAddress,
+    assignProject,
   };
 
   return <BeneficiaryContext.Provider value={contextValue}>{children}</BeneficiaryContext.Provider>;

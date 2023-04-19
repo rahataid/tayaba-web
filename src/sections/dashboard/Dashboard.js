@@ -1,14 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Box, Grid } from '@mui/material';
 import SummaryCard from '@components/SummaryCard';
-import { useTheme } from '@mui/material/styles';
-import BarchartSingle from './BarchartSingle';
 import Piechart from '@components/chart/Piechart';
-import { getFlickrImages } from '@services/flickr';
-import PhotoGallery from './PhotoGallery';
-import { SPACING, CHARTDATATYPES } from '@config';
-import { MapView } from './maps';
+import { CHARTDATATYPES, SPACING } from '@config';
 import { useDashboardContext } from '@contexts/dashboard';
+import { Box, Grid } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { getFlickrImages } from '@services/flickr';
+import { useCallback, useEffect, useState } from 'react';
+import BarchartSingle from './BarchartSingle';
+import PhotoGallery from './PhotoGallery';
+import { MapView } from './maps';
 
 const DashboardComponent = () => {
   const theme = useTheme();

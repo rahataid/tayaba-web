@@ -16,11 +16,18 @@ export const BLOCKCHAIN_EXPLORER = process.env.NEXT_PUBLIC_BLOCKCHAIN_EXPLORER |
 
 export const FLICKR_APIKEY = process.env.NEXT_PUBLIC_FLICKR_APIKEY || '';
 export const FLICKR_PHOTOSET = process.env.NEXT_PUBLIC_FLICKR_PHOTOSET || '';
-export const CHAINCACHE_URL = process.env.NEXT_PUBLIC_CHAINCACHE_URL || '';
 
+export const CHAINCACHE_URL = process.env.NEXT_PUBLIC_CHAINCACHE_URL || '';
 export const CHAINCACHE_APPID = process.env.NEXT_PUBLIC_CHAINCACHE_APPID || '';
 
 export const IPFS_GATEWAY = process.env.NEXT_PUBLIC_IPFS_GATEWAY || '';
+
+export const COMMUNICATION_API = process.env.NEXT_PUBLIC_COMMUNICATION_API || '';
+export const COMMUNICATION_APP_ID = process.env.NEXT_PUBLIC_COMMUNICATION_APP_ID || '';
+
+export const GITHUB_API_URL = process.env.NEXT_PUBLIC_GITHUB_API_URL || '';
+export const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME || '';
+export const GITHUB_REPOSITORY = process.env.NEXT_PUBLIC_GITHUB_REPOSITORY || '';
 
 export const COGNITO_API = {
   userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
@@ -107,3 +114,26 @@ export const TayabaToken = {
 };
 
 export const NETWORK_GAS_LIMIT = 18000000;
+
+export const gender = {
+  Male: 'M',
+  Female: 'F',
+  Others: 'O',
+};
+
+export const phoneType = {
+  SmartPhone: 'smartphone',
+  FeaturePhone: 'featurephone',
+  DumbPhone: 'dumbphone',
+};
+
+export const CAMPAIGN_TYPES = ['EMAIL', 'SMS', 'PHONE'];
+
+export const BLOCKCHAIN_NETWORKS = {
+  97: {
+    Url: 'https://mainnet.infura.io/v3/',
+  },
+  1337: {
+    Url: 'http://127.0.0.1:8545',
+  },
+};

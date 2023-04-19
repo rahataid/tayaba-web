@@ -4,7 +4,7 @@ import { useErrorHandler } from '@hooks/useErrorHandler';
 import { useAuthContext } from 'src/auth/useAuthContext';
 
 export const useRahatDonor = () => {
-  let { contracts } = useAuthContext();
+  let { contracts, contractAddress } = useAuthContext();
   const [donorContract] = useContract(CONTRACTS.DONOR);
 
   const rahatTokenContract = useContract(CONTRACTS.RAHATTOKEN);
@@ -14,16 +14,9 @@ export const useRahatDonor = () => {
     donorContract,
     rahatTokenContract,
 
-    sendCashToProject: async (amount) => {
-      try {
-        await donorContract?.mintTokenAndApprove(
-          contracts[CONTRACTS.RAHATTOKEN],
-          contracts[CONTRACTS.CVAPROJECT],
-          amount
-        );
-      } catch (error) {
-        handleContractError(error);
-      }
-    },
+    sendTokenToProject: (amount) =>
+      donorContract
+        ?.mintTokenAndApprove(contracts[CONTRACTS.RAHATTOKEN], contractAddress, amount)
+        .catch(handleContractError),
   };
 };

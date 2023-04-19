@@ -1,10 +1,12 @@
 import { ProjectService } from '@services';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { fetchApiFormFields, fetchContract, getFolders } from '@services/github';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import { useErrorHandler } from '@hooks/useErrorHandler';
+import { createContext, useCallback, useContext, useState } from 'react';
 
 const initialState = {
   projects: [],
+  projectsTypesList: [],
   singleProject: {},
   beneficiaryCount: 0,
   vendorCount: 0,
@@ -14,6 +16,10 @@ const initialState = {
   refresh: false,
   isRahatResponseLive: false,
   error: {},
+  editData: {},
+
+  githubProjectTypes: [],
+  formFields: [],
   beneficiariesVillageChartData: {
     chartData: [
       {
@@ -23,8 +29,12 @@ const initialState = {
     ],
     chartLabel: [],
   },
+  abi: [],
+  byteCode: '',
+  contractName: '',
   getProjectsList: () => {},
   getProjectById: () => {},
+  getProjectByAddress: () => {},
   getBeneficiariesByProject: () => {},
   getVendorsByProject: () => {},
   refreshData: () => {},
@@ -32,6 +42,13 @@ const initialState = {
   getChartData: () => {},
   getBeneficiariesByvillage: () => {},
   setFilter: () => {},
+  getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
+  getFormFields: () => {},
+  addProject: () => {},
+  getContracts: () => {},
+  editProject: () => {},
+  bulkAddBeneficiary: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -60,8 +77,8 @@ export const ProjectProvider = ({ children }) => {
         : '-',
       createdAt: item?.created_at,
       balance: item?.budget - item?.disbursed,
-
       id: item?._id || item?.id,
+      status: item?.isApproved ? 'Approved' : 'Not Approved',
     }));
 
     setState((prevState) => ({
@@ -71,22 +88,93 @@ export const ProjectProvider = ({ children }) => {
     return formatted;
   }, []);
 
+  const getGithubProjectTypes = useCallback(async () => {
+    const projectsTypes = await getFolders();
+    setState((prev) => ({
+      ...prev,
+      githubProjectTypes: projectsTypes,
+    }));
+    return projectsTypes;
+  }, []);
+
+  const getFormFields = useCallback(async (projectType) => {
+    const formFields = await fetchApiFormFields(projectType);
+    setState((prev) => ({
+      ...prev,
+      formFields: formFields,
+    }));
+    return formFields;
+  }, []);
+
+  const getContracts = useCallback(async (projectType) => {
+    let { abi, bytecode, contractName } = await fetchContract(projectType);
+    setState((prev) => ({
+      ...prev,
+      abi,
+      byteCode: bytecode,
+      contractName,
+    }));
+    return;
+  }, []);
+
   const getProjectById = useCallback(async (id) => {
     const response = await ProjectService.getProjectById(id);
+    const { name, location, description, startDate, endDate, extras } = response.data.data;
     const formatted = {
       ...response.data,
+      projectManagerName: response.data?.projectManager ? response.data?.projectManager : '-',
+      projectCreatedAt: response.data?.project_manager?.created_at,
+    };
+    setState((prev) => ({
+      ...prev,
+      singleProject: formatted,
+      editData: { name, location, description, startDate, endDate, extras },
+    }));
+    return formatted;
+  }, []);
+
+  const getProjectByAddress = useCallback(async (address) => {
+    const response = await ProjectService.getProjectByAddress(address);
+    if (response.data.data === null) {
+      setState((prev) => ({
+        ...prev,
+        singleProject: null,
+      }));
+      return null;
+    }
+    const { name, location, description, startDate, endDate, extras } = response.data.data;
+    const formatted = {
+      ...response.data?.data,
       projectManagerName: response.data?.project_manager?.name
         ? `${response.data?.project_manager?.name?.first} ${response.data?.project_manager?.name?.last}`
         : '-',
       projectCreatedAt: response.data?.project_manager?.created_at,
+      status: response?.data?.data?.isApproved ? 'Approved' : 'Not Approved',
+      // startDate: dayjs(response?.data?.data?.startDate),
+      // endDate: dayjs(response?.data?.data?.endDate)
     };
 
     setState((prev) => ({
       ...prev,
       singleProject: formatted,
+      editData: {
+        name,
+        location,
+        description,
+        startDate: dayjs(response?.data?.data?.startDate),
+        endDate: dayjs(response?.data?.data?.endDate),
+        extras,
+      },
     }));
+
     return formatted;
   }, []);
+
+  const addProject = (data) => ProjectService.addProject(data);
+
+  const editProject = (data) => {
+    return ProjectService.editProject(data);
+  };
 
   const getBeneficiariesByProject = useCallback(
     async (query) => {
@@ -168,6 +256,21 @@ export const ProjectProvider = ({ children }) => {
       console.log(err);
     }
   });
+  const getProjectsTypesList = useCallback(async () => {
+    const { data } = await ProjectService.getProjectsTypesList();
+    const formattedData = data.data.map((elem) => ({
+      label: elem.name,
+      value: elem.id,
+    }));
+    setState((prev) => ({
+      ...prev,
+      projectsTypesList: formattedData,
+    }));
+  }, []);
+
+  const bulkAddBeneficiary = (payload) => {
+    return ProjectService.bulkAddBeneficiary(payload);
+  };
 
   const contextValue = {
     ...state,
@@ -180,6 +283,14 @@ export const ProjectProvider = ({ children }) => {
     getChartData,
     getBeneficiariesByvillage,
     setFilter,
+    getProjectsTypesList,
+    getGithubProjectTypes,
+    getFormFields,
+    addProject,
+    getContracts,
+    getProjectByAddress,
+    editProject,
+    bulkAddBeneficiary,
   };
 
   return <ProjectsContext.Provider value={contextValue}>{children}</ProjectsContext.Provider>;

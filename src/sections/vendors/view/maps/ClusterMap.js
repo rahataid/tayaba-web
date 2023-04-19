@@ -1,14 +1,12 @@
-import { useRef, memo } from 'react';
+import { memo, useRef } from 'react';
 import Map, { Layer, Source } from 'react-map-gl';
 //
-import { clusterLayer, clusterCountLayer, unclusteredPointLayer } from './layers';
+import { clusterCountLayer, clusterLayer, unclusteredPointLayer } from './layers';
 
 // ----------------------------------------------------------------------
 
 function MapClusters({ mapData = [], ...other }) {
   const mapRef = useRef(null);
-
-  console.log('mapData', mapData);
 
   mapData = mapData.map((item) => ({
     type: 'Feature',

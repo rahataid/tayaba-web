@@ -15,6 +15,7 @@ import Iconify from '../../../components/iconify';
 import { useSettingsContext } from '../../../components/settings';
 //
 import AccountPopover from './AccountPopover';
+import ConnectWalletButton from '../../../components/connect-wallet/ConnectWalletButton';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +50,8 @@ export default function Header({ onOpenNav }) {
 
       <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 1.5 }}>
         {/* <NotificationsPopover /> */}
+
+        <ConnectWalletButton />
 
         <AccountPopover />
       </Stack>

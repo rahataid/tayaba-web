@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import LoadingOverlay from '@components/LoadingOverlay';
+import useLoading from '@hooks/useLoading';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import useLoading from '@hooks/useLoading';
-import LoadingOverlay from '@components/LoadingOverlay';
+import TextField from '@mui/material/TextField';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 AmountForm.propTypes = {
-  approveCashTransfer: PropTypes.func,
+  transferToken: PropTypes.func,
   handleClose: PropTypes.func,
   open: PropTypes.bool,
   description: PropTypes.node,
@@ -19,13 +19,13 @@ AmountForm.propTypes = {
   loadingKey: PropTypes.string,
 };
 
-export default function AmountForm({ approveCashTransfer, title, description, open, handleClose, loadingKey }) {
+export default function AmountForm({ transferToken, title, description, open, handleClose, loadingKey }) {
   const [amount, setAmount] = useState('');
   const { loading, showLoading, hideLoading } = useLoading();
 
   const handleSendCash = async (e) => {
     showLoading(loadingKey);
-    await approveCashTransfer(amount);
+    await transferToken(amount);
     hideLoading(loadingKey);
     handleClose();
     setAmount('');

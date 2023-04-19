@@ -42,10 +42,10 @@ export default class MyDocument extends Document {
           {/* Meta */}
           <meta
             name="description"
-            content="The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style"
+            content="Rahat is a decentralized fundraising platform that empowers individuals and organizations to raise funds for social causes and emergencies. With Rahat, users can create campaigns, donate to causes they care about, and track the impact of their donations. Join Rahat and be a part of the movement to make the world a better place."
           />
-          <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="Minimal UI Kit" />
+          <meta name="keywords" content="rahat,dashboard,admin,template,blockchain,web3,decentralization" />
+          <meta name="author" content="Rahat" />
         </Head>
 
         <body>

@@ -3,6 +3,11 @@
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
+export function stringifyDestinationRoute(path) {
+  return {
+    destinationRoute: JSON.stringify({ path }),
+  };
+}
 
 const ROOTS_DASHBOARD = '/dashboard';
 const ROOTS_PROJECTS = '/projects';
@@ -14,16 +19,21 @@ const ROOTS_MOBILIZERS = '/mobilizers';
 const ROOTS_FINANCIAL_INSTITUTIONS = '/financial-institutions';
 const ROOTS_ADMININSTRATION = '/admin';
 const ROOTS_REPORTS = '/reports';
-
+const ROOTS_CONNECT_WALLET = '/connect-wallet';
 const ROOTS_AUTH = '/auth';
 const ROOTS_APP = '/app';
 const ROOTS_PHOTO_GALLERY = '/photo-gallery';
+const ROOTS_COMMUNICATIONS = '/communications';
 
 // ----------------------------------------------------------------------
 
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),
+};
+
+export const PATH_CONNECT_WALLET = {
+  root: ROOTS_CONNECT_WALLET,
 };
 
 export const PATH_DASHBOARD = {
@@ -35,6 +45,10 @@ export const PATH_PROJECTS = {
   list: path(ROOTS_PROJECTS),
   view: path(ROOTS_PROJECTS, '/[id]'),
   addBudget: path(ROOTS_PROJECTS, '/[id]/add-budget'),
+  addProject: path(ROOTS_PROJECTS, '/add'),
+  editroject: path(ROOTS_PROJECTS, '/edit'),
+  addBeneficary: path(ROOTS_BENEFICIARY, '/add'),
+  bulkAddBeneficiary: path(ROOTS_PROJECTS, '/[id]/beneficiaries/bulk-add'),
 };
 
 export const PATH_CASH_TRACKER = {
@@ -49,6 +63,7 @@ export const PATH_TRANSACTIONS = {
 export const PATH_BENEFICIARY = {
   root: ROOTS_BENEFICIARY,
   list: path(ROOTS_BENEFICIARY),
+  editBeneficiary: path(ROOTS_BENEFICIARY, '/edit'),
 };
 
 export const PATH_VENDORS = {
@@ -84,4 +99,12 @@ export const PATH_APP = {
 
 export const PATH_PHOTO_GALLERY = {
   root: ROOTS_PHOTO_GALLERY,
+};
+
+export const PATH_COMMUNICATION = {
+  root: ROOTS_COMMUNICATIONS,
+  campaigns: path(ROOTS_COMMUNICATIONS, '/campaigns'),
+  createCampaigns: path(ROOTS_COMMUNICATIONS, '/campaigns/create'),
+  logs: path(ROOTS_COMMUNICATIONS, '/logs'),
+  transports: path(ROOTS_COMMUNICATIONS, '/transports'),
 };

@@ -1,28 +1,31 @@
-import { Box, Button, TablePagination, TableCell, TableRow, Chip } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import ListTableToolbar from './ListTableToolbar';
-import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
 import ListTable from '@components/table/ListTable';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
+import { Box, Button, Chip, TableCell, TablePagination, TableRow } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import ListTableToolbar from './ListTableToolbar';
 
 const TableContainer = () => {
   const router = useRouter();
   const [flag, setFlag] = useState(false);
   const { getBeneficiariesList, filter, beneficiaries, errorMessage, getAllVillages, setPagination, pagination } =
     useBeneficiaryContext();
+
   const { roles } = useAuthContext();
+
   useEffect(() => {
     getBeneficiariesList();
     setFlag(!flag);
   }, [getBeneficiariesList, filter]);
+
   useEffect(() => {
     getAllVillages();
   }, [getAllVillages]);
 
-  const handleView = (id) => () => {
-    router.push(`/beneficiaries/${id}`);
+  const handleView = (walletAddress) => () => {
+    router.push(`/beneficiaries/${walletAddress}`);
   };
 
   // #region Table Headers
@@ -106,7 +109,7 @@ const TableContainer = () => {
               <TableCell align={tableHeadersList['tokensClaimed'].align}>{row.tokensClaimed}</TableCell>
 
               <TableCell align={tableHeadersList['action'].align}>
-                <Button onClick={handleView(row.id)} variant="text">
+                <Button onClick={handleView(row.walletAddress)} variant="text">
                   <Iconify icon="ic:outline-remove-red-eye" />
                 </Button>
               </TableCell>
