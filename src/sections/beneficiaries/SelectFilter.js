@@ -1,7 +1,7 @@
 import { MenuItem, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const ListSelectFilter = ({ label, onSelectChange = () => {}, value = '', options = [], ...others }) => (
+const ListSelectFilter = ({ label, onSelectChange = () => { }, value = '', options = [], ...others }) => (
   <TextField
     fullWidth
     select
@@ -19,9 +19,9 @@ const ListSelectFilter = ({ label, onSelectChange = () => {}, value = '', option
     }}
     {...others}
   >
-    {options.map((option) => (
+    {options.map((option, i) => (
       <MenuItem
-        key={option.id}
+        key={i}
         value={option.value}
         sx={{
           mx: 1,

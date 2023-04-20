@@ -41,15 +41,11 @@ export default function ActionMenu({ menuItems, actionTitle, handleClose, anchor
         }}
       >
         {menuItems.map(({ sx, ...item }, index) => (
-          <>
-            {item?.show ? (
-              <MenuItem key={index} sx={{ ...sx, fontSize: 14 }} {...item}>
-                {item.name}
-              </MenuItem>
-            ) : (
-              <></>
-            )}
-          </>
+          item?.show ? (
+            <MenuItem key={index} sx={{ ...sx, fontSize: 14 }} {...item}>
+              {item.name}
+            </MenuItem>
+          ) : null
         ))}
       </Menu>
     </div>

@@ -55,8 +55,8 @@ export default function TableContainerView() {
     <Box>
       <ListTable tableRowsList={vendors?.data} tableHeadersList={TABLE_HEAD}>
         {(rows, tableHeadersList) =>
-          rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          rows.map((row, index) => (
+            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
               <TableCell align={tableHeadersList['projectsInvolved'].align}>
                 {row?.vendor_project_details?.map(({ name }) => name)}

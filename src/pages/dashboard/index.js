@@ -1,10 +1,10 @@
-import { Chip, Container } from '@mui/material';
-import DashboardLayout from '@layouts/dashboard';
 import { Page } from '@components/page';
 import { useSettingsContext } from '@components/settings';
+import { DashboardProvider } from '@contexts/dashboard';
+import DashboardLayout from '@layouts/dashboard';
+import { Container } from '@mui/material';
 import { DashboardComponent } from '@sections/dashboard';
 import { ContextProvider } from '@sections/dashboard/context';
-import { DashboardProvider } from '@contexts/dashboard';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ export default function Dashboard() {
   return (
     <DashboardProvider>
       <ContextProvider>
-        <Page title="" nocard>
+        <Page nocard>
           <Container maxWidth={themeStretch ? false : 'xl'}>
             <DashboardComponent />
           </Container>

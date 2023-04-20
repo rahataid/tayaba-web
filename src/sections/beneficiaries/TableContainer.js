@@ -75,7 +75,7 @@ const TableContainer = () => {
     <Box>
       <ListTableToolbar />
       <TablePagination
-        count={beneficiaries?.count}
+        count={beneficiaries?.count || 0}
         component="div"
         page={pagination?.page}
         rowsPerPage={pagination?.limit}
@@ -91,8 +91,8 @@ const TableContainer = () => {
         errorMessage={errorMessage}
       >
         {(rows, tableHeadersList) =>
-          rows.map((row) => (
-            <TableRow key={row?.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          rows.map((row, i) => (
+            <TableRow key={`${row?.id}-${i}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{roles.isStakeholder ? 'XXXX' : row.name}</TableCell>
 
               <TableCell align={tableHeadersList['cnicNumber'].align}>
@@ -118,7 +118,7 @@ const TableContainer = () => {
         }
       </ListTable>
       <TablePagination
-        count={beneficiaries?.count}
+        count={beneficiaries?.count || 0}
         component="div"
         page={pagination?.page}
         rowsPerPage={pagination?.limit}

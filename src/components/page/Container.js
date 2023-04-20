@@ -13,7 +13,7 @@ const ContainerComponent = ({ children, title, action, breadcrumbLinks, nocard =
     <>
       {' '}
       <MuiContainer maxWidth={themeStretch ? false : 'lg'}>
-        <Headerbreadcrumbs
+        {/* <Headerbreadcrumbs
           heading={
             title && (
               <Stack direction="row" alignItems="center" spacing={1}>
@@ -32,7 +32,7 @@ const ContainerComponent = ({ children, title, action, breadcrumbLinks, nocard =
           }
           links={[{ name: '', href: PATH_DASHBOARD.root }, ...breadcrumbLinks]}
           action={action}
-        />
+        /> */}
         {nocard ? children : <Card sx={{ p: 2 }}>{children}</Card>}
       </MuiContainer>
     </>

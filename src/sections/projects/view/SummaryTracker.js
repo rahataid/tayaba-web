@@ -131,7 +131,7 @@ export default function SummaryTracker({ sx, ...other }) {
   };
 
   return (
-    <Grid container xs={12} md={12} paddingTop={3} paddingBottom={3}>
+    <Grid container item xs={12} md={12} paddingTop={3} paddingBottom={3}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title="Inventory Tracker" />
@@ -147,7 +147,7 @@ export default function SummaryTracker({ sx, ...other }) {
                   }}
                 >
                   <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-                    <Grid container direction="column" justifyContent="center" alignItems="center">
+                    <Grid container item direction="column" justifyContent="center" alignItems="center">
                       <Typography fontWeight={700} variant="caption">
                         {step?.label}
                       </Typography>
