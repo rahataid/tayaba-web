@@ -32,23 +32,23 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => {},
-  getProjectById: () => {},
-  getProjectByAddress: () => {},
-  getBeneficiariesByProject: () => {},
-  getVendorsByProject: () => {},
-  refreshData: () => {},
-  setRahatResponseStatus: () => {},
-  getChartData: () => {},
-  getBeneficiariesByvillage: () => {},
-  setFilter: () => {},
-  getProjectsTypesList: () => {},
-  getGithubProjectTypes: () => {},
-  getFormFields: () => {},
-  addProject: () => {},
-  getContracts: () => {},
-  editProject: () => {},
-  bulkAddBeneficiary: () => {},
+  getProjectsList: () => { },
+  getProjectById: () => { },
+  getProjectByAddress: () => { },
+  getBeneficiariesByProject: () => { },
+  getVendorsByProject: () => { },
+  refreshData: () => { },
+  setRahatResponseStatus: () => { },
+  getChartData: () => { },
+  getBeneficiariesByvillage: () => { },
+  setFilter: () => { },
+  getProjectsTypesList: () => { },
+  getGithubProjectTypes: () => { },
+  getFormFields: () => { },
+  addProject: () => { },
+  getContracts: () => { },
+  editProject: () => { },
+  bulkAddBeneficiary: () => { },
 };
 
 const ProjectsContext = createContext(initialState);
@@ -135,6 +135,7 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
+    console.log(response)
     if (response.data.data === null) {
       setState((prev) => ({
         ...prev,
@@ -142,7 +143,7 @@ export const ProjectProvider = ({ children }) => {
       }));
       return null;
     }
-    const { name, location, description, startDate, endDate, extras } = response.data.data;
+    const { name, location, description, extras } = response.data.data;
     const formatted = {
       ...response.data?.data,
       projectManagerName: response.data?.project_manager?.name
@@ -167,7 +168,6 @@ export const ProjectProvider = ({ children }) => {
       },
       vendors: formatted.vendor_details,
     }));
-
     return formatted;
   }, []);
 
