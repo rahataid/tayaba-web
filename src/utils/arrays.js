@@ -4,3 +4,15 @@ export function getLabelsByValues(array, values) {
     return result ? result.label : undefined;
   });
 }
+
+export const splitArrayToChunks = (arrayData, chunkSize) => {
+  let groups = arrayData
+    .map((item, index) => {
+      return index % chunkSize === 0 ? arrayData.slice(index, index + chunkSize) : null;
+    })
+    .filter(function (item) {
+      return item;
+    });
+
+  return groups;
+};

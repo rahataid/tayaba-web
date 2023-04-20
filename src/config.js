@@ -137,3 +137,5 @@ export const BLOCKCHAIN_NETWORKS = {
     Url: 'http://127.0.0.1:8545',
   },
 };
+
+export const BULK_ASSIGN_CHUNK_SIZE = 50;
