@@ -45,12 +45,12 @@ export default function ListTable({
   const renderTableCell = (list, head) =>
     list.map((listItem, index) => (
 
-      <TableRow hover key={`${listItem.id} - ${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-        {Object.keys(head).map((headerKey, i) => {
+      <TableRow hover key={listItem.id ?? index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        {Object.keys(head).map((headerKey) => {
           const tableKeyId = head[headerKey].id
 
           return (
-            <TableCell align={head[headerKey]?.align} component="th" scope="row" key={`${tableKeyId}-${i}`}>
+            <TableCell align={head[headerKey]?.align} component="th" scope="row" key={tableKeyId}>
               {listItem[tableKeyId] ? conditionalRendering(listItem[tableKeyId], tableKeyId) : '-'}
             </TableCell>
           );

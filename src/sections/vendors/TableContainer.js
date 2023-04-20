@@ -1,10 +1,10 @@
-import React, { useEffect, useState, Typography } from 'react';
-import { Box, Button, Chip, Pagination, TableCell, TableRow } from '@mui/material';
-import { useRouter } from 'next/router';
 import Iconify from '@components/iconify';
 import ListTable from '@components/table/ListTable';
 import { useVendorsContext } from '@contexts/vendors';
+import { Box, Button, Pagination, TableCell, TableRow } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const TABLE_HEAD = {
   name: {
@@ -55,8 +55,8 @@ export default function TableContainerView() {
     <Box>
       <ListTable tableRowsList={vendors?.data} tableHeadersList={TABLE_HEAD}>
         {(rows, tableHeadersList) =>
-          rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          rows.map((row, index) => (
+            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align={tableHeadersList['name'].align}>{row.name}</TableCell>
               <TableCell align={tableHeadersList['gender'].align}>{row.gender}</TableCell>
               <TableCell align={tableHeadersList['phone'].align}>{row.phone}</TableCell>
