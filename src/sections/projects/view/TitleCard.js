@@ -40,11 +40,13 @@ const TitleCard = ({ chainData, refreshData }) => {
   const { sendTokenToProject } = useRahatDonor();
   const { loading, showLoading, hideLoading } = useLoading();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [memberAnchorEl, setMemberAnchorEl] = useState(null);
 
   const [approveProjectDialog, setApproveProjectDialog] = useState(false);
 
   const handleMenuItemClose = () => {
     setAnchorEl(null);
+    setMemberAnchorEl(null);
   };
 
   const handleUnlockModal = () => {
@@ -112,6 +114,9 @@ const TitleCard = ({ chainData, refreshData }) => {
   const handleBeneficiaryRouteAction = () => {
     push(`/projects/${projectId}/beneficiaries`);
   };
+  const handleDistributorsRouteAction = () => {
+    push(`/projects/${projectId}/distributors`);
+  };
 
   const handleDelete = async () => {
     try {
@@ -169,6 +174,19 @@ const TitleCard = ({ chainData, refreshData }) => {
     },
   ];
 
+  const memberListItems = [
+    {
+      onClick: handleBeneficiaryRouteAction,
+      name: 'Beneficiaries ',
+      show: true,
+    },
+    {
+      onClick: handleDistributorsRouteAction,
+      name: 'Vendors ',
+      show: true,
+    },
+  ];
+
   return (
     <>
       <Dialog open={isDialogShow} onClose={hideDialog}>
@@ -201,10 +219,13 @@ const TitleCard = ({ chainData, refreshData }) => {
       <Grid item xs={12} md={12}>
         <Card variant="outlined">
           <Stack sx={{ p: 1 }} direction="row" justifyContent="space-between" alignItems="center">
-            <Button variant="outlined" color="success" onClick={handleBeneficiaryRouteAction}>
-              {' '}
-              Beneficiary List{' '}
-            </Button>
+            <ActionMenu
+              menuItems={memberListItems}
+              actionTitle="Associates Lists"
+              handleClose={handleMenuItemClose}
+              anchorEl={memberAnchorEl}
+              setAnchorEl={setMemberAnchorEl}
+            />
             {roles?.isDonor && (
               <ActionMenu
                 menuItems={menuItems}

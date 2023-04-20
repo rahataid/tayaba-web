@@ -27,7 +27,7 @@ export default function BeneficiaryList() {
         title={PAGE_TITLE}
         action={
           <Button onClick={handleAdd} variant="outlined">
-            Bulk add
+            Add Beneficiaries To Project
           </Button>
         }
       >

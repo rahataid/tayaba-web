@@ -4,11 +4,11 @@ import { useSettingsContext } from '@components/settings';
 import { ProjectProvider } from '@contexts/projects';
 import DashboardLayout from '@layouts/dashboard';
 import { Container } from '@mui/material';
-import { TableContainer } from '@sections/projects/beneficiaries/bulk-add';
+import { TableContainer } from '@sections/projects/distributors';
 
-const PAGE_TITLE = 'Project: Beneficiaries Bulk Add';
+const PAGE_TITLE = 'Project: Distributors';
 
-export default function BulkAdd() {
+export default function DistibutorsList() {
   const { themeStretch } = useSettingsContext();
 
   return (
@@ -22,4 +22,4 @@ export default function BulkAdd() {
   );
 }
 
-BulkAdd.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+DistibutorsList.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

@@ -18,7 +18,7 @@ export default function ActionMenu({ menuItems, actionTitle, handleClose, anchor
 
   return (
     <div>
-      <Stack sx={{ ml: -10 }} direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
+      <Stack sx={{ ml: 1 }} direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
         <Button
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}
