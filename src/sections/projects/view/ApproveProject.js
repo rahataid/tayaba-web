@@ -1,12 +1,16 @@
 import LoadingOverlay from '@components/LoadingOverlay';
+import { useProjectContext } from '@contexts/projects';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { useProject } from '@services/contracts/useProject';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
 export default function ApproveProject({ open, handleClose }) {
+  const { enqueueSnackbar } = useSnackbar();
   const { approveProject } = useProject();
+  const { approve, refreshData } = useProjectContext();
   const { handleContractError } = useErrorHandler();
   const {
     query: { projectId: contractAddress },
@@ -14,16 +18,20 @@ export default function ApproveProject({ open, handleClose }) {
 
   const [loading, setLoading] = useState(false);
   const handleApprove = async () => {
+    setLoading(true);
     try {
       console.log('approving');
-      const d = await approveProject(contractAddress);
-      console.log({ d });
+      await approveProject(contractAddress);
+      await approve(contractAddress, { isApproved: true });
+      refreshData();
+      enqueueSnackbar('Approved  Project');
       handleClose();
     } catch (error) {
       console.log(error);
       handleClose();
       handleContractError(error);
     }
+    setLoading(false);
   };
   return (
     <>
