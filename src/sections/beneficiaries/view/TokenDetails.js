@@ -6,7 +6,18 @@ import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import useDialog from '@hooks/useDialog';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import useLoading from '@hooks/useLoading';
-import { Button, Card, CardContent, Chip, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { BeneficiaryService } from '@services/beneficiaries';
 import { useProject } from '@services/contracts/useProject';
 import moment from 'moment';
@@ -17,7 +28,7 @@ import { useAuthContext } from 'src/auth/useAuthContext';
 import AssignProjectModal from './AssignProjectModal';
 
 export default function TokenDetails({ chainData }) {
-  const { singleBeneficiary, refreshData, projects, getAllProjects, assignProject } = useBeneficiaryContext();
+  const { singleBeneficiary, refreshData, projects, getAllProjects, assignProject, refresh } = useBeneficiaryContext();
   const { enqueueSnackbar } = useSnackbar();
   const { isDialogShow, showDialog, hideDialog } = useDialog();
   const { assignClaimsToBeneficiaries, contract } = useProject();
@@ -70,7 +81,6 @@ export default function TokenDetails({ chainData }) {
 
   useEffect(() => {
     getAllProjects();
-    console.log(singleBeneficiary);
   }, [getAllProjects]);
   const handleDelete = async () => {
     try {
@@ -91,7 +101,7 @@ export default function TokenDetails({ chainData }) {
     <>
       <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
         <Dialog open={isDialogShow} onClose={hideDialog}>
-          <LoadingOverlay open={loading.assignClaim}>
+          <LoadingOverlay open={false}>
             <DialogTitle> Are you sure to assign claim ?</DialogTitle>
             <DialogActions>
               <Button onClick={hideDialog}>Cancel</Button>
@@ -108,11 +118,12 @@ export default function TokenDetails({ chainData }) {
           assignProject={assignProject}
           beneficraryId={singleBeneficiary?.data?.id}
           refreshData={refreshData}
+          refresh={refresh}
         />
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
             <Typography>Claims Details</Typography>
-            {!singleBeneficiary?.data?.beneficiary_project_details ? (
+            {!singleBeneficiary?.data?.beneficiary_project_details?.length > 0 ? (
               <Button variant="outlined" onClick={handleAssignProject} size="small">
                 Assign Project
               </Button>
@@ -199,31 +210,21 @@ export default function TokenDetails({ chainData }) {
             <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" truncateLength={8} />
           </Stack>
         </CardContent>
-      </Card >
+      </Card>
       {singleBeneficiary?.data?.beneficiary_project_details.length ? (
         <Card sx={{ mt: 0.5 }}>
           <CardContent>
             <Typography>Projects</Typography>
-            <Stack
-              sx={{ pt: SPACING.GRID_SPACING }}
-              direction="row"
-              justifyContent={'flex-start'}
-              alignItems="center"
-            >
+            <Stack sx={{ pt: SPACING.GRID_SPACING }} direction="row" justifyContent={'flex-start'} alignItems="center">
               {singleBeneficiary?.data?.beneficiary_project_details?.map((obj) => {
-                return (
-                  <Chip
-                    label={obj.name}
-                    variant="plain"
-                    color='primary'
-                    size='sm'
-                  />)
+                return <Chip label={obj.name} variant="plain" color="primary" size="sm" />;
               })}
             </Stack>
           </CardContent>
         </Card>
-      ) : ('')
-      }
+      ) : (
+        ''
+      )}
     </>
   );
 }

@@ -8,6 +8,10 @@ export const ProjectService = {
     });
   },
 
+  approveProject(contractAddress, payload) {
+    return clientApi.patch(`/projects/${contractAddress}/approve`, payload);
+  },
+
   bulkAddBeneficiary(data) {
     return clientApi.post(`/beneficiaries/project/bulkadd`, data);
   },

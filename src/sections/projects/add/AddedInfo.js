@@ -54,7 +54,7 @@ export default function AddedInfo({ projectInfo = {}, projectType }) {
                     </Grid>
                   )
                 )}
-                {Object.entries(projectInfo[1].extras).map(([key, value]) =>
+                {Object.entries(projectInfo[1]?.extras).map(([key, value]) =>
                   value instanceof Date ? (
                     <Grid key={`${key}-${value}`} item xs={12} md={3}>
                       <RHFTextField
