@@ -135,7 +135,6 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
-    console.log(response)
     if (response.data.data === null) {
       setState((prev) => ({
         ...prev,

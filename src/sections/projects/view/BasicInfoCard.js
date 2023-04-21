@@ -127,16 +127,20 @@ export default function BasicInfoCard({ rahatChainData }) {
           <Typography variant="caption">End Date</Typography>
         </Grid>
       </Stack>
-      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
-        <Typography variant="body1"> {singleProject?.description}</Typography>
-      </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={3}>
         {
           singleProject?.extras && Object.entries(singleProject?.extras).map(([key, value]) =>
-            <Typography key={key} variant="body1"> {value}</Typography>
+            <Grid key={`${key}`} container direction="column" justifyContent="flex-end" alignItems="flex-start">
+              <Typography variant="body1"> {value}</Typography>
+              <Typography variant="caption"> {key}</Typography>
+            </Grid>
           )
         }
       </Stack>
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+        <Typography variant="body1"> {singleProject?.description}</Typography>
+      </Stack>
+
     </>
   );
 }
