@@ -98,7 +98,7 @@ export default function BasicInfoCard({ rahatChainData }) {
           icon={<Iconify icon={'material-symbols:lock-outline'} />}
         /> */}
       </Stack>
-      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={6}>
         <Grid container direction="column" justifyContent="center" alignItems="flex-start">
           <Typography variant="h5" sx={{ fontWeight: 400 }}>
             {singleProject?.projectManager}
@@ -129,6 +129,13 @@ export default function BasicInfoCard({ rahatChainData }) {
       </Stack>
       <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={12}>
         <Typography variant="body1"> {singleProject?.description}</Typography>
+      </Stack>
+      <Stack sx={{ p: 2 }} direction="row" justifyContent="space-between" alignItems="center" spacing={3}>
+        {
+          singleProject?.extras && Object.entries(singleProject?.extras).map(([key, value]) =>
+            <Typography key={key} variant="body1"> {value}</Typography>
+          )
+        }
       </Stack>
     </>
   );

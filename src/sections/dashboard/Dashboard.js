@@ -130,11 +130,11 @@ const DashboardComponent = () => {
       setFlickImages([]);
     };
   }, []);
-
   return (
     <Box>
-      <Grid container spacing={theme.spacing(SPACING.GRID_SPACING)}>
+      <Grid item container spacing={theme.spacing(SPACING.GRID_SPACING)}>
         <Grid
+          item
           container
           lg={7}
           spacing={theme.spacing(SPACING.GRID_SPACING)}
@@ -179,7 +179,7 @@ const DashboardComponent = () => {
             />
           </Grid>
         </Grid>
-        <Grid container xs={12} md={6} lg={5}>
+        <Grid item container xs={12} md={6} lg={5}>
           <Grid item xs={12} md={12}>
             <PhotoGallery list={flickImages} />
           </Grid>

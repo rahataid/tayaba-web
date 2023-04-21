@@ -7,9 +7,9 @@ import TableHeadCustom from './TableHeadCustom';
 
 ListTable.propTypes = {
   size: PropTypes.string,
-  tableRowsList: PropTypes.array.isRequired,
+  tableRowsList: PropTypes.array,
   tableHeadersList: PropTypes.object.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.func,
   footer: PropTypes.node,
   errorMessage: PropTypes.node,
 };
@@ -44,9 +44,10 @@ export default function ListTable({
 
   const renderTableCell = (list, head) =>
     list.map((listItem, index) => (
-      <TableRow hover key={`${listItem.id}-${index}`} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+
+      <TableRow hover key={listItem.id ?? index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         {Object.keys(head).map((headerKey) => {
-          const tableKeyId = head[headerKey].id;
+          const tableKeyId = head[headerKey].id
 
           return (
             <TableCell align={head[headerKey]?.align} component="th" scope="row" key={tableKeyId}>

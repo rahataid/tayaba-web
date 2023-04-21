@@ -9,7 +9,7 @@ import Breadcrumbs from './Breadcrumbs';
 HeaderBreadcrumbs.propTypes = {
   links: PropTypes.array,
   action: PropTypes.node,
-  heading: PropTypes.string.isRequired,
+  heading: PropTypes.any.isRequired,
   moreLink: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   sx: PropTypes.object,
 };

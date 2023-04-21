@@ -1,4 +1,4 @@
-import ethers, { providers } from 'ethers';
+import { ethers, providers } from 'ethers';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import useWalletConnection from './useWalletConnection';
 export const useWallet = (privateKey) => {

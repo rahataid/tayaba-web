@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import LoadingOverlay from '@components/LoadingOverlay';
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import LoadingOverlay from '@components/LoadingOverlay';
 import { SPACING } from '@config';
 import { useBeneficiaryContext } from '@contexts/beneficiaries';
 import useDialog from '@hooks/useDialog';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import useLoading from '@hooks/useLoading';
-import { Button, Card, CardContent, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, Chip, Dialog, DialogActions, DialogTitle, Grid, Stack, Typography } from '@mui/material';
 import { BeneficiaryService } from '@services/beneficiaries';
 import { useProject } from '@services/contracts/useProject';
 import moment from 'moment';
@@ -70,6 +70,7 @@ export default function TokenDetails({ chainData }) {
 
   useEffect(() => {
     getAllProjects();
+    console.log(singleBeneficiary);
   }, [getAllProjects]);
   const handleDelete = async () => {
     try {
@@ -87,116 +88,142 @@ export default function TokenDetails({ chainData }) {
   };
 
   return (
-    <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
-      <Dialog open={isDialogShow} onClose={hideDialog}>
-        <LoadingOverlay open={loading.assignClaim}>
-          <DialogTitle> Are you sure to assign claim ?</DialogTitle>
-          <DialogActions>
-            <Button onClick={hideDialog}>Cancel</Button>
-            <Button variant="outlined" onClick={handleAssignClaim}>
-              Assign
+    <>
+      <Card sx={{ width: '100%', mb: SPACING.GRID_SPACING }}>
+        <Dialog open={isDialogShow} onClose={hideDialog}>
+          <LoadingOverlay open={loading.assignClaim}>
+            <DialogTitle> Are you sure to assign claim ?</DialogTitle>
+            <DialogActions>
+              <Button onClick={hideDialog}>Cancel</Button>
+              <Button variant="outlined" onClick={handleAssignClaim}>
+                Assign
+              </Button>
+            </DialogActions>
+          </LoadingOverlay>
+        </Dialog>
+        <AssignProjectModal
+          open={showProjectAssign}
+          handleClose={handleAssignProjectClose}
+          projects={projects}
+          assignProject={assignProject}
+          beneficraryId={singleBeneficiary?.data?.id}
+          refreshData={refreshData}
+        />
+        <CardContent>
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+            <Typography>Claims Details</Typography>
+            {!singleBeneficiary?.data?.beneficiary_project_details ? (
+              <Button variant="outlined" onClick={handleAssignProject} size="small">
+                Assign Project
+              </Button>
+            ) : (
+              <>
+                {chainData?.isBenActive ? (
+                  <>
+                    {(roles.isManager || roles.isAdmin) && (
+                      <>
+                        {chainData?.balance < 1 ? (
+                          <Button variant="outlined" onClick={showDialog} size="small">
+                            {' '}
+                            Assign Claim
+                          </Button>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {roles.isAdmin && (
+                      <Button
+                        variant="outlined"
+                        onClick={handleActivate}
+                        disabled={roles?.isDonor ? true : false}
+                        size="small"
+                      >
+                        {' '}
+                        Activate
+                      </Button>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+            <Button variant="outlined" color="error" size="small" onClick={handleDelete}>
+              Delete
             </Button>
-          </DialogActions>
-        </LoadingOverlay>
-      </Dialog>
-      <AssignProjectModal
-        open={showProjectAssign}
-        handleClose={handleAssignProjectClose}
-        projects={projects}
-        assignProject={assignProject}
-        beneficraryId={singleBeneficiary?.data?.id}
-        refreshData={refreshData}
-      />
-      <CardContent>
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
-          <Typography>Claims Details</Typography>
-          {!singleBeneficiary?.data?.beneficiary_project_details ? (
-            <Button variant="outlined" onClick={handleAssignProject} size="small">
-              Assign Project
-            </Button>
-          ) : (
-            <>
-              {chainData?.isBenActive ? (
-                <>
-                  {(roles.isManager || roles.isAdmin) && (
-                    <>
-                      {chainData?.balance < 1 ? (
-                        <Button variant="outlined" onClick={showDialog} size="small">
-                          {' '}
-                          Assign Claim
-                        </Button>
-                      ) : (
-                        <></>
-                      )}
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  {roles.isAdmin && (
-                    <Button
-                      variant="outlined"
-                      onClick={handleActivate}
-                      disabled={roles?.isDonor ? true : false}
-                      size="small"
-                    >
-                      {' '}
-                      Activate
-                    </Button>
-                  )}
-                </>
-              )}
-            </>
-          )}
-          <Button variant="outlined" color="error" size="small" onClick={handleDelete}>
-            Delete
-          </Button>
-        </Stack>
-        <Stack
-          sx={{ pt: SPACING.GRID_SPACING }}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={SPACING.GRID_SPACING}
-        >
-          <Typography variant="caption">Claimed</Typography>
+          </Stack>
+          <Stack
+            sx={{ pt: SPACING.GRID_SPACING }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={SPACING.GRID_SPACING}
+          >
+            <Typography variant="caption">Claimed</Typography>
 
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="caption">{moment().format('DD/MMM/YYYY')}</Typography>
-          </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="caption">{chainData?.balance || 0}</Typography>
-          </Grid>
-        </Stack>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Typography variant="caption">{moment().format('DD/MMM/YYYY')}</Typography>
+            </Grid>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Typography variant="caption">{chainData?.balance || 0}</Typography>
+            </Grid>
+          </Stack>
 
-        <Stack
-          sx={{ pt: SPACING.GRID_SPACING }}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={SPACING.GRID_SPACING}
-        >
-          <Typography variant="caption">Received</Typography>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="caption">{moment().format('DD/MMM/YYYY')}</Typography>
-          </Grid>
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Typography variant="caption">{chainData?.totalTokenIssued || 0}</Typography>
-          </Grid>
-        </Stack>
-        <Stack
-          sx={{ pt: SPACING.GRID_SPACING, overflow: 'elipsis' }}
-          direction="row"
-          // justifyContent="space-between"
-          justifyContent={'flex-start'}
-          alignItems="center"
-          spacing={SPACING.GRID_SPACING}
-        >
-          <Typography variant="caption">Wallet</Typography>
+          <Stack
+            sx={{ pt: SPACING.GRID_SPACING }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={SPACING.GRID_SPACING}
+          >
+            <Typography variant="caption">Received</Typography>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Typography variant="caption">{moment().format('DD/MMM/YYYY')}</Typography>
+            </Grid>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Typography variant="caption">{chainData?.totalTokenIssued || 0}</Typography>
+            </Grid>
+          </Stack>
+          <Stack
+            sx={{ pt: SPACING.GRID_SPACING, overflow: 'elipsis' }}
+            direction="row"
+            // justifyContent="space-between"
+            justifyContent={'flex-start'}
+            alignItems="center"
+            spacing={SPACING.GRID_SPACING}
+          >
+            <Typography variant="caption">Wallet</Typography>
 
-          <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" truncateLength={8} />
-        </Stack>
-      </CardContent>
-    </Card>
+            <WalletExplorerButton address={singleBeneficiary?.data?.walletAddress} type="address" truncateLength={8} />
+          </Stack>
+        </CardContent>
+      </Card >
+      {singleBeneficiary?.data?.beneficiary_project_details.length ? (
+        <Card sx={{ mt: 0.5 }}>
+          <CardContent>
+            <Typography>Projects</Typography>
+            <Stack
+              sx={{ pt: SPACING.GRID_SPACING }}
+              direction="row"
+              justifyContent={'flex-start'}
+              alignItems="center"
+            >
+              {singleBeneficiary?.data?.beneficiary_project_details?.map((obj) => {
+                return (
+                  <Chip
+                    label={obj.name}
+                    variant="plain"
+                    color='primary'
+                    size='sm'
+                  />)
+              })}
+            </Stack>
+          </CardContent>
+        </Card>
+      ) : ('')
+      }
+    </>
   );
 }

@@ -97,44 +97,42 @@ function CarouselItem({ item, isActive, projectName }) {
   return (
     <MotionContainer action animate={isActive} sx={{ position: 'relative' }}>
       <Link href="/photo-gallery">
-        <a>
-          <StyledOverlay />
-          <Image
-            alt={title}
-            src={image}
-            sx={{
-              height: { xs: 280, xl: 400 },
-            }}
-          />
-          <Stack
-            spacing={1}
-            sx={{
-              width: 1,
-              bottom: 60,
-              zIndex: 9,
-              textAlign: 'center',
-              position: 'relative',
-              color: 'common.white',
-            }}
-          >
-            <m.div variants={varFade().inRight}>
-              <Typography
-                variant="h4"
-                component="div"
-                sx={{
-                  backgroundColor: alpha(theme.palette.grey[900], 0.64),
-                  width: 1,
-                  p: 2,
-                  fontWeight: 600,
-                  textAlign: 'left',
-                  position: 'absolute',
-                }}
-              >
-                {projectName}
-              </Typography>
-            </m.div>
-          </Stack>
-        </a>
+        <StyledOverlay />
+        <Image
+          alt={title}
+          src={image}
+          sx={{
+            height: { xs: 280, xl: 400 },
+          }}
+        />
+        <Stack
+          spacing={1}
+          sx={{
+            width: 1,
+            bottom: 60,
+            zIndex: 9,
+            textAlign: 'center',
+            position: 'relative',
+            color: 'common.white',
+          }}
+        >
+          <m.div variants={varFade().inRight}>
+            <Typography
+              variant="h4"
+              component="div"
+              sx={{
+                backgroundColor: alpha(theme.palette.grey[900], 0.64),
+                width: 1,
+                p: 2,
+                fontWeight: 600,
+                textAlign: 'left',
+                position: 'absolute',
+              }}
+            >
+              {projectName}
+            </Typography>
+          </m.div>
+        </Stack>
       </Link>
     </MotionContainer>
   );
