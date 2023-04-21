@@ -38,7 +38,6 @@ const ProjectView = () => {
     }));
   };
   useEffect(() => {
-    console.log(singleProject)
     const getFlickPics = async () => {
       const params = {
         per_page: 10,
