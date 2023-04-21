@@ -140,7 +140,7 @@ export default function Stepper() {
       setLoading(true);
       let args = [
         defaultValues[0].name,
-        contracts[CONTRACTS.RAHATTOKEN],
+        contracts[CONTRACTS.RAHATTOKEN` `],
         contracts[CONTRACTS.CLAIM],
         '0xcdD96aB6bA2819B53ee9c5273b60d98383F2171b',
         contracts[CONTRACTS.COMMUNITY],

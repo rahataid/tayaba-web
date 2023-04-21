@@ -32,23 +32,24 @@ const initialState = {
   abi: [],
   byteCode: '',
   contractName: '',
-  getProjectsList: () => { },
-  getProjectById: () => { },
-  getProjectByAddress: () => { },
-  getBeneficiariesByProject: () => { },
-  getVendorsByProject: () => { },
-  refreshData: () => { },
-  setRahatResponseStatus: () => { },
-  getChartData: () => { },
-  getBeneficiariesByvillage: () => { },
-  setFilter: () => { },
-  getProjectsTypesList: () => { },
-  getGithubProjectTypes: () => { },
-  getFormFields: () => { },
-  addProject: () => { },
-  getContracts: () => { },
-  editProject: () => { },
-  bulkAddBeneficiary: () => { },
+  getProjectsList: () => {},
+  getProjectById: () => {},
+  getProjectByAddress: () => {},
+  getBeneficiariesByProject: () => {},
+  getVendorsByProject: () => {},
+  refreshData: () => {},
+  setRahatResponseStatus: () => {},
+  getChartData: () => {},
+  getBeneficiariesByvillage: () => {},
+  setFilter: () => {},
+  getProjectsTypesList: () => {},
+  getGithubProjectTypes: () => {},
+  getFormFields: () => {},
+  addProject: () => {},
+  getContracts: () => {},
+  editProject: () => {},
+  bulkAddBeneficiary: () => {},
+  approve: () => {},
 };
 
 const ProjectsContext = createContext(initialState);
@@ -135,6 +136,7 @@ export const ProjectProvider = ({ children }) => {
 
   const getProjectByAddress = useCallback(async (address) => {
     const response = await ProjectService.getProjectByAddress(address);
+
     if (response.data.data === null) {
       setState((prev) => ({
         ...prev,
@@ -272,6 +274,10 @@ export const ProjectProvider = ({ children }) => {
     return ProjectService.bulkAddBeneficiary(payload);
   };
 
+  const approve = (contractAddress, payload) => {
+    return ProjectService.approveProject(contractAddress, payload);
+  };
+
   const contextValue = {
     ...state,
     refreshData,
@@ -289,6 +295,7 @@ export const ProjectProvider = ({ children }) => {
     getContracts,
     getProjectByAddress,
     editProject,
+    approve,
     bulkAddBeneficiary,
   };
 

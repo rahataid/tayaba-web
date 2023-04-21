@@ -8,7 +8,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 
 export default function AssignProjectModal({
   open,
@@ -18,31 +19,37 @@ export default function AssignProjectModal({
   assignProject,
   beneficraryId,
   refreshData,
+  refresh,
 }) {
+  const { enqueueSnackbar } = useSnackbar();
   const [project, setProject] = useState('');
-  const { loading, showLoading, hideLoading } = useLoading();
+  const [loading, setLoading] = useState(false);
   const { handleError } = useErrorHandler();
   const handleChange = (e) => {
     setProject(e.target.value);
   };
 
   const handleAssign = async () => {
-    showLoading(loadingKey);
+    setLoading(true);
     try {
       await assignProject(beneficraryId, { projectId: project });
+      enqueueSnackbar('Asiigned to projects', {
+        variant: 'success',
+      });
     } catch (error) {
       handleError(error);
     }
-    hideLoading(loadingKey);
+    setLoading(false);
     handleClose();
     refreshData();
     setProject('');
   };
+  useEffect(() => {}, [refresh]);
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <LoadingOverlay open={loading[loadingKey]}>
+        <LoadingOverlay open={loading}>
           <DialogTitle>Assign Project</DialogTitle>
           <DialogContent>
             <DialogContentText sx={{ mb: 2 }}>Select Project To Assign Beneficiary</DialogContentText>
