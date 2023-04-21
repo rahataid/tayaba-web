@@ -37,7 +37,6 @@ const ConnectWalletButton = () => {
   const handleWalletDrawer = () => setDrawerOpen((prev) => !prev);
 
   const handleWrongNetworkModal = () => {
-    console.log('    here');
     setOpenWrongNetworkModal((o) => !o);
   };
 
