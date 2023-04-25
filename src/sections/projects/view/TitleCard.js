@@ -100,17 +100,19 @@ const TitleCard = ({ chainData, refreshData }) => {
   const TokenActions = {
     sendTokenToProject: (amount) => () => {
       showLoading('project-view');
-      sendTokenToProject(amount).then(() => {
-        enqueueSnackbar('Tokens sent to Project', {
-          variant: 'success',
-        }).catch((err) => {
-          console.log(err);
+      sendTokenToProject(amount)
+        .then(() => {
+          enqueueSnackbar('Tokens sent to Project', {
+            variant: 'success',
+          });
+        })
+        .catch((err) => {
+          handleContractError(err);
         });
-        refreshData();
-        handleMenuItemClose();
-        hideLoading('project-view');
-        handleAddBudgetModel();
-      });
+      refreshData();
+      handleMenuItemClose();
+      hideLoading('project-view');
+      handleAddBudgetModel();
     },
   };
 
