@@ -103,6 +103,8 @@ const TitleCard = ({ chainData, refreshData }) => {
       sendTokenToProject(amount).then(() => {
         enqueueSnackbar('Tokens sent to Project', {
           variant: 'success',
+        }).catch((err) => {
+          console.log(err);
         });
         refreshData();
         handleMenuItemClose();
