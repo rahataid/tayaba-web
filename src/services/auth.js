@@ -9,4 +9,7 @@ export const AuthService = {
     return client.post('/users/login/otp', data);
     // return client.post('/users/otp_verification', data);
   },
+  loginWithWallet(data) {
+    return client.post('/users/login/wallet', data);
+  }
 };

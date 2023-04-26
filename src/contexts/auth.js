@@ -4,9 +4,9 @@ import { AuthService } from '@services';
 
 const initialState = {
   otpSent: false,
-  handleOtpRequest: () => {},
-  handleOtpVerification: () => {},
-  setOtpSent: () => {},
+  handleOtpRequest: () => { },
+  handleOtpVerification: () => { },
+  setOtpSent: () => { },
   email: '',
 };
 
@@ -61,11 +61,17 @@ export function LoginProvider({ children }) {
     return response.data;
   };
 
+  const handleLoginWithWallet = async (payload) => {
+    const response = await AuthService.loginWithWallet(payload);
+    return response.data;
+  }
+
   const contextValue = {
     ...state,
     handleOtpRequest,
     handleOtpVerification,
     setOtpSent,
+    handleLoginWithWallet
   };
 
   return <LoginContext.Provider value={contextValue}>{children}</LoginContext.Provider>;

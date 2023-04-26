@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, Alert, useTheme, Button } from '@mui/material';
+import { Stack, Alert, useTheme, Button, Avatar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
 // components
@@ -16,13 +16,16 @@ import { APP_NAME, PATH_AFTER_LOGIN } from '@config';
 import { saveKey } from '@utils/sessionManager';
 import Iconify from '@components/iconify';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import useWalletConnection from '@hooks/useWalletConnection';
 
 // ----------------------------------------------------------------------
 
 export default function AuthLoginForm() {
   const { isDebug } = useAuthContext();
   const { handleOtpRequest, otpSent, handleOtpVerification, setOtpSent } = useLoginContext();
+  const { account, connectWallet, signMessage } = useWalletConnection();
   const router = useRouter();
+
 
   const [tempIdentity, setTempIdentity] = useState(null);
   const [otpSentMessage, setOTPSentMessage] = useState(null);
@@ -115,6 +118,13 @@ export default function AuthLoginForm() {
       });
     }
   };
+  const handleLoginWithWallet = async () => {
+    if (!account) await connectWallet();
+    const date = new Date();
+    let message = date.getTime().toString();
+    let signature = await signMessage(message);
+
+  }
 
   useEffect(() => {
     const identity = web3Utils.createRandomIdentity();
@@ -191,44 +201,57 @@ export default function AuthLoginForm() {
   }
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onEmailSubmitError)}>
-      <Stack spacing={3} sx={{ mb: 2 }}>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
-        <RHFTextField
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              color: '#fff',
-            },
-            '& .MuiInputLabel-root': {
-              color: '#fff',
-            },
-            '& .MuiInputLabel-root.Mui-focused': {
-              color: '#fff',
-            },
-          }}
-          name="email"
-          label="Enter registered email"
-        />
-      </Stack>
+    <React.Fragment>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onEmailSubmitError)}>
+        <Stack spacing={3} sx={{ mb: 2 }}>
+          {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+          <RHFTextField
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: '#fff',
+              },
+              '& .MuiInputLabel-root': {
+                color: '#fff',
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#fff',
+              },
+            }}
+            name="email"
+            label="Enter registered email"
+          />
+        </Stack>
 
-      <LoadingButton
-        fullWidth
-        color="inherit"
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={(!!errors.afterSubmit && isSubmitSuccessful) || isSubmitting}
-        sx={{
-          bgcolor: 'text.primary',
-          color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
-          '&:hover': {
+        <LoadingButton
+          fullWidth
+          color="inherit"
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={(!!errors.afterSubmit && isSubmitSuccessful) || isSubmitting}
+          sx={{
             bgcolor: 'text.primary',
             color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
-          },
-        }}
+            '&:hover': {
+              bgcolor: 'text.primary',
+              color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
+            },
+          }}
+        >
+          Login into Rahat
+        </LoadingButton>
+
+      </FormProvider>
+      <Button
+        fullWidth
+        size='large'
+        onClick={handleLoginWithWallet}
+        startIcon={<Avatar src={'https://img.icons8.com/color/512/metamask-logo.png'} />}
+        sx={{ mt: 2 }}
+        variant="contained"
       >
-        Login into Rahat
-      </LoadingButton>
-    </FormProvider>
+        Login With Metamask
+      </Button>
+    </React.Fragment>
   );
 }
