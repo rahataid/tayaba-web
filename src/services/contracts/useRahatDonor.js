@@ -15,8 +15,6 @@ export const useRahatDonor = () => {
     rahatTokenContract,
 
     sendTokenToProject: (amount) =>
-      donorContract
-        ?.mintTokenAndApprove(contracts[CONTRACTS.RAHATTOKEN], contractAddress, amount)
-        .catch(handleContractError),
+      donorContract?.mintTokenAndApprove(contracts[CONTRACTS.RAHATTOKEN], contractAddress, amount),
   };
 };
