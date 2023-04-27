@@ -11,5 +11,8 @@ export const AuthService = {
   },
   loginWithWallet(data) {
     return client.post('/users/login/wallet', data);
-  }
+  },
+  signinWalletData(cid) {
+    return client.get('/users/walletmessage');
+  },
 };

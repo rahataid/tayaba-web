@@ -17,16 +17,16 @@ import { saveKey } from '@utils/sessionManager';
 import Iconify from '@components/iconify';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import useWalletConnection from '@hooks/useWalletConnection';
+import { AuthService } from '@services/auth';
 
 // ----------------------------------------------------------------------
 
 export default function AuthLoginForm() {
   const { isDebug } = useAuthContext();
-  const { handleOtpRequest, otpSent, handleOtpVerification, setOtpSent } = useLoginContext();
+  const { handleOtpRequest, otpSent, handleOtpVerification, setOtpSent, handleLoginWithWallet } = useLoginContext();
   const { account, connectWallet, signMessage } = useWalletConnection();
   const router = useRouter();
-
-
+  const { signinWalletData } = AuthService;
   const [tempIdentity, setTempIdentity] = useState(null);
   const [otpSentMessage, setOTPSentMessage] = useState(null);
 
@@ -118,13 +118,22 @@ export default function AuthLoginForm() {
       });
     }
   };
-  const handleLoginWithWallet = async () => {
-    if (!account) await connectWallet();
-    const date = new Date();
-    let message = date.getTime().toString();
-    let signature = await signMessage(message);
+  const handleLoginWithMetamask = async () => {
+    try {
+      if (!account) await connectWallet();
+      const { data } = await signinWalletData();
+      const message = data.data;
 
-  }
+      let signature = await signMessage(message);
+      let user = await handleLoginWithWallet({ signPayload: message, signature });
+      if (user.success) {
+        saveKey(user.data.privateKey);
+        router.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     const identity = web3Utils.createRandomIdentity();
@@ -240,12 +249,11 @@ export default function AuthLoginForm() {
         >
           Login into Rahat
         </LoadingButton>
-
       </FormProvider>
       <Button
         fullWidth
-        size='large'
-        onClick={handleLoginWithWallet}
+        size="large"
+        onClick={handleLoginWithMetamask}
         startIcon={<Avatar src={'https://img.icons8.com/color/512/metamask-logo.png'} />}
         sx={{ mt: 2 }}
         variant="contained"

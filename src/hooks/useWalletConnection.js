@@ -196,7 +196,8 @@ const useWalletConnection = () => {
   }, [library, active]);
 
   const signMessage = async (message) => {
-    if (!library || !account) throw Error('Wallet Not connected');
+    if (!account) await connectWallet();
+    if (!library) throw Error('Wallet Not connected');
     let signer = library.getSigner();
     return signer.signMessage(message);
   };
