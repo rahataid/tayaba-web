@@ -18,6 +18,7 @@ import Iconify from '@components/iconify';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import useWalletConnection from '@hooks/useWalletConnection';
 import { AuthService } from '@services/auth';
+import { useErrorHandler } from '@hooks/useErrorHandler';
 
 // ----------------------------------------------------------------------
 
@@ -29,13 +30,13 @@ export default function AuthLoginForm() {
   const { signinWalletData } = AuthService;
   const [tempIdentity, setTempIdentity] = useState(null);
   const [otpSentMessage, setOTPSentMessage] = useState(null);
-
   const LoginSchema = Yup.object().shape(() => {
     if (isDebug) return {};
     return {
       email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     };
   });
+  const { handleError } = useErrorHandler();
 
   const OTPSchema = Yup.object().shape({
     otp: Yup.string().required('OTP is required'),
@@ -130,7 +131,7 @@ export default function AuthLoginForm() {
         router.reload();
       }
     } catch (err) {
-      console.log(err);
+      handleError(err);
     }
   };
 
