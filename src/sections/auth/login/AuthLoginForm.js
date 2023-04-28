@@ -127,7 +127,6 @@ export default function AuthLoginForm() {
       let signature = await signMessage(message);
       let user = await handleLoginWithWallet({ signPayload: message, signature });
       if (user.success) {
-        saveKey(user.data.privateKey);
         router.reload();
       }
     } catch (err) {
