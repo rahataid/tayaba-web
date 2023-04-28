@@ -8,6 +8,7 @@ const initialState = {
   handleOtpVerification: () => {},
   setOtpSent: () => {},
   email: '',
+  handleLoginWithWallet: () => {},
 };
 
 const LoginContext = createContext(initialState);
@@ -61,11 +62,20 @@ export function LoginProvider({ children }) {
     return response.data;
   };
 
+  const handleLoginWithWallet = async (payload) => {
+    const response = await AuthService.loginWithWallet(payload);
+    if (!response.data) throw new Error('Invalid User');
+    addToken(response.data?.data.accessToken);
+    addUser(response.data?.data.user);
+    return response.data;
+  };
+
   const contextValue = {
     ...state,
     handleOtpRequest,
     handleOtpVerification,
     setOtpSent,
+    handleLoginWithWallet,
   };
 
   return <LoginContext.Provider value={contextValue}>{children}</LoginContext.Provider>;

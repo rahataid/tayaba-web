@@ -195,6 +195,13 @@ const useWalletConnection = () => {
     }
   }, [library, active]);
 
+  const signMessage = async (message) => {
+    if (!account) await connectWallet();
+    if (!library) throw Error('Wallet Not connected');
+    let signer = library.getSigner();
+    return signer.signMessage(message);
+  };
+
   return {
     walletBalance,
     walletType,
@@ -211,6 +218,7 @@ const useWalletConnection = () => {
     library,
     estimateGas,
     switchNetwork,
+    signMessage,
   };
 };
 
