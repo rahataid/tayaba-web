@@ -64,6 +64,9 @@ export function LoginProvider({ children }) {
 
   const handleLoginWithWallet = async (payload) => {
     const response = await AuthService.loginWithWallet(payload);
+    if (!response.data) throw new Error('Invalid User');
+    addToken(response.data?.data.accessToken);
+    addUser(response.data?.data.user);
     return response.data;
   };
 
