@@ -128,6 +128,8 @@ export default function AuthLoginForm() {
       let signature = await signMessage(message);
       let user = await handleLoginWithWallet({ signPayload: message, signature });
       if (user.success) {
+        localStorage.setItem('walletType', 'MetaMask');
+        localStorage.setItem('isWalletConnected', true);
         router.reload();
       }
     } catch (err) {

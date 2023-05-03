@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { injected } from './connectors';
 import { useErrorHandler } from './useErrorHandler';
+import { clearStorage, getKey } from '@utils/sessionManager';
 
 const useWalletConnection = () => {
   const {
@@ -17,7 +18,7 @@ const useWalletConnection = () => {
     chainId: walletChainId,
     setError,
   } = useWeb3React();
-  const { chainId } = useAuthContext();
+  const { chainId, logout } = useAuthContext();
   const { showError } = useErrorHandler();
 
   const [isWalletConnected, setIsWalletConnected] = useState(null);
@@ -99,12 +100,22 @@ const useWalletConnection = () => {
     }
   }, []);
 
+  window.ethereum.on('accountsChanged', (accounts) => {
+    if (!getKey()) {
+      disconnectWallet();
+    }
+  });
+
   const disconnectWallet = async () => {
     try {
       deactivate();
       setIsWalletConnected(false);
       localStorage.removeItem('walletType');
       localStorage.setItem('isWalletConnected', false);
+      if (!getKey()) {
+        logout();
+        clearStorage();
+      }
     } catch (ex) {
       console.log(ex);
     }
@@ -194,6 +205,16 @@ const useWalletConnection = () => {
       });
     }
   }, [library, active]);
+
+  useEffect(() => {
+    if (localStorage.getItem('isWalletConnected') === false || getKey() || active || library) return;
+    const disconnect = setTimeout(async () => {
+      await disconnectWallet();
+    }, 2000);
+    return () => clearTimeout(disconnect);
+  }, [library, active]);
+
+  useEffect(() => {}, []);
 
   const signMessage = async (message) => {
     if (!account) await connectWallet();
