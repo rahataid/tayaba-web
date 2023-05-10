@@ -23,9 +23,9 @@ import { useErrorHandler } from '@hooks/useErrorHandler';
 // ----------------------------------------------------------------------
 
 export default function AuthLoginForm() {
-  const { isDebug } = useAuthContext();
+  const { isDebug, chainId } = useAuthContext();
   const { handleOtpRequest, otpSent, handleOtpVerification, setOtpSent, handleLoginWithWallet } = useLoginContext();
-  const { account, connectWallet, signMessage } = useWalletConnection();
+  const { account, connectWallet, switchNetwork, signMessage } = useWalletConnection();
   const router = useRouter();
   const { signinWalletData } = AuthService;
   const [tempIdentity, setTempIdentity] = useState(null);
@@ -141,6 +141,16 @@ export default function AuthLoginForm() {
     const identity = web3Utils.createRandomIdentity();
     setTempIdentity(identity);
   }, []);
+
+  useEffect(() => {
+    if (!account) connectWallet();
+  }, [account]);
+
+  useEffect(() => {
+    if (!chainId) return;
+    if (!account) return;
+    switchNetwork();
+  }, [switchNetwork]);
 
   if (otpSent) {
     return (

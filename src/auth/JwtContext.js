@@ -80,8 +80,8 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
+        const appSettings = await getAppSettings();
         if (localToken && isValidToken(localToken)) {
-          const appSettings = await getAppSettings();
           setAuthState((prev) => ({
             ...prev,
             isAuthenticated: true,
@@ -107,9 +107,17 @@ function AuthProvider({ children }) {
             ...prev,
             isAuthenticated: false,
             isInitialized: true,
+            chainUrl: appSettings?.BLOCKCHAIN.networkUrl,
+            chainId: appSettings?.BLOCKCHAIN.chainId,
           }));
         } else {
-          setAuthState((prev) => ({ ...prev, isAuthenticated: false, isInitialized: true }));
+          setAuthState((prev) => ({
+            ...prev,
+            isAuthenticated: false,
+            isInitialized: true,
+            chainUrl: appSettings?.BLOCKCHAIN.networkUrl,
+            chainId: appSettings?.BLOCKCHAIN.chainId,
+          }));
         }
       } catch (err) {
         console.error(err);

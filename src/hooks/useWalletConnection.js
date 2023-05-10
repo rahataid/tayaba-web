@@ -190,7 +190,7 @@ const useWalletConnection = () => {
           setWeb3Provider(library);
           return;
         } catch (error) {
-          setError(error);
+          // setError(error);
           console.log({ error });
         }
       }
