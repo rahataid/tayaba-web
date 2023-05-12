@@ -37,7 +37,6 @@ export default function Stepper() {
       villageId: '',
       gender: '',
       cnicNumber: '',
-      dailyDistanceCovered: '',
       phoneOwnedBy: '',
       phoneType: '',
     },

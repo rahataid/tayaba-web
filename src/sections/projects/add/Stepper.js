@@ -86,24 +86,22 @@ export default function Stepper() {
           });
 
           if (costEstimation?.hasEnoughBalance) {
-            handleIncreaseStep();
           }
         } catch (error) {
           if (error?.data?.code === -32000) {
             showError('Error estimating gas fee at the moment');
-            handleIncreaseStep();
             return;
           }
           console.log('error', error);
           showError('Error estimating gas fee');
         }
+        handleIncreaseStep();
       },
     },
     1: {
       title: 'Specific Project Information',
       component: <DynamicForm items={formFields} projectType={defaultValues[0].projectType} setStep={setStep} />,
       handleNext(data) {
-        handleIncreaseStep();
         let basicFields = defaultValues[0];
         let payload = {};
         for (const key in data) {
@@ -112,6 +110,7 @@ export default function Stepper() {
           }
         }
         setDefaultValues({ ...defaultValues, [step]: { extras: payload } });
+        handleIncreaseStep();
       },
     },
 
