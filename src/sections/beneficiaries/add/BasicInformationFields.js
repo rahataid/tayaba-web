@@ -27,7 +27,7 @@ export default function BasicInformatonFields({ methods, village }) {
         <Stack spacing={3}>
           <RHFSelect name={'gender'} label="Select Gender">
             {' '}
-            <option>Select Gender</option>
+            <option value={''}>Select Gender</option>
             {gender
               ? Object.keys(gender).map((obj) => (
                   <option key={obj} value={gender[obj]}>
@@ -42,7 +42,7 @@ export default function BasicInformatonFields({ methods, village }) {
         <Stack spacing={3}>
           <RHFSelect name="villageId" label="Select Village">
             {' '}
-            <option>Select Village</option>
+            <option value={''}>Select Village</option>
             {village
               ? village?.map((obj) => (
                   <option key={obj.value} value={obj.value}>
@@ -62,7 +62,7 @@ export default function BasicInformatonFields({ methods, village }) {
         <Stack spacing={3}>
           <RHFSelect name={'phoneType'} label="Select Phone Type">
             {' '}
-            <option>Select Phone Type</option>
+            <option value={''}>Select Phone Type</option>
             {phoneType
               ? Object.keys(phoneType).map((obj) => (
                   <option key={obj} value={phoneType[obj]}>

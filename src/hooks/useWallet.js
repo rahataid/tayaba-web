@@ -6,9 +6,9 @@ export const useWallet = (privateKey) => {
   const { isWalletConnected, library, account } = useWalletConnection();
   let { chainUrl, chainId, wallet } = useAuthContext();
   let key = getKey();
-  console.log(library);
-  if (!key) return library.getSigner();
-  privateKey ? (wallet = new ethers.Wallet(privateKey)) : (wallet = new ethers.Wallet(key));
+  if (!key && library) return library.getSigner();
+  if (privateKey) wallet = new ethers.Wallet(privateKey);
+  if (key) wallet = new ethers.Wallet(key);
 
   return wallet.connect(
     new providers.StaticJsonRpcProvider(chainUrl, {
