@@ -53,7 +53,7 @@ export default function DynamicForm({ items = [], projectType }) {
             <Grid item xs={12} md={6}>
               <RHFSelect name={item.name} label={item.label} required={item.required}>
                 {' '}
-                <option>`Select ${item.name}` </option>
+                <option value={''}>`Select ${item.name}` </option>
                 {item.options?.map((obj) => (
                   <option key={obj.value} value={obj.value}>
                     {obj.label}

@@ -25,12 +25,7 @@ const ProjectChart = ({ projectId }) => {
   const formatData = useCallback(() => {
     if (!chartData) return;
     // need to move and  call from utils
-    const colors = [
-      theme.palette.info.light,
-      theme.palette.primary.light,
-      theme.palette.warning.light,
-      theme.palette.error.light,
-    ];
+    const colors = ['#ff0000', '#00ff00', '#555555'];
 
     chartData.forEach((elem) => {
       let series = [];

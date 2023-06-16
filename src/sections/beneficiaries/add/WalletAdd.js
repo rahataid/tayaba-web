@@ -44,7 +44,7 @@ export default function WalletAdd({ setValue, projects }) {
         <Stack spacing={3}>
           <RHFSelect name="community" label="Select Community">
             {' '}
-            <option>Select Community</option>
+            <option value={''}>Select Community</option>
             {community
               ? community?.map((obj) => (
                   <option key={obj.value} value={obj.value}>
@@ -59,7 +59,7 @@ export default function WalletAdd({ setValue, projects }) {
         <Stack spacing={3}>
           <RHFSelect name={'projectId'} label="Select Project">
             {' '}
-            <option>Select Project</option>
+            <option value={''}>Select Project</option>
             {projects
               ? projects?.map((obj) => (
                   <option key={obj.value} value={obj.value}>
