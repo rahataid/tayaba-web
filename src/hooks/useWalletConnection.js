@@ -100,11 +100,15 @@ const useWalletConnection = () => {
     }
   }, []);
 
-  window.ethereum.on('accountsChanged', (accounts) => {
-    if (!getKey()) {
-      disconnectWallet();
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.ethereum?.on('accountsChanged', (accounts) => {
+        if (!getKey()) {
+          disconnectWallet();
+        }
+      });
     }
-  });
+  }, []);
 
   const disconnectWallet = async () => {
     try {
