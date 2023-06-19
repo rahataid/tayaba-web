@@ -182,7 +182,7 @@ const useWalletConnection = () => {
                   symbol: 'ETH',
                   decimals: 18,
                 },
-                rpcUrls: ['http://localhost:8545/'],
+                rpcUrls: ['https://chain.esatya.io/'],
                 blockExplorerUrls: ['https://example.com/'],
               },
             ],
