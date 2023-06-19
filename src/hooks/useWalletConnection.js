@@ -159,7 +159,7 @@ const useWalletConnection = () => {
   }, [walletType, isWalletConnected]);
 
   const switchNetwork = useCallback(async () => {
-    const parsedChainId = parseInt(9670);
+    const parsedChainId = parseInt(chainId);
     if (!isNaN(parsedChainId) && Number(walletChainId) !== parsedChainId) {
       const chainIdHex = '0x' + parsedChainId.toString(16);
       try {
