@@ -159,7 +159,7 @@ const useWalletConnection = () => {
   }, [walletType, isWalletConnected]);
 
   const switchNetwork = useCallback(async () => {
-    const parsedChainId = parseInt(chainId);
+    const parsedChainId = parseInt(9670);
     if (!isNaN(parsedChainId) && Number(walletChainId) !== parsedChainId) {
       const chainIdHex = '0x' + parsedChainId.toString(16);
       try {
@@ -182,7 +182,7 @@ const useWalletConnection = () => {
                   symbol: 'ETH',
                   decimals: 18,
                 },
-                rpcUrls: ['http://localhost:8545/'],
+                rpcUrls: ['https://chain.esatya.io/'],
                 blockExplorerUrls: ['https://example.com/'],
               },
             ],
